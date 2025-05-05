@@ -1,0 +1,6 @@
+2025-05-05 14:03:16.168 certHandler.py[11] aceptarCertificado -> Find Control Timeout(10s): {Name: 'Seleccionar un certificado', ControlType: WindowControl}
+2025-05-05 14:07:27.990 certHandler.py[13] aceptarCertificado -> Find Control Timeout(10s): {Name: 'Seleccionar un certificado', ControlType: WindowControl}
+2025-05-05 14:08:52.995 certHandler.py[13] aceptarCertificado -> Find Control Timeout(10s): {Name: 'Seleccionar un certificado', ControlType: WindowControl}
+2025-05-05 14:09:57.913 certHandler.py[13] aceptarCertificado -> Find Control Timeout(10s): {Name: 'Seleccionar un certificado', ControlType: WindowControl}
+2025-05-05 14:23:08.761 certHandler.py[17] aceptarCertificado -> Find Control Timeout(10s): {Name: 'Seleccionar un certificado', ControlType: WindowControl}
+2025-05-05 14:27:12.652 certHandler.py[20] aceptarCertificado -> Find Control Timeout(10s): {Name: 'Seleccionar un certificado', ControlType: WindowControl}
