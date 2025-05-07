@@ -1,0 +1,6 @@
+2025-05-07 12:22:39,313 - INFO - Inicializando navegador...
+2025-05-07 12:22:39,783 - INFO - Web 'https://sede.miteco.gob.es/portal/site/seMITECO/portlet_bus?id_procedimiento=736&identificador_paso=PREINICIO&sub_organo=11&previo_login=1' abierta.
+2025-05-07 12:22:40,180 - INFO - Elemento clickado con 'css selector' = 'input[value='acceder']'.
+2025-05-07 12:22:41,148 - INFO - Elemento clickado con 'xpath' = '//span[text()='Acceso DNIe / Certificado electrónico']'.
+2025-05-07 12:22:41,148 - INFO - Buscando ventana de Chrome...
+2025-05-07 12:22:51,203 - ERROR - No se encontró la ventana de Chrome.

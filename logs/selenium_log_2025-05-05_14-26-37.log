@@ -1,8 +1,0 @@
-2025-05-05 14:26:37,366 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\Usuario\\PycharmProjects\\PythonProject\\.venv\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
-2025-05-05 14:26:37,366 - INFO - Using writeable comtypes cache directory: 'C:\Users\Usuario\PycharmProjects\PythonProject\.venv\Lib\site-packages\comtypes\gen'
-2025-05-05 14:26:40,575 - INFO - Inicializando navegador...
-2025-05-05 14:26:40,990 - INFO - Web 'https://sede.miteco.gob.es/portal/site/seMITECO/portlet_bus?id_procedimiento=736&identificador_paso=PREINICIO&sub_organo=11&previo_login=1' abierta.
-2025-05-05 14:26:41,398 - INFO - Boton con value acceder clickado.
-2025-05-05 14:26:42,464 - INFO - Boton con texto Acceso DNIe / Certificado electrónico clickado.
-2025-05-05 14:26:42,464 - INFO - Esperando la ventana 'Seleccionar un certificado'...
-2025-05-05 14:26:52,520 - INFO - Ventana encontrada y activa.
