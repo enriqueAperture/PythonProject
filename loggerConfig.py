@@ -4,7 +4,6 @@ from datetime import datetime
 
 # Crear carpetas si no existen
 os.makedirs("logs", exist_ok=True)
-os.makedirs("screenshots", exist_ok=True)
 
 # Timestamp para el archivo de log
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")

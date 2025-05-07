@@ -1,0 +1,16 @@
+2025-05-07 17:02:50,226 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\Usuario\\PycharmProjects\\PythonProject\\.venv\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-05-07 17:02:50,226 - INFO - Using writeable comtypes cache directory: 'C:\Users\Usuario\PycharmProjects\PythonProject\.venv\Lib\site-packages\comtypes\gen'
+2025-05-07 17:02:53,270 - INFO - Inicializando navegador...
+2025-05-07 17:02:53,701 - INFO - Web 'https://sede.miteco.gob.es/portal/site/seMITECO/portlet_bus?id_procedimiento=736&identificador_paso=PREINICIO&sub_organo=11&previo_login=1' abierta.
+2025-05-07 17:02:54,076 - INFO - Elemento clickado con 'css selector' = 'input[value='acceder']'.
+2025-05-07 17:02:55,014 - INFO - Elemento clickado con 'xpath' = '//span[text()='Acceso DNIe / Certificado electrónico']'.
+2025-05-07 17:02:55,014 - INFO - Buscando ventana de Chrome...
+2025-05-07 17:02:55,649 - INFO - Ventana de Chrome encontrada: Cl@ve - Google Chrome
+2025-05-07 17:02:56,150 - INFO - Esperando popup de certificado (búsqueda recursiva)...
+2025-05-07 17:02:56,188 - INFO - Popup de certificado detectado.
+2025-05-07 17:02:56,267 - INFO - Nombres de certificados encontrados (búsqueda recursiva): ['52304124P RICARDO ESCUDE (R: B21661046)', 'AC Representación', '69C3999FFE15A7F867E50206DCC17186', '26881018K LILIANA FERNANDA PEREZ (R:B43693274)', 'ACCVCA-120', '32207E732CFC55FBC69159D3BD3B0B7B']
+2025-05-07 17:02:56,268 - INFO - Primer certificado encontrado: 52304124P RICARDO ESCUDE (R: B21661046)
+2025-05-07 17:02:57,270 - INFO - Certificado encontrado con nombre: 52304124P RICARDO ESCUDE (R: B21661046)
+2025-05-07 17:02:57,271 - INFO - Intentando hacer clic en el certificado: 52304124P RICARDO ESCUDE (R: B21661046)
+2025-05-07 17:02:58,222 - INFO - Buscando botón 'Aceptar'...
+2025-05-07 17:02:58,393 - INFO - ¡Botón 'Aceptar' encontrado! Haciendo click...
