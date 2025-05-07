@@ -36,7 +36,7 @@ def _obtener_data_item_control_recursivo(control):
 
 def _obtener_lista_certificados(ventana_chrome, timeout=10):
     """Espera y obtiene los controles DataItemControl de forma recursiva."""
-    logging.info("Esperando popup de certificado (búsqueda recursiva)...")
+    logging.info("Esperando popup de certificado...")
     popup_cert = None
     start_time = time.time()
     while not popup_cert and (time.time() - start_time) < timeout:
@@ -50,7 +50,7 @@ def _obtener_lista_certificados(ventana_chrome, timeout=10):
         logging.info("Popup de certificado detectado.")
         certificados = _obtener_data_item_control_recursivo(popup_cert)
         nombres_certificados = [cert.Name for cert in certificados]
-        logging.info(f"Nombres de certificados encontrados (búsqueda recursiva): {nombres_certificados}")
+        logging.info(f"Nombres de certificados encontrados: {nombres_certificados}")
         return certificados
     else:
         logging.error("No se encontró el popup de certificado.")
