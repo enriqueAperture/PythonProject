@@ -23,7 +23,7 @@ def _obtener_ventana_chrome(timeout=10):
         logging.error("No se encontró la ventana de Chrome.")
         return None
 
-def _obtener_data_item_control_recursivo(control):
+def _obtener_data_item_control(control):
     """Busca recursivamente controles de tipo DataItemControl dentro de un control."""
     data_items = []
     for child in control.GetChildren():
@@ -31,7 +31,7 @@ def _obtener_data_item_control_recursivo(control):
             data_items.append(child)
         else:
             # Si no es DataItemControl, busca recursivamente en sus hijos
-            data_items.extend(_obtener_data_item_control_recursivo(child))
+            data_items.extend(_obtener_data_item_control(child))
     return data_items
 
 def _obtener_lista_certificados(ventana_chrome, timeout=10):
@@ -48,7 +48,7 @@ def _obtener_lista_certificados(ventana_chrome, timeout=10):
 
     if popup_cert:
         logging.info("Popup de certificado detectado.")
-        certificados = _obtener_data_item_control_recursivo(popup_cert)
+        certificados = _obtener_data_item_control(popup_cert)
         nombres_certificados = [cert.Name for cert in certificados]
         logging.info(f"Nombres de certificados encontrados: {nombres_certificados}")
         return certificados
@@ -96,8 +96,7 @@ def _click_boton_aceptar(ventana_chrome, timeout=5):
 
 def seleccionar_certificado_chrome(nombre_certificado='RICARDO ESCUDE'):
     """Función principal para llegar a la ventana de Chrome, obtener los certificados
-    y seleccionar el certificado especificado.
-    """
+    y seleccionar el certificado especificado."""
     ventana_chrome = _obtener_ventana_chrome()
     if not ventana_chrome:
         return False
