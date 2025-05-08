@@ -1,0 +1,29 @@
+2025-05-08 09:04:33,369 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\Metalls1\\Documents\\GitHub\\PythonProject\\.venv\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-05-08 09:04:33,369 - INFO - Using writeable comtypes cache directory: 'C:\Users\Metalls1\Documents\GitHub\PythonProject\.venv\Lib\site-packages\comtypes\gen'
+2025-05-08 09:04:33,741 - INFO - {'browserName': 'chrome', 'pageLoadStrategy': <PageLoadStrategy.normal: 'normal'>}
+2025-05-08 09:04:38,156 - ERROR - Error al iniciar el navegador: Message: session not created
+from unknown error: Could not remove old devtools port file. Perhaps the given user-data-dir at C:\Users\<tu_usuario>\AppData\Local\Google\Chrome\User Data is still attached to a running Chrome or Chromium process
+Stacktrace:
+	GetHandleVerifier [0x0111FC53+61635]
+	GetHandleVerifier [0x0111FC94+61700]
+	(No symbol) [0x00F405D3]
+	(No symbol) [0x00F78B77]
+	(No symbol) [0x00F74860]
+	(No symbol) [0x00F6F6C9]
+	(No symbol) [0x00FB8DF3]
+	(No symbol) [0x00FB880A]
+	(No symbol) [0x00FAD096]
+	(No symbol) [0x00F7C840]
+	(No symbol) [0x00F7D6A4]
+	GetHandleVerifier [0x013A4573+2701795]
+	GetHandleVerifier [0x0139FCF6+2683238]
+	GetHandleVerifier [0x013BAA3E+2793134]
+	GetHandleVerifier [0x01136915+155013]
+	GetHandleVerifier [0x0113CFFD+181357]
+	GetHandleVerifier [0x011274A8+92440]
+	GetHandleVerifier [0x01127650+92864]
+	GetHandleVerifier [0x01112040+5296]
+	BaseThreadInitThunk [0x76F95D49+25]
+	RtlInitializeExceptionChain [0x775FCFFB+107]
+	RtlGetAppContainerNamedObjectPath [0x775FCF81+561]
+

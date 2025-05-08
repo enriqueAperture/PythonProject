@@ -9,11 +9,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 def configure():
     # Configurar el WebDriver para Google Chrome
     options = Options()
-    options.add_argument("--start-maximized")  # Maximiza la ventana
-    options.add_argument("--disable-notifications")  # Desactiva notificaciones
-    options.add_argument("--disable-infobars")  # Oculta el "Chrome is being controlled..."
-    #options.add_argument("--headless")  # (opcional) Ejecuta sin abrir ventana
 
+    # Asigna el perfil donde ya está instalado el certificado
+    options.add_argument(r"--user-data-dir=C:\Users\Metalls1\ChromeSeleniumProfile")
+    options.add_argument("--profile-directory=ProfileSelenium")
+
+    # Opcional: para que veas errores o popups
+    #options.add_argument("--headless")  # puedes quitarlo temporalmente
+
+    options.add_argument("--start-maximized")
+    options.add_argument("--disable-notifications")
+    options.add_argument("--disable-infobars")
     try:
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(service=service, options=options)

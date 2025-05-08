@@ -1,3 +1,5 @@
+import time
+
 import certHandler
 import loggerConfig
 import logging
@@ -15,6 +17,7 @@ webFunctions.abrir_web(driver, WEB_MITECO)
 webFunctions.esperar_elemento_por_id(driver, "breadcrumb")
 webFunctions.clickar_boton_por_value(driver, "acceder")
 webFunctions.clickar_boton_por_texto(driver, "Acceso DNIe / Certificado electrónico")
-certHandler.seleccionar_certificado_chrome(NOMBRE_CERT)
+time.sleep(30)
+#certHandler.seleccionar_certificado_chrome(NOMBRE_CERT)
 
 
