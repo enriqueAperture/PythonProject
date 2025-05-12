@@ -8,7 +8,6 @@ import webFunctions
 
 WEB_MITECO = "https://sede.miteco.gob.es/portal/site/seMITECO/portlet_bus?id_procedimiento=736&identificador_paso=PREINICIO&sub_organo=11&previo_login=1"
 NOMBRE_CERT = "RICARDO ESCUDE"
-NOMBRE_CERT = ""
 
 driver = webConfiguration.configure()
 
