@@ -11,8 +11,8 @@ def configure():
     options = Options()
 
     # Asigna el perfil donde ya está instalado el certificado
-    options.add_argument(r"--user-data-dir=C:\Users\Metalls1\ChromeSeleniumProfile")
-    options.add_argument("--profile-directory=ProfileSelenium")
+    options.add_argument(r"--user-data-dir=C:\Users\Metalls1\Default")
+    options.add_argument("--profile-directory=Default")
 
     # Opcional: para que veas errores o popups
     #options.add_argument("--headless")  # puedes quitarlo temporalmente

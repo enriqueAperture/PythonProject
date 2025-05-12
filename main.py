@@ -17,7 +17,7 @@ webFunctions.abrir_web(driver, WEB_MITECO)
 webFunctions.esperar_elemento_por_id(driver, "breadcrumb")
 webFunctions.clickar_boton_por_value(driver, "acceder")
 webFunctions.clickar_boton_por_texto(driver, "Acceso DNIe / Certificado electrónico")
-time.sleep(30)
+time.sleep(5)
 #certHandler.seleccionar_certificado_chrome(NOMBRE_CERT)
 
 
