@@ -9,7 +9,6 @@ import webFunctions
 WEB_X = "https://x.com"
 WEB_GOOGLE = "https://google.com"
 NOMBRE_CERT = "RICARDO ESCUDE"
-NOMBRE_CERT = ""
 
 driver = webConfiguration.configure()
 
