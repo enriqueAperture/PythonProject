@@ -252,7 +252,11 @@ def escribir_en_elemento(driver: webdriver.Chrome, by: By, value: str, texto: st
         raise
 def escribir_en_elemento_por_id(driver: webdriver.Chrome, element_id: str, texto: str) -> None:
     """Espera hasta que un elemento con el ID especificado sea visible."""
-    escribir_en_elemento(driver, By.ID, element_id, texto)
+    try:
+        escribir_en_elemento(driver, By.ID, element_id, texto)
+    except Exception as e:
+        logging.error(f"No se pudo escribir en el elemento con ID '{element_id}': {e}")
+        raise
 
 def escribir_en_elemento_por_class(driver: webdriver.Chrome, class_name: str, texto: str) -> None:
     """Escribe texto en un elemento localizado por su clase CSS."""
