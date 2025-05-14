@@ -1,6 +1,9 @@
 import logging
+import os
+from typing import Union, Optional, List, Dict
 from selenium import webdriver
-from selenium.common import TimeoutException
+from selenium.common import TimeoutException, NoSuchWindowException, NoSuchFrameException, WebDriverException, \
+    NoSuchElementException, ElementNotInteractableException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -81,3 +84,180 @@ def clickar_boton_por_texto(driver: webdriver.Chrome, texto: str, timeout: int =
     """Espera y hace clic en un botón (elemento span) que contiene el texto especificado."""
     xpath = f"//span[text()='{texto}']"
     clickar_elemento(driver, By.XPATH, xpath, timeout)
+
+def abrir_nueva_pestana(driver: webdriver.Chrome, url: str) -> bool:
+    """
+    Abre una nueva pestaña con la URL especificada y cambia el foco a ella.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        url (str): URL que se abrirá en la nueva pestaña.
+
+    Returns:
+        bool: True si la operación fue exitosa, False si falló.
+
+    Ejemplo:
+        abrir_nueva_pestana(driver, "https://example.com")
+    """
+    try:
+        # Guardar handle actual
+        handle_actual = driver.current_window_handle
+
+        # Abrir nueva pestaña con la URL
+        driver.execute_script(f"window.open('{url}', '_blank');")
+        logging.info(f"Se abrió una nueva pestaña con la URL: {url}")
+
+        # Obtener todos los handles y cambiar al último (la nueva pestaña)
+        handles = driver.window_handles
+        nuevas = [h for h in handles if h != handle_actual]
+        if nuevas:
+            driver.switch_to.window(nuevas[-1])
+            logging.info(f"Foco cambiado a la nueva pestaña.")
+            return True
+        else:
+            logging.warning("No se detectó una nueva pestaña después de abrirla.")
+            return False
+
+    except WebDriverException as e:
+        logging.error(f"Error al abrir nueva pestaña con URL '{url}': {e}")
+        return False
+
+def cambiar_a_ventana(driver: webdriver.Chrome, indice: int) -> None:
+    """
+    Cambia el enfoque del navegador a la ventana/pestaña según el índice proporcionado.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        indice (int): Índice de la ventana a la que se desea cambiar.
+
+    Raises:
+        IndexError: Si el índice está fuera del rango de las ventanas abiertas.
+        NoSuchWindowException: Si la ventana no se puede encontrar.
+
+    Ejemplo:
+        cambiar_a_ventana(driver, 1)
+    """
+    try:
+        handles = driver.window_handles
+        driver.switch_to.window(handles[indice])
+        logging.info(f"Cambiado a la pestaña con nombre '{driver.title}'")
+    except IndexError:
+        raise IndexError(f"Índice de ventana inválido: {indice}. Solo hay {len(driver.window_handles)} ventanas.")
+    except NoSuchWindowException as e:
+        raise logging.error(f"No se pudo cambiar a la ventana: {e}")
+
+def capturar_pantalla(driver: webdriver.Chrome, ruta_archivo: str, timeout: int = 10) -> bool:
+    """
+    Espera a que la página se cargue completamente y guarda una captura de pantalla en el archivo especificado.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        ruta_archivo (str): Ruta donde se guardará la imagen (PNG).
+        timeout (int): Tiempo máximo de espera para la carga de la página (en segundos). Por defecto, 10.
+
+    Returns:
+        bool: True si la captura fue exitosa, False si falló.
+
+    Ejemplo:
+        capturar_pantalla(driver, "screenshots/pagina.png")
+    """
+    try:
+        # Esperar a que el DOM esté completamente cargado
+        WebDriverWait(driver, timeout).until(
+            lambda d: d.execute_script("return document.readyState") == "complete"
+        )
+        logging.info("La página se cargó completamente antes de la captura.")
+
+        # Crear directorio si no existe
+        os.makedirs(os.path.dirname(ruta_archivo), exist_ok=True)
+
+        # Capturar pantalla
+        exito = driver.get_screenshot_as_file(ruta_archivo)
+        if exito:
+            logging.info(f"Captura de pantalla guardada en: {ruta_archivo}")
+        else:
+            logging.warning(f"No se pudo guardar la captura en: {ruta_archivo}")
+        return exito
+
+    except WebDriverException as e:
+        logging.error(f"Error al capturar pantalla: {e}")
+        return False
+
+    except Exception as e:
+        logging.error(f"Error inesperado al esperar la carga o capturar pantalla: {e}")
+        return False
+
+def obtener_logs_navegador(driver: webdriver.Chrome) -> List[Dict]:
+    """
+    Obtiene los logs del navegador (nivel 'browser') si están habilitados en las opciones del navegador.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+
+    Returns:
+        List[Dict]: Lista de entradas de log capturadas, cada una como un diccionario.
+
+    Nota:
+        Para que esto funcione, debes habilitar los logs al iniciar el navegador con:
+            options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
+
+    Ejemplo:
+        logs = obtener_logs_navegador(driver)
+        for log in logs:
+            print(log["message"])
+    """
+    try:
+        logs = driver.get_log("browser")
+        return logs
+    except WebDriverException as e:
+        logging.error(f"No se pudieron obtener los logs del navegador: {e}")
+        return []
+
+def escribir_en_elemento(driver: webdriver.Chrome, by: By, value: str, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Encuentra un campo de entrada y escribe el texto indicado en él.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        by (By): Tipo de localizador (By.ID, By.XPATH, etc.).
+        value (str): Valor del selector.
+        texto (str): Texto que se desea escribir.
+        timeout (int): El tiempo máximo de espera en segundos.
+
+    Raises:
+        Exception: Si el elemento no se encuentra o no se puede interactuar.
+
+    Ejemplo:
+        escribir_en_elemento(driver, By.NAME, "usuario", "admin")
+    """
+    try:
+        esperar_elemento(driver, by, value, timeout)
+        elemento = driver.find_element(by, value)
+        elemento.send_keys(texto)
+        logging.info(f"Se escribió texto en el elemento localizado por {by}='{value}': '{texto}'")
+
+    except TimeoutException:
+        raise
+
+    except NoSuchElementException:
+        logging.error(f"No se encontró el elemento con {by}='{value}' para escribir.")
+        raise
+
+    except ElementNotInteractableException:
+        logging.error(f"El elemento con {by}='{value}' no es interactuable.")
+        raise
+
+    except Exception as e:
+        logging.error(f"Error inesperado al escribir en el elemento: {e}")
+        raise
+def escribir_en_elemento_por_id(driver: webdriver.Chrome, element_id: str, texto: str) -> None:
+    """Espera hasta que un elemento con el ID especificado sea visible."""
+    escribir_en_elemento(driver, By.ID, element_id, texto)
+
+def escribir_en_elemento_por_class(driver: webdriver.Chrome, class_name: str, texto: str) -> None:
+    """Escribe texto en un elemento localizado por su clase CSS."""
+    try:
+        escribir_en_elemento(driver, By.CLASS_NAME, class_name, texto)
+    except Exception as e:
+        logging.error(f"No se pudo escribir en el elemento con class '{class_name}': {e}")
+        raise
