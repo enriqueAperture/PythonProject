@@ -1,0 +1,28 @@
+2025-05-14 15:58:06,929 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\Metalls1\\Documents\\GitHub\\PythonProject\\.venv\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-05-14 15:58:06,929 - INFO - Using writeable comtypes cache directory: 'C:\Users\Metalls1\Documents\GitHub\PythonProject\.venv\Lib\site-packages\comtypes\gen'
+2025-05-14 15:58:10,704 - ERROR - Error al iniciar el navegador: Message: session not created
+from unknown error: cannot create default profile directory
+Stacktrace:
+	GetHandleVerifier [0x00DDFC53+61635]
+	GetHandleVerifier [0x00DDFC94+61700]
+	(No symbol) [0x00C005D3]
+	(No symbol) [0x00C38273]
+	(No symbol) [0x00C326EB]
+	(No symbol) [0x00C2F6C9]
+	(No symbol) [0x00C78DF3]
+	(No symbol) [0x00C7880A]
+	(No symbol) [0x00C6D096]
+	(No symbol) [0x00C3C840]
+	(No symbol) [0x00C3D6A4]
+	GetHandleVerifier [0x01064573+2701795]
+	GetHandleVerifier [0x0105FCF6+2683238]
+	GetHandleVerifier [0x0107AA3E+2793134]
+	GetHandleVerifier [0x00DF6915+155013]
+	GetHandleVerifier [0x00DFCFFD+181357]
+	GetHandleVerifier [0x00DE74A8+92440]
+	GetHandleVerifier [0x00DE7650+92864]
+	GetHandleVerifier [0x00DD2040+5296]
+	BaseThreadInitThunk [0x76585D49+25]
+	RtlInitializeExceptionChain [0x7774D03B+107]
+	RtlGetAppContainerNamedObjectPath [0x7774CFC1+561]
+

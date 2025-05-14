@@ -9,12 +9,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 def configure():
     # Configurar el WebDriver para Google Chrome
     options = Options()
-    try:
-        # Asigna el perfil donde ya está instalado el certificado
-        options.add_argument(r"--user-data-dir=C:\Users\Usuario\AppData\Local\Google\Chrome\User Data")
-        options.add_argument("--profile-directory=Default")
-    except AttributeError:
-        logging.error("Ha habido un error")
 
     # Opcional: para que veas errores o popups
     #options.add_argument("--headless")  # puedes quitarlo temporalmente

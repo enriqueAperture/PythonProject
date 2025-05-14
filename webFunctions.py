@@ -75,6 +75,10 @@ def esperar_elemento_por_id(driver: webdriver.Chrome, element_id: str, timeout: 
     """Espera hasta que un elemento con el ID especificado sea visible."""
     esperar_elemento(driver, By.ID, element_id, timeout)
 
+def clickar_boton_por_id(driver: webdriver.Chrome, id: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """Espera y hace clic en un botón (elemento input) que tiene el ID especificado."""
+    clickar_elemento(driver, By.ID, id, timeout)
+
 def clickar_boton_por_value(driver: webdriver.Chrome, value: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """Espera y hace clic en un botón (elemento input) que tiene el atributo 'value' especificado."""
     selector = f"input[value='{value}']"
@@ -258,6 +262,15 @@ def escribir_en_elemento_por_id(driver: webdriver.Chrome, element_id: str, texto
         logging.error(f"No se pudo escribir en el elemento con ID '{element_id}': {e}")
         raise
 
+def escribir_en_elemento_por_placeholder(driver: webdriver.Chrome, placeholder_text: str, texto: str) -> None:
+    """Escribe texto en un campo de entrada localizado por su atributo placeholder."""
+    try:
+        xpath = f"//*[@placeholder='{placeholder_text}']"
+        escribir_en_elemento(driver, By.XPATH, xpath, texto)
+    except Exception as e:
+        logging.error(f"No se pudo escribir en el elemento con placeholder '{placeholder_text}': {e}")
+        raise
+
 def escribir_en_elemento_por_class(driver: webdriver.Chrome, class_name: str, texto: str) -> None:
     """Escribe texto en un elemento localizado por su clase CSS."""
     try:
@@ -265,3 +278,12 @@ def escribir_en_elemento_por_class(driver: webdriver.Chrome, class_name: str, te
     except Exception as e:
         logging.error(f"No se pudo escribir en el elemento con class '{class_name}': {e}")
         raise
+
+def aceptarAlerta(driver):
+    try:
+        WebDriverWait(driver, 5).until(EC.alert_is_present())
+        alert = driver.switch_to.alert
+        alert.accept()
+        logging.info("Alerta aceptada correctamente.")
+    except TimeoutException:
+        logging.error("No hay alerta presente.")
