@@ -1,6 +1,0 @@
-2025-05-08 09:28:31,078 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\Metalls1\\Documents\\GitHub\\PythonProject\\.venv\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
-2025-05-08 09:28:31,078 - INFO - Using writeable comtypes cache directory: 'C:\Users\Metalls1\Documents\GitHub\PythonProject\.venv\Lib\site-packages\comtypes\gen'
-2025-05-08 09:28:34,353 - INFO - Inicializando navegador...
-2025-05-08 09:28:34,745 - INFO - Web 'https://sede.miteco.gob.es/portal/site/seMITECO/portlet_bus?id_procedimiento=736&identificador_paso=PREINICIO&sub_organo=11&previo_login=1' abierta.
-2025-05-08 09:28:34,811 - INFO - Elemento clickado con 'css selector' = 'input[value='acceder']'.
-2025-05-08 09:28:38,847 - INFO - Elemento clickado con 'xpath' = '//span[text()='Acceso DNIe / Certificado electrónico']'.
