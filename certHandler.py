@@ -77,10 +77,10 @@ def _seleccionar_certificado(lista_certificados, nombre_certificado):
 
     return found
 
-def _click_boton_aceptar(ventana_chrome, timeout=5):
+def _click_boton_aceptar(ventana_chrome, name: str = 'Seleccionar un certificado', timeout=5):
     """Busca y hace clic en el botón 'Aceptar' en el popup de certificado."""
     logging.info("Buscando botón 'Aceptar'...")
-    popup_cert = ventana_chrome.Control(searchDepth=20, ControlType=auto.ControlType.CustomControl, Name='Seleccionar un certificado')
+    popup_cert = ventana_chrome.Control(searchDepth=20, ControlType=auto.ControlType.CustomControl, Name=name)
     if popup_cert.Exists(maxSearchSeconds=timeout):
         boton_aceptar = popup_cert.ButtonControl(Name='Aceptar')
         if boton_aceptar.Exists(maxSearchSeconds=timeout):
