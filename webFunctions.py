@@ -6,6 +6,7 @@ from selenium.common import TimeoutException, NoSuchWindowException, NoSuchFrame
     NoSuchElementException, ElementNotInteractableException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 
 # Configuración del tiempo de espera global (en segundos)
@@ -265,3 +266,74 @@ def escribir_en_elemento_por_class(driver: webdriver.Chrome, class_name: str, te
     except Exception as e:
         logging.error(f"No se pudo escribir en el elemento con class '{class_name}': {e}")
         raise
+
+def seleccionar_elemento(driver: webdriver.Chrome, by: By, value: str, opcion: str,
+                         timeout: int = DEFAULT_TIMEOUT) -> None:
+
+    try:
+
+        # Se espera a que el elemento <select> esté presente en la página.
+
+        esperar_elemento(driver, by, value, timeout)
+
+        # Se localiza el elemento <select> y se crea el objeto Select.
+
+        elemento = driver.find_element(by, value)
+
+        select_obj = Select(elemento)
+
+        # Se selecciona la opción cuyo texto visible coincida con 'opcion'.
+
+        select_obj.select_by_visible_text(opcion)
+
+        logging.info(f"Opción '{opcion}' seleccionada en el elemento con '{by}' = '{value}'.")
+
+    except TimeoutException:
+
+        raise
+
+    except Exception as e:
+
+        logging.error(f"Falló al seleccionar la opción '{opcion}' en el elemento con '{by}' = '{value}': {e}")
+
+    raise
+
+
+def selecionar_elemento_por_texto(driver: webdriver.Chrome, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """Espera y selecciona un elemento que contiene el texto especificado."""
+
+    xpath = f"//span[text()='{texto}']"
+
+    seleccionar_elemento(driver, By.XPATH, xpath, timeout)
+
+
+def selecionar_elemento_por_valor(driver: webdriver.Chrome, value: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """Espera y selecciona un elemento que contiene el valor especificado."""
+
+    selector = f"input[value='{value}']"
+
+    seleccionar_elemento(driver, By.CSS_SELECTOR, selector, timeout)
+
+
+def selecionar_elemento_por_id(driver: webdriver.Chrome, id: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """Espera y selecciona un elemento que contiene el id especificado."""
+
+    seleccionar_elemento(driver, By.ID, id, timeout)
+
+
+def selecionar_elemento_por_nombre(driver: webdriver.Chrome, name: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """Espera y selecciona un elemento que contiene el nombre especificado."""
+
+    seleccionar_elemento(driver, By.NAME, name, timeout)
+
+
+def selecionar_elemento_por_tag_name(driver: webdriver.Chrome, tag_name: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """Espera y selecciona un elemento que contiene el nombre especificado."""
+
+    seleccionar_elemento(driver, By.TAG_NAME, tag_name, timeout)
+
+
+def selecionar_elemento_por_class(driver: webdriver.Chrome, class_name: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """Espera y selecciona un elemento que contiene el nombre especificado."""
+
+    seleccionar_elemento(driver, By.CLASS_NAME, class_name, timeout)
