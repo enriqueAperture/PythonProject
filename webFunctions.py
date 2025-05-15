@@ -88,6 +88,9 @@ def clickar_boton_por_texto(driver: webdriver.Chrome, texto: str, timeout: int =
     """Espera y hace clic en un botón (elemento span) que contiene el texto especificado."""
     xpath = f"//span[text()='{texto}']"
     clickar_elemento(driver, By.XPATH, xpath, timeout)
+def clickar_boton_por_link(driver: webdriver.Chrome, link: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    xpath =  f"//a[contains(text(), '{link}')]"
+    clickar_elemento(driver, By.XPATH, xpath, timeout)
 
 def abrir_nueva_pestana(driver: webdriver.Chrome, url: str) -> bool:
     """

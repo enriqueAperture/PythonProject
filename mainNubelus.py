@@ -23,6 +23,9 @@ webFunctions.clickar_boton_por_id(driver, "btAceptar")
 
 ventana_chrome = certHandler._obtener_ventana_chrome()
 certHandler._click_boton_aceptar(ventana_chrome, 'Cambia la contraseña')
+webFunctions.clickar_boton_por_link(driver, "Ficheros")
+webFunctions.clickar_boton_por_link(driver, "Entidades medioambientales")
+
 
 
 
