@@ -108,3 +108,81 @@ def añadirEmpresas(driver, empresas_añadir):
             time.sleep(1)
         except Exception as error:
             logging.error(f"Error al añadir la empresa {empresas_añadir.iloc[0]['nombre_recogida']}: {error}")
+
+def sacar_centros_no_encontrados_en_nubelus(centros_nubelus, datos_recogidas):
+    ##Creamos un set con las denominaciones para búsqueda eficiente
+    denominaciones_set = set(centros_nubelus['Denominación'].unique())
+
+    ##Filtramos las filas cuyo nombre_recogida no está en Denominación
+    filas_no_encontradas = datos_recogidas[~datos_recogidas['nombre_recogida'].isin(denominaciones_set)].copy()
+
+    # Creamos un diccionario para mapear Denominación a EMA
+    denominacion_to_ema = dict(zip(centros_nubelus['Denominación'], centros_nubelus['EMA']))
+
+    # Añadimos la columna EMA asociada si existe, si no, dejamos vacío
+    filas_no_encontradas['EMA'] = filas_no_encontradas['nombre_recogida'].map(denominacion_to_ema).fillna('')
+
+def sacar_centros_no_añadidos(driver: webdriver.Chrome):
+    try:
+        archivo_xlsx = _esperar_descarga(DOWNLOAD_DIR)
+        logging.info(f"Archivo descargado: {archivo_xlsx}")
+    except TimeoutError as e:
+        logging.error(e)
+        driver.quit()
+        exit()
+
+    # Leemos los archivos excel
+    centros_medioambientales = pandas.read_excel(archivo_xlsx)
+    excel_recogidas = pandas.read_excel(EXCEL_RECOGIDAS)
+
+    ##Nos quedamos con la columna "Denominación y EMA" del excel entidades_medioambientales
+    centros = centros_medioambientales[['Denominación', 'EMA']]
+
+    ##Nos quedamos solo con los datos que vamos a tratar del excel recogidas
+    datos = excel_recogidas[['nombre_recogida', 'direccion_recogida', 'cp_recogida',
+       'poblacion_recogida', 'provincia_recogida', 'email_recogida',
+       'telf_recogida']]
+
+    # Llamamos a la función y guardamos el resultado en la variable 'datos_no_encontrados'
+    datos_no_encontrados = sacar_centros_no_encontrados_en_nubelus(centros, datos)
+
+    return datos_no_encontrados
+
+def añadirCentros(driver, centro_añadir):
+    """
+    Itera sobre el DataFrame 'empresas_añadir' y realiza las acciones necesarias
+    para añadir cada empresa en la aplicación web.
+    
+    Se asume que el botón para iniciar la acción de añadir empresas ya se ha clicado
+    y que se encuentran visibles los campos de entrada correspondientes.
+    """
+    for idx, centro in centro_añadir.iterrows():
+        try:
+            logging.info(f"Añadiendo centro: {centro['nombre_recogida']}")
+            webFunctions.clickar_boton_por_clase(driver, "miBoton.nuevo")
+            # 1. Completar el campo Denominación
+            webFunctions.esperar_elemento(driver, By.ID, "pDenominacion", timeout=10)
+            webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", centro["nombre_recogida"])
+            # 2. Completar el campo EMA
+            webFunctions.escribir_en_elemento_por_name(driver, "pNif", centro["EMA"])
+            # 3. Completar el campo Domicilio
+            webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", centro["direccion_recogida"])
+            # 4. Completar el campo Municipio
+            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_ine_municipio", str(centro["poblacion_recogida"]).rstrip())
+            time.sleep(1)
+            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_ine_municipio", Keys.ENTER)
+            # 5. Completar el campo Provincia
+            webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", centro["provincia_recogida"])
+            # 6. Completar el campo CP
+            webFunctions.escribir_en_elemento_por_name(driver, "pCodigoPostal", str(centro["cp_recogida"]))
+            # 7. Completar el campo Telefono
+            webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", str(centro["telf_recogida"]))
+            # 8. Completar el campo Email
+            webFunctions.escribir_en_elemento_por_name(driver, "pEmail", centro["email_recogida"])
+            # 9. Confirmar la adición (clic en botón de aceptar o guardar)
+            webFunctions.clickar_boton_por_clase(driver, "miBoton.cancelar")
+            
+            # Espera a que la acción se procese antes de continuar
+            time.sleep(1)
+        except Exception as error:
+            logging.error(f"Error al añadir la empresa {centro_añadir.iloc[0]['nombre_recogida']}: {error}")

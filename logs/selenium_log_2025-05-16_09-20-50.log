@@ -1,0 +1,13 @@
+2025-05-16 09:20:52,172 - INFO - Inicializando navegador...
+2025-05-16 09:20:52,946 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-05-16 09:20:53,012 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-05-16 09:20:53,076 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-05-16 09:20:53,114 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-05-16 09:20:53,152 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-05-16 09:20:53,204 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-05-16 09:20:58,260 - INFO - Elemento clickado con 'xpath' = '//a[contains(text(), 'Ficheros')]'.
+2025-05-16 09:20:58,903 - INFO - Elemento clickado con 'xpath' = '//a[contains(text(), 'Entidades medioambientales')]'.
+2025-05-16 09:20:58,952 - INFO - Elemento clickado con 'css selector' = '.icon-ellipsis-vertical'.
+2025-05-16 09:20:59,005 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-05-16 09:21:01,311 - INFO - Elemento clickado con 'css selector' = '.navbar.superMenu'.
+2025-05-16 09:21:01,311 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Entidades medioambientales (1).xlsx

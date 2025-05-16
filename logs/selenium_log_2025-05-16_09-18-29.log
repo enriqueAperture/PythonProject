@@ -1,0 +1,9 @@
+2025-05-16 09:18:31,508 - INFO - Inicializando navegador...
+2025-05-16 09:18:32,170 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-05-16 09:18:32,246 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-05-16 09:18:32,305 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-05-16 09:18:32,349 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-05-16 09:18:32,388 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-05-16 09:18:32,438 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-05-16 09:18:37,494 - INFO - Elemento clickado con 'xpath' = '//a[contains(text(), 'Ficheros')]'.
+2025-05-16 09:18:42,646 - ERROR - Timeout al esperar el elemento con 'xpath' = '//a[contains(text(), 'Entidades medioambientales')]'
