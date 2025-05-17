@@ -1,0 +1,8 @@
+A lo largo de esta semana Alex y yo hemos desarrollado y probado:
+    - excelFunctions.py
+    - funcionesNubelus.py
+    - loggerConfig.py
+    - mainEmpresa.py
+    - mainPopUpAutorizacion.py
+    - webConfiguration.py
+    - webFunctions.py
