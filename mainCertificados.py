@@ -7,9 +7,9 @@ import logging
 import webConfiguration
 import webFunctions
 
-WEB_MITECO = "https://sede.miteco.gob.es/portal/site/seMITECO/login"
+WEB_MITECO = "https://sede.miteco.gob.es/portal/site/seMITECO/login?urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2JmlkZW50aWZpY2Fkb3JfcGFzbz1QUkVJTklDSU8mc3ViX29yZ2Fubz0xMSZwcmV2aW9fbG9naW49MQ=="
 WEB_GOOGLE = "https://google.com"
-NOMBRE_CERT = "RICARDO ESCUDE"
+NOMBRE_CERT = "FRANCISCO JAV"
 
 driver = webConfiguration.configure()
 
