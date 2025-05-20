@@ -1,0 +1,7 @@
+2025-05-20 08:14:05,955 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-05-20 08:14:05,956 - INFO - Using writeable comtypes cache directory: 'C:\Users\Usuario\AppData\Local\Programs\Python\Python313\Lib\site-packages\comtypes\gen'
+2025-05-20 08:14:08,115 - INFO - Inicializando navegador...
+2025-05-20 08:14:09,767 - INFO - Inicializando navegador...
+2025-05-20 08:14:10,148 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-20 08:14:10,229 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B43693274'
+2025-05-20 08:14:10,406 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.

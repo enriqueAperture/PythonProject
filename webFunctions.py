@@ -219,6 +219,26 @@ def clickar_boton_por_clase(driver: webdriver.Chrome, clase: str, timeout: int =
     selector = f".{clase}"
     clickar_elemento(driver, By.CSS_SELECTOR, selector, timeout)
 
+def abrir_link_por_boton_id(driver: webdriver.Chrome, id_boton: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Hace clic en un botón que abre una nueva ventana o pestaña.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        boton (str): Texto del botón.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+    
+    Ejemplo:
+        abrir_ventana_por_boton(driver, "Abrir ventana")
+    """
+    # Esperar a que el botón esté visible
+    #esperar_elemento_por_id(driver, id_boton, timeout)
+    # Abre el enlace que contiene el botón
+    elemento = driver.find_element(By.ID, id_boton)
+    enlace_boton = elemento.get_attribute("href")
+    abrir_web(driver, enlace_boton)
+    logging.info(f"Enlace abierto por el botón: {id_boton}")
+
 def abrir_nueva_pestana(driver: webdriver.Chrome, url: str) -> bool:
     """
     Abre una nueva pestaña con la URL especificada y cambia el foco a ella.
