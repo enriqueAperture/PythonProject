@@ -33,6 +33,7 @@ import os
 import time
 import pandas
 import logging
+import json
 import re
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -353,4 +354,87 @@ def añadirCentros(driver: webdriver.Chrome, centro_añadir: pandas.DataFrame) -
             time.sleep(1)
         except Exception as error:
             logging.error(f"Error al añadir la empresa {centro_añadir.iloc[0]['nombre_recogida']}: {error}")
-        
+
+
+def guardar_datos_centro_json_Castilla(ruta_excel):
+    """
+    Lee un archivo Excel (.xls) con los datos de un centro de Castilla-La Mancha, convierte el archivo a formato .xlsx,
+    extrae los datos relevantes de la segunda fila y los devuelve en formato JSON.
+
+    Args:
+        ruta_excel (str): Ruta al archivo Excel (.xls) descargado.
+
+    Returns:
+        str: Cadena JSON con los datos extraídos del centro, incluyendo domicilio, NIMA, nombre, provincia,
+             localidad, teléfono y email.
+
+    El archivo .xlsx generado se guarda en la misma carpeta que el archivo original.
+    """
+    # Lee el archivo .xls
+    datos_castilla = pandas.read_excel(ruta_excel, header=1)
+    # Convierte y guarda como .xlsx en la misma carpeta
+    ruta_xlsx = ruta_excel.replace('.xls', '.xlsx')
+    datos_castilla.to_excel(ruta_xlsx, index=False)
+    # Toma la primera fila de datos
+    fila = datos_castilla.iloc[1]
+    datos = {
+        "DOMICILIO": fila.get('DOMICILIO', ''),
+        "NIMA": int(fila.get('NIMA ', 0)),
+        "nombre_EMA": fila.get('NOMBRE', ''),
+        "provincia_EMA": fila.get('PROVINCIA', ''),
+        "localidad_EMA": fila.get('LOCALIDAD', ''),
+        "telefono_EMA": int(fila.get('TELÉFONO', 0)),
+        "email_EMA": fila.get('E-MAIL', '')
+    }
+    datos_json = json.dumps(datos, ensure_ascii=False, indent=4)
+    return datos_json
+
+def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
+    """
+    Espera a que se descargue un archivo con la extensión indicada en la carpeta de descargas
+    y llama a guardar_datos_centro_json_Castilla cuando esté disponible.
+    Después borra el archivo descargado y el .xlsx generado.
+    """
+    carpeta_descargas = os.path.join(os.path.expanduser("~"), "Downloads")
+    tiempo_inicio = time.time()
+    archivo_final = None
+
+    while time.time() - tiempo_inicio < timeout:
+        archivos = glob.glob(os.path.join(carpeta_descargas, f"*{extension}"))
+        finalizados = [f for f in archivos if not f.endswith('.crdownload')]
+        if finalizados:
+            archivo_final = max(finalizados, key=os.path.getmtime)
+            size = -1
+            while True:
+                new_size = os.path.getsize(archivo_final)
+                if new_size == size:
+                    break
+                size = new_size
+                time.sleep(1)
+            break
+        time.sleep(1)
+
+    if not archivo_final:
+        print("No se descargó ningún archivo en el tiempo esperado.")
+        return None
+
+    print(f"Archivo descargado: {archivo_final}")
+    datos_json = guardar_datos_centro_json_Castilla(archivo_final)
+
+    # Borrar el archivo .xls
+    try:
+        os.remove(archivo_final)
+        print(f"Archivo eliminado: {archivo_final}")
+    except Exception as e:
+        print(f"No se pudo eliminar el archivo: {archivo_final}. Error: {e}")
+
+    # Borrar el archivo .xlsx generado
+    archivo_xlsx = archivo_final.replace('.xls', '.xlsx')
+    if os.path.exists(archivo_xlsx):
+        try:
+            os.remove(archivo_xlsx)
+            print(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            print(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+
+    return datos_json
