@@ -607,24 +607,59 @@ def aceptar_pop_up(popup_div: webdriver.Chrome, boton: str) -> None:
     clickar_boton_por_clase(popup_div, boton)
 
 def abrir_link_por_boton_id(driver: webdriver.Chrome, id_boton: str, timeout: int = DEFAULT_TIMEOUT) -> None:
-
     """
-    Hace clic en un botón que abre una nueva ventana o pestaña.
-    
+    Hace clic en un botón identificado por su ID y abre el enlace asociado en la misma pestaña.
+
+    Utiliza la función esperar_elemento_por_id para esperar a que el botón esté visible,
+    obtiene el atributo 'href' del botón y navega a esa URL usando abrir_web.
+
     Args:
         driver (webdriver.Chrome): Instancia del navegador.
-        boton (str): Texto del botón.
+        id_boton (str): ID del botón que contiene el enlace.
         timeout (int, optional): Tiempo máximo de espera en segundos.
 
     Ejemplo:
-        abrir_ventana_por_boton(driver, "Abrir ventana")
+        abrir_link_por_boton_id(driver, "btnAbrirEnlace")
     """
-
-    # Esperar a que el botón esté visible
-    #esperar_elemento_por_id(driver, id_boton, timeout)
-    # Abre el enlace que contiene el botón
-
+    esperar_elemento_por_id(driver, id_boton, timeout)
     elemento = driver.find_element(By.ID, id_boton)
-    enlace_boton = elemento.get_attribute("href")
-    abrir_web(driver, enlace_boton)
-    logging.info(f"Enlace abierto por el botón: {id_boton}")
+    enlace = elemento.get_attribute("href")
+    if not enlace:
+        logging.error(f"El botón con ID '{id_boton}' no contiene un atributo 'href'.")
+        raise ValueError(f"El botón con ID '{id_boton}' no contiene un enlace.")
+    abrir_web(driver, enlace)
+    logging.info(f"Enlace '{enlace}' abierto por el botón con ID '{id_boton}'.")
+
+def obtener_texto_elemento_por_id(driver: webdriver.Chrome, elemento_id: str, timeout: int = DEFAULT_TIMEOUT) -> str:
+    """
+    Obtiene el texto de un elemento <span> dentro de un elemento identificado por su ID, dentro de un iframe.
+
+    Cambia al primer iframe de la página, espera a que el elemento esté presente y obtiene su texto.
+    Luego vuelve al contexto principal.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        elemento_id (str): ID del elemento contenedor.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        str: Texto contenido en el <span> dentro del elemento especificado.
+
+    Raises:
+        TimeoutException: Si el elemento no se encuentra en el tiempo especificado.
+        NoSuchElementException: Si el iframe o el elemento no existen.
+
+    Ejemplo:
+        texto = obtener_texto_elemento_por_id(driver, "miElemento")
+    """
+    try:
+        iframe = driver.find_element(By.TAG_NAME, "iframe")
+        driver.switch_to.frame(iframe)
+        xpath = f"//*[@id='{elemento_id}']//span"
+        esperar_elemento(driver, By.XPATH, xpath, timeout)
+        elemento = driver.find_element(By.XPATH, xpath)
+        texto = elemento.text
+        logging.info(f"Texto obtenido del elemento con ID '{elemento_id}': {texto}")
+        return texto
+    finally:
+        driver.switch_to.default_content()

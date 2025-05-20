@@ -1,9 +1,7 @@
-import shutil
 import time
 
 from selenium.webdriver.common.by import By
 
-import certHandler
 import loggerConfig
 import logging
 import webConfiguration
