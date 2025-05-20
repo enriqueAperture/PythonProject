@@ -34,7 +34,7 @@ from selenium.webdriver.chrome.options import Options
 #DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
 # Ruta del archivo Excel recogidas
 #EXCEL_NIF = r"C:\Users\Metalls1\Downloads\excel_recogidas.xls"
-ruta_informe = r"C:\Users\Usuario\Downloads\Resumen.xls"
+#ruta_informe = r"C:\Users\Usuario\Downloads\Resumen.xls"
 
 
 URL_NIMA_CASTILLA = "https://ireno.castillalamancha.es/forms/geref000.htm"
@@ -182,7 +182,4 @@ def busqueda_NIMA_Castilla(NIF):
     # Ahora solo espera la descarga y procesa el archivo
     datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
     print('Datos extraídos del Excel:')
-    print(datos_json)
     return datos_json
-
-    time.sleep(3)

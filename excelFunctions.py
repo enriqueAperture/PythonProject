@@ -357,7 +357,20 @@ def añadirCentros(driver: webdriver.Chrome, centro_añadir: pandas.DataFrame) -
             logging.error(f"Error al añadir la empresa {centro_añadir.iloc[0]['nombre_recogida']}: {error}")
 
 
-def guardar_datos_centro_json_Castilla(ruta_excel):    
+def guardar_datos_centro_json_Castilla(ruta_excel):
+    """
+    Lee un archivo Excel (.xls) con los datos de un centro de Castilla-La Mancha, convierte el archivo a formato .xlsx,
+    extrae los datos relevantes de la segunda fila y los devuelve en formato JSON.
+
+    Args:
+        ruta_excel (str): Ruta al archivo Excel (.xls) descargado.
+
+    Returns:
+        str: Cadena JSON con los datos extraídos del centro, incluyendo domicilio, NIMA, nombre, provincia,
+             localidad, teléfono y email.
+
+    El archivo .xlsx generado se guarda en la misma carpeta que el archivo original.
+    """
     # Lee el archivo .xls
     datos_castilla = pandas.read_excel(ruta_excel, header=1)
     # Convierte y guarda como .xlsx en la misma carpeta
@@ -408,7 +421,6 @@ def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
 
     print(f"Archivo descargado: {archivo_final}")
     datos_json = guardar_datos_centro_json_Castilla(archivo_final)
-    print(datos_json)
 
     # Borrar el archivo .xls
     try:

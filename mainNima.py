@@ -8,4 +8,6 @@ NIF_MADRID = "B88218938"
 
 #nimaFunctions.busqueda_NIMA_Valencia(NIF_PRUEBA)
 #nimaFunctions.busqueda_NIMA_Madrid(NIF_MADRID)
-#nimaFunctions.busqueda_NIMA_Castilla(NIF_PRUEBA)
+datos_json = nimaFunctions.busqueda_NIMA_Castilla(NIF_PRUEBA)
+
+print(datos_json)
