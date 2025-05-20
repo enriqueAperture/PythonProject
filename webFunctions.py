@@ -150,6 +150,18 @@ def clickar_span_por_texto(driver: webdriver.Chrome, texto: str, timeout: int = 
     xpath = f"//span[contains(text(),'{texto}')]"
     clickar_elemento(driver, By.XPATH, xpath, timeout)
 
+def clickar_input_por_texto(driver: webdriver.Chrome, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Hace clic en un elemento <input> que contiene el texto especificado.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        texto (str): Texto contenido en el <input>.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+    """
+    xpath = f"//input[contains(text(),'{texto}')]"
+    clickar_elemento(driver, By.XPATH, xpath, timeout)
+
 def clickar_boton_por_texto(driver: webdriver.Chrome, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
     Hace clic en un botón (<button>) que contiene el texto especificado.
@@ -437,6 +449,27 @@ def escribir_en_elemento_por_class(driver: webdriver.Chrome, class_name: str, te
         logging.error(f"No se pudo escribir en el elemento con class '{class_name}': {e}")
         raise
 
+def escribir_en_elemento_por_label(driver: webdriver.Chrome, input: str, texto: str) -> None:
+    """
+    Escribe en un campo de entrada localizado por el texto de su etiqueta <label>.
+
+    Busca un <input> que esté dentro de un <label> cuyo <span> contenga el texto especificado.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        input (str): Texto contenido en el <span> de la etiqueta <label>.
+        texto (str): Texto a escribir en el campo de entrada.
+
+    Ejemplo:
+        escribir_en_elemento_por_label(driver, "Fecha de nacimiento", "01/01/2000")
+    """
+    try:
+        xpath = f"//label[span[contains(text(), '{input}')]]//input"
+        escribir_en_elemento(driver, By.XPATH, xpath, texto)
+    except Exception as e:
+        logging.error(f"No se pudo escribir en el input asociado al label '{input}': {e}")
+        raise
+
 def aceptarAlerta(driver: webdriver.Chrome) -> None:
     """
     Espera a que aparezca una alerta en el navegador y la acepta.
@@ -572,3 +605,26 @@ def aceptar_pop_up(popup_div: webdriver.Chrome, boton: str) -> None:
         aceptar_pop_up(popup_div, "miBoton.aceptar")
     """
     clickar_boton_por_clase(popup_div, boton)
+
+def abrir_link_por_boton_id(driver: webdriver.Chrome, id_boton: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+
+    """
+    Hace clic en un botón que abre una nueva ventana o pestaña.
+    
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        boton (str): Texto del botón.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Ejemplo:
+        abrir_ventana_por_boton(driver, "Abrir ventana")
+    """
+
+    # Esperar a que el botón esté visible
+    #esperar_elemento_por_id(driver, id_boton, timeout)
+    # Abre el enlace que contiene el botón
+
+    elemento = driver.find_element(By.ID, id_boton)
+    enlace_boton = elemento.get_attribute("href")
+    abrir_web(driver, enlace_boton)
+    logging.info(f"Enlace abierto por el botón: {id_boton}")

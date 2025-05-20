@@ -1,0 +1,215 @@
+<ns2:e3l xmlns:ns2="e3l://eterproject.org/3.0/e3l" xmlns:ns3="e3l://eterproject.org/3.0/documentation" schemaVersion="3.0">
+<header xmlns="">
+<test>N</test>
+<prepared>2025-05-20T08:42:31</prepared>
+<sender>
+<NIF>B19811983</NIF>
+<center centerCode="4600048114" centerDenomination="ECO TITAN S.L."/>
+</sender>
+</header>
+<waste xmlns="">
+<wasteNT NTCode="NT30460004811420250009388" NTSendtoDestinationAuthority="S" NTDate="2025-05-20" NTStartDate="2025-05-31" NTFrequency="" NTEndDate="2028-05-20" NTRegional="S" NTYear="2025">
+<NTRepresentationData>
+<representativeEntity>
+<nationalId>19848505B</nationalId>
+</representativeEntity>
+<representedEntity>
+<nationalId>B19811983</nationalId>
+</representedEntity>
+<representedCenter>4600048114</representedCenter>
+</NTRepresentationData>
+<NTTransferOperatorData>
+<entityId>
+<nationalId>B19811983</nationalId>
+</entityId>
+<entityFJ entityFJCode="J"/>
+<entityName>
+<reason>
+<reasonName>ECO TITAN S.L.</reasonName>
+<reasonAssociation associationCode="18"/>
+</reason>
+</entityName>
+<entityCenter>
+<centerID centerCode="4600048114" centerDenomination="ECO TITAN S.L."/>
+<centerEconomicActivity>-</centerEconomicActivity>
+<centerAddress>
+<spanishAddress>
+<vial vialCode="999"/>
+<address>C/ PINTOR BENLLIURE, 6-C</address>
+<CP>46111</CP>
+<municipality municipalityCode="462166"/>
+<province provinceCode="46"/>
+<CA CACode="10"/>
+</spanishAddress>
+</centerAddress>
+<centerContact>
+<phone>961501110</phone>
+<mail>proveedores@metallsdelcampslu.es</mail>
+</centerContact>
+<centerResponsiblePerson>
+<personSex sexCode="9" sexDescription=""/>
+<personName>
+<name>-</name>
+<surname1>-</surname1>
+</personName>
+</centerResponsiblePerson>
+<wasteCenterAuthorization>
+<authorizationId>
+<authorizationIdFree>87/A01/CV</authorizationIdFree>
+</authorizationId>
+<authorizationCode>A01</authorizationCode>
+</wasteCenterAuthorization>
+</entityCenter>
+<wasteTransferOperatorType operatorTypeCode="A01"/>
+</NTTransferOperatorData>
+<NTProducerData>
+<entityId>
+<nationalId>03868495X</nationalId>
+</entityId>
+<entityFJ entityFJCode="F"/>
+<entityName>
+<fullName>
+<name>FRANCISCO</name>
+<surname1>JAVIER DE LA CRUZ TENORIO</surname1>
+</fullName>
+</entityName>
+<entityCenter>
+<centerID centerCode="4520410108" centerDenomination="FRANCISCO JAVIER DE LA CRUZ TENORIO"/>
+<centerEconomicActivity>-</centerEconomicActivity>
+<centerAddress>
+<spanishAddress>
+<vial vialCode="999"/>
+<address>CTRA. DE TORRIJOS, 24</address>
+<CP>45510</CP>
+<municipality municipalityCode="450664"/>
+<province provinceCode="45"/>
+<CA CACode="08"/>
+</spanishAddress>
+</centerAddress>
+<centerContact>
+<phone>661637757</phone>
+<mail>TALLERESJDELACRUZ@YAHOO.ES</mail>
+</centerContact>
+<centerResponsiblePerson>
+<personSex sexCode="9"/>
+<personName>
+<name>FRANCISCO JAVIER DE LA CRUZ TENO</name>
+<surname1>-</surname1>
+</personName>
+</centerResponsiblePerson>
+<wasteCenterAuthorization>
+<authorizationId>
+<authorizationIdFree>CM/5TO149T</authorizationIdFree>
+</authorizationId>
+<authorizationCode>P02</authorizationCode>
+</wasteCenterAuthorization>
+</entityCenter>
+<wasteProducerType producerTypeCode="P02"/>
+</NTProducerData>
+<NTAdresseeData>
+<entityId>
+<nationalId>B43693274</nationalId>
+</entityId>
+<entityFJ entityFJCode="J"/>
+<entityName>
+<reason>
+<reasonName>METALLS DEL CAMP, S.L.</reasonName>
+<reasonAssociation associationCode="18"/>
+</reason>
+</entityName>
+<entityCenter>
+<centerID centerCode="4600014035" centerDenomination="METALLS DEL CAMP ( SERRA D'ESPADA )"/>
+<centerEconomicActivity>-</centerEconomicActivity>
+<centerAddress>
+<spanishAddress>
+<vial vialCode="999"/>
+<address>POLÍGONO INDUSTRIAL LA LLOMA, C/ SERRA D' ESPADA 6 8</address>
+<CP>46960</CP>
+<municipality municipalityCode="460214"/>
+<province provinceCode="46"/>
+<CA CACode="10"/>
+</spanishAddress>
+</centerAddress>
+<centerContact>
+<phone>961501110</phone>
+<mail>proveedores@metallsdelcampslu.es</mail>
+</centerContact>
+<centerResponsiblePerson>
+<personSex sexCode="9"/>
+<personName>
+<name>-</name>
+<surname1>-</surname1>
+</personName>
+</centerResponsiblePerson>
+<wasteCenterAuthorization>
+<authorizationId>
+<authorizationIdFree>157/G02/CV</authorizationIdFree>
+</authorizationId>
+<authorizationCode>G02</authorizationCode>
+</wasteCenterAuthorization>
+</entityCenter>
+<wasteManagerType managerTypeCode="G02"/>
+</NTAdresseeData>
+<NTTransportedResidues>
+<NTResidueIdentification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns5="e3l://eterproject.org/3.0/wasteSupport" xsi:type="ns5:dangerousResidueType" LERCode="130703">
+<residueDescription>HIDROCARBUROS CON AGUA*</residueDescription>
+<residueTables xsi:type="ns5:tablesDangerousType">
+<table2>R13</table2>
+<table5>HP5</table5>
+<table5>HP14</table5>
+</residueTables>
+</NTResidueIdentification>
+<NTOtherResidueData>
+<NTResidueQuantity>2000</NTResidueQuantity>
+</NTOtherResidueData>
+</NTTransportedResidues>
+<NTFinalAdresseeData>
+<AdresseeData>
+<entityId>
+<nationalId>B98970569</nationalId>
+</entityId>
+<entityFJ entityFJCode="J"/>
+<entityName>
+<reason>
+<reasonName>EUROPEA DEL TRATAMIENTO DE RESIDUOS COSTA AZAHAR 18, S.L.</reasonName>
+<reasonAssociation associationCode="18"/>
+</reason>
+</entityName>
+<entityCenter>
+<centerID centerCode="1200004209" centerDenomination="EUROPEA DEL TRATAMIENTO DE RESIDUOS COSTA AZAHAR 18, S.L."/>
+<centerEconomicActivity>-</centerEconomicActivity>
+<centerAddress>
+<spanishAddress>
+<vial vialCode="999"/>
+<address>P. IND. BELCAIRE C, FASE II, 151</address>
+<CP>12600</CP>
+<municipality municipalityCode="121264"/>
+<province provinceCode="12"/>
+<CA CACode="10"/>
+</spanishAddress>
+</centerAddress>
+<centerContact>
+<phone>664409061</phone>
+<mail>medioambiente@europearesiduos.com</mail>
+</centerContact>
+<centerResponsiblePerson>
+<personSex sexCode="9"/>
+<personName>
+<name>-</name>
+<surname1>-</surname1>
+</personName>
+</centerResponsiblePerson>
+<wasteCenterAuthorization>
+<authorizationId>
+<authorizationIdFree>26/G01/CV</authorizationIdFree>
+</authorizationId>
+<authorizationCode>G01</authorizationCode>
+</wasteCenterAuthorization>
+</entityCenter>
+<wasteManagerType managerTypeCode="G01"/>
+</AdresseeData>
+<Operation>R03</Operation>
+</NTFinalAdresseeData>
+</wasteNT>
+</waste>
+</ns2:e3l>
