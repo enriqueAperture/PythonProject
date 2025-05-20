@@ -1,0 +1,5 @@
+2025-05-20 11:25:15,882 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-05-20 11:25:15,883 - INFO - Using writeable comtypes cache directory: 'C:\Users\Usuario\AppData\Local\Programs\Python\Python313\Lib\site-packages\comtypes\gen'
+2025-05-20 11:25:18,112 - INFO - Inicializando navegador...
+2025-05-20 11:25:18,318 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-20 11:25:18,392 - INFO - Se escribió texto en el elemento localizado por id='nif': 'B43693274'
