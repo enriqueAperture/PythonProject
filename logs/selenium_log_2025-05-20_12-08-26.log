@@ -1,0 +1,7 @@
+2025-05-20 12:08:26,459 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-05-20 12:08:26,460 - INFO - Using writeable comtypes cache directory: 'C:\Users\Usuario\AppData\Local\Programs\Python\Python313\Lib\site-packages\comtypes\gen'
+2025-05-20 12:08:28,734 - INFO - Inicializando navegador...
+2025-05-20 12:08:28,941 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-20 12:08:29,516 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-20 12:08:30,097 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'B43693274'
+2025-05-20 12:08:30,149 - INFO - Elemento clickado con 'id' = 'boton_buscar'.

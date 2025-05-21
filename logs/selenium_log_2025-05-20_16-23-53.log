@@ -1,0 +1,5 @@
+2025-05-20 16:23:55,727 - INFO - Inicializando navegador...
+2025-05-20 16:23:55,975 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-20 16:23:56,563 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-20 16:23:57,163 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'B43693274'
+2025-05-20 16:23:57,217 - INFO - Elemento clickado con 'id' = 'boton_buscar'.

@@ -32,13 +32,15 @@ import glob
 import os
 import time
 import pandas
+import json
 import logging
 import json
 import re
+import webFunctions
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import webFunctions
+
 
 # Directorio donde se espera la descarga de archivos Excel
 DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
