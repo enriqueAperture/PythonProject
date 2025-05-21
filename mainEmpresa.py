@@ -17,19 +17,12 @@ Ejemplo de uso:
     Ejecuta este script para automatizar la adición de empresas en Nubelus.
 """
 
-import os
 import time
-import pandas
-import uiautomation as auto
-import certHandler
 import excelFunctions
 import loggerConfig
 import logging
 import webConfiguration
 import webFunctions
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 import funcionesNubelus  # Módulo específico para la aplicación Nubelus
 
 # URLs de la aplicación Nubelus

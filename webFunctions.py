@@ -150,6 +150,18 @@ def clickar_span_por_texto(driver: webdriver.Chrome, texto: str, timeout: int = 
     xpath = f"//span[contains(text(),'{texto}')]"
     clickar_elemento(driver, By.XPATH, xpath, timeout)
 
+def clickar_input_por_texto(driver: webdriver.Chrome, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Hace clic en un elemento <input> que contiene el texto especificado.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        texto (str): Texto contenido en el <input>.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+    """
+    xpath = f"//input[contains(text(),'{texto}')]"
+    clickar_elemento(driver, By.XPATH, xpath, timeout)
+
 def clickar_boton_por_texto(driver: webdriver.Chrome, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
     Hace clic en un botón (<button>) que contiene el texto especificado.
@@ -457,6 +469,27 @@ def escribir_en_elemento_por_class(driver: webdriver.Chrome, class_name: str, te
         logging.error(f"No se pudo escribir en el elemento con class '{class_name}': {e}")
         raise
 
+def escribir_en_elemento_por_label(driver: webdriver.Chrome, input: str, texto: str) -> None:
+    """
+    Escribe en un campo de entrada localizado por el texto de su etiqueta <label>.
+
+    Busca un <input> que esté dentro de un <label> cuyo <span> contenga el texto especificado.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        input (str): Texto contenido en el <span> de la etiqueta <label>.
+        texto (str): Texto a escribir en el campo de entrada.
+
+    Ejemplo:
+        escribir_en_elemento_por_label(driver, "Fecha de nacimiento", "01/01/2000")
+    """
+    try:
+        xpath = f"//label[span[contains(text(), '{input}')]]//input"
+        escribir_en_elemento(driver, By.XPATH, xpath, texto)
+    except Exception as e:
+        logging.error(f"No se pudo escribir en el input asociado al label '{input}': {e}")
+        raise
+
 def aceptarAlerta(driver: webdriver.Chrome) -> None:
     """
     Espera a que aparezca una alerta en el navegador y la acepta.
@@ -592,3 +625,61 @@ def aceptar_pop_up(popup_div: webdriver.Chrome, boton: str) -> None:
         aceptar_pop_up(popup_div, "miBoton.aceptar")
     """
     clickar_boton_por_clase(popup_div, boton)
+
+def abrir_link_por_boton_id(driver: webdriver.Chrome, id_boton: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Hace clic en un botón identificado por su ID y abre el enlace asociado en la misma pestaña.
+
+    Utiliza la función esperar_elemento_por_id para esperar a que el botón esté visible,
+    obtiene el atributo 'href' del botón y navega a esa URL usando abrir_web.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        id_boton (str): ID del botón que contiene el enlace.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Ejemplo:
+        abrir_link_por_boton_id(driver, "btnAbrirEnlace")
+    """
+    esperar_elemento_por_id(driver, id_boton, timeout)
+    elemento = driver.find_element(By.ID, id_boton)
+    enlace = elemento.get_attribute("href")
+    if not enlace:
+        logging.error(f"El botón con ID '{id_boton}' no contiene un atributo 'href'.")
+        raise ValueError(f"El botón con ID '{id_boton}' no contiene un enlace.")
+    abrir_web(driver, enlace)
+    logging.info(f"Enlace '{enlace}' abierto por el botón con ID '{id_boton}'.")
+
+def obtener_texto_elemento_por_id(driver: webdriver.Chrome, elemento_id: str, timeout: int = DEFAULT_TIMEOUT) -> str:
+    """
+    Obtiene el texto de un elemento <span> dentro de un elemento identificado por su ID, dentro de un iframe.
+
+    Cambia al primer iframe de la página, espera a que el elemento esté presente y obtiene su texto.
+    Luego vuelve al contexto principal.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        elemento_id (str): ID del elemento contenedor.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        str: Texto contenido en el <span> dentro del elemento especificado.
+
+    Raises:
+        TimeoutException: Si el elemento no se encuentra en el tiempo especificado.
+        NoSuchElementException: Si el iframe o el elemento no existen.
+
+    Ejemplo:
+        texto = obtener_texto_elemento_por_id(driver, "miElemento")
+    """
+    try:
+        iframe = driver.find_element(By.TAG_NAME, "iframe")
+        driver.switch_to.frame(iframe)
+        xpath = f"//*[@id='{elemento_id}']//span"
+        esperar_elemento(driver, By.XPATH, xpath, timeout)
+        elemento = driver.find_element(By.XPATH, xpath)
+        texto = elemento.text
+        logging.info(f"Texto obtenido del elemento con ID '{elemento_id}': {texto}")
+        return texto
+    finally:
+        driver.switch_to.default_content()
