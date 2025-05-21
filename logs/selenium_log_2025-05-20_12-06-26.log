@@ -1,8 +1,0 @@
-2025-05-20 12:06:26,095 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
-2025-05-20 12:06:26,096 - INFO - Using writeable comtypes cache directory: 'C:\Users\Usuario\AppData\Local\Programs\Python\Python313\Lib\site-packages\comtypes\gen'
-2025-05-20 12:06:28,268 - INFO - Inicializando navegador...
-2025-05-20 12:06:28,541 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
-2025-05-20 12:06:28,625 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
-2025-05-20 12:06:29,202 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'B43693274'
-2025-05-20 12:06:29,252 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
-2025-05-20 12:06:42,997 - ERROR - Timeout al esperar el elemento con 'id' = 'imagen_generarPDF_todos'

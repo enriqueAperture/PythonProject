@@ -1,0 +1,4 @@
+2025-05-21 12:29:03,544 - INFO - Inicializando navegador...
+2025-05-21 12:29:03,946 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-21 12:29:04,020 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'E45879897'
+2025-05-21 12:29:04,082 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.

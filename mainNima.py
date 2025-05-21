@@ -7,14 +7,14 @@ NIF_PRUEBA = "B43693274" # Es de Toledo
 NIF_MADRID = "B88218938" # Es de Madrid
 NIF_VALENCIA = "B98969264" # Es de Valencia
 
-datos_json = nimaFunctions.busqueda_NIMA_Valencia(NIF_VALENCIA)
-#datos_json = nimaFunctions.busqueda_NIMA_Madrid(NIF_MADRID)
-#datos_json = nimaFunctions.busqueda_NIMA_Castilla(NIF_PRUEBA)
+datos_json = nimaFunctions.busqueda_NIMA_Valencia("B98670615")
+#datos_json = nimaFunctions.busqueda_NIMA_Madrid("B87148078")
+#datos_json = nimaFunctions.busqueda_NIMA_Castilla("E45879897")
 
 print(datos_json)
 
 
-# #PRUEBAS PARA UNA LISTA DE NIFS
+# ##PRUEBAS PARA UNA LISTA DE NIFS
 # # Leer la columna 'cif_recogida' del Excel
 # ruta_excel = r"C:\Users\Usuario\Desktop\PYTHON\EXCELS\excel_recogidas.xls"
 # df = pd.read_excel(ruta_excel)

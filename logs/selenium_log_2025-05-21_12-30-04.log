@@ -1,0 +1,6 @@
+2025-05-21 12:30:06,615 - INFO - Inicializando navegador...
+2025-05-21 12:30:07,127 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-21 12:30:07,199 - INFO - Se escribió texto en el elemento localizado por id='nif': 'B87148078'
+2025-05-21 12:30:07,960 - INFO - Elemento clickado con 'xpath' = '//a[@onclick="buscar('form');"]'.
+2025-05-21 12:30:08,045 - INFO - Elemento clickado con 'css selector' = 'input[value='Consultar']'.
+2025-05-21 12:30:08,311 - INFO - Datos de la empresa guardados
