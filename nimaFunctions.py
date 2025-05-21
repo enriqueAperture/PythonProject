@@ -27,7 +27,77 @@ URL_NIMA_CASTILLA = "https://ireno.castillalamancha.es/forms/geref000.htm"
 URL_NIMA_VALENCIA = "https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx"
 URL_NIMA_MADRID = "https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm"
 
+URL_EINFORMA = "https://www.einforma.com/"
+
 driver = webConfiguration.configure()
+
+def obtener_comunidad_por_nif_empresas(nif) -> str:
+    """
+    Dado un NIF, devuelve la comunidad autónoma correspondiente según el código de provincia.
+
+    Args:
+        nif (str): NIF o CIF de la empresa.
+
+    Returns:
+        str: Nombre de la comunidad autónoma, o mensaje de error si no es válida.
+    """
+    codigos_provincias = {
+        # Castilla
+        "02": "Castilla",    # Albacete
+        "16": "Castilla",    # Cuenca
+        "19": "Castilla",    # Guadalajara
+        "45": "Castilla",    # Toledo
+        # Valencia
+        "03": "Valencia",    # Alicante
+        "12": "Valencia",    # Castellón
+        "43": "Valencia",    # pone que es de Tarragona pero fuck it
+        "46": "Valencia",    # Valencia
+        "53": "Valencia",
+        "54": "Valencia",
+        "96": "Valencia",
+        "97": "Valencia",
+        "98": "Valencia",
+        # Madrid
+        "28": "Madrid",      # Madrid
+        "78": "Madrid",
+        "79": "Madrid",
+        "80": "Madrid",
+        "81": "Madrid",
+        "82": "Madrid",
+        "83": "Madrid",
+        "84": "Madrid",
+        "85": "Madrid",
+        "86": "Madrid",
+        "87": "Madrid",
+        "88": "Madrid",
+    }
+    # Extrae los dígitos del NIF y toma los dos primeros números
+    numeros = ''.join(filter(str.isdigit, nif))
+    codigo = numeros[:2] if len(numeros) >= 2 else None
+
+    return codigos_provincias.get(codigo, "Provincia no permitida o NIF no válido")
+
+def obtener_comunidad_por_nif_autonomos(nif) -> str:   #Esta funcion da la comunidad autónoma de un NIF de autonomo usando einforma.
+    print("Es autonomo")    # Cambiarlo cuando tengamos la funcion de einforma
+def obtener_comunidad_por_nif(nif) -> str:
+    """
+    Devuelve la comunidad autónoma correspondiente según el tipo de NIF:
+    - Si el primer carácter es una letra, se asume empresa y llama a obtener_comunidad_por_nif_empresas.
+    - Si no, se asume autónomo y llama a obtener_comunidad_por_nif_autonomos.
+
+    Args:
+        nif (str): NIF o CIF.
+
+    Returns:
+        str: Nombre de la comunidad autónoma, o mensaje de error si no es válida.
+    """
+    if not nif:
+        return "NIF no válido"
+
+    if nif[0].isalpha():
+        return obtener_comunidad_por_nif_empresas(nif)
+    else:
+        return obtener_comunidad_por_nif_autonomos(nif)
 
 def extraer_datos_valencia(driver):
     """
@@ -71,13 +141,13 @@ def extraer_datos_valencia(driver):
         "codigo_residuo_2": codigo_residuo_2
     }
 
-def busqueda_NIMA_Valencia(NIF):
+def busqueda_NIMA_Valencia(nif):
     """
     Función para buscar los datos del NIF en la web de NIMA Valencia y devolver un JSON con los datos.
     """
     # Abrir Web y buscar NIF
     webFunctions.abrir_web(driver, URL_NIMA_VALENCIA)
-    webFunctions.escribir_en_elemento_por_id(driver, "ctl00_ContentPlaceHolder1_txtNIF", NIF)
+    webFunctions.escribir_en_elemento_por_id(driver, "ctl00_ContentPlaceHolder1_txtNIF", nif)
     webFunctions.clickar_boton_por_id(driver, "ctl00_ContentPlaceHolder1_btBuscar")
 
     # Abrir la ficha del gestor
@@ -126,12 +196,12 @@ def extraer_datos_madrid(driver):
         "centro": datos_centro
     }
 
-def busqueda_NIMA_Madrid(NIF):
+def busqueda_NIMA_Madrid(nif):
     """
     Función para buscar el NIF en la web de NIMA Madrid y devolver un JSON con los datos.
     """
     webFunctions.abrir_web(driver, URL_NIMA_MADRID)
-    webFunctions.escribir_en_elemento_por_id(driver, "nif", NIF)
+    webFunctions.escribir_en_elemento_por_id(driver, "nif", nif)
 
     # Buscar y hacer click en el enlace <a> con onclick="buscar('form');"
     webFunctions.clickar_enlace_por_onclick(driver, "buscar('form');")
@@ -191,3 +261,20 @@ def busqueda_NIMA_Castilla(NIF):
     datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
     logging.info('Datos extraídos del Excel:')
     return datos_json
+
+def busqueda_NIMA(NIF):
+    """
+    Función principal para buscar el NIF en la web de NIMA según la comunidad autónoma.
+    Detecta la comunidad usando obtener_comunidad_por_nif y llama a la función correspondiente.
+    Devuelve los datos en JSON.
+    """
+    comunidad = obtener_comunidad_por_nif(NIF)
+    if comunidad == "Valencia":
+        return busqueda_NIMA_Valencia(NIF)
+    elif comunidad == "Madrid":
+        return busqueda_NIMA_Madrid(NIF)
+    elif comunidad == "Castilla":
+        return busqueda_NIMA_Castilla(NIF)
+    else:
+        logging.error(f"Comunidad no válida o NIF no reconocido: {comunidad}")
+        return None
