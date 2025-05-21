@@ -219,6 +219,27 @@ def clickar_boton_por_link(driver: webdriver.Chrome, link: str, timeout: int = D
     xpath = f"//a[contains(text(), '{link}')]"
     clickar_elemento(driver, By.XPATH, xpath, timeout)
 
+def clickar_enlace_por_onclick(driver: webdriver.Chrome, onclick_value: str, timeout: int = DEFAULT_TIMEOUT) -> bool:
+    """
+    Hace clic en un enlace (<a>) que tenga el atributo onclick con el valor especificado.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        onclick_value (str): Valor exacto del atributo onclick.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        bool: True si se hizo click, False si no se encontró el enlace.
+    """
+    xpath = f"//a[@onclick=\"{onclick_value}\"]"
+    try:
+        clickar_elemento(driver, By.XPATH, xpath, timeout)
+        print('Click realizado en el enlace con onclick.')
+        return True
+    except Exception:
+        print('ERROR: El enlace con ese onclick NO está presente en la página.')
+        return False
+
 def clickar_boton_por_clase(driver: webdriver.Chrome, clase: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
     Hace clic en el primer elemento que tenga la clase CSS especificada.
@@ -230,6 +251,30 @@ def clickar_boton_por_clase(driver: webdriver.Chrome, clase: str, timeout: int =
     """
     selector = f".{clase}"
     clickar_elemento(driver, By.CSS_SELECTOR, selector, timeout)
+
+def clickar_imagen_generar_excel(driver, timeout=20):
+    """
+    Espera a que la imagen para generar el EXCEL esté presente y sea clickeable, y hace click en ella.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        timeout (int): Tiempo máximo de espera en segundos.
+
+    Returns:
+        bool: True si se hizo click, False si no se encontró la imagen.
+    """
+    import logging
+    try:
+        img_excel = WebDriverWait(driver, timeout).until(
+            EC.element_to_be_clickable((By.XPATH, "//img[@id='imagen_generarPDF_todos' and contains(@title, 'EXCEL')]"))
+        )
+        img_excel.click()
+        logging.info('Click realizado en la imagen para generar el EXCEL.')
+        logging.info('Esperando la descarga del EXCEL...')
+        return True
+    except Exception:
+        logging.error('ERROR: No se encontró la imagen para generar el EXCEL.')
+        return False
 
 def abrir_link_por_boton_id(driver: webdriver.Chrome, id_boton: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
@@ -244,7 +289,7 @@ def abrir_link_por_boton_id(driver: webdriver.Chrome, id_boton: str, timeout: in
         abrir_ventana_por_boton(driver, "Abrir ventana")
     """
     # Esperar a que el botón esté visible
-    #esperar_elemento_por_id(driver, id_boton, timeout)
+    esperar_elemento_por_id(driver, id_boton, timeout)
     # Abre el enlace que contiene el botón
     elemento = driver.find_element(By.ID, id_boton)
     enlace_boton = elemento.get_attribute("href")
@@ -683,3 +728,32 @@ def obtener_texto_elemento_por_id(driver: webdriver.Chrome, elemento_id: str, ti
         return texto
     finally:
         driver.switch_to.default_content()
+
+def leer_texto_por_campo(driver, campo, timeout=5):
+    """
+    Busca un <td> que contenga un <b> con el texto 'campo' y devuelve el texto que sigue a ese campo.
+    Si no lo encuentra, devuelve None.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        campo (str): Texto exacto del campo a buscar (incluyendo los dos puntos).
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        str: El texto encontrado después del campo, o None si no se encuentra.
+    """
+    try:
+        xpath = f"//td[b[normalize-space(text())='{campo}']]"
+        esperar_elemento(driver, By.XPATH, xpath, timeout)
+        td = driver.find_element(By.XPATH, xpath)
+        # Elimina el texto del campo y espacios al inicio
+        texto_completo = td.text
+        if texto_completo.startswith(campo):
+            valor = texto_completo[len(campo):].strip()
+        else:
+            valor = texto_completo.split(f"{campo}", 1)[-1].strip()
+        return valor if valor else None
+    except Exception as e:
+        logging.error(f"Error al leer el campo '{campo}': {e}")
+        return None
+    

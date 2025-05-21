@@ -1,94 +1,96 @@
 """
-Módulo: excelFunctions.py
+Módulo: nimaFunctions.py
 
-Este módulo contiene funciones para procesar información proveniente de archivos Excel y 
-automatizar la busqueda de centros en los buscadores NIMA de Valencia, Madrid y Castilla La Mancha.
+Este módulo proporciona funciones de alto nivel para automatizar la búsqueda y extracción de información
+de centros y gestores en los portales NIMA de Valencia, Madrid y Castilla-La Mancha mediante Selenium.
+Incluye utilidades para interactuar con los formularios web, descargar y procesar archivos Excel, y
+estructurar los datos extraídos en formato JSON.
 
 Funciones principales:
-    - _esperar_descarga(carpeta, extension=".xlsx", timeout=30):
-          Espera a que se complete la descarga de un archivo con la extensión indicada en la carpeta especificada con los datos de
-          los NIF a buscar.
+    - busqueda_NIMA_Valencia(NIF): Busca un NIF en el portal de Valencia y devuelve los datos relevantes en JSON.
+    - busqueda_NIMA_Madrid(NIF): Busca un NIF en el portal de Madrid y devuelve los datos relevantes en JSON.
+    - busqueda_NIMA_Castilla(NIF): Busca un NIF en el portal de Castilla-La Mancha, descarga el Excel y devuelve los datos en JSON.
 
+Dependencias:
+    - webFunctions: Funciones auxiliares para interactuar con elementos web mediante Selenium.
+    - webConfiguration: Configuración y creación del driver de Selenium.
+    - excelFunctions: Funciones para procesar y extraer datos de archivos Excel descargados.
 """
 
-import glob
-import os
-import time
 import json
-import pandas as pd
 import logging
-import re
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 import webFunctions
 import webConfiguration
 import excelFunctions
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-
-# Directorio donde se espera la descarga de archivos Excel
-#DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
-# Ruta del archivo Excel recogidas
-#EXCEL_NIF = r"C:\Users\Metalls1\Downloads\excel_recogidas.xls"
-#ruta_informe = r"C:\Users\Usuario\Downloads\Resumen.xls"
-
 
 URL_NIMA_CASTILLA = "https://ireno.castillalamancha.es/forms/geref000.htm"
 URL_NIMA_VALENCIA = "https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx"
 URL_NIMA_MADRID = "https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm"
 
-NIF_PRUEBA = "B43693274" # Es de Toledo
-NIF_MADRID = "B88218938" # Es de Madrid
+driver = webConfiguration.configure()
+
+def extraer_datos_valencia(driver):
+    """
+    Extrae los datos principales de la ficha de un centro en la web de NIMA Valencia.
+    Devuelve un diccionario con los datos relevantes.
+    """
+    # Datos de la empresa
+    nombre_empresa = webFunctions.obtener_texto_elemento_por_id(driver, "NOMBREEMPRESA1-0")
+    nif = webFunctions.obtener_texto_elemento_por_id(driver, "ENIF1-0")
+    direccion = webFunctions.obtener_texto_elemento_por_id(driver, "EDIRECCION1-0")
+    codigo_postal = webFunctions.obtener_texto_elemento_por_id(driver, "ECODIPOS1-0")
+    localidad_provincia_empresa = webFunctions.obtener_texto_elemento_por_id(driver, "Text8-0")
+    telefono = webFunctions.obtener_texto_elemento_por_id(driver, "ETELEFONO1-0")
+
+    # Datos del centro
+    nombre_centro = webFunctions.obtener_texto_elemento_por_id(driver, "NOMBRECENTRO1-0-0")
+    nima = webFunctions.obtener_texto_elemento_por_id(driver, "FCENCODCENTRO1-0-0")
+    direccion_centro = webFunctions.obtener_texto_elemento_por_id(driver, "FDIRECCION1-0-0")
+    localidad_provincia_centro = webFunctions.obtener_texto_elemento_por_id(driver, "Text7-0-0")
+    codigo_ine = webFunctions.obtener_texto_elemento_por_id(driver, "FCODINE1-0-0")
+    telefono_centro = webFunctions.obtener_texto_elemento_por_id(driver, "FTELEFONO1-0-0")
+
+    # Códigos de residuos
+    codigo_residuo_1 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-0").split()[0]
+    codigo_residuo_2 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-1").split()[0]
+
+    return {
+        "nombre_empresa": nombre_empresa,
+        "nif": nif,
+        "direccion": direccion,
+        "codigo_postal": codigo_postal,
+        "localidad_provincia_empresa": localidad_provincia_empresa,
+        "telefono": telefono,
+        "nombre_centro": nombre_centro,
+        "nima": nima,
+        "direccion_centro": direccion_centro,
+        "localidad_provincia_centro": localidad_provincia_centro,
+        "codigo_ine": codigo_ine,
+        "telefono_centro": telefono_centro,
+        "codigo_residuo_1": codigo_residuo_1,
+        "codigo_residuo_2": codigo_residuo_2
+    }
 
 def busqueda_NIMA_Valencia(NIF):
     """
-    Función para buscar el los datos del NIF en la web de NIMA Valencia y devolver un JSON con los datos.
+    Función para buscar los datos del NIF en la web de NIMA Valencia y devolver un JSON con los datos.
     """
-    driver = webConfiguration.configure()
-
-    # Abrir Web
+    # Abrir Web y buscar NIF
     webFunctions.abrir_web(driver, URL_NIMA_VALENCIA)
-
-    # Escribir NIF en la web y clickar buscar
     webFunctions.escribir_en_elemento_por_id(driver, "ctl00_ContentPlaceHolder1_txtNIF", NIF)
     webFunctions.clickar_boton_por_id(driver, "ctl00_ContentPlaceHolder1_btBuscar")
-    time.sleep(1)
 
-    # Abrir PDF de datos del NIF
-    boton_buscar = webFunctions.abrir_link_por_boton_id(driver, "ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor")
-    print(f"Enlace del botón: {boton_buscar}")
+    # Abrir la ficha del gestor
+    webFunctions.abrir_link_por_boton_id(driver, "ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor")
 
-    time.sleep(20)
-    elementos = driver.find_elements(By.XPATH, "//*")
-    print("Elementos visibles en la pantalla (tag_name, id):")
-    for elem in elementos:
-        elem_id = elem.get_attribute("id")
-        if elem_id:
-            print(f"{elem.tag_name}: {elem_id}")
-    
-    # Buscar si existe el id "bobjid_1747723616496"
-    try:
-        elemento = driver.find_element(By.ID, "bobjid_1747723616496")
-        print('El elemento con id "bobjid_1747723616496" SÍ está presente en la página.')
-    except Exception:
-        print('El elemento con id "bobjid_1747723616496" NO está presente en la página.')
+    # Extraer los datos usando una función auxiliar
+    datos_json = extraer_datos_valencia(driver)
 
-def extraer_texto_campo(driver, campo):
-    """
-    Busca un <td> que contenga un <b> con el texto 'campo' y devuelve el texto que sigue a ese campo.
-    Si no lo encuentra, devuelve None.
-    """
-    try:
-        td = driver.find_element(By.XPATH, f"//td[b[normalize-space(text())='{campo}']]")
-        texto_completo = td.text
-        valor = texto_completo.split(f"{campo}")[-1].strip()
-        return valor
-    except Exception:
-        return None
+    # Guardar en archivo y loggear
+    with open("datos_empresa.json", "w", encoding="utf-8") as f:
+        json.dump(datos_json, f, ensure_ascii=False, indent=4)
+    logging.info("Datos de la empresa guardados en datos_empresa.json")
+    return datos_json
 
 def extraer_datos_madrid(driver):
     """
@@ -97,26 +99,26 @@ def extraer_datos_madrid(driver):
     """
     # Datos del EMA (sede)
     datos_sede = {
-        "NIF": extraer_texto_campo(driver, "NIF:"),
-        "nombre_sede": extraer_texto_campo(driver, "Razón Social:"),
-        "direccion_sede": extraer_texto_campo(driver, "Dirección Sede:"),
-        "municipio_sede": extraer_texto_campo(driver, "Municipio:"),
-        "codigo_ine_municipio_sede": extraer_texto_campo(driver, "Código INE Municipio:"),
-        "codigo_postal_sede": extraer_texto_campo(driver, "CP:"),
-        "provincia_sede": extraer_texto_campo(driver, "Provincia:"),
-        "codigo_INE_provincia_sede": extraer_texto_campo(driver, "Código INE Provincia:"),
-        "nombre_centro": extraer_texto_campo(driver, "Denominación del Centro:")
+        "NIF": webFunctions.leer_texto_por_campo(driver, "NIF:"),
+        "nombre_sede": webFunctions.leer_texto_por_campo(driver, "Razón Social:"),
+        "direccion_sede": webFunctions.leer_texto_por_campo(driver, "Dirección Sede:"),
+        "municipio_sede": webFunctions.leer_texto_por_campo(driver, "Municipio:"),
+        "codigo_ine_municipio_sede": webFunctions.leer_texto_por_campo(driver, "Código INE Municipio:"),
+        "codigo_postal_sede": webFunctions.leer_texto_por_campo(driver, "CP:"),
+        "provincia_sede": webFunctions.leer_texto_por_campo(driver, "Provincia:"),
+        "codigo_INE_provincia_sede": webFunctions.leer_texto_por_campo(driver, "Código INE Provincia:"),
+        "nombre_centro": webFunctions.leer_texto_por_campo(driver, "Denominación del Centro:")
     }
 
     # Datos del centro
     datos_centro = {
-        "codigo_NIMA": extraer_texto_campo(driver, "NIMA:"),
-        "direccion_centro": extraer_texto_campo(driver, "Dirección Centro:"),
-        "municipio_centro": extraer_texto_campo(driver, "Municipio:"),
-        "codigo_ine_municipio_centro": extraer_texto_campo(driver, "Código INE Municipio:"),
-        "codigo_postal_centro": extraer_texto_campo(driver, "CP:"),
-        "provincia_centro": extraer_texto_campo(driver, "Provincia:"),
-        "codigo_INE_provincia_centro": extraer_texto_campo(driver, "Código INE Provincia:")
+        "codigo_NIMA": webFunctions.leer_texto_por_campo(driver, "NIMA:"),
+        "direccion_centro": webFunctions.leer_texto_por_campo(driver, "Dirección Centro:"),
+        "municipio_centro": webFunctions.leer_texto_por_campo(driver, "Municipio:"),
+        "codigo_ine_municipio_centro": webFunctions.leer_texto_por_campo(driver, "Código INE Municipio:"),
+        "codigo_postal_centro": webFunctions.leer_texto_por_campo(driver, "CP:"),
+        "provincia_centro": webFunctions.leer_texto_por_campo(driver, "Provincia:"),
+        "codigo_INE_provincia_centro": webFunctions.leer_texto_por_campo(driver, "Código INE Provincia:")
     }
 
     return {
@@ -128,38 +130,52 @@ def busqueda_NIMA_Madrid(NIF):
     """
     Función para buscar el NIF en la web de NIMA Madrid y devolver un JSON con los datos.
     """
-    driver = webConfiguration.configure()
     webFunctions.abrir_web(driver, URL_NIMA_MADRID)
     webFunctions.escribir_en_elemento_por_id(driver, "nif", NIF)
 
     # Buscar y hacer click en el enlace <a> con onclick="buscar('form');"
-    try:
-        enlace_buscar = driver.find_element(By.XPATH, "//a[@onclick=\"buscar('form');\"]")
-        enlace_buscar.click()
-        print('Click realizado en el enlace de búsqueda.')
-    except Exception:
-        print('ERROR: El enlace de búsqueda NO está presente en la página.')
+    webFunctions.clickar_enlace_por_onclick(driver, "buscar('form');")
 
     # Buscar y hacer click en el botón <input> con value="Consultar"
     try:
-        boton_consultar = driver.find_element(By.XPATH, "//input[@type='button' and @value='Consultar']")
-        boton_consultar.click()
+        webFunctions.clickar_boton_por_value(driver, "Consultar")
         print('Click realizado en el botón Consultar.')
     except Exception:
         print('ERROR: El botón Consultar NO está presente en la página.')
 
-    time.sleep(2)
-
-    # Extraer e imprimir los datos
+    # Extraer e imprimir los datos usando la función de excelFunctions
     datos_json = extraer_datos_madrid(driver)
-    print(json.dumps(datos_json, ensure_ascii=False, indent=4))
+    json.dumps(datos_json, ensure_ascii=False, indent=4)
+    logging.info('Datos de la empresa guardados')
     return datos_json
+
+def extraer_datos_castilla(datos_castilla):
+    """
+    Recibe un DataFrame de pandas con los datos del centro y devuelve un diccionario con los datos relevantes.
+    No usa pandas directamente, solo espera el DataFrame como argumento.
+
+    Args:
+        datos_castilla: DataFrame de pandas con los datos del Excel.
+
+    Returns:
+        dict: Diccionario con los datos extraídos del centro.
+    """
+    fila = datos_castilla.iloc[1]
+    datos = {
+        "DOMICILIO": fila.get('DOMICILIO', ''),
+        "NIMA": int(fila.get('NIMA ', 0)),
+        "nombre_EMA": fila.get('NOMBRE', ''),
+        "provincia_EMA": fila.get('PROVINCIA', ''),
+        "localidad_EMA": fila.get('LOCALIDAD', ''),
+        "telefono_EMA": int(fila.get('TELÉFONO', 0)),
+        "email_EMA": fila.get('E-MAIL', '')
+    }
+    return datos
 
 def busqueda_NIMA_Castilla(NIF):
     """
     Función para buscar el los datos del NIF en la web de NIMA Castilla y devolver un JSON con los datos.
     """
-    driver = webConfiguration.configure()
 
     # Abrir Web
     webFunctions.abrir_web(driver, URL_NIMA_CASTILLA)
@@ -168,18 +184,10 @@ def busqueda_NIMA_Castilla(NIF):
     webFunctions.clickar_boton_por_id(driver, "boton_buscar")
 
     # Esperar a que la imagen para generar el EXCEL esté presente y sea clickeable y hacer click
-    try:
-        img_excel = WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.XPATH, "//img[@id='imagen_generarPDF_todos' and contains(@title, 'EXCEL')]"))
-        )
-        img_excel.click()
-        print('Click realizado en la imagen para generar el EXCEL.')
-        print('Esperando la descarga del EXCEL...')
-    except Exception:
-        print('ERROR: No se encontró la imagen para generar el EXCEL.')
+    if not webFunctions.clickar_imagen_generar_excel(driver):
         return None
 
     # Ahora solo espera la descarga y procesa el archivo
     datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
-    print('Datos extraídos del Excel:')
+    logging.info('Datos extraídos del Excel:')
     return datos_json

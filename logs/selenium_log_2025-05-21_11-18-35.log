@@ -1,0 +1,5 @@
+2025-05-21 11:18:37,244 - INFO - Inicializando navegador...
+2025-05-21 11:18:37,716 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-21 11:18:37,795 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B81400491'
+2025-05-21 11:18:37,846 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-21 11:18:42,949 - ERROR - Timeout al esperar el elemento con 'id' = 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'

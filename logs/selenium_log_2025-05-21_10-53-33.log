@@ -1,0 +1,21 @@
+2025-05-21 10:53:35,832 - INFO - Inicializando navegador...
+2025-05-21 10:53:36,209 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-21 10:53:36,292 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B98969264'
+2025-05-21 10:53:36,362 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-21 10:53:37,897 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=JiIIz%2bQT7kRGOhC4pUNG1IgPgHFgudq6' abierta.
+2025-05-21 10:53:37,897 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=JiIIz%2bQT7kRGOhC4pUNG1IgPgHFgudq6' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-21 10:53:37,948 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': TALLERES MOTOR TORRENT. S.L.U.
+2025-05-21 10:53:37,983 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B98969264
+2025-05-21 10:53:38,021 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CALLE VALENCIA, 128
+2025-05-21 10:53:38,059 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46900
+2025-05-21 10:53:38,094 - INFO - Texto obtenido del elemento con ID 'Text8-0': TORRENT - VALENCIA/VALÈNCIA
+2025-05-21 10:53:38,126 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 961560964
+2025-05-21 10:53:38,161 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': TALLERES MOTOR TORRENT, SLU
+2025-05-21 10:53:38,194 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600038689
+2025-05-21 10:53:38,227 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CALLE DELS SABATERS 7
+2025-05-21 10:53:38,258 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': TORRENT - VALENCIA/VALÈNCIA
+2025-05-21 10:53:38,289 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 462444
+2025-05-21 10:53:38,318 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 961560964
+2025-05-21 10:53:38,349 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 37760/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-21 10:53:38,380 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-1': 5721/P04/CV - PEQUEÑO PRODUCT.RESID.NO PELIGROSOS
+2025-05-21 10:53:38,382 - INFO - Datos de la empresa guardados en datos_empresa.json
