@@ -15,8 +15,8 @@ import nimaFunctions
 
 NIF_PRUEBA = "B43693274"
 
-#nimaFunctions.busqueda_NIMA_Valencia(NIF_PRUEBA)
-#nimaFunctions.busqueda_NIMA_Madrid(NIF_MADRID)
+#datos_json = nimaFunctions.busqueda_NIMA_Valencia(NIF_PRUEBA)
+#datos_json = nimaFunctions.busqueda_NIMA_Madrid(NIF_MADRID)
 datos_json = nimaFunctions.busqueda_NIMA_Castilla(NIF_PRUEBA)
 
 print(datos_json)
