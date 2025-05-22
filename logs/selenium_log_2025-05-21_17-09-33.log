@@ -1,0 +1,4 @@
+2025-05-21 17:09:35,388 - INFO - Inicializando navegador...
+2025-05-21 17:09:36,211 - INFO - Web 'https://www.einforma.com/' abierta.
+2025-05-21 17:09:36,326 - INFO - Se escribió texto en el elemento localizado por id='34deehen4search-text': '03889931X'
+2025-05-21 17:09:36,917 - INFO - Se escribió texto y se pulsó Enter en el elemento con ID '34deehen4search-text'.

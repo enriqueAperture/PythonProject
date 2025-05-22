@@ -1,0 +1,10 @@
+2025-05-21 17:36:11,517 - INFO - Inicializando navegador...
+2025-05-21 17:36:13,219 - INFO - Inicializando navegador...
+2025-05-21 17:36:14,124 - INFO - Web 'https://www.einforma.com/' abierta.
+2025-05-21 17:36:14,229 - INFO - Se escribió texto en el elemento localizado por id='34deehen4search-text': '03879645M'
+2025-05-21 17:36:14,774 - INFO - Se escribió texto y se pulsó Enter en el elemento con ID '34deehen4search-text'.
+2025-05-21 17:36:18,663 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-21 17:36:18,763 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-21 17:36:19,362 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': '03879645M'
+2025-05-21 17:36:19,436 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-21 17:36:39,821 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.

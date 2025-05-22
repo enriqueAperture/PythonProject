@@ -1,0 +1,7 @@
+2025-05-21 17:47:18,413 - INFO - Inicializando navegador...
+2025-05-21 17:47:19,427 - INFO - Se escribió texto en el elemento localizado por id='34deehen4search-text': '20149971Q'
+2025-05-21 17:47:19,972 - INFO - Se escribió texto y se pulsó Enter en el elemento con ID '34deehen4search-text'.
+2025-05-21 17:47:21,910 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-21 17:47:21,990 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': '20149971Q'
+2025-05-21 17:47:22,052 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-21 17:47:27,214 - ERROR - Timeout al esperar el elemento con 'id' = 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'

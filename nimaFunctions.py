@@ -77,8 +77,52 @@ def obtener_comunidad_por_nif_empresas(nif) -> str:
 
     return codigos_provincias.get(codigo, "Provincia no permitida o NIF no válido")
 
-def obtener_comunidad_por_nif_autonomos(nif) -> str:   #Esta funcion da la comunidad autónoma de un NIF de autonomo usando einforma.
-    print("Es autonomo")    # Cambiarlo cuando tengamos la funcion de einforma
+def obtener_comunidad_por_provincia(provincia: str) -> str:
+    """
+    Devuelve la comunidad autónoma correspondiente a una provincia.
+    Args:
+        provincia (str): Nombre de la provincia (puede incluir variantes como 'Valencia/València').
+    Returns:
+        str: Nombre de la comunidad autónoma ("Castilla", "Valencia", "Madrid") o "Provincia no reconocida".
+    """
+    provincia = provincia.strip().capitalize()
+    # Normalización para casos como "Valencia/València" o "València"
+    if "/" in provincia:
+        provincia = provincia.split("/")[0].strip()
+    if provincia == "València":
+        provincia = "Valencia"
+
+    provincias_castilla = ["Albacete", "Cuenca", "Guadalajara", "Toledo"]
+    provincias_valencia = ["Castellón", "Valencia", "Alicante"]
+    provincias_madrid = ["Madrid"]
+
+    if provincia in provincias_castilla:
+        return "Castilla"
+    elif provincia in provincias_valencia:
+        return "Valencia"
+    elif provincia in provincias_madrid:
+        return "Madrid"
+    else:
+        return "Provincia no reconocida"
+
+def obtener_comunidad_por_nif_autonomos(nif) -> str:
+    """
+    Abre einforma, busca el NIF y devuelve la comunidad autónoma (Valencia, Madrid o Castilla)
+    según la provincia del domicilio social. Usa solo funciones de webFunctions.
+    """
+    driver.get(URL_EINFORMA)
+    webFunctions.escribir_en_elemento_por_id_y_enter(driver, "34deehen4search-text", nif)
+
+    # Extrae la provincia del domicilio social
+    domicilio_label = webFunctions.encontrar_elemento(driver, "xpath", "//strong[normalize-space(text())='Domicilio Social']")
+    domicilio_valor = webFunctions.encontrar_elemento_relativo(
+        domicilio_label, "xpath", ".//following-sibling::a[contains(@class, 'sc-iMtUvw')]"
+    )
+
+    domicilio_texto = domicilio_valor.text.strip()
+    provincia = domicilio_texto.split()[-1] if domicilio_texto else ""
+    return obtener_comunidad_por_provincia(provincia)
+
 def obtener_comunidad_por_nif(nif) -> str:
     """
     Devuelve la comunidad autónoma correspondiente según el tipo de NIF:
@@ -155,6 +199,7 @@ def busqueda_NIMA_Valencia(nif):
 
     # Extraer los datos usando una función auxiliar
     datos_json = extraer_datos_valencia(driver)
+    driver.quit()
 
     # Guardar en archivo y loggear
     with open("datos_empresa.json", "w", encoding="utf-8") as f:
@@ -215,6 +260,7 @@ def busqueda_NIMA_Madrid(nif):
 
     # Extraer e imprimir los datos usando la función de excelFunctions
     datos_json = extraer_datos_madrid(driver)
+    driver.quit()
     json.dumps(datos_json, ensure_ascii=False, indent=4)
     logging.info('Datos de la empresa guardados')
     return datos_json
@@ -259,6 +305,7 @@ def busqueda_NIMA_Castilla(NIF):
 
     # Ahora solo espera la descarga y procesa el archivo
     datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
+    driver.quit()
     logging.info('Datos extraídos del Excel:')
     return datos_json
 

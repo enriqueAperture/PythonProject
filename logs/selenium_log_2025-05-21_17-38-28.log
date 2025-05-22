@@ -1,0 +1,8 @@
+2025-05-21 17:38:30,749 - INFO - Inicializando navegador...
+2025-05-21 17:38:31,706 - INFO - Se escribió texto en el elemento localizado por id='34deehen4search-text': '03879645M'
+2025-05-21 17:38:32,436 - INFO - Se escribió texto y se pulsó Enter en el elemento con ID '34deehen4search-text'.
+2025-05-21 17:38:33,356 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-21 17:38:33,419 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-21 17:38:33,997 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': '03879645M'
+2025-05-21 17:38:34,049 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-21 17:38:45,754 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.

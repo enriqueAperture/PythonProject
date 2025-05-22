@@ -32,6 +32,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
 
 # Tiempo de espera global (en segundos)
 DEFAULT_TIMEOUT = 5
@@ -75,6 +76,45 @@ def esperar_elemento(driver: webdriver.Chrome, by: By, value: str, timeout: int 
     except TimeoutException:
         logging.error(f"Timeout al esperar el elemento con '{by}' = '{value}'")
         raise
+
+def _get_by(by_str):
+    """
+    Convierte un string ('id', 'xpath', etc.) en el objeto By correspondiente.
+    """
+    by_str = by_str.lower()
+    if by_str == "id":
+        return By.ID
+    elif by_str == "xpath":
+        return By.XPATH
+    elif by_str == "name":
+        return By.NAME
+    elif by_str == "css_selector":
+        return By.CSS_SELECTOR
+    elif by_str == "class_name":
+        return By.CLASS_NAME
+    elif by_str == "tag_name":
+        return By.TAG_NAME
+    elif by_str == "link_text":
+        return By.LINK_TEXT
+    elif by_str == "partial_link_text":
+        return By.PARTIAL_LINK_TEXT
+    else:
+        raise ValueError(f"Estrategia de localización '{by_str}' no soportada.")
+
+def encontrar_elemento(driver, by, value, timeout=DEFAULT_TIMEOUT):
+    """
+    Espera y devuelve un elemento localizado en toda la página.
+    """
+    by_obj = _get_by(by)
+    esperar_elemento(driver, by_obj, value, timeout)
+    return driver.find_element(by_obj, value)
+
+def encontrar_elemento_relativo(elemento, by, value):
+    """
+    Devuelve un elemento relativo a otro elemento (como find_element sobre un WebElement).
+    """
+    by_obj = _get_by(by)
+    return elemento.find_element(by_obj, value)
 
 def clickar_elemento(driver: webdriver.Chrome, by: By, value: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
@@ -457,6 +497,27 @@ def escribir_en_elemento_por_id(driver: webdriver.Chrome, element_id: str, texto
         logging.error(f"No se pudo escribir en el elemento con ID '{element_id}': {e}")
         raise
 
+def escribir_en_elemento_por_id_y_enter(driver: webdriver.Chrome, element_id: str, texto: str) -> None:
+    """
+    Escribe en un elemento identificado por su ID y pulsa Enter después de escribir.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        element_id (str): ID del elemento.
+        texto (str): Texto a escribir.
+
+    Ejemplo:
+        escribir_en_elemento_por_id_y_enter(driver, "usuario", "admin")
+    """
+    try:
+        escribir_en_elemento(driver, By.ID, element_id, texto)
+        input_element = driver.find_element(By.ID, element_id)
+        input_element.send_keys(Keys.ENTER)
+        logging.info(f"Se escribió texto y se pulsó Enter en el elemento con ID '{element_id}'.")
+    except Exception as e:
+        logging.error(f"No se pudo escribir y pulsar Enter en el elemento con ID '{element_id}': {e}")
+        raise
+
 def escribir_en_elemento_por_name(driver: webdriver.Chrome, name: str, texto: str) -> None:
     """
     Escribe en un elemento identificado por el atributo name.
@@ -756,4 +817,3 @@ def leer_texto_por_campo(driver, campo, timeout=5):
     except Exception as e:
         logging.error(f"Error al leer el campo '{campo}': {e}")
         return None
-    
