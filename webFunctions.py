@@ -32,6 +32,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
 
 # Tiempo de espera global (en segundos)
 DEFAULT_TIMEOUT = 5
@@ -75,6 +76,51 @@ def esperar_elemento(driver: webdriver.Chrome, by: By, value: str, timeout: int 
     except TimeoutException:
         logging.error(f"Timeout al esperar el elemento con '{by}' = '{value}'")
         raise
+
+def encontrar_elemento(driver, by, value, timeout=DEFAULT_TIMEOUT):
+    """
+    Espera y devuelve un elemento localizado en toda la página.
+    Recibe la estrategia de localización como objeto By (no como string).
+    """
+    try:
+        esperar_elemento(driver, by, value, timeout)
+        elemento = driver.find_element(by, value)
+        logging.info(f"Elemento encontrado con '{by}' = '{value}'.")
+        return elemento
+    except TimeoutException:
+        raise
+    except Exception as e:
+        logging.error(f"Falló al encontrar el elemento con '{by}' = '{value}': {e}")
+        raise
+
+def encontrar_elemento_relativo(elemento, by, value):
+    """
+    Devuelve un elemento relativo a otro elemento (como find_element sobre un WebElement).
+    Recibe la estrategia de localización como objeto By (no como string).
+    """
+    try:
+        elemento_rel = elemento.find_element(by, value)
+        logging.info(f"Elemento relativo encontrado con '{by}' = '{value}'.")
+        return elemento_rel
+    except Exception as e:
+        logging.error(f"Falló al encontrar el elemento relativo con '{by}' = '{value}': {e}")
+        raise
+
+def encontrar_elementos(driver, by, value, timeout=DEFAULT_TIMEOUT):
+    """
+    Espera a que al menos un elemento sea visible y devuelve una lista de elementos localizados en toda la página.
+    """
+    try:
+        WebDriverWait(driver, timeout).until(EC.visibility_of_any_elements_located((by, value)))
+        elementos = driver.find_elements(by, value)
+        logging.info(f"{len(elementos)} elementos encontrados con '{by}' = '{value}'.")
+        return elementos
+    except TimeoutException:
+        logging.warning(f"No se encontraron elementos con '{by}' = '{value}' en el tiempo especificado.")
+        return []
+    except Exception as e:
+        logging.error(f"Error al buscar elementos con '{by}' = '{value}': {e}")
+        return []
 
 def clickar_elemento(driver: webdriver.Chrome, by: By, value: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
@@ -219,6 +265,27 @@ def clickar_boton_por_link(driver: webdriver.Chrome, link: str, timeout: int = D
     xpath = f"//a[contains(text(), '{link}')]"
     clickar_elemento(driver, By.XPATH, xpath, timeout)
 
+def clickar_enlace_por_onclick(driver: webdriver.Chrome, onclick_value: str, timeout: int = DEFAULT_TIMEOUT) -> bool:
+    """
+    Hace clic en un enlace (<a>) que tenga el atributo onclick con el valor especificado.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        onclick_value (str): Valor exacto del atributo onclick.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        bool: True si se hizo click, False si no se encontró el enlace.
+    """
+    xpath = f"//a[@onclick=\"{onclick_value}\"]"
+    try:
+        clickar_elemento(driver, By.XPATH, xpath, timeout)
+        print('Click realizado en el enlace con onclick.')
+        return True
+    except Exception:
+        print('ERROR: El enlace con ese onclick NO está presente en la página.')
+        return False
+
 def clickar_boton_por_clase(driver: webdriver.Chrome, clase: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
     Hace clic en el primer elemento que tenga la clase CSS especificada.
@@ -230,6 +297,50 @@ def clickar_boton_por_clase(driver: webdriver.Chrome, clase: str, timeout: int =
     """
     selector = f".{clase}"
     clickar_elemento(driver, By.CSS_SELECTOR, selector, timeout)
+
+def clickar_imagen_generar_excel(driver, timeout=20):
+    """
+    Espera a que la imagen para generar el EXCEL esté presente y sea clickeable, y hace click en ella.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        timeout (int): Tiempo máximo de espera en segundos.
+
+    Returns:
+        bool: True si se hizo click, False si no se encontró la imagen.
+    """
+    import logging
+    try:
+        img_excel = WebDriverWait(driver, timeout).until(
+            EC.element_to_be_clickable((By.XPATH, "//img[@id='imagen_generarPDF_todos' and contains(@title, 'EXCEL')]"))
+        )
+        img_excel.click()
+        logging.info('Click realizado en la imagen para generar el EXCEL.')
+        logging.info('Esperando la descarga del EXCEL...')
+        return True
+    except Exception:
+        logging.error('ERROR: No se encontró la imagen para generar el EXCEL.')
+        return False
+
+def abrir_link_por_boton_id(driver: webdriver.Chrome, id_boton: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Hace clic en un botón que abre una nueva ventana o pestaña.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        boton (str): Texto del botón.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+    
+    Ejemplo:
+        abrir_ventana_por_boton(driver, "Abrir ventana")
+    """
+    # Esperar a que el botón esté visible
+    esperar_elemento_por_id(driver, id_boton, timeout)
+    # Abre el enlace que contiene el botón
+    elemento = driver.find_element(By.ID, id_boton)
+    enlace_boton = elemento.get_attribute("href")
+    abrir_web(driver, enlace_boton)
+    logging.info(f"Enlace abierto por el botón: {id_boton}")
 
 def abrir_nueva_pestana(driver: webdriver.Chrome, url: str) -> bool:
     """
@@ -390,6 +501,27 @@ def escribir_en_elemento_por_id(driver: webdriver.Chrome, element_id: str, texto
         escribir_en_elemento(driver, By.ID, element_id, texto)
     except Exception as e:
         logging.error(f"No se pudo escribir en el elemento con ID '{element_id}': {e}")
+        raise
+
+def escribir_en_elemento_por_id_y_enter(driver: webdriver.Chrome, element_id: str, texto: str) -> None:
+    """
+    Escribe en un elemento identificado por su ID y pulsa Enter después de escribir.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        element_id (str): ID del elemento.
+        texto (str): Texto a escribir.
+
+    Ejemplo:
+        escribir_en_elemento_por_id_y_enter(driver, "usuario", "admin")
+    """
+    try:
+        escribir_en_elemento(driver, By.ID, element_id, texto)
+        input_element = driver.find_element(By.ID, element_id)
+        input_element.send_keys(Keys.ENTER)
+        logging.info(f"Se escribió texto y se pulsó Enter en el elemento con ID '{element_id}'.")
+    except Exception as e:
+        logging.error(f"No se pudo escribir y pulsar Enter en el elemento con ID '{element_id}': {e}")
         raise
 
 def escribir_en_elemento_por_name(driver: webdriver.Chrome, name: str, texto: str) -> None:
@@ -630,36 +762,57 @@ def abrir_link_por_boton_id(driver: webdriver.Chrome, id_boton: str, timeout: in
     abrir_web(driver, enlace)
     logging.info(f"Enlace '{enlace}' abierto por el botón con ID '{id_boton}'.")
 
+def esperar_y_obtener_texto(driver, by, value, timeout=DEFAULT_TIMEOUT):
+    """
+    Espera a que un elemento sea visible y devuelve su texto.
+    """
+    try:
+        esperar_elemento(driver, by, value, timeout)
+        elemento = driver.find_element(by, value)
+        texto = elemento.text
+        logging.info(f"Texto obtenido: {texto}")
+        return texto
+    except Exception as e:
+        logging.error(f"Error al obtener texto del elemento con '{by}' = '{value}': {e}")
+        return ""
+
 def obtener_texto_elemento_por_id(driver: webdriver.Chrome, elemento_id: str, timeout: int = DEFAULT_TIMEOUT) -> str:
     """
     Obtiene el texto de un elemento <span> dentro de un elemento identificado por su ID, dentro de un iframe.
-
-    Cambia al primer iframe de la página, espera a que el elemento esté presente y obtiene su texto.
-    Luego vuelve al contexto principal.
-
-    Args:
-        driver (webdriver.Chrome): Instancia del navegador.
-        elemento_id (str): ID del elemento contenedor.
-        timeout (int, optional): Tiempo máximo de espera en segundos.
-
-    Returns:
-        str: Texto contenido en el <span> dentro del elemento especificado.
-
-    Raises:
-        TimeoutException: Si el elemento no se encuentra en el tiempo especificado.
-        NoSuchElementException: Si el iframe o el elemento no existen.
-
-    Ejemplo:
-        texto = obtener_texto_elemento_por_id(driver, "miElemento")
     """
     try:
-        iframe = driver.find_element(By.TAG_NAME, "iframe")
+        iframe = encontrar_elemento(driver, By.TAG_NAME, "iframe", timeout)
         driver.switch_to.frame(iframe)
         xpath = f"//*[@id='{elemento_id}']//span"
-        esperar_elemento(driver, By.XPATH, xpath, timeout)
-        elemento = driver.find_element(By.XPATH, xpath)
+        elemento = encontrar_elemento(driver, By.XPATH, xpath, timeout)
         texto = elemento.text
         logging.info(f"Texto obtenido del elemento con ID '{elemento_id}': {texto}")
         return texto
     finally:
         driver.switch_to.default_content()
+
+def leer_texto_por_campo(driver, campo, timeout=5):
+    """
+    Busca un <td> que contenga un <b> con el texto 'campo' y devuelve el texto que sigue a ese campo.
+    Si no lo encuentra, devuelve None.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        campo (str): Texto exacto del campo a buscar (incluyendo los dos puntos).
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        str: El texto encontrado después del campo, o None si no se encuentra.
+    """
+    try:
+        xpath = f"//td[b[normalize-space(text())='{campo}']]"
+        td = encontrar_elemento(driver, By.XPATH, xpath, timeout)
+        texto_completo = td.text
+        if texto_completo.startswith(campo):
+            valor = texto_completo[len(campo):].strip()
+        else:
+            valor = texto_completo.split(f"{campo}", 1)[-1].strip()
+        return valor if valor else None
+    except Exception as e:
+        logging.error(f"Error al leer el campo '{campo}': {e}")
+        return None

@@ -72,3 +72,5 @@ with open("datos_empresa.json", "w", encoding="utf-8") as f:
     json.dump(data, f, ensure_ascii=False, indent=4)
 
 logging.info("Datos de la empresa guardados en datos_empresa.json")
+
+print(data)
