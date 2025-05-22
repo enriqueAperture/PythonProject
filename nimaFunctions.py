@@ -29,7 +29,40 @@ URL_NIMA_MADRID = "https://gestiona.comunidad.madrid/pcea_nima_web/html/web/Inic
 
 URL_EINFORMA = "https://www.einforma.com/"
 
-driver = webConfiguration.configure()
+CODIGOS_PROVINCIAS = {
+    # Castilla
+    "02": "Castilla",    # Albacete
+    "16": "Castilla",    # Cuenca
+    "19": "Castilla",    # Guadalajara
+    "45": "Castilla",    # Toledo
+    # Valencia
+    "03": "Valencia",    # Alicante
+    "12": "Valencia",    # Castellón
+    "43": "Valencia",    # Valencia (tecnicamente es Tarragona, pero se considera Valencia)
+    "46": "Valencia",    # Valencia
+    "53": "Valencia",
+    "54": "Valencia",
+    "96": "Valencia",
+    "97": "Valencia",
+    "98": "Valencia",
+    # Madrid
+    "28": "Madrid",      # Madrid
+    "78": "Madrid",
+    "79": "Madrid",
+    "80": "Madrid",
+    "81": "Madrid",
+    "82": "Madrid",
+    "83": "Madrid",
+    "84": "Madrid",
+    "85": "Madrid",
+    "86": "Madrid",
+    "87": "Madrid",
+    "88": "Madrid",
+}
+
+PROVINCIAS_CASTILLA = ["Albacete", "Cuenca", "Guadalajara", "Toledo"]
+PROVINCIAS_VALENCIA = ["Castellón", "Valencia", "Alicante"]
+PROVINCIAS_MADRID = ["Madrid"]
 
 def obtener_comunidad_por_nif_empresas(nif) -> str:
     """
@@ -41,41 +74,11 @@ def obtener_comunidad_por_nif_empresas(nif) -> str:
     Returns:
         str: Nombre de la comunidad autónoma, o mensaje de error si no es válida.
     """
-    codigos_provincias = {
-        # Castilla
-        "02": "Castilla",    # Albacete
-        "16": "Castilla",    # Cuenca
-        "19": "Castilla",    # Guadalajara
-        "45": "Castilla",    # Toledo
-        # Valencia
-        "03": "Valencia",    # Alicante
-        "12": "Valencia",    # Castellón
-        "43": "Valencia",    # pone que es de Tarragona pero fuck it
-        "46": "Valencia",    # Valencia
-        "53": "Valencia",
-        "54": "Valencia",
-        "96": "Valencia",
-        "97": "Valencia",
-        "98": "Valencia",
-        # Madrid
-        "28": "Madrid",      # Madrid
-        "78": "Madrid",
-        "79": "Madrid",
-        "80": "Madrid",
-        "81": "Madrid",
-        "82": "Madrid",
-        "83": "Madrid",
-        "84": "Madrid",
-        "85": "Madrid",
-        "86": "Madrid",
-        "87": "Madrid",
-        "88": "Madrid",
-    }
     # Extrae los dígitos del NIF y toma los dos primeros números
     numeros = ''.join(filter(str.isdigit, nif))
     codigo = numeros[:2] if len(numeros) >= 2 else None
 
-    return codigos_provincias.get(codigo, "Provincia no permitida o NIF no válido")
+    return CODIGOS_PROVINCIAS.get(codigo, "Provincia no permitida o NIF no válido")
 
 def obtener_comunidad_por_provincia(provincia: str) -> str:
     """
@@ -92,15 +95,11 @@ def obtener_comunidad_por_provincia(provincia: str) -> str:
     if provincia == "València":
         provincia = "Valencia"
 
-    provincias_castilla = ["Albacete", "Cuenca", "Guadalajara", "Toledo"]
-    provincias_valencia = ["Castellón", "Valencia", "Alicante"]
-    provincias_madrid = ["Madrid"]
-
-    if provincia in provincias_castilla:
+    if provincia in PROVINCIAS_CASTILLA:
         return "Castilla"
-    elif provincia in provincias_valencia:
+    elif provincia in PROVINCIAS_VALENCIA:
         return "Valencia"
-    elif provincia in provincias_madrid:
+    elif provincia in PROVINCIAS_MADRID:
         return "Madrid"
     else:
         return "Provincia no reconocida"
@@ -110,18 +109,25 @@ def obtener_comunidad_por_nif_autonomos(nif) -> str:
     Abre einforma, busca el NIF y devuelve la comunidad autónoma (Valencia, Madrid o Castilla)
     según la provincia del domicilio social. Usa solo funciones de webFunctions.
     """
+    driver = webConfiguration.configure()
     driver.get(URL_EINFORMA)
     webFunctions.escribir_en_elemento_por_id_y_enter(driver, "34deehen4search-text", nif)
 
-    # Extrae la provincia del domicilio social
-    domicilio_label = webFunctions.encontrar_elemento(driver, "xpath", "//strong[normalize-space(text())='Domicilio Social']")
-    domicilio_valor = webFunctions.encontrar_elemento_relativo(
-        domicilio_label, "xpath", ".//following-sibling::a[contains(@class, 'sc-iMtUvw')]"
-    )
-
-    domicilio_texto = domicilio_valor.text.strip()
-    provincia = domicilio_texto.split()[-1] if domicilio_texto else ""
-    return obtener_comunidad_por_provincia(provincia)
+    try:
+        # Espera y busca el domicilio social
+        webFunctions.esperar_elemento(driver, "xpath", "//strong[normalize-space(text())='Domicilio Social']")
+        domicilio_label = webFunctions.encontrar_elemento(driver, "xpath", "//strong[normalize-space(text())='Domicilio Social']")
+        domicilio_valor = webFunctions.encontrar_elemento_relativo(
+            domicilio_label, "xpath", ".//following-sibling::a[contains(@class, 'sc-iMtUvw')]"
+        )
+        domicilio_texto = domicilio_valor.text.strip()
+        provincia = domicilio_texto.split()[-1] if domicilio_texto else ""
+        return obtener_comunidad_por_provincia(provincia)
+    except Exception as e:
+        logging.error(f"No se ha encontrado el domicilio social para el NIF '{nif}': {e}")
+        return "No se ha encontrado el domicilio social para este NIF"
+    finally:
+        driver.quit()
 
 def obtener_comunidad_por_nif(nif) -> str:
     """
@@ -164,7 +170,7 @@ def extraer_datos_valencia(driver):
     codigo_ine = webFunctions.obtener_texto_elemento_por_id(driver, "FCODINE1-0-0")
     telefono_centro = webFunctions.obtener_texto_elemento_por_id(driver, "FTELEFONO1-0-0")
 
-    # Códigos de residuos
+    # Códigos de residuos (estos datos son opcionales y a veces dan error)
     codigo_residuo_1 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-0").split()[0]
     codigo_residuo_2 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-1").split()[0]
 
@@ -189,6 +195,7 @@ def busqueda_NIMA_Valencia(nif):
     """
     Función para buscar los datos del NIF en la web de NIMA Valencia y devolver un JSON con los datos.
     """
+    driver = webConfiguration.configure()
     # Abrir Web y buscar NIF
     webFunctions.abrir_web(driver, URL_NIMA_VALENCIA)
     webFunctions.escribir_en_elemento_por_id(driver, "ctl00_ContentPlaceHolder1_txtNIF", nif)
@@ -245,6 +252,7 @@ def busqueda_NIMA_Madrid(nif):
     """
     Función para buscar el NIF en la web de NIMA Madrid y devolver un JSON con los datos.
     """
+    driver = webConfiguration.configure()
     webFunctions.abrir_web(driver, URL_NIMA_MADRID)
     webFunctions.escribir_en_elemento_por_id(driver, "nif", nif)
 
@@ -261,38 +269,16 @@ def busqueda_NIMA_Madrid(nif):
     # Extraer e imprimir los datos usando la función de excelFunctions
     datos_json = extraer_datos_madrid(driver)
     driver.quit()
+
     json.dumps(datos_json, ensure_ascii=False, indent=4)
     logging.info('Datos de la empresa guardados')
     return datos_json
-
-def extraer_datos_castilla(datos_castilla):
-    """
-    Recibe un DataFrame de pandas con los datos del centro y devuelve un diccionario con los datos relevantes.
-    No usa pandas directamente, solo espera el DataFrame como argumento.
-
-    Args:
-        datos_castilla: DataFrame de pandas con los datos del Excel.
-
-    Returns:
-        dict: Diccionario con los datos extraídos del centro.
-    """
-    fila = datos_castilla.iloc[1]
-    datos = {
-        "DOMICILIO": fila.get('DOMICILIO', ''),
-        "NIMA": int(fila.get('NIMA ', 0)),
-        "nombre_EMA": fila.get('NOMBRE', ''),
-        "provincia_EMA": fila.get('PROVINCIA', ''),
-        "localidad_EMA": fila.get('LOCALIDAD', ''),
-        "telefono_EMA": int(fila.get('TELÉFONO', 0)),
-        "email_EMA": fila.get('E-MAIL', '')
-    }
-    return datos
 
 def busqueda_NIMA_Castilla(NIF):
     """
     Función para buscar el los datos del NIF en la web de NIMA Castilla y devolver un JSON con los datos.
     """
-
+    driver = webConfiguration.configure()
     # Abrir Web
     webFunctions.abrir_web(driver, URL_NIMA_CASTILLA)
     webFunctions.clickar_boton_por_id(driver, "enlace_gestores")
@@ -306,6 +292,7 @@ def busqueda_NIMA_Castilla(NIF):
     # Ahora solo espera la descarga y procesa el archivo
     datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
     driver.quit()
+    
     logging.info('Datos extraídos del Excel:')
     return datos_json
 

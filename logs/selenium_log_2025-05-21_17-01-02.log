@@ -1,4 +1,0 @@
-2025-05-21 17:01:04,751 - INFO - Inicializando navegador...
-2025-05-21 17:01:05,644 - INFO - Web 'https://www.einforma.com/' abierta.
-2025-05-21 17:01:05,740 - INFO - Se escribió texto en el elemento localizado por id='34deehen4search-text': '03963262V'
-2025-05-21 17:01:14,377 - ERROR - Timeout al esperar el elemento con 'xpath' = '//strong[normalize-space(text())='Domicilio Social']'

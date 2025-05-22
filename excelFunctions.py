@@ -34,14 +34,11 @@ import time
 import pandas
 import json
 import logging
-import json
 import re
 import webFunctions
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import nimaFunctions
-
 
 # Directorio donde se espera la descarga de archivos Excel
 DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -370,11 +367,20 @@ def extraer_datos_centro_castilla_desde_excel(ruta_excel):
     Returns:
         dict: Diccionario con los datos extraídos del centro.
     """
-    import pandas
     datos_castilla = pandas.read_excel(ruta_excel, header=1)
     ruta_xlsx = ruta_excel.replace('.xls', '.xlsx')
     datos_castilla.to_excel(ruta_xlsx, index=False)
-    return nimaFunctions.extraer_datos_castilla(datos_castilla)
+    fila = datos_castilla.iloc[1]
+    datos = {
+        "DOMICILIO": fila.get('DOMICILIO', ''),
+        "NIMA": int(fila.get('NIMA ', 0)),
+        "nombre_EMA": fila.get('NOMBRE', ''),
+        "provincia_EMA": fila.get('PROVINCIA', ''),
+        "localidad_EMA": fila.get('LOCALIDAD', ''),
+        "telefono_EMA": int(fila.get('TELÉFONO', 0)),
+        "email_EMA": fila.get('E-MAIL', '')
+    }
+    return datos
 
 
 def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
