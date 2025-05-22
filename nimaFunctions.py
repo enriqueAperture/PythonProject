@@ -171,22 +171,34 @@ def extraer_datos_valencia(driver):
     telefono_centro = webFunctions.obtener_texto_elemento_por_id(driver, "FTELEFONO1-0-0")
 
     # Códigos de residuos (estos datos son opcionales y a veces dan error)
-    codigo_residuo_1 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-0").split()[0]
-    codigo_residuo_2 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-1").split()[0]
+    try:
+        codigo_residuo_1 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-0").split()[0]
+    except Exception:
+        logging.error("No se pudo encontrar el código de residuo 1")
+        codigo_residuo_1 = None
+    try:
+        codigo_residuo_2 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-1").split()[0]
+    except Exception:
+        logging.error("No se pudo encontrar el código de residuo 2")
+        codigo_residuo_2 = None
 
     return {
-        "nombre_empresa": nombre_empresa,
-        "nif": nif,
-        "direccion": direccion,
-        "codigo_postal": codigo_postal,
-        "localidad_provincia_empresa": localidad_provincia_empresa,
-        "telefono": telefono,
-        "nombre_centro": nombre_centro,
-        "nima": nima,
-        "direccion_centro": direccion_centro,
-        "localidad_provincia_centro": localidad_provincia_centro,
-        "codigo_ine": codigo_ine,
-        "telefono_centro": telefono_centro,
+        "empresa": {
+            "nombre_empresa": nombre_empresa,
+            "nif": nif,
+            "direccion": direccion,
+            "codigo_postal": codigo_postal,
+            "localidad_provincia_empresa": localidad_provincia_empresa,
+            "telefono": telefono
+        },
+        "centro": {
+            "nombre_centro": nombre_centro,
+            "nima": nima,
+            "direccion_centro": direccion_centro,
+            "localidad_provincia_centro": localidad_provincia_centro,
+            "codigo_ine": codigo_ine,
+            "telefono_centro": telefono_centro
+        },
         "codigo_residuo_1": codigo_residuo_1,
         "codigo_residuo_2": codigo_residuo_2
     }
@@ -208,10 +220,7 @@ def busqueda_NIMA_Valencia(nif):
     datos_json = extraer_datos_valencia(driver)
     driver.quit()
 
-    # Guardar en archivo y loggear
-    with open("datos_empresa.json", "w", encoding="utf-8") as f:
-        json.dump(datos_json, f, ensure_ascii=False, indent=4)
-    logging.info("Datos de la empresa guardados en datos_empresa.json")
+    logging.info("Datos de la empresa encontrados y extraídos correctamente.")
     return datos_json
 
 def extraer_datos_madrid(driver):
