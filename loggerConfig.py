@@ -2,37 +2,30 @@ import logging
 import os
 from datetime import datetime
 
-# Crear carpetas si no existen
+# Crear carpeta de logs si no existe
 os.makedirs("logs", exist_ok=True)
 
-# Timestamp para el archivo de log
-timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-log_file = f"logs/selenium_log_{timestamp}.log"
-
-# Crear logger raíz
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)  # Tu nivel de log
+if not logger.handlers:
+    logger.setLevel(logging.INFO)
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    log_file = os.path.join("logs", f"selenium_log_{timestamp}.log")
+    
+    # Crear handler para archivo
+    file_handler = logging.FileHandler(log_file, encoding="utf-8")
+    file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+    
+    # Crear handler para consola
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+    
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+    
+    # Silenciar loggers de terceros que sean muy verbosos
+    for noisy_logger in ["WDM", "urllib3", "selenium"]:
+        logging.getLogger(noisy_logger).setLevel(logging.WARNING)
 
-# Limpiar handlers previos (por si se ejecuta varias veces en el mismo intérprete)
-if logger.hasHandlers():
-    logger.handlers.clear()
-
-# Handler para archivo
-file_handler = logging.FileHandler(log_file, encoding="utf-8")
-file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
-
-# Handler para consola
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
-
-# Añadir handlers al logger raíz
-logger.addHandler(file_handler)
-logger.addHandler(console_handler)
-
-# Silenciar loggers de terceros molestos
-for noisy_logger in ["WDM", "urllib3", "selenium"]:
-    logging.getLogger(noisy_logger).setLevel(logging.WARNING)
-
-# Exportar si necesitas usar el nombre del log o timestamp
-LOG_FILE = log_file
-TIMESTAMP = timestamp
+# Exportar variables si es necesario
+LOG_FILE = log_file if 'log_file' in locals() else None
+TIMESTAMP = timestamp if 'timestamp' in locals() else None
