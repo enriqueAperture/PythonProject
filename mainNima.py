@@ -14,17 +14,16 @@ def busqueda_NIMA(NIF):
     Detecta la comunidad usando obtener_comunidad_por_nif y llama a la función correspondiente.
     Devuelve los datos en JSON.
     """
-    try:
-        comunidad = nimaFunctions.obtener_comunidad_por_nif(NIF)
-        if comunidad == "Valencia":
-            return nimaFunctions.busqueda_NIMA_Valencia(NIF)
-        elif comunidad == "Madrid":
-            return nimaFunctions.busqueda_NIMA_Madrid(NIF)
-        elif comunidad == "Castilla":
-            return nimaFunctions.busqueda_NIMA_Castilla(NIF)
-        else:
-            logging.error(f"Comunidad no válida o NIF no reconocido: {comunidad}")
-            return None
-    except Exception as e:
-        logging.error(f"Error en busqueda_NIMA: {e}")
+
+    if nimaFunctions.is_autonomo(NIF):
+        return nimaFunctions.busqueda_NIMA_autonomo(NIF)
+    comunidad = nimaFunctions.obtener_comunidad_por_nif_empresas(NIF)
+    if comunidad == "Valencia":
+        return nimaFunctions.busqueda_NIMA_Valencia(NIF)
+    elif comunidad == "Madrid":
+        return nimaFunctions.busqueda_NIMA_Madrid(NIF)
+    elif comunidad == "Castilla":
+        return nimaFunctions.busqueda_NIMA_Castilla(NIF)
+    else:
+        logging.error(f"Comunidad no válida o NIF no reconocido: {comunidad}")
         return None

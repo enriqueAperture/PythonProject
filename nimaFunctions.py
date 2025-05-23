@@ -129,26 +129,6 @@ def obtener_comunidad_por_nif_autonomos(nif) -> str:
     finally:
         driver.quit()
 
-def obtener_comunidad_por_nif(nif) -> str:
-    """
-    Devuelve la comunidad autónoma correspondiente según el tipo de NIF:
-    - Si el primer carácter es una letra, se asume empresa y llama a obtener_comunidad_por_nif_empresas.
-    - Si no, se asume autónomo y llama a obtener_comunidad_por_nif_autonomos.
-
-    Args:
-        nif (str): NIF o CIF.
-
-    Returns:
-        str: Nombre de la comunidad autónoma, o mensaje de error si no es válida.
-    """
-    if not nif:
-        return "NIF no válido"
-
-    if nif[0].isalpha():
-        return obtener_comunidad_por_nif_empresas(nif)
-    else:
-        return obtener_comunidad_por_nif_autonomos(nif)
-
 def extraer_datos_valencia(driver):
     """
     Extrae los datos principales de la ficha de un centro en la web de NIMA Valencia.
@@ -305,19 +285,24 @@ def busqueda_NIMA_Castilla(NIF):
     logging.info('Datos extraídos del Excel:')
     return datos_json
 
-def busqueda_NIMA(NIF):
+def is_autonomo(nif):
     """
-    Función principal para buscar el NIF en la web de NIMA según la comunidad autónoma.
-    Detecta la comunidad usando obtener_comunidad_por_nif y llama a la función correspondiente.
-    Devuelve los datos en JSON.
+    Verifica si el NIF es de un autónomo.
+    Un NIF de autónomo tiene 8 dígitos y termina con una letra.
     """
-    comunidad = obtener_comunidad_por_nif(NIF)
-    if comunidad == "Valencia":
-        return busqueda_NIMA_Valencia(NIF)
-    elif comunidad == "Madrid":
-        return busqueda_NIMA_Madrid(NIF)
-    elif comunidad == "Castilla":
-        return busqueda_NIMA_Castilla(NIF)
-    else:
-        logging.error(f"Comunidad no válida o NIF no reconocido: {comunidad}")
+    return not nif[0].isalpha()
+
+def busqueda_NIMA_autonomo(NIF):
+        """
+        Intenta buscar un NIF de autónomo en Valencia, luego Madrid, luego Castilla.
+        Devuelve el resultado si lo encuentra, o None si no está en ninguna comunidad.
+        """
+        for funcion_busqueda in [busqueda_NIMA_Valencia, busqueda_NIMA_Madrid, busqueda_NIMA_Castilla]:
+            try:
+                resultado = funcion_busqueda(NIF)
+                if resultado:
+                    return resultado
+            except Exception as e:
+                logging.warning(f"No se encontró en {funcion_busqueda.__name__}: {e}")
+        logging.error("No se ha encontrado el NIF en ninguna comunidad.")
         return None
