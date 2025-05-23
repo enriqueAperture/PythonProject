@@ -4,7 +4,7 @@ Para iniciar el servidor FastAPI, ejecuta el siguiente comando en la terminal:
     uvicorn server:app --reload --host 0.0.0.0 --port 8000 --reload --log-level info
 
 Ejemplo de uso del endpoint "busqueda-nima" mediante curl.exe:
-    curl.exe -X POST "http://localhost:8000/busqueda-nima" -H "Content-Type: text/plain" -d "B98969264"
+    curl.exe -X POST "http://77.224.215.45:8000/busqueda-nima" -H "Content-Type: text/plain" -d "B98969264"
 """
 
 from fastapi import FastAPI, HTTPException, Body
