@@ -1,3 +1,4 @@
+import loggerConfig
 import logging
 import nimaFunctions
 

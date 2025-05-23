@@ -86,7 +86,6 @@ def extraer_datos_valencia(driver):
 def busqueda_NIMA_Valencia(nif):
     """
     Función para buscar los datos del NIF en la web de NIMA Valencia y devolver un JSON con los datos.
-    Solo extrae los datos si encuentra el enlace del gestor.
     """
     driver = webConfiguration.configure()
     # Abrir Web y buscar NIF
