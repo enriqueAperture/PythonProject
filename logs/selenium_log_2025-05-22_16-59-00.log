@@ -1,4 +1,0 @@
-2025-05-22 16:59:03,757 - INFO - Inicializando navegador...
-2025-05-22 16:59:04,717 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
-2025-05-22 16:59:04,866 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': 'B43659549'
-2025-05-22 16:59:09,982 - ERROR - Timeout al esperar el elemento con 'css selector' = '.btn btn-sdr btn-xs'

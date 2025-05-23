@@ -10,6 +10,7 @@ Funciones principales:
     - busqueda_NIMA_Valencia(NIF): Busca un NIF en el portal de Valencia y devuelve los datos relevantes en JSON.
     - busqueda_NIMA_Madrid(NIF): Busca un NIF en el portal de Madrid y devuelve los datos relevantes en JSON.
     - busqueda_NIMA_Castilla(NIF): Busca un NIF en el portal de Castilla-La Mancha, descarga el Excel y devuelve los datos en JSON.
+    - busqueda_NIMA_Cataluña(NIF): Busca un NIF en el portal de Cataluña y devuelve los datos relevantes en JSON.
 
 Dependencias:
     - webFunctions: Funciones auxiliares para interactuar con elementos web mediante Selenium.
@@ -22,138 +23,11 @@ import logging
 import webFunctions
 import webConfiguration
 import excelFunctions
-import time
 
 URL_NIMA_CASTILLA = "https://ireno.castillalamancha.es/forms/geref000.htm"
 URL_NIMA_VALENCIA = "https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx"
 URL_NIMA_MADRID = "https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm"
 URL_NIMA_CATALUÑA = "https://sdr.arc.cat/sdr/ListNimas.do?menu=G"
-# URL_EINFORMA = "https://www.einforma.com/"
-
-CODIGOS_PROVINCIAS = {
-    # Castilla
-    "02": "Castilla",    # Albacete
-    "16": "Castilla",    # Cuenca
-    "19": "Castilla",    # Guadalajara
-    "45": "Castilla",    # Toledo
-    # Valencia
-    "03": "Valencia",    # Alicante
-    "12": "Valencia",    # Castellón
-    "43": "Valencia",    # Valencia (tecnicamente es Tarragona, pero se considera Valencia)
-    "46": "Valencia",    # Valencia
-    "53": "Valencia",
-    "54": "Valencia",
-    "96": "Valencia",
-    "97": "Valencia",
-    "98": "Valencia",
-    # Madrid
-    "28": "Madrid",      # Madrid
-    "78": "Madrid",
-    "79": "Madrid",
-    "80": "Madrid",
-    "81": "Madrid",
-    "82": "Madrid",
-    "83": "Madrid",
-    "84": "Madrid",
-    "85": "Madrid",
-    "86": "Madrid",
-    "87": "Madrid",
-    "88": "Madrid",
-    # Cataluña
-    "08": "Cataluña",    # Barcelona
-    "17": "Cataluña",    # Girona
-    "25": "Cataluña",    # Lleida
-    "43": "Cataluña",    # Tarragona
-}
-
-# PROVINCIAS_CASTILLA = ["Albacete", "Cuenca", "Guadalajara", "Toledo"]
-# PROVINCIAS_VALENCIA = ["Castellón", "Valencia", "Alicante"]
-# PROVINCIAS_MADRID = ["Madrid"]
-
-def obtener_comunidad_por_nif_empresas(nif) -> str:
-    """
-    Dado un NIF, devuelve la comunidad autónoma correspondiente según el código de provincia.
-
-    Args:
-        nif (str): NIF o CIF de la empresa.
-
-    Returns:
-        str: Nombre de la comunidad autónoma, o mensaje de error si no es válida.
-    """
-    # Extrae los dígitos del NIF y toma los dos primeros números
-    numeros = ''.join(filter(str.isdigit, nif))
-    codigo = numeros[:2] if len(numeros) >= 2 else None
-
-    return CODIGOS_PROVINCIAS.get(codigo, "Provincia no permitida o NIF no válido")
-
-# def obtener_comunidad_por_provincia(provincia: str) -> str:
-#     """
-#     Devuelve la comunidad autónoma correspondiente a una provincia.
-#     Args:
-#         provincia (str): Nombre de la provincia (puede incluir variantes como 'Valencia/València').
-#     Returns:
-#         str: Nombre de la comunidad autónoma ("Castilla", "Valencia", "Madrid") o "Provincia no reconocida".
-#     """
-#     provincia = provincia.strip().capitalize()
-#     # Normalización para casos como "Valencia/València" o "València"
-#     if "/" in provincia:
-#         provincia = provincia.split("/")[0].strip()
-#     if provincia == "València":
-#         provincia = "Valencia"
-
-#     if provincia in PROVINCIAS_CASTILLA:
-#         return "Castilla"
-#     elif provincia in PROVINCIAS_VALENCIA:
-#         return "Valencia"
-#     elif provincia in PROVINCIAS_MADRID:
-#         return "Madrid"
-#     else:
-#         return "Provincia no reconocida"
-
-# def obtener_comunidad_por_nif_autonomos(nif) -> str:
-#     """
-#     Abre einforma, busca el NIF y devuelve la comunidad autónoma (Valencia, Madrid o Castilla)
-#     según la provincia del domicilio social. Usa solo funciones de webFunctions.
-#     """
-#     driver = webConfiguration.configure()
-#     driver.get(URL_EINFORMA)
-#     webFunctions.escribir_en_elemento_por_id_y_enter(driver, "34deehen4search-text", nif)
-
-#     try:
-#         # Espera y busca el domicilio social
-#         webFunctions.esperar_elemento(driver, "xpath", "//strong[normalize-space(text())='Domicilio Social']")
-#         domicilio_label = webFunctions.encontrar_elemento(driver, "xpath", "//strong[normalize-space(text())='Domicilio Social']")
-#         domicilio_valor = webFunctions.encontrar_elemento_relativo(
-#             domicilio_label, "xpath", ".//following-sibling::a[contains(@class, 'sc-iMtUvw')]"
-#         )
-#         domicilio_texto = domicilio_valor.text.strip()
-#         provincia = domicilio_texto.split()[-1] if domicilio_texto else ""
-#         return obtener_comunidad_por_provincia(provincia)
-#     except Exception as e:
-#         logging.error(f"No se ha encontrado el domicilio social para el NIF '{nif}': {e}")
-#         return "No se ha encontrado el domicilio social para este NIF"
-#     finally:
-#         driver.quit()
-
-# def obtener_comunidad_por_nif(nif) -> str:
-#     """
-#     Devuelve la comunidad autónoma correspondiente según el tipo de NIF:
-#     - Si el primer carácter es una letra, se asume empresa y llama a obtener_comunidad_por_nif_empresas.
-#     - Si no, se asume autónomo y llama a obtener_comunidad_por_nif_autonomos.
-
-#     Args:
-#         nif (str): NIF o CIF.
-
-#     Returns:
-#         str: Nombre de la comunidad autónoma, o mensaje de error si no es válida.
-#     """
-#     if not nif:
-#         return "NIF no válido"
-
-#     if nif[0].isalpha():
-#         return obtener_comunidad_por_nif_empresas(nif)
-#     else:
-#         return obtener_comunidad_por_nif_autonomos(nif)
 
 def extraer_datos_valencia(driver):
     """
@@ -212,6 +86,7 @@ def extraer_datos_valencia(driver):
 def busqueda_NIMA_Valencia(nif):
     """
     Función para buscar los datos del NIF en la web de NIMA Valencia y devolver un JSON con los datos.
+    Solo extrae los datos si encuentra el enlace del gestor.
     """
     driver = webConfiguration.configure()
     # Abrir Web y buscar NIF
@@ -219,15 +94,20 @@ def busqueda_NIMA_Valencia(nif):
     webFunctions.escribir_en_elemento_por_id(driver, "ctl00_ContentPlaceHolder1_txtNIF", nif)
     webFunctions.clickar_boton_por_id(driver, "ctl00_ContentPlaceHolder1_btBuscar")
 
-    # Abrir la ficha del gestor
-    webFunctions.abrir_link_por_boton_id(driver, "ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor")
-
-    # Extraer los datos usando una función auxiliar
-    datos_json = extraer_datos_valencia(driver)
+    datos_json = None
+    try:
+        # Abrir la ficha del gestor solo si existe el enlace
+        webFunctions.abrir_link_por_boton_id(driver, "ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor")
+        datos_json = extraer_datos_valencia(driver)
+        logging.info("Datos de la empresa encontrados y extraídos correctamente.")
+    except Exception:
+        logging.info('ERROR: No se ha encontrado el enlace del gestor en la página.')
     driver.quit()
 
-    logging.info("Datos de la empresa encontrados y extraídos correctamente.")
-    return datos_json
+    if datos_json:
+        return datos_json
+    else:
+        return None
 
 def extraer_datos_madrid(driver):
     """
@@ -236,7 +116,7 @@ def extraer_datos_madrid(driver):
     """
     # Datos del EMA (sede)
     datos_sede = {
-        "NIF": webFunctions.leer_texto_por_campo(driver, "NIF:"),
+        "nif": webFunctions.leer_texto_por_campo(driver, "NIF:"),
         "nombre_sede": webFunctions.leer_texto_por_campo(driver, "Razón Social:"),
         "direccion_sede": webFunctions.leer_texto_por_campo(driver, "Dirección Sede:"),
         "municipio_sede": webFunctions.leer_texto_por_campo(driver, "Municipio:"),
@@ -249,7 +129,7 @@ def extraer_datos_madrid(driver):
 
     # Datos del centro
     datos_centro = {
-        "codigo_NIMA": webFunctions.leer_texto_por_campo(driver, "NIMA:"),
+        "nima": webFunctions.leer_texto_por_campo(driver, "NIMA:"),
         "direccion_centro": webFunctions.leer_texto_por_campo(driver, "Dirección Centro:"),
         "municipio_centro": webFunctions.leer_texto_por_campo(driver, "Municipio:"),
         "codigo_ine_municipio_centro": webFunctions.leer_texto_por_campo(driver, "Código INE Municipio:"),
@@ -266,6 +146,7 @@ def extraer_datos_madrid(driver):
 def busqueda_NIMA_Madrid(nif):
     """
     Función para buscar el NIF en la web de NIMA Madrid y devolver un JSON con los datos.
+    Solo extrae los datos si encuentra el botón Consultar.
     """
     driver = webConfiguration.configure()
     webFunctions.abrir_web(driver, URL_NIMA_MADRID)
@@ -275,52 +156,58 @@ def busqueda_NIMA_Madrid(nif):
     webFunctions.clickar_enlace_por_onclick(driver, "buscar('form');")
 
     # Buscar y hacer click en el botón <input> con value="Consultar"
+    datos_json = None
     try:
         webFunctions.clickar_boton_por_value(driver, "Consultar")
-        print('Click realizado en el botón Consultar.')
+        logging.info('Click realizado en el botón Consultar.')
+        # Extraer e imprimir los datos usando la función de excelFunctions
+        datos_json = extraer_datos_madrid(driver)
+        logging.info('Datos de la empresa guardados')
     except Exception:
-        print('ERROR: El botón Consultar NO está presente en la página.')
-
-    # Extraer e imprimir los datos usando la función de excelFunctions
-    datos_json = extraer_datos_madrid(driver)
+        logging.info('ERROR: El botón Consultar NO está presente en la página.')
     driver.quit()
 
-    json.dumps(datos_json, ensure_ascii=False, indent=4)
-    logging.info('Datos de la empresa guardados')
-    return datos_json
+    if datos_json:
+        json.dumps(datos_json, ensure_ascii=False, indent=4)
+        return datos_json
+    else:
+        return None
 
 def busqueda_NIMA_Castilla(nif):
     """
-    Función para buscar el los datos del NIF en la web de NIMA Castilla y devolver un JSON con los datos.
+    Función para buscar los datos del NIF en la web de NIMA Castilla y devolver un JSON con los datos.
+    Solo extrae los datos si encuentra la imagen para generar el EXCEL.
     """
     driver = webConfiguration.configure()
-    # Abrir Web
+    # Abrir Web y buscar NIF
     webFunctions.abrir_web(driver, URL_NIMA_CASTILLA)
     webFunctions.clickar_boton_por_id(driver, "enlace_gestores")
     webFunctions.escribir_en_elemento_por_id(driver, "input_NIF_CIF", nif)
     webFunctions.clickar_boton_por_id(driver, "boton_buscar")
 
-    # Esperar a que la imagen para generar el EXCEL esté presente y sea clickeable y hacer click
-    if not webFunctions.clickar_imagen_generar_excel(driver):
+    datos_json = None
+    try:
+        # Esperar a que la imagen para generar el EXCEL esté presente y sea clickeable y hacer click
+        if webFunctions.clickar_imagen_generar_excel(driver):
+            # Ahora solo espera la descarga y procesa el archivo
+            datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
+            logging.info('Datos extraídos del Excel:')
+        else:
+            logging.info('ERROR: No se ha encontrado la imagen para generar el Excel.')
+    except Exception:
+        logging.info('ERROR: No se ha podido generar o procesar el Excel.')
+    driver.quit()
+
+    if datos_json:
+        return datos_json
+    else:
         return None
 
-    # Ahora solo espera la descarga y procesa el archivo
-    datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
-    driver.quit()
-    
-    logging.info('Datos extraídos del Excel:')
-    return datos_json
-
-def busqueda_NIMA_Cataluña(nif):
+def extraer_datos_cataluña(driver, nif):
     """
-    Función para buscar el NIF en la web de NIMA Cataluña y devolver un JSON con los datos.
+    Extrae los datos principales de la ficha de un centro en la web de NIMA Cataluña.
+    Devuelve un diccionario con los datos relevantes.
     """
-    driver = webConfiguration.configure()
-    # Abrir Web
-    webFunctions.abrir_web(driver, URL_NIMA_CATALUÑA)
-    webFunctions.escribir_en_elemento_por_name(driver, "cercaNif", nif)
-    webFunctions.clickar_boton_por_texto(driver, "CERCAR")
-
     # Esperar a que aparezca el div con la clase 'col-xs-4' que contenga el NIF buscado
     selector_nif = f"//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nif:'] and contains(., '{nif}')]"
     webFunctions.esperar_elemento(driver, "xpath", selector_nif)
@@ -340,15 +227,31 @@ def busqueda_NIMA_Cataluña(nif):
     nombre_centro = None
     if "Raó social:" in texto_div_razon:
         nombre_centro = texto_div_razon.split("Raó social:")[-1].strip()
-        # Elimina saltos de línea y espacios extra
         nombre_centro = " ".join(nombre_centro.split())
 
+    return {
+        "nif": valor_nif,
+        "nima": nima,
+        "nombre_centro": nombre_centro
+    }
+
+def busqueda_NIMA_Cataluña(nif):
+    """
+    Función para buscar el NIF en la web de NIMA Cataluña y devolver un JSON con los datos.
+    Solo extrae los datos si encuentra el div con el NIF buscado.
+    """
+    driver = webConfiguration.configure()
+    webFunctions.abrir_web(driver, URL_NIMA_CATALUÑA)
+    webFunctions.escribir_en_elemento_por_name(driver, "cercaNif", nif)
+    webFunctions.clickar_boton_por_texto(driver, "CERCAR")
+
+    datos_json = None
+    try:
+        datos_json = extraer_datos_cataluña(driver, nif)
+    except Exception:
+        logging.info('ERROR: No se ha encontrado el div con el NIF buscado en la página.')
     driver.quit()
-    if valor_nif or nima or nombre_centro:
-        return {
-            "nif": valor_nif,
-            "nima": nima,
-            "nombre_centro": nombre_centro
-        }
+    if any([datos_json.get("nif"), datos_json.get("nima"), datos_json.get("nombre_centro")]) if datos_json else False:
+        return datos_json
     else:
         return None

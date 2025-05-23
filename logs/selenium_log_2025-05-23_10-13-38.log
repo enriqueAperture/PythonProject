@@ -1,0 +1,49 @@
+2025-05-23 10:13:40,219 - INFO - Inicializando navegador...
+2025-05-23 10:13:40,650 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 10:13:40,738 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'X5899717X'
+2025-05-23 10:13:40,787 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 10:13:42,965 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=3GSBsPj0ZaeDdt7VZAb6z%2blBVv6VMtf5' abierta.
+2025-05-23 10:13:42,965 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=3GSBsPj0ZaeDdt7VZAb6z%2blBVv6VMtf5' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 10:13:42,986 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,018 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 10:13:43,027 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': EL MADANI LAMHAMDI
+2025-05-23 10:13:43,043 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,072 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 10:13:43,079 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': X5899717X
+2025-05-23 10:13:43,092 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,118 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 10:13:43,122 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CALLE TEODORO LLORENTE 187
+2025-05-23 10:13:43,137 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,163 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 10:13:43,167 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46185
+2025-05-23 10:13:43,181 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,205 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 10:13:43,212 - INFO - Texto obtenido del elemento con ID 'Text8-0': POBLA DE VALLBONA, LA - VALENCIA/VALÈNCIA
+2025-05-23 10:13:43,227 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,251 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 10:13:43,255 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 632539413
+2025-05-23 10:13:43,272 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,297 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 10:13:43,301 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': EL MADANI LAMHAMDI
+2025-05-23 10:13:43,316 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,354 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 10:13:43,360 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600021491
+2025-05-23 10:13:43,371 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,396 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 10:13:43,400 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CALLE TEODORO LLORENTE 187
+2025-05-23 10:13:43,412 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,435 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 10:13:43,439 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': POBLA DE VALLBONA, LA - VALENCIA/VALÈNCIA
+2025-05-23 10:13:43,453 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,477 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 10:13:43,482 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 462021
+2025-05-23 10:13:43,494 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,517 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 10:13:43,521 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 632539413
+2025-05-23 10:13:43,534 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,555 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 10:13:43,578 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 3126/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-23 10:13:43,589 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 10:13:43,613 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-1']//span'.
+2025-05-23 10:13:43,617 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-1': 627/P03/CV - PRODUCTOR RESIDUOS NO PELIGROSOS
+2025-05-23 10:13:43,618 - INFO - Datos de la empresa encontrados y extraídos correctamente.
