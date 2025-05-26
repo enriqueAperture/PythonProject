@@ -134,7 +134,7 @@ def extraer_datos_madrid(driver):
     Devuelve un diccionario con los datos de la sede y del centro.
     """
     # Datos del EMA (sede)
-    datos_sede = {
+    datos_empresa = {
         "nif": webFunctions.leer_texto_por_campo(driver, "NIF:"),
         "nombre_sede": webFunctions.leer_texto_por_campo(driver, "Razón Social:"),
         "direccion_sede": webFunctions.leer_texto_por_campo(driver, "Dirección Sede:"),
@@ -158,37 +158,56 @@ def extraer_datos_madrid(driver):
     }
 
     return {
-        "sede": datos_sede,
+        "empresa": datos_empresa,
         "centro": datos_centro
     }
 
 def busqueda_NIMA_Madrid(nif):
     """
-    Función para buscar el NIF en la web de NIMA Madrid y devolver un JSON con los datos.
-    Solo extrae los datos si encuentra el botón Consultar.
+    Busca todos los centros asociados a un NIF en la web de NIMA Madrid y devuelve un JSON con los datos de la sede
+    y una lista de sus centros asociados.
     """
     driver = webConfiguration.configure()
     webFunctions.abrir_web(driver, URL_NIMA_MADRID)
     webFunctions.escribir_en_elemento_por_id(driver, "nif", nif)
-
-    # Buscar y hacer click en el enlace <a> con onclick="buscar('form');"
     webFunctions.clickar_enlace_por_onclick(driver, "buscar('form');")
 
-    # Buscar y hacer click en el botón <input> con value="Consultar"
-    datos_json = None
+    sede = None
+    centros = []
     try:
-        webFunctions.clickar_boton_por_value(driver, "Consultar")
-        logging.info('Click realizado en el botón Consultar.')
-        # Extraer e imprimir los datos usando la función de excelFunctions
-        datos_json = extraer_datos_madrid(driver)
-        logging.info('Datos de la empresa guardados')
-    except Exception:
-        logging.info('ERROR: El botón Consultar NO está presente en la página.')
+        # Guarda todos los onclicks de los botones de consultar
+        botones = webFunctions.encontrar_elementos(
+            driver,
+            webFunctions.By.XPATH,
+            "//input[@type='button' and @value='Consultar' and contains(@onclick, 'consultar(')]"
+        )
+        logging.info(f"Encontrados {len(botones)} centros asociados al NIF {nif}.")
+        onclicks = [boton.get_attribute("onclick") for boton in botones]
+
+        for onclick in onclicks:
+            # Siempre busca el botón por su onclick actual
+            boton = webFunctions.encontrar_elemento(
+                driver,
+                webFunctions.By.XPATH,
+                f"//input[@type='button' and @value='Consultar' and @onclick=\"{onclick}\"]"
+            )
+            boton.click()
+            datos_centro = extraer_datos_madrid(driver)
+            if datos_centro:
+                if sede is None and "sede" in datos_centro:
+                    sede = datos_centro["sede"]
+                if "centro" in datos_centro:
+                    centros.append(datos_centro["centro"])
+            driver.back()
+    except Exception as e:
+        logging.error(f"ERROR: No se han podido procesar los centros asociados: {e}")
     driver.quit()
 
-    if datos_json:
-        json.dumps(datos_json, ensure_ascii=False, indent=4)
-        return datos_json
+    if sede and centros:
+        return {
+            "sede": sede,
+            "centros": centros
+        }
     else:
         return None
 
@@ -216,6 +235,14 @@ def busqueda_NIMA_Castilla(nif):
     except Exception:
         logging.info('ERROR: No se ha podido generar o procesar el Excel.')
     driver.quit()
+
+    # --- Agregar el NIF como primer campo en la sección empresa ---
+    if datos_json and isinstance(datos_json, dict) and "empresa" in datos_json:
+        empresa = datos_json["empresa"]
+        # Crear un nuevo diccionario con el NIF como primer campo
+        nueva_empresa = {"nif": nif}
+        nueva_empresa.update(empresa)
+        datos_json["empresa"] = nueva_empresa
 
     if datos_json:
         return datos_json

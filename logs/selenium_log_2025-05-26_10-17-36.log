@@ -1,0 +1,41 @@
+2025-05-26 10:17:38,869 - INFO - Inicializando navegador...
+2025-05-26 10:17:39,115 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-26 10:17:39,183 - INFO - Se escribió texto en el elemento localizado por id='nif': 'B86681426'
+2025-05-26 10:17:39,232 - INFO - Elemento clickado con 'xpath' = '//a[@onclick="buscar('form');"]'.
+2025-05-26 10:17:39,335 - INFO - 3 elementos encontrados con 'xpath' = '//input[@type='button' and @value='Consultar' and contains(@onclick, 'consultar(')]'.
+2025-05-26 10:17:39,335 - INFO - Encontrados 3 centros asociados al NIF B86681426.
+2025-05-26 10:17:39,456 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='NIF:']]'.
+2025-05-26 10:17:39,480 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Razón Social:']]'.
+2025-05-26 10:17:39,521 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Dirección Sede:']]'.
+2025-05-26 10:17:39,541 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Municipio:']]'.
+2025-05-26 10:17:39,561 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Municipio:']]'.
+2025-05-26 10:17:39,581 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='CP:']]'.
+2025-05-26 10:17:39,605 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Provincia:']]'.
+2025-05-26 10:17:39,628 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Provincia:']]'.
+2025-05-26 10:17:39,649 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Denominación del Centro:']]'.
+2025-05-26 10:17:39,668 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='NIMA:']]'.
+2025-05-26 10:17:39,688 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Dirección Centro:']]'.
+2025-05-26 10:17:39,718 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Municipio:']]'.
+2025-05-26 10:17:39,735 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Municipio:']]'.
+2025-05-26 10:17:39,750 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='CP:']]'.
+2025-05-26 10:17:39,765 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Provincia:']]'.
+2025-05-26 10:17:39,781 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Provincia:']]'.
+2025-05-26 10:17:39,836 - INFO - 3 elementos encontrados con 'xpath' = '//input[@type='button' and @value='Consultar' and contains(@onclick, 'consultar(')]'.
+2025-05-26 10:17:39,960 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='NIF:']]'.
+2025-05-26 10:17:39,977 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Razón Social:']]'.
+2025-05-26 10:17:39,993 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Dirección Sede:']]'.
+2025-05-26 10:17:40,009 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Municipio:']]'.
+2025-05-26 10:17:40,023 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Municipio:']]'.
+2025-05-26 10:17:40,038 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='CP:']]'.
+2025-05-26 10:17:40,051 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Provincia:']]'.
+2025-05-26 10:17:40,066 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Provincia:']]'.
+2025-05-26 10:17:40,081 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Denominación del Centro:']]'.
+2025-05-26 10:17:40,110 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='NIMA:']]'.
+2025-05-26 10:17:40,125 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Dirección Centro:']]'.
+2025-05-26 10:17:40,140 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Municipio:']]'.
+2025-05-26 10:17:40,155 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Municipio:']]'.
+2025-05-26 10:17:40,169 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='CP:']]'.
+2025-05-26 10:17:40,183 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Provincia:']]'.
+2025-05-26 10:17:40,198 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Provincia:']]'.
+2025-05-26 10:17:40,246 - INFO - 3 elementos encontrados con 'xpath' = '//input[@type='button' and @value='Consultar' and contains(@onclick, 'consultar(')]'.
+2025-05-26 10:17:40,246 - ERROR - ERROR: No se han podido procesar los centros asociados: list index out of range

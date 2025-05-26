@@ -1,0 +1,11 @@
+2025-05-26 13:00:15,035 - INFO - Inicializando navegador...
+2025-05-26 13:00:15,259 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-26 13:00:15,355 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-26 13:00:15,921 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'B45578069'
+2025-05-26 13:00:15,969 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-26 13:00:22,708 - INFO - Click realizado en la imagen para generar el EXCEL.
+2025-05-26 13:00:22,708 - INFO - Esperando la descarga del EXCEL...
+2025-05-26 13:00:23,709 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Resumen.xls
+2025-05-26 13:00:23,724 - INFO - Datos extraídos del Excel.
+2025-05-26 13:00:23,725 - ERROR - No se pudo eliminar el archivo: C:\Users\Usuario\Downloads\Resumen.xls. Error: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Usuario\\Downloads\\Resumen.xls'
+2025-05-26 13:00:23,725 - INFO - Datos extraídos del Excel:

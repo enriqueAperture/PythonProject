@@ -357,45 +357,54 @@ def añadirCentros(driver: webdriver.Chrome, centro_añadir: pandas.DataFrame) -
 
 
 def extraer_datos_centro_castilla_desde_excel(ruta_excel):
-    """
-    Lee un archivo Excel (.xls) con los datos de un centro de Castilla-La Mancha, convierte el archivo a formato .xlsx,
-    y extrae los datos relevantes de la segunda fila como diccionario.
 
-    Args:
-        ruta_excel (str): Ruta al archivo Excel (.xls) descargado.
-
-    Returns:
-        dict: Diccionario con los datos extraídos del centro.
-    """
     datos_castilla = pandas.read_excel(ruta_excel, header=1)
-    ruta_xlsx = ruta_excel.replace('.xls', '.xlsx')
-    datos_castilla.to_excel(ruta_xlsx, index=False)
-    fila = datos_castilla.iloc[1]
-    datos = {
-        "DOMICILIO": fila.get('DOMICILIO', ''),
-        "NIMA": int(fila.get('NIMA ', 0)),
-        "nombre_EMA": fila.get('NOMBRE', ''),
-        "provincia_EMA": fila.get('PROVINCIA', ''),
-        "localidad_EMA": fila.get('LOCALIDAD', ''),
-        "telefono_EMA": int(fila.get('TELÉFONO', 0)),
-        "email_EMA": fila.get('E-MAIL', '')
+    datos_castilla.columns = [str(col).strip() for col in datos_castilla.columns]
+
+    # Filtra filas donde la primera columna es un entero positivo
+    primera_columna = datos_castilla.columns[0]
+    filas_naturales = datos_castilla[datos_castilla[primera_columna].apply(
+        lambda x: isinstance(x, (int, float)) and x > 0 and float(x).is_integer()
+    )]
+
+    # --- Sede (toma la primera fila válida como ejemplo) ---
+    if not filas_naturales.empty:
+        fila_sede = filas_naturales.iloc[0]
+        sede = {
+            "nombre": fila_sede.get('NOMBRE', ''),
+            "nima": int(fila_sede.get('NIMA', 0)),
+            "teléfono": int(fila_sede.get('TELÉFONO', 0)),
+            "direccion": fila_sede.get('DOMICILIO', ''),
+            "municipio": fila_sede.get('LOCALIDAD', ''),
+            "provincia": fila_sede.get('PROVINCIA', ''),
+            "email": fila_sede.get('E-MAIL', '')
+        }
+    else:
+        sede = {}
+
+    # --- Centros ---
+    centros = []
+    for _, fila in filas_naturales.iterrows():
+        centro = {
+            "nombre": fila_sede.get('NOMBRE', ''),
+            "nima": int(fila_sede.get('NIMA', 0)),
+            "teléfono": int(fila_sede.get('TELÉFONO', 0)),
+            "direccion": fila_sede.get('DOMICILIO', ''),
+            "municipio": fila_sede.get('LOCALIDAD', ''),
+            "provincia": fila_sede.get('PROVINCIA', ''),
+            "email": fila_sede.get('E-MAIL', '')
+        }
+        centros.append(centro)
+
+    resultado = {
+        "empresa": sede,
+        "centros": centros
     }
-    return datos
+    return resultado
 
 
 def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
-    """
-    Espera a que se descargue un archivo con la extensión indicada en la carpeta de descargas,
-    extrae los datos relevantes del Excel y devuelve el resultado en formato JSON.
-    Después borra el archivo descargado y el .xlsx generado.
-
-    Args:
-        extension (str): Extensión del archivo a buscar (por defecto ".xls").
-        timeout (int): Tiempo máximo de espera en segundos.
-
-    Returns:
-        str: Cadena JSON con los datos extraídos del centro, o None si falla la descarga.
-    """
+    import glob, os, time, logging
 
     carpeta_descargas = os.path.join(os.path.expanduser("~"), "Downloads")
     tiempo_inicio = time.time()
@@ -422,8 +431,7 @@ def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
 
     logging.info(f"Archivo descargado: {archivo_final}")
     datos_dict = extraer_datos_centro_castilla_desde_excel(archivo_final)
-    datos_json = json.dumps(datos_dict, ensure_ascii=False, indent=4)
-    logging.info("Datos extraídos del Excel y convertidos a JSON.")
+    logging.info("Datos extraídos del Excel.")
 
     # Borrar el archivo .xls
     try:
@@ -441,4 +449,4 @@ def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
         except Exception as e:
             logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
 
-    return datos_json
+    return datos_dict
