@@ -1,0 +1,490 @@
+2025-05-23 13:20:40,702 - INFO - Inicializando navegador...
+2025-05-23 13:20:42,146 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 13:20:42,227 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'X6459786Y'
+2025-05-23 13:20:42,275 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 13:20:44,202 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=VxnttcH%2fGI1b%2bcRgBl5BbO8vuh0kIt%2b1' abierta.
+2025-05-23 13:20:44,203 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=VxnttcH%2fGI1b%2bcRgBl5BbO8vuh0kIt%2b1' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 13:20:44,219 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,266 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 13:20:44,273 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': BORISLAV DIMITROV BORISOV
+2025-05-23 13:20:44,289 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,314 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 13:20:44,319 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': X6459786Y
+2025-05-23 13:20:44,332 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,354 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 13:20:44,358 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CARRER ELS FERRERS 4
+2025-05-23 13:20:44,372 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,395 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 13:20:44,399 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46724
+2025-05-23 13:20:44,412 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,433 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 13:20:44,438 - INFO - Texto obtenido del elemento con ID 'Text8-0': ALMOINES - VALENCIA/VALÈNCIA
+2025-05-23 13:20:44,450 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,473 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 13:20:44,478 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 635553251
+2025-05-23 13:20:44,490 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,513 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 13:20:44,517 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': BORISLAV DIMITROV BORISOV TALLER AUTOMAX
+2025-05-23 13:20:44,529 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,551 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 13:20:44,555 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600025362
+2025-05-23 13:20:44,566 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,587 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 13:20:44,591 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CARRER ELS FERRERS 4    BJ
+2025-05-23 13:20:44,603 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,626 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 13:20:44,631 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': ALMOINES - VALENCIA/VALÈNCIA
+2025-05-23 13:20:44,642 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,665 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 13:20:44,669 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 460348
+2025-05-23 13:20:44,680 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,702 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 13:20:44,706 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': -
+2025-05-23 13:20:44,718 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,740 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 13:20:44,745 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 40504/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-23 13:20:44,756 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:44,780 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-1']//span'.
+2025-05-23 13:20:44,784 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-1': 7588/P04/CV - PEQUEÑO PRODUCT.RESID.NO PELIGROSOS
+2025-05-23 13:20:44,785 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-23 13:20:48,801 - INFO - Inicializando navegador...
+2025-05-23 13:20:49,931 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 13:20:50,015 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B96235379'
+2025-05-23 13:20:50,064 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 13:20:51,921 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=Sd97kIubQ8emEOcmCVDkc5aShim3GvHZ' abierta.
+2025-05-23 13:20:51,921 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=Sd97kIubQ8emEOcmCVDkc5aShim3GvHZ' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 13:20:51,950 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:51,978 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 13:20:52,000 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': MARTINEZ AÑON, S.L.
+2025-05-23 13:20:52,014 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,038 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 13:20:52,044 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B96235379
+2025-05-23 13:20:52,057 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,082 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 13:20:52,086 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': AVENIDA POBLE NOU, 112
+2025-05-23 13:20:52,100 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,124 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 13:20:52,130 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46230
+2025-05-23 13:20:52,142 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,168 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 13:20:52,172 - INFO - Texto obtenido del elemento con ID 'Text8-0': ALGINET - VALENCIA/VALÈNCIA
+2025-05-23 13:20:52,187 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,209 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 13:20:52,215 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 961751188
+2025-05-23 13:20:52,227 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,251 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 13:20:52,255 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': MARTINEZ AÑON, S.L.
+2025-05-23 13:20:52,267 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,290 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 13:20:52,295 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600002419
+2025-05-23 13:20:52,306 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,329 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 13:20:52,333 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': AVENIDA POBLE NOU, 112
+2025-05-23 13:20:52,345 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,367 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 13:20:52,371 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': ALGINET - VALENCIA/VALÈNCIA
+2025-05-23 13:20:52,384 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,406 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 13:20:52,411 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 460312
+2025-05-23 13:20:52,422 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,445 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 13:20:52,449 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 961751188
+2025-05-23 13:20:52,460 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:52,482 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 13:20:52,487 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 24341/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-23 13:20:52,499 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:20:57,649 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-23 13:20:57,650 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-23 13:20:57,650 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-23 13:21:01,606 - INFO - Inicializando navegador...
+2025-05-23 13:21:02,718 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 13:21:02,785 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B96432539'
+2025-05-23 13:21:02,831 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 13:21:05,202 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=jcoX5G%2bcrj%2fG6T2fMc3dhUUFLOzdOYxY' abierta.
+2025-05-23 13:21:05,202 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=jcoX5G%2bcrj%2fG6T2fMc3dhUUFLOzdOYxY' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 13:21:05,217 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,247 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 13:21:05,254 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': ANYMORE TRANSPORTE, S.L.
+2025-05-23 13:21:05,267 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,291 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 13:21:05,296 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B96432539
+2025-05-23 13:21:05,307 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,333 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 13:21:05,337 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CALLE VIA DE BILBAO 42
+2025-05-23 13:21:05,349 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,372 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 13:21:05,378 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46980
+2025-05-23 13:21:05,390 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,416 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 13:21:05,420 - INFO - Texto obtenido del elemento con ID 'Text8-0': PATERNA - VALENCIA/VALÈNCIA
+2025-05-23 13:21:05,432 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,455 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 13:21:05,462 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 963670688
+2025-05-23 13:21:05,475 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,498 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 13:21:05,502 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': ANYMORE TRANSPORTE, S.L.
+2025-05-23 13:21:05,514 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,536 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 13:21:05,541 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600023786
+2025-05-23 13:21:05,553 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,574 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 13:21:05,597 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CALLE VIA DE BILBAO 42
+2025-05-23 13:21:05,608 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,631 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 13:21:05,635 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': PATERNA - VALENCIA/VALÈNCIA
+2025-05-23 13:21:05,646 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,669 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 13:21:05,672 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 461901
+2025-05-23 13:21:05,684 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,706 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 13:21:05,711 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 963670688
+2025-05-23 13:21:05,722 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,745 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 13:21:05,750 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 1412/T01/CV - TRANSPORTISTA RESIDUOS PELIGROSOS
+2025-05-23 13:21:05,762 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:05,784 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-1']//span'.
+2025-05-23 13:21:05,788 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-1': 3555/T02/CV - TRANSPORTISTA RESID. NO PELIGROSOS
+2025-05-23 13:21:05,789 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-23 13:21:09,731 - INFO - Inicializando navegador...
+2025-05-23 13:21:10,891 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 13:21:10,980 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': '53754876N'
+2025-05-23 13:21:11,027 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 13:21:12,759 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=jKS8VzOUNvi%2bH%2fgb0UCavrY4XhAqT1oh' abierta.
+2025-05-23 13:21:12,759 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=jKS8VzOUNvi%2bH%2fgb0UCavrY4XhAqT1oh' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 13:21:12,774 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:12,802 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 13:21:12,811 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': SERGIO CAMPOY MOLINA
+2025-05-23 13:21:12,822 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:12,848 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 13:21:12,852 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': 53754876N
+2025-05-23 13:21:12,864 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:12,888 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 13:21:12,892 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': AVENIDA BLASCO IBÁÑEZ 85
+2025-05-23 13:21:12,906 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:12,930 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 13:21:12,934 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46920
+2025-05-23 13:21:12,947 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:12,970 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 13:21:12,974 - INFO - Texto obtenido del elemento con ID 'Text8-0': MISLATA - VALENCIA/VALÈNCIA
+2025-05-23 13:21:12,986 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:13,013 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 13:21:13,017 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 697217098
+2025-05-23 13:21:13,030 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:13,052 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 13:21:13,056 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': VIRCAM
+2025-05-23 13:21:13,070 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:13,093 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 13:21:13,097 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600035385
+2025-05-23 13:21:13,108 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:13,130 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 13:21:13,135 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': AVENIDA BLASCO IBÁÑEZ 85
+2025-05-23 13:21:13,147 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:13,169 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 13:21:13,173 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': MISLATA - VALENCIA/VALÈNCIA
+2025-05-23 13:21:13,184 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:13,207 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 13:21:13,212 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 461691
+2025-05-23 13:21:13,223 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:13,246 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 13:21:13,250 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 697217098
+2025-05-23 13:21:13,262 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:13,284 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 13:21:13,288 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 34895/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-23 13:21:13,300 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:13,323 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-1']//span'.
+2025-05-23 13:21:13,329 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-1': 4512/P04/CV - PEQUEÑO PRODUCT.RESID.NO PELIGROSOS
+2025-05-23 13:21:13,330 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-23 13:21:17,243 - INFO - Inicializando navegador...
+2025-05-23 13:21:18,606 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 13:21:18,694 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': '54865598H'
+2025-05-23 13:21:18,742 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 13:21:20,504 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=nihTWMjqVsxaBUqhRBw%2fbfbrzSMRHHQd' abierta.
+2025-05-23 13:21:20,504 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=nihTWMjqVsxaBUqhRBw%2fbfbrzSMRHHQd' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 13:21:20,520 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,549 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 13:21:20,557 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': MOHAMED KHAYAT CHETOUAN
+2025-05-23 13:21:20,570 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,595 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 13:21:20,599 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': 54865598H
+2025-05-23 13:21:20,612 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,635 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 13:21:20,639 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CALLE EL TORO 9
+2025-05-23 13:21:20,652 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,674 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 13:21:20,680 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 12410
+2025-05-23 13:21:20,691 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,716 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 13:21:20,720 - INFO - Texto obtenido del elemento con ID 'Text8-0': ALTURA - CASTELLÓN/CASTELLÓ
+2025-05-23 13:21:20,734 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,756 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 13:21:20,761 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 643225162
+2025-05-23 13:21:20,774 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,797 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 13:21:20,801 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': MOHAMED KHAYAT CHETOUAN
+2025-05-23 13:21:20,813 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,836 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 13:21:20,840 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 1200009746
+2025-05-23 13:21:20,852 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,874 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 13:21:20,879 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CALLE EL TORO 9
+2025-05-23 13:21:20,889 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,913 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 13:21:20,917 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': ALTURA - CASTELLÓN/CASTELLÓ
+2025-05-23 13:21:20,929 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,952 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 13:21:20,956 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 120120
+2025-05-23 13:21:20,968 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:20,990 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 13:21:20,995 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 643225162
+2025-05-23 13:21:21,006 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:21,029 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 13:21:21,033 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 38739/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-23 13:21:21,045 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:21,068 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-1']//span'.
+2025-05-23 13:21:21,072 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-1': 6145/P04/CV - PEQUEÑO PRODUCT.RESID.NO PELIGROSOS
+2025-05-23 13:21:21,073 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-23 13:21:25,028 - INFO - Inicializando navegador...
+2025-05-23 13:21:26,124 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 13:21:26,192 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': '20020676G'
+2025-05-23 13:21:26,238 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 13:21:28,431 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=ZmTUy2A9bZfAVFqDeHTcv2zh0KkXxGUT' abierta.
+2025-05-23 13:21:28,431 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=ZmTUy2A9bZfAVFqDeHTcv2zh0KkXxGUT' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 13:21:28,453 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,481 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 13:21:28,489 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': FRANCISCO DE BORJA LLORENS BEMAVENT
+2025-05-23 13:21:28,502 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,525 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 13:21:28,530 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': 20020676G
+2025-05-23 13:21:28,543 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,567 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 13:21:28,571 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CARRETERA DENIA 76
+2025-05-23 13:21:28,586 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,607 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 13:21:28,614 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46780
+2025-05-23 13:21:28,625 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,648 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 13:21:28,652 - INFO - Texto obtenido del elemento con ID 'Text8-0': OLIVA - VALENCIA/VALÈNCIA
+2025-05-23 13:21:28,665 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,687 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 13:21:28,691 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 663973548
+2025-05-23 13:21:28,706 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,730 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 13:21:28,734 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': FRANCISCO DE BORJA LLORENS BEMAVENT
+2025-05-23 13:21:28,745 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,768 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 13:21:28,772 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600012217
+2025-05-23 13:21:28,786 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,809 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 13:21:28,814 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CTRA DENIA, 76
+2025-05-23 13:21:28,825 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,847 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 13:21:28,851 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': OLIVA - VALENCIA/VALÈNCIA
+2025-05-23 13:21:28,862 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,884 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 13:21:28,888 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 461810
+2025-05-23 13:21:28,900 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,923 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 13:21:28,952 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 962850819
+2025-05-23 13:21:28,964 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:28,986 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 13:21:28,990 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 4217/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-23 13:21:29,023 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:34,129 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-23 13:21:34,131 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-23 13:21:34,131 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-23 13:21:38,135 - INFO - Inicializando navegador...
+2025-05-23 13:21:39,351 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 13:21:39,429 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': '11128368W'
+2025-05-23 13:21:39,478 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 13:21:41,397 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=7nUhjBxRgF%2bLlkcBT3dV18ecrj8wAXwL' abierta.
+2025-05-23 13:21:41,398 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=7nUhjBxRgF%2bLlkcBT3dV18ecrj8wAXwL' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 13:21:41,412 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,438 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 13:21:41,446 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': ALEXANDER MORENO CARABALI
+2025-05-23 13:21:41,458 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,483 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 13:21:41,487 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': 11128368W
+2025-05-23 13:21:41,500 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,523 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 13:21:41,528 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CAMI VELL D'ALBAL 101
+2025-05-23 13:21:41,557 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,582 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 13:21:41,586 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46469
+2025-05-23 13:21:41,598 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,620 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 13:21:41,624 - INFO - Texto obtenido del elemento con ID 'Text8-0': BENIPARRELL - VALENCIA/VALÈNCIA
+2025-05-23 13:21:41,637 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,658 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 13:21:41,665 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 960496735
+2025-05-23 13:21:41,677 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,700 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 13:21:41,704 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': ALEXANDER MORENO CARABALÍ
+2025-05-23 13:21:41,716 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,756 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 13:21:41,760 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600036589
+2025-05-23 13:21:41,772 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,794 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 13:21:41,799 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CAMINO VELL D'ALBAL 101    BJ
+2025-05-23 13:21:41,810 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,832 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 13:21:41,836 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': BENIPARRELL - VALENCIA/VALÈNCIA
+2025-05-23 13:21:41,848 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,871 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 13:21:41,875 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 460654
+2025-05-23 13:21:41,887 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,911 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 13:21:41,917 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 960496735
+2025-05-23 13:21:41,930 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:41,951 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 13:21:41,955 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 44475/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-23 13:21:41,967 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:47,095 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-23 13:21:47,096 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-23 13:21:47,096 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-23 13:21:51,053 - INFO - Inicializando navegador...
+2025-05-23 13:21:52,278 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 13:21:52,361 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'J05340013'
+2025-05-23 13:21:52,408 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 13:21:54,294 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=dczIQGYOQWVcWhCcOZ68wUkMarjuLxRo' abierta.
+2025-05-23 13:21:54,295 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=dczIQGYOQWVcWhCcOZ68wUkMarjuLxRo' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 13:21:54,313 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,338 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 13:21:54,346 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': AUTO SPORT MIRAMAR, S.C
+2025-05-23 13:21:54,357 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,381 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 13:21:54,386 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': J05340013
+2025-05-23 13:21:54,398 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,421 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 13:21:54,425 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CALLE GANDIA - PLANTA BAJA  20
+2025-05-23 13:21:54,439 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,465 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 13:21:54,469 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46711
+2025-05-23 13:21:54,482 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,504 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 13:21:54,509 - INFO - Texto obtenido del elemento con ID 'Text8-0': MIRAMAR - VALENCIA/VALÈNCIA
+2025-05-23 13:21:54,521 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,544 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 13:21:54,550 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 610944936
+2025-05-23 13:21:54,561 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,584 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 13:21:54,588 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': AUTO SPORT MIRAMAR, S.C
+2025-05-23 13:21:54,600 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,624 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 13:21:54,629 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600041571
+2025-05-23 13:21:54,643 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,665 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 13:21:54,670 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CALLE GANDIA - PLANTA BAJA 20
+2025-05-23 13:21:54,681 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,704 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 13:21:54,709 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': MIRAMAR - VALENCIA/VALÈNCIA
+2025-05-23 13:21:54,723 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,746 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 13:21:54,750 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 461688
+2025-05-23 13:21:54,761 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,784 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 13:21:54,788 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 610944936
+2025-05-23 13:21:54,801 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:54,851 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 13:21:54,855 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 40699/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-23 13:21:54,866 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:21:59,998 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-23 13:22:00,000 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-23 13:22:00,000 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-23 13:22:03,940 - INFO - Inicializando navegador...
+2025-05-23 13:22:05,029 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 13:22:05,095 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': '48436087L'
+2025-05-23 13:22:05,142 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 13:22:07,412 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=sOykRUsHQQvLJIzfjYFI9irS%2bXkeanA2' abierta.
+2025-05-23 13:22:07,412 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=sOykRUsHQQvLJIzfjYFI9irS%2bXkeanA2' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 13:22:07,428 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,456 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 13:22:07,464 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': FRANCISCO JOSE ALCAÑIZ SERRA
+2025-05-23 13:22:07,476 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,502 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 13:22:07,506 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': 48436087L
+2025-05-23 13:22:07,522 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,547 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 13:22:07,551 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CALLE SAN AGUSTIN, 36
+2025-05-23 13:22:07,566 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,587 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 13:22:07,591 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46111
+2025-05-23 13:22:07,604 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,629 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 13:22:07,633 - INFO - Texto obtenido del elemento con ID 'Text8-0': ROCAFORT - VALENCIA/VALÈNCIA
+2025-05-23 13:22:07,645 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,667 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 13:22:07,671 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 608524863
+2025-05-23 13:22:07,685 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,709 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 13:22:07,714 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': FRANCISCO JOSE ALCAÑIZ SERRA
+2025-05-23 13:22:07,726 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,750 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 13:22:07,754 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600021469
+2025-05-23 13:22:07,765 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,789 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 13:22:07,793 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CALLE SAN AGUSTIN, 36
+2025-05-23 13:22:07,805 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,828 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 13:22:07,834 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': ROCAFORT - VALENCIA/VALÈNCIA
+2025-05-23 13:22:07,845 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,867 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 13:22:07,871 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 462166
+2025-05-23 13:22:07,883 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,904 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 13:22:07,909 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 608524863
+2025-05-23 13:22:07,921 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:07,944 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 13:22:07,948 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 3087/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-23 13:22:07,960 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:13,063 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-23 13:22:13,064 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-23 13:22:13,065 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-23 13:22:17,043 - INFO - Inicializando navegador...
+2025-05-23 13:22:18,251 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-23 13:22:18,322 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': '52948334B'
+2025-05-23 13:22:18,372 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-23 13:22:20,947 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=5O1xSXGotPjVK1iiMiyPN%2f%2bt3wj7l1wX' abierta.
+2025-05-23 13:22:20,948 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=5O1xSXGotPjVK1iiMiyPN%2f%2bt3wj7l1wX' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-23 13:22:20,963 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:20,990 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-23 13:22:20,998 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': ENRIQUE JOSE LLORET FERRER
+2025-05-23 13:22:21,011 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,035 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-23 13:22:21,039 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': 52948334B
+2025-05-23 13:22:21,051 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,078 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-23 13:22:21,083 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CALLE VAZQUEZ DE MELLA 95-97
+2025-05-23 13:22:21,095 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,119 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-23 13:22:21,123 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 12540
+2025-05-23 13:22:21,135 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,162 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-23 13:22:21,167 - INFO - Texto obtenido del elemento con ID 'Text8-0': VILA-REAL - CASTELLÓN/CASTELLÓ
+2025-05-23 13:22:21,181 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,204 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-23 13:22:21,209 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 964521642
+2025-05-23 13:22:21,222 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,246 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-23 13:22:21,251 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': ENRIQUE JOSE LLORET FERRER
+2025-05-23 13:22:21,262 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,286 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-23 13:22:21,290 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 1200001623
+2025-05-23 13:22:21,303 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,326 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-23 13:22:21,331 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': VAZQUEZ DE MELLA, 95
+2025-05-23 13:22:21,341 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,374 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-23 13:22:21,378 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': VILA-REAL - CASTELLÓN/CASTELLÓ
+2025-05-23 13:22:21,389 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,413 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-23 13:22:21,417 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 121359
+2025-05-23 13:22:21,429 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,451 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-23 13:22:21,455 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 964521642
+2025-05-23 13:22:21,466 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:21,489 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-23 13:22:21,494 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 2331/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-23 13:22:21,506 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-23 13:22:26,640 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-23 13:22:26,641 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-23 13:22:26,641 - INFO - Datos de la empresa encontrados y extraídos correctamente.
