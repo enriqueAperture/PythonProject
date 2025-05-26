@@ -646,7 +646,7 @@ def seleccionar_elemento(driver: webdriver.Chrome, by: By, value: str, opcion: s
         logging.error(f"Falló al seleccionar la opción '{opcion}' en el elemento con '{by}' = '{value}': {e}")
         raise
 
-def seleccionar_elemento_por_texto(driver: webdriver.Chrome, by: By, value: str, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+def seleccionar_elemento_por_texto(driver: webdriver.Chrome, link_text: str, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
     Alias de seleccionar_elemento.
 
@@ -659,7 +659,7 @@ def seleccionar_elemento_por_texto(driver: webdriver.Chrome, by: By, value: str,
         texto (str): Texto visible de la opción a seleccionar.
         timeout (int, optional): Tiempo máximo de espera en segundos.
     """
-    seleccionar_elemento(driver, by, value, texto, timeout)
+    seleccionar_elemento(driver, By.LINK_TEXT, value, texto, timeout)
 
 def seleccionar_elemento_por_class(driver: webdriver.Chrome, class_name: str, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
@@ -697,7 +697,7 @@ def seleccionar_elemento_por_nombre(driver: webdriver.Chrome, name: str, opcion:
     """
     seleccionar_elemento(driver, By.NAME, name, opcion, timeout)
 
-def seleccionar_elemento_por_tag_name(driver: webdriver.Chrome, tag_name: str, opcion: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+def seleccionar_elemento_por_name(driver: webdriver.Chrome, name: str, opcion: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
     Selecciona una opción en un <select> localizado por su tag name utilizando el texto visible.
 
@@ -707,7 +707,7 @@ def seleccionar_elemento_por_tag_name(driver: webdriver.Chrome, tag_name: str, o
         opcion (str): Texto visible de la opción a seleccionar.
         timeout (int, optional): Tiempo máximo de espera en segundos.
     """
-    seleccionar_elemento(driver, By.TAG_NAME, tag_name, opcion, timeout)
+    seleccionar_elemento(driver, By.NAME, name, opcion, timeout)
 
 def encontrar_pop_up(driver: webdriver.Chrome, pop_up: str) -> webdriver.remote.webelement.WebElement:
     """
@@ -816,3 +816,62 @@ def leer_texto_por_campo(driver, campo, timeout=5):
     except Exception as e:
         logging.error(f"Error al leer el campo '{campo}': {e}")
         return None
+
+def completar_campo_y_confirmar_seleccion(driver: webdriver.Chrome, buscar_por: By, locator: str, texto: str, boton_confirmacion_locator: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Ingresa un valor en un campo (usando el método especificado y locator),
+    espera un breve lapso y luego hace click en un botón de confirmación identificado por su locator.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del WebDriver.
+        buscar_por (By): Método de búsqueda para el campo (By.NAME, By.ID, etc.).
+        locator (str): Valor del locator para el campo.
+        texto (str): Texto a ingresar.
+        boton_confirmacion_locator (str): Valor del locator del botón de confirmación (se asume se buscará por clase).
+        delay (int, optional): Tiempo en segundos a esperar antes del click. Por defecto es 1.
+
+    Raises:
+        Exception: Si ocurre algún error en alguna de las acciones.
+    """
+    escribir_en_elemento(driver, buscar_por, locator, texto, timeout)
+    time.sleep(1)
+    clickar_boton_por_clase(driver, boton_confirmacion_locator, timeout)
+
+def completar_campo_y_confirmar_seleccion_por_name(driver: webdriver.Chrome, nombre: str, texto: str, boton_confirmacion_locator: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Wrapper que completa un campo identificado por su atributo name y confirma la selección.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del WebDriver.
+        nombre (str): Valor del atributo name del campo.
+        texto (str): Texto a ingresar.
+        boton_confirmacion_locator (str): Clase CSS del botón de confirmación.
+        delay (int, optional): Tiempo en segundos a esperar antes de hacer click.
+    """
+    completar_campo_y_confirmar_seleccion(driver, By.NAME, nombre, texto, boton_confirmacion_locator, timeout)
+
+def completar_campo_y_confirmar_seleccion_por_id(driver: webdriver.Chrome, id_value: str, texto: str, boton_confirmacion_locator: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Wrapper que completa un campo identificado por su atributo id y confirma la selección.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del WebDriver.
+        id_value (str): Valor del atributo id del campo.
+        texto (str): Texto a ingresar.
+        boton_confirmacion_locator (str): Clase CSS del botón de confirmación.
+        delay (int, optional): Tiempo en segundos a esperar antes de hacer click.
+    """
+    completar_campo_y_confirmar_seleccion(driver, By.ID, id_value, texto, boton_confirmacion_locator, timeout)
+
+def completar_campo_y_confirmar_seleccion_por_class(driver: webdriver.Chrome, class_name: str, texto: str, boton_confirmacion_locator: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Wrapper que completa un campo identificado por su clase CSS y confirma la selección.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del WebDriver.
+        class_name (str): Nombre de la clase CSS del campo.
+        texto (str): Texto a ingresar.
+        boton_confirmacion_locator (str): Clase CSS del botón de confirmación.
+        delay (int, optional): Tiempo en segundos a esperar antes de hacer click.
+    """
+    completar_campo_y_confirmar_seleccion(driver, By.CLASS_NAME, class_name, texto, boton_confirmacion_locator, timeout)

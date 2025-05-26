@@ -173,10 +173,7 @@ def añadirEmpresas(driver: webdriver.Chrome, empresas_añadir: pandas.DataFrame
             webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", empresa["direccion_recogida"])
             
             # 6. Completar el campo Municipio
-            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_ine_municipio", str(empresa["poblacion_recogida"]).rstrip())
-            time.sleep(1)
-            # Buscar si hay una tilde en el nombre de la población y cortar el string en ese punto
-            webFunctions.clickar_boton_por_clase(driver, "ui-a-value")
+            webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_municipio", str(empresa["poblacion_recogida"]).rstrip(), "ui-a-value")
 
             # 7. Completar el campo Provincia
             webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", empresa["provincia_recogida"])
