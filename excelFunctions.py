@@ -357,42 +357,48 @@ def añadirCentros(driver: webdriver.Chrome, centro_añadir: pandas.DataFrame) -
 
 
 def extraer_datos_centro_castilla_desde_excel(ruta_excel):
-
+    """
+    Lee un archivo Excel (.xls) y devuelve un JSON estructurado con la información de la sede y los centros.
+    """
     datos_castilla = pandas.read_excel(ruta_excel, header=1)
-    datos_castilla.columns = [str(col).strip() for col in datos_castilla.columns]
+    ruta_xlsx = ruta_excel.replace('.xls', '.xlsx')
+    datos_castilla.to_excel(ruta_xlsx, index=False)
 
-    # Filtra filas donde la primera columna es un entero positivo
-    primera_columna = datos_castilla.columns[0]
-    filas_naturales = datos_castilla[datos_castilla[primera_columna].apply(
+    # Filtra filas donde 'Unnamed: 0' es un número natural (entero positivo)
+    filas_naturales = datos_castilla[datos_castilla['Unnamed: 0'].apply(
         lambda x: isinstance(x, (int, float)) and x > 0 and float(x).is_integer()
     )]
 
-    # --- Sede (toma la primera fila válida como ejemplo) ---
+    # --- Sede (toma la primera fila válida como ejemplo, ajusta según tu lógica real) ---
     if not filas_naturales.empty:
-        fila_sede = filas_naturales.iloc[0]
+        fila_empresa = filas_naturales.iloc[0]
         sede = {
-            "nombre": fila_sede.get('NOMBRE', ''),
-            "nima": int(fila_sede.get('NIMA', 0)),
-            "teléfono": int(fila_sede.get('TELÉFONO', 0)),
-            "direccion": fila_sede.get('DOMICILIO', ''),
-            "municipio": fila_sede.get('LOCALIDAD', ''),
-            "provincia": fila_sede.get('PROVINCIA', ''),
-            "email": fila_sede.get('E-MAIL', '')
+            "nombre": fila_empresa.get('NOMBRE', ''),
+            "direccion": fila_empresa.get('DOMICILIO', ''),
+            "municipio": fila_empresa.get('LOCALIDAD', ''),
+            "telefono": int(fila_empresa.get('TELÉFONO', 0)),
+            #"fax": int(fila_empresa.get('FAX', 0)),
+            "provincia": fila_empresa.get('PROVINCIA', ''),
         }
     else:
         sede = {}
 
     # --- Centros ---
     centros = []
-    for _, fila in filas_naturales.iterrows():
+    # Saltamos la primera fila natural (que es la sede) y usamos las siguientes como centros
+    for _, fila in filas_naturales.iloc[1:].iterrows():
+        try:
+            nima_val = int(fila.get('NIMA ', 0))
+        except (ValueError, TypeError):
+            nima_val = 0
         centro = {
-            "nombre": fila_sede.get('NOMBRE', ''),
-            "nima": int(fila_sede.get('NIMA', 0)),
-            "teléfono": int(fila_sede.get('TELÉFONO', 0)),
-            "direccion": fila_sede.get('DOMICILIO', ''),
-            "municipio": fila_sede.get('LOCALIDAD', ''),
-            "provincia": fila_sede.get('PROVINCIA', ''),
-            "email": fila_sede.get('E-MAIL', '')
+            "nombre_centro": fila.get('NOMBRE', ''),
+            "nima": nima_val,
+            "direccion_centro": fila.get('DOMICILIO', ''),
+            "municipio_centro": fila.get('LOCALIDAD', ''),
+            "telefono_centro": int(fila.get('TELÉFONO', 0)),
+            #"fax": int(fila.get('FAX', 0)),
+            "provincia_centro": fila.get('PROVINCIA', ''),
         }
         centros.append(centro)
 
@@ -425,28 +431,32 @@ def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
             break
         time.sleep(1)
 
-    if not archivo_final:
-        logging.error("No se descargó ningún archivo en el tiempo esperado.")
-        return None
-
-    logging.info(f"Archivo descargado: {archivo_final}")
-    datos_dict = extraer_datos_centro_castilla_desde_excel(archivo_final)
-    logging.info("Datos extraídos del Excel.")
-
-    # Borrar el archivo .xls
+    datos_dict = None
+    archivo_xlsx = None
     try:
-        os.remove(archivo_final)
-        logging.info(f"Archivo eliminado: {archivo_final}")
-    except Exception as e:
-        logging.error(f"No se pudo eliminar el archivo: {archivo_final}. Error: {e}")
+        if not archivo_final:
+            logging.error("No se descargó ningún archivo en el tiempo esperado.")
+            return None
 
-    # Borrar el archivo .xlsx generado
-    archivo_xlsx = archivo_final.replace('.xls', '.xlsx')
-    if os.path.exists(archivo_xlsx):
-        try:
-            os.remove(archivo_xlsx)
-            logging.info(f"Archivo eliminado: {archivo_xlsx}")
-        except Exception as e:
-            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        logging.info(f"Archivo descargado: {archivo_final}")
+        datos_dict = extraer_datos_centro_castilla_desde_excel(archivo_final)
+        logging.info("Datos extraídos del Excel.")
+        archivo_xlsx = archivo_final.replace('.xls', '.xlsx')
+    finally:
+        # Borrar el archivo .xls
+        if archivo_final and os.path.exists(archivo_final):
+            try:
+                os.remove(archivo_final)
+                logging.info(f"Archivo eliminado: {archivo_final}")
+            except Exception as e:
+                logging.error(f"No se pudo eliminar el archivo: {archivo_final}. Error: {e}")
+
+        # Borrar el archivo .xlsx generado
+        if archivo_xlsx and os.path.exists(archivo_xlsx):
+            try:
+                os.remove(archivo_xlsx)
+                logging.info(f"Archivo eliminado: {archivo_xlsx}")
+            except Exception as e:
+                logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
 
     return datos_dict

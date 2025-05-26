@@ -122,5 +122,5 @@ def busqueda_NIMA_con_preferencia_valencia(nif, umbral=2):
         # Si Valencia tarda más de umbral respecto al más rápido, devolver el más rápido
         return {"comunidad": resultados[0][0], "resultado": resultados[0][1], "tiempo": resultados[0][2]}
 
-datos = nimaFunctions.busqueda_NIMA_Castilla(nif_multicentro_castilla)
+datos = nimaFunctions.busqueda_NIMA_Valencia(nif_multicentro_valencia)
 print(datos)

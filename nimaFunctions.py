@@ -66,17 +66,17 @@ def extraer_datos_valencia(driver):
         "empresa": {
             "nombre_empresa": nombre_empresa,
             "nif": nif,
-            "direccion": direccion,
-            "codigo_postal": codigo_postal,
-            "localidad_provincia_empresa": localidad_provincia_empresa,
-            "telefono": telefono
+            "direccion_empresa": direccion,
+            "cp_empresa": codigo_postal,
+            "provincia_empresa": localidad_provincia_empresa,
+            "telefono_empresa": telefono
         },
         "centro": {
             "nombre_centro": nombre_centro,
             "nima": nima,
             "direccion_centro": direccion_centro,
-            "localidad_provincia_centro": localidad_provincia_centro,
-            "codigo_ine": codigo_ine,
+            "provincia_centro": localidad_provincia_centro,
+            "codigo_ine_centro": codigo_ine,
             "telefono_centro": telefono_centro
         },
         "codigo_residuo_1": codigo_residuo_1,
@@ -133,28 +133,29 @@ def extraer_datos_madrid(driver):
     Extrae los datos principales de la ficha de un centro en la web de NIMA Madrid.
     Devuelve un diccionario con los datos de la sede y del centro.
     """
-    # Datos del EMA (sede)
+    # Datos del EMA (empresa)
     datos_empresa = {
         "nif": webFunctions.leer_texto_por_campo(driver, "NIF:"),
-        "nombre_sede": webFunctions.leer_texto_por_campo(driver, "Razón Social:"),
-        "direccion_sede": webFunctions.leer_texto_por_campo(driver, "Dirección Sede:"),
-        "municipio_sede": webFunctions.leer_texto_por_campo(driver, "Municipio:"),
-        "codigo_ine_municipio_sede": webFunctions.leer_texto_por_campo(driver, "Código INE Municipio:"),
-        "codigo_postal_sede": webFunctions.leer_texto_por_campo(driver, "CP:"),
-        "provincia_sede": webFunctions.leer_texto_por_campo(driver, "Provincia:"),
-        "codigo_INE_provincia_sede": webFunctions.leer_texto_por_campo(driver, "Código INE Provincia:"),
-        "nombre_centro": webFunctions.leer_texto_por_campo(driver, "Denominación del Centro:")
+        "nombre_empresa": webFunctions.leer_texto_por_campo(driver, "Razón Social:"),
+        "direccion_empresa": webFunctions.leer_texto_por_campo(driver, "Dirección Sede:"),
+        "municipio_empresa": webFunctions.leer_texto_por_campo(driver, "Municipio:"),
+        "codigo_ine_municipio_empresa": webFunctions.leer_texto_por_campo(driver, "Código INE Municipio:"),
+        "cp_empresa": webFunctions.leer_texto_por_campo(driver, "CP:"),
+        "provincia_empresa": webFunctions.leer_texto_por_campo(driver, "Provincia:"),
+        "codigo_ine_provincia_empresa": webFunctions.leer_texto_por_campo(driver, "Código INE Provincia:"),
+        "nombre_centro_empresa": webFunctions.leer_texto_por_campo(driver, "Denominación del Centro:")
     }
 
-    # Datos del centro
+    # Datos del centro (usando el segundo elemento para cada campo)
     datos_centro = {
         "nima": webFunctions.leer_texto_por_campo(driver, "NIMA:"),
+        "nombre_centro": webFunctions.leer_texto_por_campo(driver, "Denominación del Centro:"),
         "direccion_centro": webFunctions.leer_texto_por_campo(driver, "Dirección Centro:"),
-        "municipio_centro": webFunctions.leer_texto_por_campo(driver, "Municipio:"),
-        "codigo_ine_municipio_centro": webFunctions.leer_texto_por_campo(driver, "Código INE Municipio:"),
-        "codigo_postal_centro": webFunctions.leer_texto_por_campo(driver, "CP:"),
-        "provincia_centro": webFunctions.leer_texto_por_campo(driver, "Provincia:"),
-        "codigo_INE_provincia_centro": webFunctions.leer_texto_por_campo(driver, "Código INE Provincia:")
+        "municipio_centro": webFunctions.leer_texto_por_campo_indice(driver, "Municipio:", indice=1),
+        "codigo_ine_municipio_centro": webFunctions.leer_texto_por_campo_indice(driver, "Código INE Municipio:", indice=1),
+        "cp_centro": webFunctions.leer_texto_por_campo_indice(driver, "CP:", indice=1),
+        "provincia_centro": webFunctions.leer_texto_por_campo_indice(driver, "Provincia:", indice=1),
+        "codigo_ine_provincia_centro": webFunctions.leer_texto_por_campo_indice(driver, "Código INE Provincia:", indice=1)
     }
 
     return {
@@ -172,7 +173,7 @@ def busqueda_NIMA_Madrid(nif):
     webFunctions.escribir_en_elemento_por_id(driver, "nif", nif)
     webFunctions.clickar_enlace_por_onclick(driver, "buscar('form');")
 
-    sede = None
+    empresa = None
     centros = []
     try:
         # Guarda todos los onclicks de los botones de consultar
@@ -194,8 +195,8 @@ def busqueda_NIMA_Madrid(nif):
             boton.click()
             datos_centro = extraer_datos_madrid(driver)
             if datos_centro:
-                if sede is None and "sede" in datos_centro:
-                    sede = datos_centro["sede"]
+                if empresa is None and "empresa" in datos_centro:
+                    empresa = datos_centro["empresa"]
                 if "centro" in datos_centro:
                     centros.append(datos_centro["centro"])
             driver.back()
@@ -203,9 +204,9 @@ def busqueda_NIMA_Madrid(nif):
         logging.error(f"ERROR: No se han podido procesar los centros asociados: {e}")
     driver.quit()
 
-    if sede and centros:
+    if empresa and centros:
         return {
-            "sede": sede,
+            "empresa": empresa,
             "centros": centros
         }
     else:
@@ -236,13 +237,13 @@ def busqueda_NIMA_Castilla(nif):
         logging.info('ERROR: No se ha podido generar o procesar el Excel.')
     driver.quit()
 
-    # --- Agregar el NIF como primer campo en la sección empresa ---
+     # --- Agregar el NIF como primer campo en la sección empresa ---
     if datos_json and isinstance(datos_json, dict) and "empresa" in datos_json:
-        empresa = datos_json["empresa"]
-        # Crear un nuevo diccionario con el NIF como primer campo
-        nueva_empresa = {"nif": nif}
-        nueva_empresa.update(empresa)
-        datos_json["empresa"] = nueva_empresa
+         empresa = datos_json["empresa"]
+         # Crear un nuevo diccionario con el NIF como primer campo
+         nueva_empresa = {"nif": nif}
+         nueva_empresa.update(empresa)
+         datos_json["empresa"] = nueva_empresa
 
     if datos_json:
         return datos_json

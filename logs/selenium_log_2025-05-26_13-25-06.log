@@ -1,9 +1,0 @@
-2025-05-26 13:25:08,736 - INFO - Inicializando navegador...
-2025-05-26 13:25:08,949 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
-2025-05-26 13:25:09,509 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
-2025-05-26 13:25:10,079 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'B45578069'
-2025-05-26 13:25:10,125 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
-2025-05-26 13:25:17,378 - INFO - Click realizado en la imagen para generar el EXCEL.
-2025-05-26 13:25:17,379 - INFO - Esperando la descarga del EXCEL...
-2025-05-26 13:25:18,381 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Resumen (2).xls
-2025-05-26 13:25:18,398 - INFO - ERROR: No se ha podido generar o procesar el Excel.
