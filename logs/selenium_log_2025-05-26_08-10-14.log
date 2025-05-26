@@ -1,0 +1,468 @@
+2025-05-26 08:10:18,110 - ERROR - Error al iniciar el navegador: Message: 'chromedriver.exe' executable may have wrong permissions.
+
+2025-05-26 08:10:18,170 - ERROR - Error al iniciar el navegador: Message: 'chromedriver.exe' executable may have wrong permissions.
+
+2025-05-26 08:10:18,195 - ERROR - Error al iniciar el navegador: Message: 'chromedriver.exe' executable may have wrong permissions.
+
+2025-05-26 08:10:20,500 - INFO - Inicializando navegador...
+2025-05-26 08:10:21,620 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-26 08:10:21,676 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-26 08:10:22,242 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': '20464300G'
+2025-05-26 08:10:22,292 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-26 08:10:42,639 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.
+2025-05-26 08:10:42,639 - INFO - ERROR: No se ha encontrado la imagen para generar el Excel.
+2025-05-26 08:10:46,766 - INFO - Inicializando navegador...
+2025-05-26 08:10:46,871 - INFO - Inicializando navegador...
+2025-05-26 08:10:46,892 - INFO - Inicializando navegador...
+2025-05-26 08:10:46,956 - INFO - Inicializando navegador...
+2025-05-26 08:10:47,786 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-26 08:10:48,022 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-26 08:10:48,119 - INFO - Se escribió texto en el elemento localizado por id='nif': '07215307T'
+2025-05-26 08:10:48,186 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-26 08:10:48,261 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': '07215307T'
+2025-05-26 08:10:48,311 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-26 08:10:48,354 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-26 08:10:48,872 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
+2025-05-26 08:10:48,947 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': '07215307T'
+2025-05-26 08:10:48,963 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': '07215307T'
+2025-05-26 08:10:49,028 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-26 08:10:49,095 - INFO - Elemento clickado con 'xpath' = '//a[@onclick="buscar('form');"]'.
+2025-05-26 08:10:49,330 - INFO - Elemento clickado con 'css selector' = 'input[value='Consultar']'.
+2025-05-26 08:10:49,330 - INFO - Click realizado en el botón Consultar.
+2025-05-26 08:10:49,357 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='NIF:']]'.
+2025-05-26 08:10:49,405 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Razón Social:']]'.
+2025-05-26 08:10:49,424 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Dirección Sede:']]'.
+2025-05-26 08:10:49,481 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Municipio:']]'.
+2025-05-26 08:10:49,520 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Municipio:']]'.
+2025-05-26 08:10:49,543 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='CP:']]'.
+2025-05-26 08:10:49,567 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Provincia:']]'.
+2025-05-26 08:10:49,589 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Provincia:']]'.
+2025-05-26 08:10:49,612 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Denominación del Centro:']]'.
+2025-05-26 08:10:49,630 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='NIMA:']]'.
+2025-05-26 08:10:49,648 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Dirección Centro:']]'.
+2025-05-26 08:10:49,663 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Municipio:']]'.
+2025-05-26 08:10:49,679 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Municipio:']]'.
+2025-05-26 08:10:49,695 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='CP:']]'.
+2025-05-26 08:10:49,710 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Provincia:']]'.
+2025-05-26 08:10:49,726 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Provincia:']]'.
+2025-05-26 08:10:49,731 - INFO - Datos de la empresa guardados
+2025-05-26 08:10:49,923 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'CERCAR')]'.
+2025-05-26 08:10:53,579 - ERROR - Timeout al esperar el elemento con 'id' = 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'
+2025-05-26 08:10:53,579 - INFO - ERROR: No se ha encontrado el enlace del gestor en la página.
+2025-05-26 08:10:55,380 - ERROR - Timeout al esperar el elemento con 'xpath' = '//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nif:'] and contains(., '07215307T')]'
+2025-05-26 08:10:55,381 - INFO - ERROR: No se ha encontrado el div con el NIF buscado en la página.
+2025-05-26 08:11:09,389 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.
+2025-05-26 08:11:09,390 - INFO - ERROR: No se ha encontrado la imagen para generar el Excel.
+2025-05-26 08:11:13,496 - INFO - Inicializando navegador...
+2025-05-26 08:11:13,523 - INFO - Inicializando navegador...
+2025-05-26 08:11:13,634 - INFO - Inicializando navegador...
+2025-05-26 08:11:13,896 - INFO - Inicializando navegador...
+2025-05-26 08:11:14,501 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-26 08:11:14,607 - INFO - Se escribió texto en el elemento localizado por id='nif': 'E96293691'
+2025-05-26 08:11:14,673 - INFO - Elemento clickado con 'xpath' = '//a[@onclick="buscar('form');"]'.
+2025-05-26 08:11:14,745 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-26 08:11:14,887 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-26 08:11:14,962 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'E96293691'
+2025-05-26 08:11:15,022 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-26 08:11:15,400 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-26 08:11:15,533 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
+2025-05-26 08:11:15,602 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': 'E96293691'
+2025-05-26 08:11:15,970 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'E96293691'
+2025-05-26 08:11:16,019 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-26 08:11:16,601 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'CERCAR')]'.
+2025-05-26 08:11:17,179 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=XbEXYyHGBM38MwgZhiGbI5wZ8x9lByR7' abierta.
+2025-05-26 08:11:17,179 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=XbEXYyHGBM38MwgZhiGbI5wZ8x9lByR7' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-26 08:11:17,204 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,252 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-26 08:11:17,260 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': JOSE VICENTE AGUADO GARCIA, CB
+2025-05-26 08:11:17,273 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,296 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-26 08:11:17,302 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': E96293691
+2025-05-26 08:11:17,316 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,341 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-26 08:11:17,345 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CAMÍ DEL VEDAT, 22 (EL PERELLÓ)
+2025-05-26 08:11:17,374 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,397 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-26 08:11:17,403 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46420
+2025-05-26 08:11:17,416 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,439 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-26 08:11:17,443 - INFO - Texto obtenido del elemento con ID 'Text8-0': SUECA - VALENCIA/VALÈNCIA
+2025-05-26 08:11:17,456 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,479 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-26 08:11:17,484 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 961770526
+2025-05-26 08:11:17,496 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,518 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-26 08:11:17,524 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': JOSE VICENTE AGUADO GARCIA, CB
+2025-05-26 08:11:17,537 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,561 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-26 08:11:17,565 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600004360
+2025-05-26 08:11:17,577 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,599 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-26 08:11:17,604 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CAMÍ DEL VEDAT, 22 (EL PERELLÓ)
+2025-05-26 08:11:17,614 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,636 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-26 08:11:17,641 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': SUECA - VALENCIA/VALÈNCIA
+2025-05-26 08:11:17,653 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,675 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-26 08:11:17,680 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 462359
+2025-05-26 08:11:17,692 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,715 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-26 08:11:17,743 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 961770526
+2025-05-26 08:11:17,754 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:17,779 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-26 08:11:17,783 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 3639/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-26 08:11:17,796 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:19,840 - ERROR - Timeout al esperar el elemento con 'css selector' = 'input[value='Consultar']'
+2025-05-26 08:11:19,841 - INFO - ERROR: El botón Consultar NO está presente en la página.
+2025-05-26 08:11:22,033 - ERROR - Timeout al esperar el elemento con 'xpath' = '//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nif:'] and contains(., 'E96293691')]'
+2025-05-26 08:11:22,034 - INFO - ERROR: No se ha encontrado el div con el NIF buscado en la página.
+2025-05-26 08:11:22,908 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-26 08:11:22,909 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-26 08:11:22,909 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-26 08:11:36,430 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.
+2025-05-26 08:11:36,430 - INFO - ERROR: No se ha encontrado la imagen para generar el Excel.
+2025-05-26 08:11:40,570 - INFO - Inicializando navegador...
+2025-05-26 08:11:40,610 - INFO - Inicializando navegador...
+2025-05-26 08:11:40,624 - INFO - Inicializando navegador...
+2025-05-26 08:11:40,654 - INFO - Inicializando navegador...
+2025-05-26 08:11:41,588 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-26 08:11:41,603 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-26 08:11:41,704 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-26 08:11:41,725 - INFO - Se escribió texto en el elemento localizado por id='nif': 'B12213336'
+2025-05-26 08:11:41,892 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-26 08:11:41,962 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B12213336'
+2025-05-26 08:11:42,015 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-26 08:11:42,291 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'B12213336'
+2025-05-26 08:11:42,342 - INFO - Elemento clickado con 'xpath' = '//a[@onclick="buscar('form');"]'.
+2025-05-26 08:11:42,354 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-26 08:11:42,522 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
+2025-05-26 08:11:42,614 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': 'B12213336'
+2025-05-26 08:11:43,584 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'CERCAR')]'.
+2025-05-26 08:11:43,871 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=88LU%2fuJ%2biL8c2ks0PRN9Luui%2bd2d3Wuz' abierta.
+2025-05-26 08:11:43,871 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=88LU%2fuJ%2biL8c2ks0PRN9Luui%2bd2d3Wuz' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-26 08:11:43,895 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:43,926 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-26 08:11:43,936 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': TALLERES ARENOS, S.L.
+2025-05-26 08:11:43,950 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:43,979 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-26 08:11:43,984 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B12213336
+2025-05-26 08:11:44,001 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,046 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-26 08:11:44,052 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CALLE SAN LUCAS, 44
+2025-05-26 08:11:44,067 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,090 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-26 08:11:44,094 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 12550
+2025-05-26 08:11:44,123 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,143 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-26 08:11:44,149 - INFO - Texto obtenido del elemento con ID 'Text8-0': ALMASSORA - CASTELLÓN/CASTELLÓ
+2025-05-26 08:11:44,162 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,185 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-26 08:11:44,189 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 964560207
+2025-05-26 08:11:44,201 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,224 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-26 08:11:44,228 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': TALLERES ARENOS, S.L.
+2025-05-26 08:11:44,240 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,261 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-26 08:11:44,266 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 1200000478
+2025-05-26 08:11:44,277 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,298 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-26 08:11:44,303 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CALLE SAN LUCAS, 44
+2025-05-26 08:11:44,315 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,344 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-26 08:11:44,365 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': ALMASSORA - CASTELLÓN/CASTELLÓ
+2025-05-26 08:11:44,376 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,411 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-26 08:11:44,416 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 120094
+2025-05-26 08:11:44,427 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,453 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-26 08:11:44,457 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 964560207
+2025-05-26 08:11:44,469 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,491 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-26 08:11:44,495 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 12100/P04/CV - PEQUEÑO PRODUCT.RESID.NO PELIGROSOS
+2025-05-26 08:11:44,507 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:11:44,532 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-1']//span'.
+2025-05-26 08:11:44,537 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-1': 24381/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-26 08:11:44,538 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-26 08:11:47,445 - ERROR - Timeout al esperar el elemento con 'css selector' = 'input[value='Consultar']'
+2025-05-26 08:11:47,445 - INFO - ERROR: El botón Consultar NO está presente en la página.
+2025-05-26 08:11:49,018 - ERROR - Timeout al esperar el elemento con 'xpath' = '//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nif:'] and contains(., 'B12213336')]'
+2025-05-26 08:11:49,018 - INFO - ERROR: No se ha encontrado el div con el NIF buscado en la página.
+2025-05-26 08:12:02,765 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.
+2025-05-26 08:12:02,765 - INFO - ERROR: No se ha encontrado la imagen para generar el Excel.
+2025-05-26 08:12:06,857 - INFO - Inicializando navegador...
+2025-05-26 08:12:06,963 - INFO - Inicializando navegador...
+2025-05-26 08:12:07,049 - INFO - Inicializando navegador...
+2025-05-26 08:12:07,109 - INFO - Inicializando navegador...
+2025-05-26 08:12:07,903 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-26 08:12:07,987 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-26 08:12:08,009 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-26 08:12:08,115 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B45852142'
+2025-05-26 08:12:08,139 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-26 08:12:08,183 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-26 08:12:08,236 - INFO - Se escribió texto en el elemento localizado por id='nif': 'B45852142'
+2025-05-26 08:12:08,288 - INFO - Elemento clickado con 'xpath' = '//a[@onclick="buscar('form');"]'.
+2025-05-26 08:12:08,603 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'B45852142'
+2025-05-26 08:12:08,654 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-26 08:12:09,040 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
+2025-05-26 08:12:09,106 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': 'B45852142'
+2025-05-26 08:12:10,145 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'CERCAR')]'.
+2025-05-26 08:12:13,465 - ERROR - Timeout al esperar el elemento con 'id' = 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'
+2025-05-26 08:12:13,465 - ERROR - Timeout al esperar el elemento con 'css selector' = 'input[value='Consultar']'
+2025-05-26 08:12:13,465 - INFO - ERROR: No se ha encontrado el enlace del gestor en la página.
+2025-05-26 08:12:13,466 - INFO - ERROR: El botón Consultar NO está presente en la página.
+2025-05-26 08:12:15,159 - ERROR - Timeout al esperar el elemento con 'xpath' = '//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nif:'] and contains(., 'B45852142')]'
+2025-05-26 08:12:15,160 - INFO - ERROR: No se ha encontrado el div con el NIF buscado en la página.
+2025-05-26 08:12:28,983 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.
+2025-05-26 08:12:28,983 - INFO - ERROR: No se ha encontrado la imagen para generar el Excel.
+2025-05-26 08:12:33,174 - INFO - Inicializando navegador...
+2025-05-26 08:12:33,190 - INFO - Inicializando navegador...
+2025-05-26 08:12:33,222 - INFO - Inicializando navegador...
+2025-05-26 08:12:33,228 - INFO - Inicializando navegador...
+2025-05-26 08:12:34,142 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-26 08:12:34,196 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-26 08:12:34,227 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-26 08:12:34,307 - INFO - Se escribió texto en el elemento localizado por id='nif': 'B98491848'
+2025-05-26 08:12:34,371 - INFO - Elemento clickado con 'xpath' = '//a[@onclick="buscar('form');"]'.
+2025-05-26 08:12:34,477 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-26 08:12:34,556 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B98491848'
+2025-05-26 08:12:34,605 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-26 08:12:34,802 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'B98491848'
+2025-05-26 08:12:34,856 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-26 08:12:35,110 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
+2025-05-26 08:12:35,177 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': 'B98491848'
+2025-05-26 08:12:36,221 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'CERCAR')]'.
+2025-05-26 08:12:36,954 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=LfJE2RIL3hGG7F7dsqz5gLJiwuSkp6ji' abierta.
+2025-05-26 08:12:36,954 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=LfJE2RIL3hGG7F7dsqz5gLJiwuSkp6ji' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-26 08:12:36,970 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:36,998 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-26 08:12:37,006 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': AUTOMOVILES JAMAR S.L
+2025-05-26 08:12:37,019 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,060 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-26 08:12:37,065 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B98491848
+2025-05-26 08:12:37,077 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,102 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-26 08:12:37,106 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CALLE PLANXISTES   2
+2025-05-26 08:12:37,119 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,141 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-26 08:12:37,145 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46200
+2025-05-26 08:12:37,157 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,178 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-26 08:12:37,182 - INFO - Texto obtenido del elemento con ID 'Text8-0': PAIPORTA - VALENCIA/VALÈNCIA
+2025-05-26 08:12:37,193 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,216 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-26 08:12:37,220 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 963975048
+2025-05-26 08:12:37,255 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,277 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-26 08:12:37,281 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': AUTOMOVILES JAMAR  S.L
+2025-05-26 08:12:37,293 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,315 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-26 08:12:37,319 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600024066
+2025-05-26 08:12:37,330 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,352 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-26 08:12:37,357 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CALLE PLANXISTES   2
+2025-05-26 08:12:37,368 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,390 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-26 08:12:37,395 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': PAIPORTA - VALENCIA/VALÈNCIA
+2025-05-26 08:12:37,406 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,428 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-26 08:12:37,433 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 461862
+2025-05-26 08:12:37,444 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,466 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-26 08:12:37,470 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 963975048
+2025-05-26 08:12:37,482 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:37,505 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-26 08:12:37,509 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 9663/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-26 08:12:37,538 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:12:39,547 - ERROR - Timeout al esperar el elemento con 'css selector' = 'input[value='Consultar']'
+2025-05-26 08:12:39,547 - INFO - ERROR: El botón Consultar NO está presente en la página.
+2025-05-26 08:12:41,634 - ERROR - Timeout al esperar el elemento con 'xpath' = '//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nif:'] and contains(., 'B98491848')]'
+2025-05-26 08:12:41,634 - INFO - ERROR: No se ha encontrado el div con el NIF buscado en la página.
+2025-05-26 08:12:42,653 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-26 08:12:42,654 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-26 08:12:42,655 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-26 08:12:55,209 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.
+2025-05-26 08:12:55,209 - INFO - ERROR: No se ha encontrado la imagen para generar el Excel.
+2025-05-26 08:12:59,411 - INFO - Inicializando navegador...
+2025-05-26 08:12:59,429 - INFO - Inicializando navegador...
+2025-05-26 08:12:59,442 - INFO - Inicializando navegador...
+2025-05-26 08:12:59,511 - INFO - Inicializando navegador...
+2025-05-26 08:13:00,361 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-26 08:13:00,438 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-26 08:13:00,484 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-26 08:13:00,606 - INFO - Se escribió texto en el elemento localizado por id='nif': 'B12673331'
+2025-05-26 08:13:00,842 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-26 08:13:00,918 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B12673331'
+2025-05-26 08:13:00,967 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-26 08:13:01,017 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'B12673331'
+2025-05-26 08:13:01,070 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-26 08:13:01,240 - INFO - Elemento clickado con 'xpath' = '//a[@onclick="buscar('form');"]'.
+2025-05-26 08:13:01,496 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
+2025-05-26 08:13:01,570 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': 'B12673331'
+2025-05-26 08:13:02,601 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'CERCAR')]'.
+2025-05-26 08:13:02,967 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=pgPD7WUW09a7UAVTNSDmTz7j1fSy4iqF' abierta.
+2025-05-26 08:13:02,967 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=pgPD7WUW09a7UAVTNSDmTz7j1fSy4iqF' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-26 08:13:02,983 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,011 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-26 08:13:03,019 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': VIPER LAVA SOF SLL
+2025-05-26 08:13:03,030 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,056 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-26 08:13:03,060 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B12673331
+2025-05-26 08:13:03,073 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,095 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-26 08:13:03,101 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': CALLE CISCAR 10
+2025-05-26 08:13:03,113 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,138 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-26 08:13:03,142 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 12003
+2025-05-26 08:13:03,154 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,176 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-26 08:13:03,180 - INFO - Texto obtenido del elemento con ID 'Text8-0': CASTELLÓ DE LA PLANA/CASTELLÓN DE LA PLANA - CASTELLÓN/CASTELLÓ
+2025-05-26 08:13:03,193 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,214 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-26 08:13:03,220 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 637154107
+2025-05-26 08:13:03,232 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,256 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-26 08:13:03,260 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': VIPER LAVA SOF SL
+2025-05-26 08:13:03,271 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,293 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-26 08:13:03,298 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 1200007939
+2025-05-26 08:13:03,309 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,331 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-26 08:13:03,336 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CALLE CISCAR 10
+2025-05-26 08:13:03,347 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,369 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-26 08:13:03,373 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': CASTELLÓ DE LA PLANA/CASTELLÓN DE LA PLANA - CA
+2025-05-26 08:13:03,385 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,408 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-26 08:13:03,413 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 120402
+2025-05-26 08:13:03,425 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,448 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-26 08:13:03,453 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 637154107
+2025-05-26 08:13:03,466 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,488 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-26 08:13:03,492 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 2988/P04/CV - PEQUEÑO PRODUCT.RESID.NO PELIGROSOS
+2025-05-26 08:13:03,505 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:03,532 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-1']//span'.
+2025-05-26 08:13:03,536 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-1': 32470/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-26 08:13:03,537 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-26 08:13:06,351 - ERROR - Timeout al esperar el elemento con 'css selector' = 'input[value='Consultar']'
+2025-05-26 08:13:06,351 - INFO - ERROR: El botón Consultar NO está presente en la página.
+2025-05-26 08:13:08,040 - ERROR - Timeout al esperar el elemento con 'xpath' = '//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nif:'] and contains(., 'B12673331')]'
+2025-05-26 08:13:08,040 - INFO - ERROR: No se ha encontrado el div con el NIF buscado en la página.
+2025-05-26 08:13:21,432 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.
+2025-05-26 08:13:21,432 - INFO - ERROR: No se ha encontrado la imagen para generar el Excel.
+2025-05-26 08:13:25,680 - INFO - Inicializando navegador...
+2025-05-26 08:13:25,684 - INFO - Inicializando navegador...
+2025-05-26 08:13:25,701 - INFO - Inicializando navegador...
+2025-05-26 08:13:25,736 - INFO - Inicializando navegador...
+2025-05-26 08:13:26,717 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-26 08:13:26,799 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-26 08:13:26,856 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-26 08:13:26,958 - INFO - Se escribió texto en el elemento localizado por id='nif': 'B70722277'
+2025-05-26 08:13:26,977 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-26 08:13:27,028 - INFO - Elemento clickado con 'xpath' = '//a[@onclick="buscar('form');"]'.
+2025-05-26 08:13:27,069 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B70722277'
+2025-05-26 08:13:27,117 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-26 08:13:27,419 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': 'B70722277'
+2025-05-26 08:13:27,474 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-26 08:13:27,829 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
+2025-05-26 08:13:27,897 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': 'B70722277'
+2025-05-26 08:13:28,938 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'CERCAR')]'.
+2025-05-26 08:13:29,076 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=hSxbMiPj%2f%2f9mYkAkG56PzlLxs57FIHL6' abierta.
+2025-05-26 08:13:29,077 - INFO - Enlace 'https://residuos.gva.es/RES_BUSCAWEB/ficha.aspx?id=hSxbMiPj%2f%2f9mYkAkG56PzlLxs57FIHL6' abierto por el botón con ID 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'.
+2025-05-26 08:13:29,109 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,144 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-26 08:13:29,166 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': TRANSANGELS FAST, S.L.
+2025-05-26 08:13:29,181 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,210 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-26 08:13:29,217 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B70722277
+2025-05-26 08:13:29,232 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,266 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-26 08:13:29,273 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': TRAVESÍA ERMITA 8
+2025-05-26 08:13:29,294 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,328 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-26 08:13:29,351 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46119
+2025-05-26 08:13:29,365 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,390 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-26 08:13:29,394 - INFO - Texto obtenido del elemento con ID 'Text8-0': NÀQUERA/NÁQUERA - VALENCIA/VALÈNCIA
+2025-05-26 08:13:29,407 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,429 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-26 08:13:29,434 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 651384113
+2025-05-26 08:13:29,445 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,469 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-26 08:13:29,474 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': TRANSANGELS FAST, S.L.
+2025-05-26 08:13:29,486 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,509 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-26 08:13:29,514 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600048834
+2025-05-26 08:13:29,529 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,552 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-26 08:13:29,557 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': AVENIDA PUIG CAMPANA 21
+2025-05-26 08:13:29,569 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,591 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-26 08:13:29,596 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': ALDAIA - VALENCIA/VALÈNCIA
+2025-05-26 08:13:29,607 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,629 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-26 08:13:29,635 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 460214
+2025-05-26 08:13:29,646 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,670 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-26 08:13:29,675 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 651384113
+2025-05-26 08:13:29,687 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,709 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-26 08:13:29,714 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 13093/P04/CV - PEQUEÑO PRODUCT.RESID.NO PELIGROSOS
+2025-05-26 08:13:29,726 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 08:13:29,751 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-1']//span'.
+2025-05-26 08:13:29,755 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-1': 47240/P02/CV - PEQUEÑO PRODUCTOR RESID.PELIGROSOS
+2025-05-26 08:13:29,756 - INFO - Datos de la empresa encontrados y extraídos correctamente.
+2025-05-26 08:13:32,197 - ERROR - Timeout al esperar el elemento con 'css selector' = 'input[value='Consultar']'
+2025-05-26 08:13:32,197 - INFO - ERROR: El botón Consultar NO está presente en la página.
+2025-05-26 08:13:34,393 - ERROR - Timeout al esperar el elemento con 'xpath' = '//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nif:'] and contains(., 'B70722277')]'
+2025-05-26 08:13:34,393 - INFO - ERROR: No se ha encontrado el div con el NIF buscado en la página.
+2025-05-26 08:13:47,749 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.
+2025-05-26 08:13:47,749 - INFO - ERROR: No se ha encontrado la imagen para generar el Excel.
+2025-05-26 08:13:51,948 - INFO - Inicializando navegador...
+2025-05-26 08:13:51,976 - INFO - Inicializando navegador...
+2025-05-26 08:13:52,094 - INFO - Inicializando navegador...
+2025-05-26 08:13:52,130 - INFO - Inicializando navegador...
+2025-05-26 08:13:52,525 - INFO - Web 'https://gestiona.comunidad.madrid/pcea_nima_web/html/web/InicioAccion.icm' abierta.
+2025-05-26 08:13:52,935 - INFO - Web 'https://ireno.castillalamancha.es/forms/geref000.htm' abierta.
+2025-05-26 08:13:53,027 - INFO - Elemento clickado con 'id' = 'enlace_gestores'.
+2025-05-26 08:13:53,182 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-26 08:13:53,251 - INFO - Se escribió texto en el elemento localizado por id='nif': '05455480H'
+2025-05-26 08:13:53,280 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': '05455480H'
+2025-05-26 08:13:53,357 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-26 08:13:53,618 - INFO - Se escribió texto en el elemento localizado por id='input_NIF_CIF': '05455480H'
+2025-05-26 08:13:53,672 - INFO - Elemento clickado con 'id' = 'boton_buscar'.
+2025-05-26 08:13:54,190 - INFO - Elemento clickado con 'xpath' = '//a[@onclick="buscar('form');"]'.
+2025-05-26 08:13:54,193 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
+2025-05-26 08:13:54,279 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': '05455480H'
+2025-05-26 08:13:54,424 - INFO - Elemento clickado con 'css selector' = 'input[value='Consultar']'.
+2025-05-26 08:13:54,424 - INFO - Click realizado en el botón Consultar.
+2025-05-26 08:13:54,461 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='NIF:']]'.
+2025-05-26 08:13:54,495 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Razón Social:']]'.
+2025-05-26 08:13:54,514 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Dirección Sede:']]'.
+2025-05-26 08:13:54,536 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Municipio:']]'.
+2025-05-26 08:13:54,555 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Municipio:']]'.
+2025-05-26 08:13:54,573 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='CP:']]'.
+2025-05-26 08:13:54,592 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Provincia:']]'.
+2025-05-26 08:13:54,611 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Provincia:']]'.
+2025-05-26 08:13:54,629 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Denominación del Centro:']]'.
+2025-05-26 08:13:54,649 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='NIMA:']]'.
+2025-05-26 08:13:54,668 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Dirección Centro:']]'.
+2025-05-26 08:13:54,685 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Municipio:']]'.
+2025-05-26 08:13:54,701 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Municipio:']]'.
+2025-05-26 08:13:54,719 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='CP:']]'.
+2025-05-26 08:13:54,735 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Provincia:']]'.
+2025-05-26 08:13:54,751 - INFO - Elemento encontrado con 'xpath' = '//td[b[normalize-space(text())='Código INE Provincia:']]'.
+2025-05-26 08:13:54,756 - INFO - Datos de la empresa guardados
+2025-05-26 08:13:55,395 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'CERCAR')]'.
+2025-05-26 08:13:58,619 - ERROR - Timeout al esperar el elemento con 'id' = 'ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor'
+2025-05-26 08:13:58,619 - INFO - ERROR: No se ha encontrado el enlace del gestor en la página.
+2025-05-26 08:14:00,401 - ERROR - Timeout al esperar el elemento con 'xpath' = '//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nif:'] and contains(., '05455480H')]'
+2025-05-26 08:14:00,401 - INFO - ERROR: No se ha encontrado el div con el NIF buscado en la página.
+2025-05-26 08:14:15,042 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000200FFB97DF0>: Failed to establish a new connection: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión')': /session/d2f624e4c5c6f3ea8b166ab23c92bef6/element
+2025-05-26 08:14:19,147 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000200FFC797B0>: Failed to establish a new connection: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión')': /session/d2f624e4c5c6f3ea8b166ab23c92bef6/element
+2025-05-26 08:14:23,242 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000200FFC79D00>: Failed to establish a new connection: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión')': /session/d2f624e4c5c6f3ea8b166ab23c92bef6/element
+2025-05-26 08:14:27,341 - ERROR - ERROR: No se encontró la imagen para generar el EXCEL.
+2025-05-26 08:14:27,341 - INFO - ERROR: No se ha encontrado la imagen para generar el Excel.
+2025-05-26 08:14:31,406 - WARNING - Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000200FFC79150>: Failed to establish a new connection: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión')': /session/d2f624e4c5c6f3ea8b166ab23c92bef6
+2025-05-26 08:14:35,504 - WARNING - Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000200FFC785A0>: Failed to establish a new connection: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión')': /session/d2f624e4c5c6f3ea8b166ab23c92bef6
+2025-05-26 08:14:39,590 - WARNING - Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('<urllib3.connection.HTTPConnection object at 0x00000200FFC79E10>: Failed to establish a new connection: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión')': /session/d2f624e4c5c6f3ea8b166ab23c92bef6

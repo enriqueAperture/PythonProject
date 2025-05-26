@@ -1,0 +1,7 @@
+2025-05-26 09:07:41,326 - INFO - Inicializando navegador...
+2025-05-26 09:07:42,362 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
+2025-05-26 09:07:42,428 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': 'B08173411'
+2025-05-26 09:08:04,626 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'CERCAR')]'.
+2025-05-26 09:08:04,655 - INFO - Texto obtenido: Nif: B08173411
+2025-05-26 09:08:04,673 - INFO - Texto obtenido: Nima: 0800566961
+2025-05-26 09:08:04,692 - INFO - Texto obtenido: Raó social: CORPORACIÓN CLD SERVICIOS URBANOS DE TRATAMIENTO DE RESIDUOS, SL

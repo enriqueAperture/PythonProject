@@ -1,0 +1,35 @@
+2025-05-26 09:45:38,680 - INFO - Inicializando navegador...
+2025-05-26 09:45:39,754 - INFO - Web 'https://sdr.arc.cat/sdr/ListNimas.do?menu=G' abierta.
+2025-05-26 09:45:39,821 - INFO - Se escribió texto en el elemento localizado por name='cercaNif': 'B43693274'
+2025-05-26 09:45:40,271 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'CERCAR')]'.
+2025-05-26 09:45:40,271 - INFO - Buscando NIF: B43693274
+2025-05-26 09:45:40,280 - INFO - Elemento NIF encontrado
+2025-05-26 09:45:40,300 - INFO - Texto obtenido: Nif: B43693274
+2025-05-26 09:45:45,400 - ERROR - Timeout al esperar el elemento con 'xpath' = '//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nima:']]'
+2025-05-26 09:45:45,400 - ERROR - Error al obtener texto del elemento con 'xpath' = '//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nima:']]': Message: 
+Stacktrace:
+	GetHandleVerifier [0x011FFC03+61635]
+	GetHandleVerifier [0x011FFC44+61700]
+	(No symbol) [0x010205D3]
+	(No symbol) [0x0106899E]
+	(No symbol) [0x01068D3B]
+	(No symbol) [0x010B0E12]
+	(No symbol) [0x0108D2E4]
+	(No symbol) [0x010AE61B]
+	(No symbol) [0x0108D096]
+	(No symbol) [0x0105C840]
+	(No symbol) [0x0105D6A4]
+	GetHandleVerifier [0x01484523+2701795]
+	GetHandleVerifier [0x0147FCA6+2683238]
+	GetHandleVerifier [0x0149A9EE+2793134]
+	GetHandleVerifier [0x012168C5+155013]
+	GetHandleVerifier [0x0121CFAD+181357]
+	GetHandleVerifier [0x01207458+92440]
+	GetHandleVerifier [0x01207600+92864]
+	GetHandleVerifier [0x011F1FF0+5296]
+	BaseThreadInitThunk [0x76D95D49+25]
+	RtlInitializeExceptionChain [0x775DD03B+107]
+	RtlGetAppContainerNamedObjectPath [0x775DCFC1+561]
+
+2025-05-26 09:45:45,422 - INFO - Texto obtenido: Raó social: METALLS DEL CAMP, SLU
+2025-05-26 09:45:45,449 - INFO - 5 elementos encontrados con 'xpath' = '//tr[contains(@class, 'llistaopen1') or contains(@class, 'llistaopen2')]'.

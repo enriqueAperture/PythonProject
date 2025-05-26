@@ -1,0 +1,174 @@
+2025-05-26 09:52:37,576 - INFO - Inicializando navegador...
+2025-05-26 09:52:37,966 - INFO - Web 'https://residuos.gva.es/RES_BUSCAWEB/buscador_residuos_avanzado.aspx' abierta.
+2025-05-26 09:52:38,040 - INFO - Se escribió texto en el elemento localizado por id='ctl00_ContentPlaceHolder1_txtNIF': 'B43693274'
+2025-05-26 09:52:38,094 - INFO - Elemento clickado con 'id' = 'ctl00_ContentPlaceHolder1_btBuscar'.
+2025-05-26 09:52:38,630 - INFO - 4 elementos encontrados con 'xpath' = '//a[starts-with(@id, 'ctl00_ContentPlaceHolder1_gvResultados_ctl') and contains(@id, '_hypGestor')]'.
+2025-05-26 09:52:38,631 - INFO - Encontrados 4 centros asociados al NIF B43693274.
+2025-05-26 09:52:39,886 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:39,913 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-26 09:52:39,922 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': METALLS DEL CAMP, S.L.
+2025-05-26 09:52:39,935 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:39,958 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-26 09:52:39,962 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B43693274
+2025-05-26 09:52:39,973 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:39,996 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-26 09:52:40,003 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': POLÍGONO INDUSTRIAL LA LLOMA, C/ SERRA D' ESPADA 6     8
+2025-05-26 09:52:40,014 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:40,038 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-26 09:52:40,042 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46960
+2025-05-26 09:52:40,054 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:40,077 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-26 09:52:40,083 - INFO - Texto obtenido del elemento con ID 'Text8-0': ALDAIA - VALENCIA/VALÈNCIA
+2025-05-26 09:52:40,096 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:40,119 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-26 09:52:40,123 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 961501110
+2025-05-26 09:52:40,136 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:40,159 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-26 09:52:40,169 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': METALLS DEL CAMP, S.L.
+2025-05-26 09:52:40,197 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:40,231 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-26 09:52:40,236 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600014035
+2025-05-26 09:52:40,247 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:40,270 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-26 09:52:40,274 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': POLÍGONO INDUSTRIAL LA LLOMA, C/ SERRA D' ESPADA 6     8
+2025-05-26 09:52:40,286 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:40,336 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-26 09:52:40,341 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': ALDAIA - VALENCIA/VALÈNCIA
+2025-05-26 09:52:40,353 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:40,374 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-26 09:52:40,378 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 460214
+2025-05-26 09:52:40,390 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:40,412 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-26 09:52:40,417 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 961501110
+2025-05-26 09:52:40,428 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:40,450 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-26 09:52:40,454 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 157/G02/CV - ALMACENAMIENTO RESIDUOS PELIGROSOS
+2025-05-26 09:52:40,467 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:45,590 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-26 09:52:45,592 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-26 09:52:46,925 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:46,947 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-26 09:52:46,952 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': METALLS DEL CAMP, S.L.
+2025-05-26 09:52:46,963 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:46,982 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-26 09:52:46,987 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B43693274
+2025-05-26 09:52:46,997 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,018 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-26 09:52:47,022 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': POLÍGONO INDUSTRIAL LA LLOMA, C/ SERRA D' ESPADA 6     8
+2025-05-26 09:52:47,034 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,054 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-26 09:52:47,058 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46960
+2025-05-26 09:52:47,070 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,089 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-26 09:52:47,094 - INFO - Texto obtenido del elemento con ID 'Text8-0': ALDAIA - VALENCIA/VALÈNCIA
+2025-05-26 09:52:47,105 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,126 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-26 09:52:47,131 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 961501110
+2025-05-26 09:52:47,144 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,163 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-26 09:52:47,168 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': METALLS DEL CAMP, S.L.
+2025-05-26 09:52:47,199 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,220 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-26 09:52:47,224 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600038986
+2025-05-26 09:52:47,235 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,270 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-26 09:52:47,274 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': CALLE COMARQUES DE L'HORTA 4
+2025-05-26 09:52:47,286 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,305 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-26 09:52:47,309 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': ALDAIA - VALENCIA/VALÈNCIA
+2025-05-26 09:52:47,322 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,342 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-26 09:52:47,345 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 460214
+2025-05-26 09:52:47,357 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,376 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-26 09:52:47,380 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 961501110
+2025-05-26 09:52:47,391 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:47,411 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-26 09:52:47,415 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 1021/G04/CV - TRATAMIENTO RESIDUOS NO PELIGROSOS
+2025-05-26 09:52:47,435 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:52,577 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-26 09:52:52,579 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-26 09:52:53,556 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,593 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-26 09:52:53,597 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': METALLS DEL CAMP, S.L.
+2025-05-26 09:52:53,608 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,628 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-26 09:52:53,647 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B43693274
+2025-05-26 09:52:53,660 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,680 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-26 09:52:53,686 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': POLÍGONO INDUSTRIAL LA LLOMA, C/ SERRA D' ESPADA 6     8
+2025-05-26 09:52:53,697 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,718 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-26 09:52:53,722 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46960
+2025-05-26 09:52:53,734 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,756 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-26 09:52:53,760 - INFO - Texto obtenido del elemento con ID 'Text8-0': ALDAIA - VALENCIA/VALÈNCIA
+2025-05-26 09:52:53,773 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,794 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-26 09:52:53,798 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 961501110
+2025-05-26 09:52:53,811 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,830 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-26 09:52:53,851 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': METALLS DEL CAMP, S.L.
+2025-05-26 09:52:53,863 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,882 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-26 09:52:53,887 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600014035
+2025-05-26 09:52:53,897 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,919 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-26 09:52:53,923 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': POLÍGONO INDUSTRIAL LA LLOMA, C/ SERRA D' ESPADA 6     8
+2025-05-26 09:52:53,935 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,956 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-26 09:52:53,961 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': ALDAIA - VALENCIA/VALÈNCIA
+2025-05-26 09:52:53,972 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:53,993 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-26 09:52:53,997 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 460214
+2025-05-26 09:52:54,009 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:54,029 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-26 09:52:54,034 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 961501110
+2025-05-26 09:52:54,045 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:54,065 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-26 09:52:54,070 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 157/G02/CV - ALMACENAMIENTO RESIDUOS PELIGROSOS
+2025-05-26 09:52:54,080 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:52:59,222 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-26 09:52:59,224 - ERROR - No se pudo encontrar el código de residuo 2
+2025-05-26 09:53:00,752 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:00,772 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBREEMPRESA1-0']//span'.
+2025-05-26 09:53:00,776 - INFO - Texto obtenido del elemento con ID 'NOMBREEMPRESA1-0': METALLS DEL CAMP, S.L.
+2025-05-26 09:53:00,788 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:00,807 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ENIF1-0']//span'.
+2025-05-26 09:53:00,811 - INFO - Texto obtenido del elemento con ID 'ENIF1-0': B43693274
+2025-05-26 09:53:00,823 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:00,842 - INFO - Elemento encontrado con 'xpath' = '//*[@id='EDIRECCION1-0']//span'.
+2025-05-26 09:53:00,846 - INFO - Texto obtenido del elemento con ID 'EDIRECCION1-0': POLÍGONO INDUSTRIAL LA LLOMA, C/ SERRA D' ESPADA 6     8
+2025-05-26 09:53:00,858 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:00,878 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ECODIPOS1-0']//span'.
+2025-05-26 09:53:00,882 - INFO - Texto obtenido del elemento con ID 'ECODIPOS1-0': 46960
+2025-05-26 09:53:00,893 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:00,914 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text8-0']//span'.
+2025-05-26 09:53:00,919 - INFO - Texto obtenido del elemento con ID 'Text8-0': ALDAIA - VALENCIA/VALÈNCIA
+2025-05-26 09:53:00,930 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:00,951 - INFO - Elemento encontrado con 'xpath' = '//*[@id='ETELEFONO1-0']//span'.
+2025-05-26 09:53:00,955 - INFO - Texto obtenido del elemento con ID 'ETELEFONO1-0': 961501110
+2025-05-26 09:53:00,966 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:00,986 - INFO - Elemento encontrado con 'xpath' = '//*[@id='NOMBRECENTRO1-0-0']//span'.
+2025-05-26 09:53:00,990 - INFO - Texto obtenido del elemento con ID 'NOMBRECENTRO1-0-0': METALLS DEL CAMP, S.L.
+2025-05-26 09:53:01,005 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:01,025 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCENCODCENTRO1-0-0']//span'.
+2025-05-26 09:53:01,029 - INFO - Texto obtenido del elemento con ID 'FCENCODCENTRO1-0-0': 4600014035
+2025-05-26 09:53:01,041 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:01,060 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FDIRECCION1-0-0']//span'.
+2025-05-26 09:53:01,064 - INFO - Texto obtenido del elemento con ID 'FDIRECCION1-0-0': POLÍGONO INDUSTRIAL LA LLOMA, C/ SERRA D' ESPADA 6     8
+2025-05-26 09:53:01,075 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:01,094 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text7-0-0']//span'.
+2025-05-26 09:53:01,098 - INFO - Texto obtenido del elemento con ID 'Text7-0-0': ALDAIA - VALENCIA/VALÈNCIA
+2025-05-26 09:53:01,114 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:01,135 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FCODINE1-0-0']//span'.
+2025-05-26 09:53:01,139 - INFO - Texto obtenido del elemento con ID 'FCODINE1-0-0': 460214
+2025-05-26 09:53:01,149 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:01,168 - INFO - Elemento encontrado con 'xpath' = '//*[@id='FTELEFONO1-0-0']//span'.
+2025-05-26 09:53:01,172 - INFO - Texto obtenido del elemento con ID 'FTELEFONO1-0-0': 961501110
+2025-05-26 09:53:01,183 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:01,201 - INFO - Elemento encontrado con 'xpath' = '//*[@id='Text10-0-0-0']//span'.
+2025-05-26 09:53:01,205 - INFO - Texto obtenido del elemento con ID 'Text10-0-0-0': 157/G02/CV - ALMACENAMIENTO RESIDUOS PELIGROSOS
+2025-05-26 09:53:01,216 - INFO - Elemento encontrado con 'tag name' = 'iframe'.
+2025-05-26 09:53:06,320 - ERROR - Timeout al esperar el elemento con 'xpath' = '//*[@id='Text10-0-0-1']//span'
+2025-05-26 09:53:06,322 - ERROR - No se pudo encontrar el código de residuo 2

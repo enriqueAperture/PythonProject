@@ -1,7 +1,7 @@
 import logging
 import nimaFunctions
-import numpy as np
 import random
+import concurrent.futures
 import time
 
 nifs_autonomos_empresas_nubelus = ['B19811983', 'B43693274', 'B15399116', 'B12512570', 'A46294492', 'B96677372', 'A47376090', 'B44845352', 'B20771747', 'B97209258', 'B98970569', 'A08000424', 'F98733926', 'B96565734', 'B56843857', 'B98237548', 'B90163510', 'B10870582', 'B97360341', 'B97691620', 'B46090478', 'E97126098', 'B46184685', 'X9206104D', 'B40579468', 'X8006597K', 'B96754841', 'B42942748', 'B56668544', 'B96008875', 'B97700819', 'B96422415', 'B97577548', 'B96235379', 'B98799059', 'B98952245', 'B98874571', 'B98541139', 'B98775109', 'B67909598', 'B46202131', 'B96150438', 'E98515422', 'X6899780X', 'B97918262', 'B46759783', 'X5899717X', 'E40595241', 'B98965106', 'B96080924', 'B96237805', 'B96033667', 'X4128683E', 'B70722277', 'B98650419', 'B46261624', 'B97935589', 'B96253174', 'E96305636', 'B97983837', 'B40644296', 'B13969142', 'B10959203', 'B96738042', 'J05340013', 'B96230917', 'X6459786Y', 'B96343447', 'B10625978', 'B96200803', 'B98619570', 'B96112156', 'X2322633R', 'B97505960', 'B98929144', 'B72959083', 'B96503818', 'B96897608', 'B46135877', 'B72876014', 'Y0475213R', 'Y7510185D', 'B96957717', 'B98648751', 'B98491848', 'B40567265', 'X5285817A', 'J01873173', 'B97088728', 'B12412763', 'X5409454S', 'B44782266', 'B56673312', 'X3531815G', 'B96710645', 'B12418133', 'Z0294214A', 'B12287603', 'B12412771', 'B98778426', 'Y0736694H', 'B67704007', 'B44998631', 'B98612831', 'B72405970', 'J12991964', 'X9138692X', 'B12877320', 'B44530111', 'B12976478', 'B44527331', 'B97834667', 'B98872351', 'B12937918', 'B12638300', 'B98658503', 'B42911057', 'B12334223', 'E96315601', 'B98933096', 'B12750873', 'X8748111S', 'B56265481', 'B46205670', 'B96304357', 'B12334025', 'E12053930', 'B98845050', 'B96718168', 'B12369344', 'B12736070', 'B98526387', 'B97273312', 'B10852317', 'B96231162', 'B96756457', 'B46177879', 'X6682229Q', 'F98547474', 'B96149935', 'B12844460', 'B40534380', 'B72819345', 'B44501963', 'B12209342', 'B12074837', 'E98853013', 'B96129630', 'B96301320', 'B96171863', 'B16786204', 'B05483821', 'X4164397V', 'B96687017', 'E96293691', 'B96141502', 'X6113661P', 'J56961816', 'B01731892', 'B12226692', 'B97615249', 'B46973335', 'B98840655', 'B96513973', 'B98109853', 'B98769821', 'X7399953W', 'J98518046', 'B44547248', 'B96432539', 'B44516011', 'B98660442', 'B10520781', 'E13994918', 'X4535770D', 'B96646526', 'X9823756L', 'B97220446', 'B46988887', 'B97974737', 'B98781479', 'B98788052', 'B46667945', 'B98954704', 'B42749671', 'B01608694', 'B12444832', 'B96491469', 'B04934451', 'B97402994', 'B97733554', 'B98630031', 'B96097654', 'B98947559', 'X7542984L', 'B56152192', 'B75466730', 'B96577333', 'Y1060657A', 'E46366514', 'B98353436', 'B96714167', 'Y1435228L', 'Z0487375X', 'Y8500008G', 'B96761713', 'B98160815', 'X6402609F', 'B12804126', 'B12331948', 'B12030763', 'B46610457', 'B46210407', 'B98678097', 'B02563823', 'B12371266', 'B46557955', 'B96187604', 'Y6535524L', 'X6248661K', 'B97728380', 'B96157953', 'B96559208', 'X6506549X', 'B16406969', 'B96148069', 'B98969264', 'B96488481', 'Y1730079X', 'B10892586', 'Y8959828P', 'B12213336', 'E98697899', 'B96426440', 'B96386693', 'B40652281', 'A46124939', 'B83667725', 'A08359960', 'B85771269', 'B79269965', 'A45395555', 'B44617579', 'J98835184', 'B05314323', 'X9055748G', 'B98653439', 'E98368947', 'B98389620', 'B56735004', 'B12533436', 'B12053377', 'B12859369', 'F12047163', 'X5419550Z', 'E12560942', 'B12673331', 'E01604974', 'B53983102', 'B98720378', 'B98284946', 'B96244801', 'B12494100', 'B96540810', 'B97074082', 'B12994596', 'B12370201', 'Y1469120D', 'B85640845', 'B05394838', 'B44627578', 'B96296090', 'B45302270', 'B87960720', 'B87120994', 'B87942892', 'B88218938', 'B12447363', 'B45896834', 'F45741048', 'B45027315', 'B12678728', 'X8107773C', 'F96461041', 'X5059397H', 'X5872910K', 'B87951489', 'X6631339W', 'B45858321', 'X3058004Q', 'B05277660', 'B05308150', 'B56313950', 'X6179858B', 'B13732805', 'B53329470', 'G45751344', 'E06893283', 'X8623906X', 'B45381696', 'B85863504', 'B45443892', 'Y3354851Q', 'X5357629D', 'J13632732', 'E45063856', 'B45852142', 'B45886868', 'X5690857J', 'X6467785R', 'E56679400', 'B42873737', 'E70914908', 'B45874468', 'B72412315', 'F13223797', 'B72404635', 'B98776776', 'B78282662', 'X8352225M', 'B46427787', 'B96130919', 'B98225006', 'E97655484', 'B53058806', 'B54890173', 'X2989389X', 'B13181235', 'B42959551', 'B78772860', 'B09783036', 'B96593371', 'B96423165', 'B88240783', 'Y3352859W', 'B72553506', 'B13229281', 'B13221163', 'J45918224', 'B72844343', 'B45771094', 'B45725819', 'B13660840', 'B86915139', 'B45554342', 'E01642768', 'B54480629', 'B82820945', 'B02929503', 'B21626650', 'B42528547', 'X6148906V', 'J56753676', 'B45303252', 'B87681805', 'B56659774', 'X7783396N', 'J02841831', 'B03846029', 'B96155643', 'B96123864', 'B98946460', 'B70895495', 'A45311347', 'B54824453', 'B54850862', 'B13925375', 'B12975256', 'B53229787', 'B87649588', 'B96340211', 'B87466165', 'B87785275', 'B56827892', 'B16037475', 'X1974987T', 'B45425493', 'E45398666', 'B13141965', 'B67670554', 'B16315202', 'B06779888']
@@ -57,53 +57,63 @@ def buscar_en_todas_comunidades(nif):
                 resultados[nombre] = None
         return resultados
 
-# Medición para 10 rondas de 10 NIFs aleatorios
-tiempos = []
-for i in range(2):
-    nifs_prueba = random.sample(nifs_nubelus, 10)
-    start_time = time.time()
+def busqueda_NIMA_comparando_valencia(nif, umbral=2):
+    """
+    Ejecuta las búsquedas de NIMA en todas las comunidades en paralelo.
+    Si Valencia es la más rápida, o llega en menos de `umbral` segundos respecto a la segunda, devuelve Valencia.
+    Si no, devuelve la segunda más rápida.
+    """
+    comunidades = [
+        ("Valencia", nimaFunctions.busqueda_NIMA_Valencia),
+        ("Madrid", nimaFunctions.busqueda_NIMA_Madrid),
+        ("Castilla", nimaFunctions.busqueda_NIMA_Castilla),
+        ("Cataluña", nimaFunctions.busqueda_NIMA_Cataluña)
+    ]
     resultados = []
-    for nif in nifs_prueba:
-        print(f"[Prueba {i+1}] Buscando NIMA para NIF: {nif} (todas las comunidades a la vez)")
-        resultado = buscar_en_todas_comunidades(nif)
-        resultados.append(resultado)
-        print(resultado)
-    end_time = time.time()
-    tiempo = end_time - start_time
-    tiempos.append(tiempo)
-    print(f"Tiempo para la prueba {i+1}: {tiempo:.2f} segundos")
+    tiempos = {}
 
-print("\nResumen de tiempos para búsquedas en paralelo:")
-for i, t in enumerate(tiempos, 1):
-    print(f"Prueba {i}: {t:.2f} segundos")
-print(f"Tiempo medio: {np.mean(tiempos):.2f} segundos")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        future_to_comunidad = {
+            executor.submit(func, nif): nombre
+            for nombre, func in comunidades
+        }
+        start_time = time.time()
+        for future in concurrent.futures.as_completed(future_to_comunidad):
+            nombre = future_to_comunidad[future]
+            try:
+                resultado = future.result()
+                if resultado:
+                    elapsed = time.time() - start_time
+                    resultados.append((nombre, resultado, elapsed))
+                    tiempos[nombre] = elapsed
+            except Exception:
+                continue
+            # Parar cuando tengamos resultados de todas las comunidades que han devuelto algo
+            if len(resultados) == 4:
+                break
 
+    # Filtrar solo los que han devuelto resultado
+    resultados = [r for r in resultados if r[1]]
+    if not resultados:
+        return None
 
+    # Ordenar por tiempo de llegada
+    resultados.sort(key=lambda x: x[2])
+    # Buscar si Valencia está entre los resultados
+    valencia_result = next((r for r in resultados if r[0] == "Valencia"), None)
 
-# funciones_busqueda = [
-#     ("Valencia", nimaFunctions.busqueda_NIMA_Valencia),
-#     ("Madrid", nimaFunctions.busqueda_NIMA_Madrid),
-#     ("Castilla", nimaFunctions.busqueda_NIMA_Castilla),
-#     ("Cataluña", nimaFunctions.busqueda_NIMA_Cataluña)
-# ]
+    if not valencia_result:
+        # Si Valencia no ha devuelto nada, devolver el más rápido
+        return {"comunidad": resultados[0][0], "resultado": resultados[0][1], "tiempo": resultados[0][2]}
 
-# for nombre, funcion in funciones_busqueda:
-#     print(f"\n--- Medición para {nombre} ---")
-#     tiempos = []
-#     for i in range(10):
-#         nifs_prueba = random.sample(nifs_nubelus, 10)
-#         start_time = time.time()
-#         resultados = []
-#         for nif in nifs_prueba:
-#             print(f"[{nombre}][Prueba {i+1}] Buscando NIMA para NIF: {nif}")
-#             resultado = funcion(nif)
-#             resultados.append(resultado)
-#         end_time = time.time()
-#         tiempo = end_time - start_time
-#         tiempos.append(tiempo)
-#         print(f"Tiempo para la prueba {i+1} ({nombre}): {tiempo:.2f} segundos")
-#     print(f"\nResumen de tiempos para {nombre}:")
-#     for i, t in enumerate(tiempos, 1):
-#         print(f"Prueba {i}: {t:.2f} segundos")
-#     print(f"Tiempo medio para {nombre}: {np.mean(tiempos):.2f} segundos")
+    # Si Valencia es la más rápida, o está dentro del umbral respecto al segundo más rápido
+    if resultados[0][0] == "Valencia":
+        return {"comunidad": "Valencia", "resultado": valencia_result[1], "tiempo": valencia_result[2]}
+    elif len(resultados) > 1 and (valencia_result[2] - resultados[0][2]) <= umbral:
+        return {"comunidad": "Valencia", "resultado": valencia_result[1], "tiempo": valencia_result[2]}
+    else:
+        # Si Valencia tarda más de umbral respecto al más rápido, devolver el más rápido
+        return {"comunidad": resultados[0][0], "resultado": resultados[0][1], "tiempo": resultados[0][2]}
 
+datos = nimaFunctions.busqueda_NIMA_Valencia("B43693274")
+print(datos)
