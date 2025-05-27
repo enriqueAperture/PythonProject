@@ -31,7 +31,7 @@ Ejemplo de uso:
 import glob
 import os
 import time
-import pandas
+import pandas as pd
 import json
 import logging
 import re
@@ -41,12 +41,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 # Directorio donde se espera la descarga de archivos Excel
-#DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
+DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
 # Ruta del archivo Excel recogidas
 #EXCEL_RECOGIDAS = r"C:\Users\Metalls1\Downloads\excel_recogidas.xls"
 
 EXCEL_RECOGIDAS = "data/excel_recogidas.xls"
-data_recogidas = pandas.read_excel(EXCEL_RECOGIDAS)
+data_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
 
 def _esperar_descarga(carpeta: str, extension: str = ".xlsx", timeout: int = 30) -> str:
     """
@@ -75,7 +75,7 @@ def _esperar_descarga(carpeta: str, extension: str = ".xlsx", timeout: int = 30)
     raise TimeoutError("Descarga no completada en el tiempo esperado.")
 
 
-def _nif_no_encontrados_en_nubelus(cif_nubelus, datos_recogidas: pandas.DataFrame) -> pandas.DataFrame:
+def _nif_no_encontrados_en_nubelus(cif_nubelus, datos_recogidas: pd.DataFrame) -> pd.DataFrame:
     """
     Filtra del DataFrame 'datos_recogidas' aquellas filas cuyo 'cif_recogida' no se encuentre
     en los valores de 'cif_nubelus'.
@@ -92,10 +92,10 @@ def _nif_no_encontrados_en_nubelus(cif_nubelus, datos_recogidas: pandas.DataFram
         cif_valor = fila['cif_recogida']
         if cif_valor not in cif_nubelus.values:
             filas_no_encontradas.append(fila)
-    return pandas.DataFrame(filas_no_encontradas)
+    return pd.DataFrame(filas_no_encontradas)
 
 
-def sacarEmpresasNoAñadidas(driver: webdriver.Chrome) -> pandas.DataFrame:
+def sacarEmpresasNoAñadidas(driver: webdriver.Chrome) -> pd.DataFrame:
     """
     Procesa los archivos Excel para identificar las empresas que aún no han sido añadidas en Nubelus.
     
@@ -121,8 +121,8 @@ def sacarEmpresasNoAñadidas(driver: webdriver.Chrome) -> pandas.DataFrame:
         exit()
 
     # Leer los Excel con pandas
-    entidades_medioambientales = pandas.read_excel(archivo_xlsx)
-    excel_recogidas = pandas.read_excel(EXCEL_RECOGIDAS)
+    entidades_medioambientales = pd.read_excel(archivo_xlsx)
+    excel_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
 
     # Obtener los NIF de Nubelus
     cif_nubelus = entidades_medioambientales["NIF"]
@@ -136,8 +136,7 @@ def sacarEmpresasNoAñadidas(driver: webdriver.Chrome) -> pandas.DataFrame:
     datos_no_encontrados = _nif_no_encontrados_en_nubelus(cif_nubelus, datos)
     return datos_no_encontrados
 
-
-def añadirEmpresa(driver: webdriver.Chrome, empresa) -> None:
+def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
     """
     Añade una empresa individualmente en la aplicación web mediante Selenium.
 
@@ -146,56 +145,61 @@ def añadirEmpresa(driver: webdriver.Chrome, empresa) -> None:
         empresa (Union[pandas.Series, dict]): Datos de la empresa a añadir. Puede ser una Serie de pandas o un diccionario.
     """
     try:
-        # Permitir tanto pandas.Series como dict
-        if isinstance(empresa, dict):
-            datos = empresa
-        else:
-            datos = empresa.to_dict()
-
-        logging.info(f"Añadiendo empresa: {datos['nombre_recogida']}")
+        logging.info(f"Añadiendo empresa: {fila['nombre_recogida']}")
         
         # 1. Completar el campo Nombre (con ID "pDenominacion")
         webFunctions.esperar_elemento(driver, By.ID, "pDenominacion", timeout=10)
-        webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", datos["nombre_recogida"]+ " prueba")
+        webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"]+ " prueba")
         
-        # 2. Completar el campo CIF
-        webFunctions.escribir_en_elemento_por_name(driver, "pNif", datos["cif_recogida"])
+        # 2. Completar el campo NIF
+        webFunctions.escribir_en_elemento_por_name(driver, "pNif", fila["cif_recogida"])
         
-        # 3. Seleccionar el campo Fiscal (se asume opción "Física")
-        webFunctions.seleccionar_elemento_por_nombre(driver, "pForma_fiscal", "Física")
+        # 3. Completar el campo de forma fiscal: Física si el último carácter es letra, Jurídica si el primero es letra
+        cif = str(fila["cif_recogida"]).strip()
+        if cif and cif[-1].isalpha():
+            forma_fiscal = "Física"
+        elif cif and cif[0].isalpha():
+            forma_fiscal = "Jurídica"
+        webFunctions.seleccionar_elemento_por_nombre(driver, "pForma_fiscal", forma_fiscal)
         
-        # 4. Completar el campo Nombre y Apellidos
-        nombre_split = str(datos["nombre_recogida"]).split()
-        webFunctions.escribir_en_elemento_por_name(driver, "pNombre", nombre_split[0] if nombre_split else "")
-        webFunctions.escribir_en_elemento_por_name(driver, "pApellidos", " ".join(nombre_split[1:]) if len(nombre_split) > 1 else "")
-        
+        # 4. Completar el campo de Forma Jurídica y Nombre Fiscal si es Jurídica
+        if forma_fiscal == "Jurídica":
+            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_forma_juridica" ,"Asociaciones") # Asociaciones por defecto
+            webFunctions.escribir_en_elemento_por_name(driver, "pNombre_fiscal", fila["nombre_recogida"] + " prueba")
+
+        # 4. Completar el campo Nombre y Apellidos si es una persona física
+        elif forma_fiscal == "Física":
+            nombre_split = str(fila["nombre_recogida"]).split()
+            webFunctions.escribir_en_elemento_por_name(driver, "pNombre", nombre_split[0] if nombre_split else "")
+            webFunctions.escribir_en_elemento_por_name(driver, "pApellidos", " ".join(nombre_split[1:]) if len(nombre_split) > 1 else "")
+            
         # 5. Completar el campo Domicilio
-        webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", datos["direccion_recogida"])
+        webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
         
         # 6. Completar el campo Municipio
-        webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_municipio", str(datos["poblacion_recogida"]).rstrip(), "ui-a-value")
+        webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"]).rstrip(), "ui-a-value")
 
         # 7. Completar el campo Provincia
-        webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", datos["provincia_recogida"])
+        webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", fila["provincia_recogida"])
         
         # 8. Completar el campo CP
-        webFunctions.escribir_en_elemento_por_name(driver, "pCodigoPostal", str(datos["cp_recogida"]))
+        webFunctions.escribir_en_elemento_por_name(driver, "pCodigoPostal", str(fila["cp_recogida"]))
         
         # 9. Completar el campo Teléfono
-        webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", str(datos["telf_recogida"]))
+        webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", str(fila["telf_recogida"]))
         
         # 10. Completar el campo Email
-        webFunctions.escribir_en_elemento_por_name(driver, "pEmail", datos["email_recogida"])
+        webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
         
-        # 11. Confirmar la adición (clic en botón de cancelar o guardar según corresponda)
+        # 11. Confirmar la adición (clic en botón de aceptar o cancelar o guardar según corresponda)
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
         
         # Espera para que la acción se procese
         time.sleep(1)
     except Exception as error:
-        logging.error(f"Error al añadir la empresa {datos.get('nombre_recogida', '')}: {error}")
+        logging.error(f"Error al añadir la empresa {fila.get('nombre_recogida', '')}: {error}")
 
-def añadirEmpresas(driver: webdriver.Chrome, empresas_añadir: pandas.DataFrame) -> None:
+def añadirEmpresas(driver: webdriver.Chrome, empresas_añadir: pd.DataFrame) -> None:
     """
     Itera sobre el DataFrame 'empresas_añadir' y realiza las acciones necesarias para 
     añadir cada empresa en la aplicación web mediante Selenium.
@@ -248,7 +252,7 @@ def is_denominacion_correcto(nombre_recogida: str, denominacion: str) -> bool:
     return True
 
 
-def sacar_centros_no_encontrados_en_nubelus(centros_nubelus: pandas.DataFrame, datos_recogidas: pandas.DataFrame) -> pandas.DataFrame:
+def sacar_centros_no_encontrados_en_nubelus(centros_nubelus: pd.DataFrame, datos_recogidas: pd.DataFrame) -> pd.DataFrame:
     """
     Filtra los centros de datos_recogidas cuyos nombres no se encuentran (según comparación flexible)
     en la columna 'Denominación' de centros_nubelus.
@@ -275,10 +279,10 @@ def sacar_centros_no_encontrados_en_nubelus(centros_nubelus: pandas.DataFrame, d
             fila_dict['EMA'] = denominacion_to_ema.get(fila['nombre_recogida'], '')
             filas_no_encontradas.append(fila_dict)
 
-    return pandas.DataFrame(filas_no_encontradas)
+    return pd.DataFrame(filas_no_encontradas)
 
 
-def sacar_centros_no_añadidos(driver: webdriver.Chrome) -> pandas.DataFrame:
+def sacar_centros_no_añadidos(driver: webdriver.Chrome) -> pd.DataFrame:
     """
     Procesa los archivos Excel para obtener los centros medioambientales que aún no han sido añadidos en Nubelus.
     
@@ -302,8 +306,8 @@ def sacar_centros_no_añadidos(driver: webdriver.Chrome) -> pandas.DataFrame:
         driver.quit()
         exit()
 
-    centros_medioambientales = pandas.read_excel(archivo_xlsx)
-    excel_recogidas = pandas.read_excel(EXCEL_RECOGIDAS)
+    centros_medioambientales = pd.read_excel(archivo_xlsx)
+    excel_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
 
     # Seleccionar columnas de interés
     centros = centros_medioambientales[['Denominación', 'EMA']]
@@ -316,60 +320,59 @@ def sacar_centros_no_añadidos(driver: webdriver.Chrome) -> pandas.DataFrame:
     return datos
 
 
-def añadirCentros(driver: webdriver.Chrome, centro_añadir: pandas.DataFrame) -> None:
+def añadirCentro(driver: webdriver.Chrome, fila) -> None:
     """
-    Itera sobre el DataFrame 'centro_añadir' y realiza las acciones necesarias para añadir cada centro 
-    en la aplicación web de Nubelus.
-
-    Se asume que el formulario para añadir centros ya se encuentra visible.
+    Añade un centro individualmente en la aplicación web mediante Selenium.
 
     Args:
         driver (webdriver.Chrome): Instancia del navegador.
-        centro_añadir (pandas.DataFrame): DataFrame con los datos de los centros a añadir.
-
-    Ejemplo:
-        añadirCentros(driver, centros_df)
+        centro (Union[pandas.Series, dict]): Datos del centro a añadir. Puede ser una Serie de pandas o un diccionario.
     """
-    for idx, centro in centro_añadir.iterrows():
-        try:
-            logging.info(f"Añadiendo centro: {centro['nombre_recogida']}")
-            # Clic en el botón "nuevo" para centros
-            webFunctions.clickar_boton_por_clase(driver, "miBoton.nuevo")
-            
-            # 1. Completar el campo Denominación
-            webFunctions.esperar_elemento(driver, By.ID, "pDenominacion", timeout=10)
-            webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", centro["nombre_recogida"])
-            
-            # 2. (Opcional) Completar el campo EMA si fuese necesario
-            webFunctions.escribir_en_elemento_por_name(driver, "pNif", centro["EMA"])
-            
-            # 3. Completar el campo Domicilio
-            webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", centro["direccion_recogida"])
-            
-            # 4. Completar el campo Municipio
-            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_ine_municipio", str(centro["poblacion_recogida"]).rstrip())
-            time.sleep(1)
-            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_ine_municipio", Keys.ENTER)
-            
-            # 5. Completar el campo Provincia
-            webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", centro["provincia_recogida"])
-            
-            # 6. Completar el campo CP
-            webFunctions.escribir_en_elemento_por_name(driver, "pCodigoPostal", str(centro["cp_recogida"]))
-            
-            # 7. Completar el campo Teléfono
-            webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", str(centro["telf_recogida"]))
-            
-            # 8. Completar el campo Email
-            webFunctions.escribir_en_elemento_por_name(driver, "pEmail", centro["email_recogida"])
-            
-            # 9. Confirmar la adición (clic en botón de aceptar o guardar)
-            webFunctions.clickar_boton_por_clase(driver, "miBoton.cancelar")
-            
-            # Espera para que la acción se procese
-            time.sleep(1)
-        except Exception as error:
-            logging.error(f"Error al añadir la empresa {centro_añadir.iloc[0]['nombre_recogida']}: {error}")
+    try:
+        logging.info(f"Añadiendo centro: {fila['nombre_recogida']}")
+
+        # 1. Completar el campo Denominación
+        webFunctions.esperar_elemento(driver, By.ID, "pDenominacion", timeout=10)
+        webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"])
+
+        # 2. (Opcional) Completar el campo EMA si fuese necesario
+        webFunctions.escribir_en_elemento_por_name(driver, "pNif", fila.get("EMA", ""))
+
+        # 3. Completar el campo Domicilio
+        webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
+
+        # 4. Completar el campo Municipio
+        webFunctions.completar_campo_y_confirmar_seleccion_por_name(
+            driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"]).rstrip(), "ui-a-value"
+        )
+
+        # 5. Completar el campo Provincia
+        webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", fila["provincia_recogida"])
+
+        # 6. Completar el campo CP
+        webFunctions.escribir_en_elemento_por_name(driver, "pCodigoPostal", str(fila["cp_recogida"]))
+
+        # 7. Completar el campo Teléfono
+        webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", str(fila["telf_recogida"]))
+
+        # 8. Completar el campo Email
+        webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
+
+        # 9. Confirmar la adición (clic en botón de aceptar o guardar)
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
+
+        # Espera para que la acción se procese
+        time.sleep(1)
+    except Exception as error:
+        logging.error(f"Error al añadir el centro {fila.get('nombre_recogida', '')}: {error}")
+
+def añadirCentros(driver: webdriver.Chrome, centros_añadir: pd.DataFrame) -> None:
+    """
+    Itera sobre el DataFrame 'centros_añadir' y añade cada centro usando añadirCentro.
+    """
+    for idx, centro in centros_añadir.iterrows():
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.nuevo")
+        añadirCentro(driver, centro)
 
 
 def extraer_datos_centro_castilla_desde_excel(ruta_excel):
@@ -383,7 +386,7 @@ def extraer_datos_centro_castilla_desde_excel(ruta_excel):
     Returns:
         dict: Diccionario con los datos extraídos del centro.
     """
-    datos_castilla = pandas.read_excel(ruta_excel, header=1)
+    datos_castilla = pd.read_excel(ruta_excel, header=1)
     ruta_xlsx = ruta_excel.replace('.xls', '.xlsx')
     datos_castilla.to_excel(ruta_xlsx, index=False)
     fila = datos_castilla.iloc[1]
@@ -459,30 +462,27 @@ def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
 
     return datos_json
 
-def añadir_horario(driver):
-  """
-  Navega a la sección 'Otros', abre el pop-up de aviso y añade un horario de prueba.
-  """
-  webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Otros")
-  time.sleep(1)
-  webFunctions.clickar_boton_con_titulo(driver, "Editar")
-  oldDriver = driver
-  popup = webFunctions.encontrar_pop_up_por_id(driver, "div_cambiar_aviso")
-  webFunctions.escribir_en_elemento_por_name(popup, "pAviso", "Horario de Prueba")
-  webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
-  driver = oldDriver
+def añadir_horario(driver, fila):
+    """
+    Navega a la sección 'Otros', abre el pop-up de aviso y añade un horario de prueba.
+    """
+    try:
+        webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Otros")
+        time.sleep(1)
+        webFunctions.clickar_boton_con_titulo(driver, "Editar")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_cambiar_aviso")
+        webFunctions.escribir_en_elemento_por_name(popup, "pAviso", str(fila.get("horario_m_1", "")))
+        webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
+        driver = oldDriver
+    except Exception as error:
+        logging.error(f"Error al añadir horario para la empresa.")
 
-def rellenar_datos_medioambientales(driver, empresa):
+def rellenar_datos_medioambientales(driver, fila):
     """
     Rellena los datos medioambientales en el formulario correspondiente usando los datos de la fila 'empresa'.
     """
     try:
-        # Permitir tanto pandas.Series como dict
-        if isinstance(empresa, dict):
-            datos = empresa
-        else:
-            datos = empresa.to_dict()
-
         webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Datos medioambientales")
         time.sleep(1)
         webFunctions.clickar_boton_por_clase(driver, "miBoton.editar.solapa_descripcion")
@@ -491,36 +491,53 @@ def rellenar_datos_medioambientales(driver, empresa):
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_editar_DATOS_MEDIOAMBIENTALES")
 
         # Rellenar campos con los datos de la empresa
-        webFunctions.escribir_en_elemento_por_name(popup, "pNima", str(datos.get("nima_codigo", "")))
-        webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nombre", str(datos.get("nombre_recogida", "")))
+        webFunctions.escribir_en_elemento_por_name(popup, "pNima", str(fila.get("nima_codigo", "")))
+        webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nombre", str(fila.get("nombre_recogida", "")))
         #webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_apellidos", str(datos.get("responsable_apellidos", "")))
-        webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nif", str(datos.get("cif_recogida", "")))
-        webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_cargo", str(datos.get("nombre_recogida", "")))
+        webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nif", str(fila.get("cif_recogida", "")))
+        webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_cargo", str(fila.get("nombre_recogida", "")))
         #webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_vial", str(datos.get("denominacion_vial", "")), "ui-a-label")
-        webFunctions.escribir_en_elemento_por_name(popup, "pCodigo_prtr", str(datos.get("poblacion_recogida", "")))
+        webFunctions.escribir_en_elemento_por_name(popup, "pCodigo_prtr", str(fila.get("poblacion_recogida", "")))
 
         webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
         driver = oldDriver
     except Exception as error:
-        logging.error(f"Error al rellenar datos medioambientales para la empresa {datos.get('nombre_recogida', '')}: {error}")
+        logging.error(f"Error al rellenar datos medioambientales para la empresa {fila.get('nombre_recogida', '')}: {error}")
     
-def añadir_acuerdo_representacion(driver, empresa):
+def añadir_acuerdo_representacion(driver, fila):
     """
     Navega a la sección de acuerdos de representación y añade un acuerdo usando los datos de la fila 'empresa'.
     """
     try:
-        # Permitir tanto pandas.Series como dict
-        if isinstance(empresa, dict):
-            datos = empresa
-        else:
-            datos = empresa.to_dict()
-
         time.sleep(1)
         webFunctions.completar_campo_y_confirmar_seleccion_por_name(
-            driver, "pDenominacion_ema_representada", str(datos.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item"
+            driver, "pDenominacion_ema_representada", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item"
         )
-        webFunctions.escribir_en_elemento_por_name(driver, "pFecha", str(datos.get("fecha_inicio", "")))
-        webFunctions.escribir_en_elemento_por_name(driver, "pFecha_caducidad", str(datos.get("fecha_fin", "")))
+        webFunctions.escribir_en_elemento_por_name(driver, "pFecha", str(fila.get("fecha_inicio", "")))
+        webFunctions.escribir_en_elemento_por_name(driver, "pFecha_caducidad", str(fila.get("fecha_fin", "")))
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
     except Exception as error:
-        logging.error(f"Error al añadir acuerdo de representación para la empresa {datos.get('nombre_recogida', '')}: {error}")
+        logging.error(f"Error al añadir acuerdo de representación para la empresa.")
+
+def añadir_autorizaciones(driver, fila):
+    """
+    Navega a la sección 'Autorizaciones' y añade una autorización usando los datos de la fila 'empresa'.
+    """
+    try:
+        webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Autorizaciones")
+        #time.sleep(1)
+        webFunctions.esperar_elemento(driver, By.XPATH)
+        webFunctions.clickar_boton_por_texto(driver, "Añadir autorización")
+
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_AUTORIZACIONES")
+
+        webFunctions.escribir_en_elemento_por_name(popup, "pAutorizacion_medioambiental", str(fila.get("autorizacion_medioambiental", "")))
+        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion", str(fila.get("nombre_recogida", "")))
+        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", str(fila.get("EMA", "")))
+        time.sleep(1)
+        webFunctions.clickar_boton_por_clase(driver, "BUSCAR_TIPO_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item")
+        webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
+        driver = oldDriver
+    except Exception as error:
+        logging.error(f"Error al añadir autorización para la empresa {fila.get('nombre_recogida', '')}: {error}")

@@ -32,64 +32,28 @@ WEB_NUBELUS = "https://portal.nubelus.es"
 WEB_NUBELUS_AÑADIR = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales&pAccion=NUEVO"
 WEB_NUBELUS_ACUERDOS = "https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion&pAccion=NUEVO"
 
-# def añadir_empresa_medioambiental(driver):
-#   """
-#   Navega a la sección "Entidades medioambientales" y añade una empresa de prueba.
-#   """
-#   webFunctions.abrir_web(driver, WEB_NUBELUS_AÑADIR)
-#   webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", "Empresa de Prueba")
-#   webFunctions.escribir_en_elemento_por_name(driver, "pNif", "12345678A")
-#   webFunctions.seleccionar_elemento_por_name(driver, "pForma_fiscal", "Física")
-#   webFunctions.escribir_en_elemento_por_name(driver, "pNombre", "Nombre de Prueba")
-#   webFunctions.escribir_en_elemento_por_name(driver, "pApellidos", "Apellido de Prueba")
-#   webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", "Calle de Ejemplo 456")
-#   webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_municipio", "Valencia", "ui-a-label")
-#   webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", "València/Valencia")
-#   webFunctions.escribir_en_elemento_por_name(driver, "pCodigoPostal", "46003")
-#   webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", "912345678")
-#   webFunctions.escribir_en_elemento_por_name(driver, "pEmail", "correo@electronico.com")
-#   webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
-
-
-
-
-
-def añadir_autorizaciones(driver):
-  """
-  Navega a la sección 'Autorizaciones' y añade una autorización de prueba.
-  """
-  webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Autorizaciones")
-  time.sleep(1)
-  webFunctions.clickar_boton_por_texto(driver, "Añadir autorización")
-
-  oldDriver = driver
-  popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_AUTORIZACIONES")
-  webFunctions.escribir_en_elemento_por_name(popup, "pAutorizacion_medioambiental", "Autorización de Prueba")
-  webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion", "Denominación de Prueba")
-  webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", "P04")
-  time.sleep(1)
-  webFunctions.clickar_boton_por_clase(driver, "BUSCAR_TIPO_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item")
-  webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
-  driver = oldDriver
-
 def main():
   # Configurar el driver de Selenium
   driver = webConfiguration.configure()
 
   # Iniciar sesión en Nubelus
   funcionesNubelus.iniciar_sesion(driver)
-  time.sleep(5)
+  time.sleep(5) # Tiempo para aceptar el pop up de google
+
   webFunctions.abrir_web(driver, WEB_NUBELUS_AÑADIR)
   excel_empresa = pandas.read_excel(excelFunctions.EXCEL_RECOGIDAS)
-  excelFunctions.añadirEmpresa(driver, excel_empresa.iloc[0])
-  #funcionesNubelus.crear_proveedor(driver)
-  time.sleep(1)
-  #funcionesNubelus.crear_cliente(driver)
-  funcionesNubelus.entrar_en_centro_medioambiental(driver)
-  excelFunctions.rellenar_datos_medioambientales(driver, excel_empresa.iloc[0])
-  añadir_autorizaciones(driver)
-  excelFunctions.añadir_horario(driver)
-  excelFunctions.añadir_acuerdo_representacion(driver)
+
+  empresa_prueba = excel_empresa.iloc[0] # Toma la primera fila del Excel como empresa de prueba
+  excelFunctions.añadirEmpresa(driver, empresa_prueba)
+  time.sleep(5)
+  # funcionesNubelus.crear_proveedor(driver)#
+  # time.sleep(1)
+  # funcionesNubelus.crear_cliente(driver)
+  # funcionesNubelus.entrar_en_centro_medioambiental(driver)
+  # excelFunctions.rellenar_datos_medioambientales(driver, empresa_prueba)
+  # excelFunctions.añadir_autorizaciones(driver, empresa_prueba)
+  # excelFunctions.añadir_horario(driver, empresa_prueba) #Solucionar error
+  # excelFunctions.añadir_acuerdo_representacion(driver, empresa_prueba)
 
 if __name__ == "__main__":
   main()

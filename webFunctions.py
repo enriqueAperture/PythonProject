@@ -309,12 +309,9 @@ def clickar_imagen_generar_excel(driver, timeout=20):
     Returns:
         bool: True si se hizo click, False si no se encontró la imagen.
     """
-    import logging
     try:
-        img_excel = WebDriverWait(driver, timeout).until(
-            EC.element_to_be_clickable((By.XPATH, "//img[@id='imagen_generarPDF_todos' and contains(@title, 'EXCEL')]"))
-        )
-        img_excel.click()
+        xpath = "//img[@id='imagen_generarPDF_todos' and contains(@title, 'EXCEL')]"
+        clickar_elemento(driver, By.XPATH, xpath, timeout)
         logging.info('Click realizado en la imagen para generar el EXCEL.')
         logging.info('Esperando la descarga del EXCEL...')
         return True
@@ -542,6 +539,27 @@ def escribir_en_elemento_por_name(driver: webdriver.Chrome, name: str, texto: st
         logging.error(f"No se pudo escribir en el elemento con name '{name}': {e}")
         raise
 
+def escribir_en_elemento_por_name_y_enter(driver: webdriver.Chrome, name: str, texto: str) -> None:
+    """
+    Escribe en un elemento identificado por el atributo name y pulsa Enter después de escribir.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        name (str): Valor del atributo name del elemento.
+        texto (str): Texto a escribir.
+
+    Ejemplo:
+        escribir_en_elemento_por_name_y_enter(driver, "usuario", "admin")
+    """
+    try:
+        escribir_en_elemento(driver, By.NAME, name, texto)
+        input_element = driver.find_element(By.NAME, name)
+        input_element.send_keys(Keys.ENTER)
+        logging.info(f"Se escribió texto y se pulsó Enter en el elemento con name '{name}'.")
+    except Exception as e:
+        logging.error(f"No se pudo escribir y pulsar Enter en el elemento con name '{name}': {e}")
+        raise
+
 def escribir_en_elemento_por_placeholder(driver: webdriver.Chrome, placeholder_text: str, texto: str) -> None:
     """
     Escribe en un campo de entrada localizado por su atributo placeholder.
@@ -646,20 +664,17 @@ def seleccionar_elemento(driver: webdriver.Chrome, by: By, value: str, opcion: s
         logging.error(f"Falló al seleccionar la opción '{opcion}' en el elemento con '{by}' = '{value}': {e}")
         raise
 
-def seleccionar_elemento_por_texto(driver: webdriver.Chrome, link_text: str, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+def seleccionar_elemento_por_link_text(driver: webdriver.Chrome, select_id: str, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
-    Alias de seleccionar_elemento.
-
-    Selecciona una opción de un <select> basado en el texto visible.
+    Selecciona una opción de un <select> identificado por su ID, usando el texto visible.
 
     Args:
         driver (webdriver.Chrome): Instancia del navegador.
-        by (By): Estrategia de localización.
-        value (str): Valor del selector.
+        select_id (str): ID del elemento <select>.
         texto (str): Texto visible de la opción a seleccionar.
         timeout (int, optional): Tiempo máximo de espera en segundos.
     """
-    seleccionar_elemento(driver, By.LINK_TEXT, value, texto, timeout)
+    seleccionar_elemento(driver, By.ID, select_id, texto, timeout)
 
 def seleccionar_elemento_por_class(driver: webdriver.Chrome, class_name: str, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
