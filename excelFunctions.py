@@ -372,7 +372,7 @@ def extraer_datos_centro_castilla_desde_excel(ruta_excel):
     # --- Sede (toma la primera fila válida como ejemplo, ajusta según tu lógica real) ---
     if not filas_naturales.empty:
         fila_empresa = filas_naturales.iloc[0]
-        sede = {
+        empresa = {
             "nombre": fila_empresa.get('NOMBRE', ''),
             "direccion": fila_empresa.get('DOMICILIO', ''),
             "municipio": fila_empresa.get('LOCALIDAD', ''),
@@ -381,12 +381,12 @@ def extraer_datos_centro_castilla_desde_excel(ruta_excel):
             "provincia": fila_empresa.get('PROVINCIA', ''),
         }
     else:
-        sede = {}
+        empresa = {}
 
     # --- Centros ---
     centros = []
     # Saltamos la primera fila natural (que es la sede) y usamos las siguientes como centros
-    for _, fila in filas_naturales.iloc[1:].iterrows():
+    for _, fila in filas_naturales.iloc[0:].iterrows():
         try:
             nima_val = int(fila.get('NIMA ', 0))
         except (ValueError, TypeError):
@@ -403,7 +403,7 @@ def extraer_datos_centro_castilla_desde_excel(ruta_excel):
         centros.append(centro)
 
     resultado = {
-        "empresa": sede,
+        "empresa": empresa,
         "centros": centros
     }
     return resultado
