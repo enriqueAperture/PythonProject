@@ -43,17 +43,17 @@ def main():
   webFunctions.abrir_web(driver, WEB_NUBELUS_AÑADIR)
   excel_empresa = pandas.read_excel(excelFunctions.EXCEL_RECOGIDAS)
 
-  empresa_prueba = excel_empresa.iloc[0] # Toma la primera fila del Excel como empresa de prueba
+  empresa_prueba = excel_empresa.iloc[0] # Toma la fila del Excel como empresa de prueba
   excelFunctions.añadirEmpresa(driver, empresa_prueba)
-  time.sleep(5)
-  # funcionesNubelus.crear_proveedor(driver)#
-  # time.sleep(1)
-  # funcionesNubelus.crear_cliente(driver)
-  # funcionesNubelus.entrar_en_centro_medioambiental(driver)
-  # excelFunctions.rellenar_datos_medioambientales(driver, empresa_prueba)
-  # excelFunctions.añadir_autorizaciones(driver, empresa_prueba)
-  # excelFunctions.añadir_horario(driver, empresa_prueba) #Solucionar error
-  # excelFunctions.añadir_acuerdo_representacion(driver, empresa_prueba)
+  time.sleep(1)
+  funcionesNubelus.crear_proveedor(driver)#
+  time.sleep(1)
+  funcionesNubelus.crear_cliente(driver)
+  funcionesNubelus.entrar_en_centro_medioambiental(driver)
+  excelFunctions.rellenar_datos_medioambientales(driver, empresa_prueba)
+  excelFunctions.añadir_autorizaciones(driver, empresa_prueba)
+  excelFunctions.añadir_horario(driver, empresa_prueba)
+  excelFunctions.añadir_acuerdo_representacion(driver, empresa_prueba)
 
 if __name__ == "__main__":
   main()

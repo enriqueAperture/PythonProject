@@ -48,6 +48,26 @@ DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
 EXCEL_RECOGIDAS = "data/excel_recogidas.xls"
 data_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
 
+dic_formas_juridicas = {
+    "A": "Sociedades anónimas",
+    "B": "Sociedades de responsabilidad limitada",
+    "C": "Sociedades colectivas",
+    "D": "Sociedades comanditarias",
+    "E": "Comunidades de bienes y herencias yacentes",
+    "F": "Sociedades cooperativas",
+    "G": "Asociaciones",
+    "H": "Comunidades de propietarios en régimen de propiedad horizontal",
+    "J": "Sociedades civiles, con o sin personalidad jurídica",
+    "N": "Entidades extranjeras",
+    "P": "Corporaciones Locales",
+    "Q": "Organismos públicos",
+    "R": "Congregaciones e instituciones religiosas",
+    "S": "Órganos de la Administración del Estado y de las Comunidades Autónomas",
+    "U": "Uniones Temporales de Empresas",
+    #"V": "Sociedad Agraria de Transformación",
+    "W": "Establecimientos permanentes de entidades no residentes en España"
+}
+
 def _esperar_descarga(carpeta: str, extension: str = ".xlsx", timeout: int = 30) -> str:
     """
     Espera a que se descargue un archivo con la extensión especificada en la carpeta indicada.
@@ -135,6 +155,20 @@ def sacarEmpresasNoAñadidas(driver: webdriver.Chrome) -> pd.DataFrame:
 
     datos_no_encontrados = _nif_no_encontrados_en_nubelus(cif_nubelus, datos)
     return datos_no_encontrados
+def forma_juridica(cif: str) -> str:
+    """
+    Determina la forma jurídica de una empresa según su CIF.
+
+    Args:
+        cif (str): El CIF de la empresa.
+
+    Returns:
+        str: Forma Jurídica según la primera letra del CIF, o 'Otros' si no se encuentra.
+    """
+    if not cif or not isinstance(cif, str):
+        return "Otros"
+    letra = cif.strip().upper()[0]
+    return dic_formas_juridicas.get(letra, "Otros")
 
 def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
     """
@@ -154,7 +188,7 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         # 2. Completar el campo NIF
         webFunctions.escribir_en_elemento_por_name(driver, "pNif", fila["cif_recogida"])
         
-        # 3. Completar el campo de forma fiscal: Física si el último carácter es letra, Jurídica si el primero es letra
+        # 3. Completar el campo de forma fiscal: Física si el último carácter del CIF es letra, Jurídica si el primero es letra
         cif = str(fila["cif_recogida"]).strip()
         if cif and cif[-1].isalpha():
             forma_fiscal = "Física"
@@ -164,7 +198,9 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         
         # 4. Completar el campo de Forma Jurídica y Nombre Fiscal si es Jurídica
         if forma_fiscal == "Jurídica":
-            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_forma_juridica" ,"Asociaciones") # Asociaciones por defecto
+            webFunctions.clickar_elemento(driver,By.CLASS_NAME ,"pDenominacion_forma_juridica")
+            forma_juridica = forma_juridica(fila["cif_recogida"])
+            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_forma_juridica" ,forma_juridica)
             webFunctions.escribir_en_elemento_por_name(driver, "pNombre_fiscal", fila["nombre_recogida"] + " prueba")
 
         # 4. Completar el campo Nombre y Apellidos si es una persona física
@@ -172,7 +208,7 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
             nombre_split = str(fila["nombre_recogida"]).split()
             webFunctions.escribir_en_elemento_por_name(driver, "pNombre", nombre_split[0] if nombre_split else "")
             webFunctions.escribir_en_elemento_por_name(driver, "pApellidos", " ".join(nombre_split[1:]) if len(nombre_split) > 1 else "")
-            
+
         # 5. Completar el campo Domicilio
         webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
         
