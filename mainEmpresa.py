@@ -48,7 +48,7 @@ webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
 time.sleep(2)
 # 3. Espera a que aparezca el pop-up asociado a la generación del Excel.
 webFunctions.esperar_elemento_por_id(driver, "div_relacion2excel")
-popup = webFunctions.encontrar_pop_up(driver, "div_relacion2excel")
+popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
 # 4. Acepta el pop-up haciendo clic en el botón con la clase "miBoton.aceptar".
 webFunctions.aceptar_pop_up(popup, "miBoton.aceptar")
 

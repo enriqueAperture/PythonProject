@@ -59,7 +59,7 @@ webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Aut
 webFunctions.clickar_boton_por_texto(driver, "Añadir autorización")
 
 # Buscar el pop-up donde se introduce la nueva autorización
-popup = webFunctions.encontrar_pop_up(driver, "div_nuevo_AUTORIZACIONES")
+popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_AUTORIZACIONES")
 
 # Rellenar el formulario del pop-up:
 # Escribir en el campo "pAutorizacion_medioambiental"

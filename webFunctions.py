@@ -223,16 +223,16 @@ def clickar_boton_por_texto(driver: webdriver.Chrome, texto: str, timeout: int =
     xpath = f"//button[contains(., '{texto}')]"
     clickar_elemento(driver, By.XPATH, xpath, timeout)
 
-def clickar_boton_por_texto_registro(driver: webdriver.Chrome, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+def clickar_boton_con_titulo(driver: webdriver.Chrome, titulo: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
-    Hace clic en un elemento <div> con clase 'registro' que contenga el texto especificado.
+    Hace clic en cualquier elemento que contenga el atributo title especificado.
 
     Args:
         driver (webdriver.Chrome): Instancia del navegador.
-        texto (str): Texto que se espera que contenga el elemento.
+        titulo (str): Valor exacto del atributo title que se espera que tenga el elemento.
         timeout (int, optional): Tiempo máximo de espera en segundos.
     """
-    xpath = f"//div[contains(@class, 'registro') and contains(., '{texto}')]"
+    xpath = f"//*[@title='{titulo}']"
     clickar_elemento(driver, By.XPATH, xpath, timeout)
 
 def clickar_ui_a_value_por_texto(driver: webdriver.Chrome, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
@@ -709,21 +709,56 @@ def seleccionar_elemento_por_name(driver: webdriver.Chrome, name: str, opcion: s
     """
     seleccionar_elemento(driver, By.NAME, name, opcion, timeout)
 
-def encontrar_pop_up(driver: webdriver.Chrome, pop_up: str) -> webdriver.remote.webelement.WebElement:
+
+
+def encontrar_pop_up(driver: webdriver.Chrome, by: By, value: str) -> webdriver.remote.webelement.WebElement:
     """
-    Busca y devuelve un elemento pop-up basado en su ID.
+    Busca y retorna un elemento pop-up localizado por la estrategia y valor especificados.
 
     Args:
-        driver (webdriver.Chrome): Instancia del navegador.
-        pop_up (str): Valor del atributo id del pop-up.
-    
+        driver (webdriver.Chrome): Instancia activa del navegador.
+        by (By): Estrategia de localización (By.ID, By.CLASS_NAME, etc.).
+        value (str): Valor del selector.
+
     Returns:
-        WebElement: El elemento del pop-up.
-    
+        WebElement: Elemento WebElement correspondiente al pop-up encontrado.
+
     Ejemplo:
-        popup = encontrar_pop_up(driver, "div_modal")
+        popup = encontrar_pop_up(driver, By.ID, "div_modal")
     """
-    return driver.find_element(By.ID, pop_up)
+    return driver.find_element(by, value)
+
+def encontrar_pop_up_por_id(driver: webdriver.Chrome, id: str) -> webdriver.remote.webelement.WebElement:
+    """
+    Busca y retorna un elemento pop-up localizado por su atributo ID.
+
+    Args:
+        driver (webdriver.Chrome): Instancia activa del navegador.
+        id (str): ID del elemento pop-up a buscar.
+
+    Returns:
+        WebElement: Elemento WebElement correspondiente al pop-up encontrado.
+
+    Ejemplo:
+        popup = encontrar_pop_up_por_id(driver, "div_modal")
+    """
+    return driver.find_element(By.ID, id)
+
+def encontrar_pop_up_por_clase(driver: webdriver.Chrome, clase: str) -> webdriver.remote.webelement.WebElement:
+    """
+    Busca y retorna un elemento pop-up localizado por su clase CSS.
+
+    Args:
+        driver (webdriver.Chrome): Instancia activa del navegador.
+        clase (str): Clase CSS del elemento pop-up a buscar.
+
+    Returns:
+        WebElement: Elemento WebElement correspondiente al pop-up encontrado.
+
+    Ejemplo:
+        popup = encontrar_pop_up_por_clase(driver, "mi-clase-popup")
+    """
+    return driver.find_element(By.CLASS_NAME, clase)
 
 def aceptar_pop_up(popup_div: webdriver.Chrome, boton: str) -> None:
     """
