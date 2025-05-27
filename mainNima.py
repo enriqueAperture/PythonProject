@@ -44,31 +44,13 @@ def busqueda_NIMA(nif):
 # 1. Usar los 3 a la vez y ver si se puede hacer en paralelo. (CONSUME MUCHO RECURSOS)
 # 2. Usar los más rapidos primero (medir la velocidad de cada uno)
 
-def buscar_en_todas_comunidades(nif):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-        future_to_comunidad = {
-            executor.submit(func, nif): nombre
-            for nombre, func in [
-                ("Valencia", nimaFunctions.busqueda_NIMA_Valencia),
-                ("Madrid", nimaFunctions.busqueda_NIMA_Madrid),
-                ("Castilla", nimaFunctions.busqueda_NIMA_Castilla),
-                ("Cataluña", nimaFunctions.busqueda_NIMA_Cataluña)
-            ]
-        }
-        resultados = {}
-        for future in concurrent.futures.as_completed(future_to_comunidad):
-            nombre = future_to_comunidad[future]
-            try:
-                resultados[nombre] = future.result()
-            except Exception as exc:
-                resultados[nombre] = None
-        return resultados
-
-def busqueda_NIMA_con_preferencia_valencia(nif, umbral=2):
+def busqueda_NIMA_con_preferencia_valencia(nif, umbral=5):
     """
-    Ejecuta las búsquedas de NIMA en todas las comunidades en paralelo.
-    Si Valencia es la más rápida, o llega en menos de `umbral` segundos respecto a la segunda, devuelve Valencia.
-    Si no, devuelve la segunda más rápida.
+    Lanza las búsquedas de NIMA en Valencia, Madrid, Castilla y Cataluña en paralelo.
+    Da preferencia al resultado de Valencia si es el más rápido
+    o si llega casi tan rápido como el primero (menos de 'umbral' segundos de diferencia).
+    Si Valencia no devuelve resultado, devuelve el resultado más rápido de las otras comunidades.
+    No devuelve resultados vacíos (sin centros ni datos principales).
     """
     comunidades = [
         ("Valencia", nimaFunctions.busqueda_NIMA_Valencia),
@@ -79,48 +61,57 @@ def busqueda_NIMA_con_preferencia_valencia(nif, umbral=2):
     resultados = []
     tiempos = {}
 
+    def resultado_valido(nombre, resultado):
+        # Considera válido si tiene centros no vacíos
+        if not resultado or not isinstance(resultado, dict):
+            return False
+        centros = resultado.get("centros")
+        if not centros or not isinstance(centros, list) or len(centros) == 0:
+            return False
+        return True
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         future_to_comunidad = {
             executor.submit(func, nif): nombre
             for nombre, func in comunidades
         }
         start_time = time.time()
+        valencia_tiempo = None
+        valencia_resultado = None
+
         for future in concurrent.futures.as_completed(future_to_comunidad):
             nombre = future_to_comunidad[future]
             try:
                 resultado = future.result()
-                if resultado:
+                if resultado_valido(nombre, resultado):
                     elapsed = time.time() - start_time
                     resultados.append((nombre, resultado, elapsed))
                     tiempos[nombre] = elapsed
+                    if nombre == "Valencia":
+                        valencia_tiempo = elapsed
+                        valencia_resultado = resultado
             except Exception:
                 continue
-            # Parar cuando tengamos resultados de todas las comunidades que han devuelto algo
+            # Si ya tenemos resultado de Valencia, comprobamos si hay otro más rápido
+            if valencia_resultado is not None:
+                otros = [r for r in resultados if r[0] != "Valencia"]
+                if otros:
+                    otros.sort(key=lambda x: x[2])
+                    mas_rapido = otros[0]
+                    if valencia_tiempo - mas_rapido[2] <= umbral:
+                        return {"comunidad": "Valencia", "resultado": valencia_resultado, "tiempo": valencia_tiempo}
+                    else:
+                        return {"comunidad": mas_rapido[0], "resultado": mas_rapido[1], "tiempo": mas_rapido[2]}
+                else:
+                    return {"comunidad": "Valencia", "resultado": valencia_resultado, "tiempo": valencia_tiempo}
             if len(resultados) == 4:
                 break
 
-    # Filtrar solo los que han devuelto resultado
-    resultados = [r for r in resultados if r[1]]
     if not resultados:
         return None
 
-    # Ordenar por tiempo de llegada
     resultados.sort(key=lambda x: x[2])
-    # Buscar si Valencia está entre los resultados
-    valencia_result = next((r for r in resultados if r[0] == "Valencia"), None)
+    return {"comunidad": resultados[0][0], "resultado": resultados[0][1], "tiempo": resultados[0][2]}
 
-    if not valencia_result:
-        # Si Valencia no ha devuelto nada, devolver el más rápido
-        return {"comunidad": resultados[0][0], "resultado": resultados[0][1], "tiempo": resultados[0][2]}
-
-    # Si Valencia es la más rápida, o está dentro del umbral respecto al segundo más rápido
-    if resultados[0][0] == "Valencia":
-        return {"comunidad": "Valencia", "resultado": valencia_result[1], "tiempo": valencia_result[2]}
-    elif len(resultados) > 1 and (valencia_result[2] - resultados[0][2]) <= umbral:
-        return {"comunidad": "Valencia", "resultado": valencia_result[1], "tiempo": valencia_result[2]}
-    else:
-        # Si Valencia tarda más de umbral respecto al más rápido, devolver el más rápido
-        return {"comunidad": resultados[0][0], "resultado": resultados[0][1], "tiempo": resultados[0][2]}
-
-datos = nimaFunctions.busqueda_NIMA_Valencia(nif_multicentro_valencia)
-print(datos)
+# datos = busqueda_NIMA_con_preferencia_valencia(nif_multicentro_castilla)
+# print(datos)
