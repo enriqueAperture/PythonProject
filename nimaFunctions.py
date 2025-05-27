@@ -2,20 +2,9 @@
 Módulo: nimaFunctions.py
 
 Este módulo proporciona funciones de alto nivel para automatizar la búsqueda y extracción de información
-de centros y gestores en los portales NIMA de Valencia, Madrid y Castilla-La Mancha mediante Selenium.
-Incluye utilidades para interactuar con los formularios web, descargar y procesar archivos Excel, y
-estructurar los datos extraídos en formato JSON.
-
-Funciones principales:
-    - busqueda_NIMA_Valencia(NIF): Busca un NIF en el portal de Valencia y devuelve los datos relevantes en JSON.
-    - busqueda_NIMA_Madrid(NIF): Busca un NIF en el portal de Madrid y devuelve los datos relevantes en JSON.
-    - busqueda_NIMA_Castilla(NIF): Busca un NIF en el portal de Castilla-La Mancha, descarga el Excel y devuelve los datos en JSON.
-    - busqueda_NIMA_Cataluña(NIF): Busca un NIF en el portal de Cataluña y devuelve los datos relevantes en JSON.
-
-Dependencias:
-    - webFunctions: Funciones auxiliares para interactuar con elementos web mediante Selenium.
-    - webConfiguration: Configuración y creación del driver de Selenium.
-    - excelFunctions: Funciones para procesar y extraer datos de archivos Excel descargados.
+de centros y gestores en los portales NIMA de Valencia, Madrid, Castilla-La Mancha y Cataluña mediante Selenium.
+Las funciones lanzan excepciones con mensajes descriptivos en caso de error, de modo que se pueda devolver un error HTTP adecuado
+en el endpoint correspondiente.
 """
 
 import logging
@@ -49,7 +38,7 @@ def extraer_datos_valencia(driver):
     codigo_ine = webFunctions.obtener_texto_elemento_por_id(driver, "FCODINE1-0-0")
     telefono_centro = webFunctions.obtener_texto_elemento_por_id(driver, "FTELEFONO1-0-0")
 
-    # Códigos de residuos (estos datos son opcionales y a veces dan error)
+    # Códigos de residuos (estos datos son opcionales)
     try:
         codigo_residuo_1 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-0").split()[0]
     except Exception:
@@ -88,25 +77,24 @@ def busqueda_NIMA_Valencia(nif):
     Solo extrae los datos si encuentra el enlace del gestor.
     """
     driver = webConfiguration.configure()
-    # Abrir Web y buscar NIF
-    webFunctions.abrir_web(driver, URL_NIMA_VALENCIA)
-    webFunctions.escribir_en_elemento_por_id(driver, "ctl00_ContentPlaceHolder1_txtNIF", nif)
-    webFunctions.clickar_boton_por_id(driver, "ctl00_ContentPlaceHolder1_btBuscar")
-
-    datos_json = None
     try:
-        # Abrir la ficha del gestor solo si existe el enlace
+        webFunctions.abrir_web(driver, URL_NIMA_VALENCIA)
+        webFunctions.escribir_en_elemento_por_id(driver, "ctl00_ContentPlaceHolder1_txtNIF", nif)
+        webFunctions.clickar_boton_por_id(driver, "ctl00_ContentPlaceHolder1_btBuscar")
         webFunctions.abrir_link_por_boton_id(driver, "ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor")
         datos_json = extraer_datos_valencia(driver)
-        logging.info("Datos de la empresa encontrados y extraídos correctamente.")
-    except Exception:
-        logging.info('ERROR: No se ha encontrado el enlace del gestor en la página.')
-    driver.quit()
+        if not datos_json:
+            raise Exception("No se pudieron extraer los datos de NIMA Valencia")
+        logging.info("Datos de la empresa encontrados y extraídos correctamente en Valencia.")
+    except Exception as e:
+        raise Exception(f"Error en busqueda_NIMA_Valencia")
+    finally:
+        driver.quit()
+    return datos_json
 
-    if datos_json:
-        return datos_json
-    else:
-        return None
+# Realiza cambios similares en las demás funciones de búsqueda.
+# Por ejemplo, en busqueda_NIMA_Madrid, busqueda_NIMA_Castilla y busqueda_NIMA_Cataluña, asegúrate
+# de lanzar una excepción con un mensaje descriptivo en caso de error.
 
 def extraer_datos_madrid(driver):
     """
@@ -137,7 +125,6 @@ def extraer_datos_madrid(driver):
         "provincia_centro": webFunctions.leer_texto_por_campo_indice(driver, "Provincia:", indice=1),
         "codigo_ine_provincia_centro": webFunctions.leer_texto_por_campo_indice(driver, "Código INE Provincia:", indice=1)
     }
-
     return {
         "empresa": datos_empresa,
         "centro": datos_centro
@@ -203,24 +190,17 @@ def busqueda_NIMA_Madrid(nif):
         return None
 
 def busqueda_NIMA_Castilla(nif):
-    """
-    Función para buscar los datos del NIF en la web de NIMA Castilla y devolver un JSON con los datos.
-    Solo extrae los datos si encuentra la imagen para generar el EXCEL.
-    """
     driver = webConfiguration.configure()
-    # Abrir Web y buscar NIF
-    webFunctions.abrir_web(driver, URL_NIMA_CASTILLA)
-    webFunctions.clickar_boton_por_id(driver, "enlace_gestores")
-    webFunctions.escribir_en_elemento_por_id(driver, "input_NIF_CIF", nif)
-    webFunctions.clickar_boton_por_id(driver, "boton_buscar")
-
-    datos_json = None
     try:
-        # Esperar a que la imagen para generar el EXCEL esté presente y sea clickeable y hacer click
+        webFunctions.abrir_web(driver, URL_NIMA_CASTILLA)
+        webFunctions.clickar_boton_por_id(driver, "enlace_gestores")
+        webFunctions.escribir_en_elemento_por_id(driver, "input_NIF_CIF", nif)
+        webFunctions.clickar_boton_por_id(driver, "boton_buscar")
         if webFunctions.clickar_imagen_generar_excel(driver):
-            # Ahora solo espera la descarga y procesa el archivo
             datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
-            logging.info('Datos extraídos del Excel:')
+            if not datos_json:
+                raise Exception("No se pudieron extraer los datos desde el Excel en Castilla")
+            logging.info('Datos extraídos del Excel en Castilla.')
         else:
             logging.info('ERROR: No se ha encontrado la imagen para generar el Excel.')
     except Exception:
@@ -264,7 +244,6 @@ def extraer_datos_cataluña(driver, nif):
     except Exception as e:
         logging.error(f"Error extrayendo NIF del div: {e}")
 
-    # Extraer NIMA
     selector_nima = "//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nima:']]"
     nima = None
     try:
@@ -273,9 +252,9 @@ def extraer_datos_cataluña(driver, nif):
     except Exception as e:
         logging.error(f"Error extrayendo NIMA: {e}")
 
-    # Extraer Razón Social
     selector_razon = "//div[contains(@class, 'col-xs-8') and b[normalize-space(text())='Raó social:']]"
     nombre_centro = None
+
     try:
         texto_div_razon = webFunctions.esperar_y_obtener_texto(driver, "xpath", selector_razon)
         if "Raó social:" in texto_div_razon:
@@ -315,22 +294,18 @@ def extraer_datos_cataluña(driver, nif):
     }
 
 def busqueda_NIMA_Cataluña(nif):
-    """
-    Función para buscar el NIF en la web de NIMA Cataluña y devolver un JSON con los datos.
-    Solo extrae los datos si encuentra el div con el NIF buscado.
-    """
     driver = webConfiguration.configure()
-    webFunctions.abrir_web(driver, URL_NIMA_CATALUÑA)
-    webFunctions.escribir_en_elemento_por_name(driver, "cercaNif", nif)
-    webFunctions.clickar_boton_por_texto(driver, "CERCAR")
-
-    datos_json = None
     try:
+        webFunctions.abrir_web(driver, URL_NIMA_CATALUÑA)
+        webFunctions.escribir_en_elemento_por_name(driver, "cercaNif", nif)
+        webFunctions.clickar_boton_por_texto(driver, "CERCAR")
         datos_json = extraer_datos_cataluña(driver, nif)
-    except Exception:
-        logging.info('ERROR: No se ha encontrado el div con el NIF buscado en la página.')
-    driver.quit()
-    if any([datos_json.get("nif"), datos_json.get("nima"), datos_json.get("nombre_centro")]) if datos_json else False:
-        return datos_json
-    else:
-        return None
+        if not datos_json or not any([
+            datos_json.get("nif"), datos_json.get("nima"), datos_json.get("nombre_centro")
+        ]):
+            raise Exception("No se han extraído datos válidos para NIMA Cataluña")
+    except Exception as e:
+        raise Exception(f"Error en busqueda_NIMA_Cataluña")
+    finally:
+        driver.quit()
+    return datos_json

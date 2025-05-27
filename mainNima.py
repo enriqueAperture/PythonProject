@@ -31,8 +31,9 @@ def validar_nif(nif):
 
 def busqueda_NIMA_secuencial(nif):
     """
-    Toma el nif y busca en las diferentes comunidades autónomas en el orden siguiente: Valencia, Madrid, Castilla, Cataluña.
-    Devuelve un JSON con los datos.
+    Toma el nif y busca en las diferentes comunidades autónomas en el orden:
+    Valencia, Madrid, Castilla, Cataluña.
+    Devuelve un JSON con los datos o lanza una excepción con mensaje descriptivo.
     """
     try:
         validar_nif(nif)
@@ -47,7 +48,9 @@ def busqueda_NIMA_secuencial(nif):
             if resultado:
                 return resultado
         except Exception as e:
+            mensaje = f"{funcion_busqueda.__name__}: {e}"
             logging.info(f"No encontrado en {funcion_busqueda.__name__}: {e}")
+
     logging.error("NIF no encontrado en ninguna comunidad")
     return None
 
@@ -106,6 +109,3 @@ def busqueda_NIMA(nif, umbral=5):
 
     logging.error("NIF no encontrado en ninguna comunidad")
     return None
-
-# datos = busqueda_NIMA_secuencial(nif_multicentro_valencia)
-# print(datos)
