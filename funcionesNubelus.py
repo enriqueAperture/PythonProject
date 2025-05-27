@@ -15,6 +15,7 @@ Ejemplo de uso:
 """
 
 import webFunctions
+import time
 
 # URL de la web de Nubelus
 WEB_NUBELUS = "https://portal.nubelus.es"
@@ -43,3 +44,31 @@ def iniciar_sesion(driver):
     webFunctions.escribir_en_elemento_por_placeholder(driver, "Usuario", "dani")
     webFunctions.escribir_en_elemento_por_placeholder(driver, "Contraseña", "123456")
     webFunctions.clickar_boton_por_id(driver, "btAceptar")
+
+def crear_proveedor(driver):
+  """
+  Hace clic en 'Crear proveedor' y acepta el pop-up correspondiente.
+  """
+  webFunctions.clickar_boton_por_texto(driver, "Crear proveedor")
+  oldDriver = driver
+  popup = webFunctions.encontrar_pop_up_por_id(driver, "div_crear_proveedor")
+  webFunctions.clickar_boton_por_clase(popup, "miBoton_cuadrado.aceptar")
+  driver = oldDriver
+
+def crear_cliente(driver):
+  """
+  Hace clic en 'Crear cliente' y acepta el pop-up correspondiente.
+  """
+  webFunctions.clickar_boton_por_texto(driver, "Crear cliente")
+  oldDriver = driver
+  popup = webFunctions.encontrar_pop_up_por_id(driver, "div_crear_cliente")
+  webFunctions.clickar_boton_por_clase(popup, "miBoton_cuadrado.aceptar")
+  driver = oldDriver
+
+def entrar_en_centro_medioambiental(driver):
+  """
+  Accede a la sección 'Centros' dentro del área medioambiental y selecciona un registro.
+  """
+  webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Centros")
+  time.sleep(1)
+  webFunctions.clickar_boton_por_clase(driver, "registro")

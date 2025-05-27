@@ -59,7 +59,7 @@ webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Aut
 webFunctions.clickar_boton_por_texto(driver, "Añadir autorización")
 
 # Buscar el pop-up donde se introduce la nueva autorización
-popup = webFunctions.encontrar_pop_up(driver, "div_nuevo_AUTORIZACIONES")
+popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_AUTORIZACIONES")
 
 # Rellenar el formulario del pop-up:
 # Escribir en el campo "pAutorizacion_medioambiental"
@@ -67,9 +67,6 @@ webFunctions.escribir_en_elemento_por_name(popup, "pAutorizacion_medioambiental"
 # Escribir en el campo "pDenominacion"
 webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion", "Denominacion")
 # Escribir en el campo de autocompletar (se utiliza una clase única, "ui-autocomplete-input")
-webFunctions.escribir_en_elemento_por_class(popup, "ui-autocomplete-input", "P04")
-time.sleep(1)
-# Enviar la tecla ENTER para confirmar la selección del autocompletar
-webFunctions.clickar_boton_por_clase(driver, "ui-a-value")
+webFunctions.completar_campo_y_confirmar_seleccion_por_class(popup, "ui-autocomplete-input", "P04", "ui-a-value")
 # Clic en el botón de cancelar para cerrar el pop-up sin confirmar el alta
 webFunctions.clickar_boton_por_clase(popup, "miBoton.cancelar")
