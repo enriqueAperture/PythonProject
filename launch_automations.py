@@ -10,7 +10,7 @@ async def post_endpoint(url: str):
     async with httpx.AsyncClient() as client:
         try:
             if "run-main-nima-vlc" in url:
-                response = await client.post(url, json={"nif": "B98969264"})
+                response = await client.post(url, json={"nif": "B45578069"})
             else:
                 response = await client.post(url)
             logging.info(f"Respuesta del endpoint {url}: {response.status_code} - {response.json()}")

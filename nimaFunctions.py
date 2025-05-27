@@ -54,17 +54,17 @@ def extraer_datos_valencia(driver):
         "empresa": {
             "nombre_empresa": nombre_empresa,
             "nif": nif,
-            "direccion": direccion,
-            "codigo_postal": codigo_postal,
-            "localidad_provincia_empresa": localidad_provincia_empresa,
-            "telefono": telefono
+            "direccion_empresa": direccion,
+            "cp_empresa": codigo_postal,
+            "provincia_empresa": localidad_provincia_empresa,
+            "telefono_empresa": telefono
         },
         "centro": {
             "nombre_centro": nombre_centro,
             "nima": nima,
             "direccion_centro": direccion_centro,
-            "localidad_provincia_centro": localidad_provincia_centro,
-            "codigo_ine": codigo_ine,
+            "provincia_centro": localidad_provincia_centro,
+            "codigo_ine_centro": codigo_ine,
             "telefono_centro": telefono_centro
         },
         "codigo_residuo_1": codigo_residuo_1,
@@ -73,8 +73,8 @@ def extraer_datos_valencia(driver):
 
 def busqueda_NIMA_Valencia(nif):
     """
-    Busca los datos del NIF en la web de NIMA Valencia y devuelve un JSON con los datos.
-    Lanza una excepción si ocurre algún error o no se pueden extraer los datos.
+    Función para buscar los datos del NIF en la web de NIMA Valencia y devolver un JSON con los datos.
+    Solo extrae los datos si encuentra el enlace del gestor.
     """
     driver = webConfiguration.configure()
     try:
@@ -97,48 +97,97 @@ def busqueda_NIMA_Valencia(nif):
 # de lanzar una excepción con un mensaje descriptivo en caso de error.
 
 def extraer_datos_madrid(driver):
-    datos_sede = {
+    """
+    Extrae los datos principales de la ficha de un centro en la web de NIMA Madrid.
+    Devuelve un diccionario con los datos de la sede y del centro.
+    """
+    # Datos del EMA (empresa)
+    datos_empresa = {
         "nif": webFunctions.leer_texto_por_campo(driver, "NIF:"),
-        "nombre_sede": webFunctions.leer_texto_por_campo(driver, "Razón Social:"),
-        "direccion_sede": webFunctions.leer_texto_por_campo(driver, "Dirección Sede:"),
-        "municipio_sede": webFunctions.leer_texto_por_campo(driver, "Municipio:"),
-        "codigo_ine_municipio_sede": webFunctions.leer_texto_por_campo(driver, "Código INE Municipio:"),
-        "codigo_postal_sede": webFunctions.leer_texto_por_campo(driver, "CP:"),
-        "provincia_sede": webFunctions.leer_texto_por_campo(driver, "Provincia:"),
-        "codigo_INE_provincia_sede": webFunctions.leer_texto_por_campo(driver, "Código INE Provincia:"),
-        "nombre_centro": webFunctions.leer_texto_por_campo(driver, "Denominación del Centro:")
+        "nombre_empresa": webFunctions.leer_texto_por_campo(driver, "Razón Social:"),
+        "direccion_empresa": webFunctions.leer_texto_por_campo(driver, "Dirección Sede:"),
+        "municipio_empresa": webFunctions.leer_texto_por_campo(driver, "Municipio:"),
+        "codigo_ine_municipio_empresa": webFunctions.leer_texto_por_campo(driver, "Código INE Municipio:"),
+        "cp_empresa": webFunctions.leer_texto_por_campo(driver, "CP:"),
+        "provincia_empresa": webFunctions.leer_texto_por_campo(driver, "Provincia:"),
+        "codigo_ine_provincia_empresa": webFunctions.leer_texto_por_campo(driver, "Código INE Provincia:"),
+        "nombre_centro_empresa": webFunctions.leer_texto_por_campo(driver, "Denominación del Centro:")
     }
+
+    # Datos del centro (usando el segundo elemento para cada campo)
     datos_centro = {
         "nima": webFunctions.leer_texto_por_campo(driver, "NIMA:"),
+        "nombre_centro": webFunctions.leer_texto_por_campo(driver, "Denominación del Centro:"),
         "direccion_centro": webFunctions.leer_texto_por_campo(driver, "Dirección Centro:"),
-        "municipio_centro": webFunctions.leer_texto_por_campo(driver, "Municipio:"),
-        "codigo_ine_municipio_centro": webFunctions.leer_texto_por_campo(driver, "Código INE Municipio:"),
-        "codigo_postal_centro": webFunctions.leer_texto_por_campo(driver, "CP:"),
-        "provincia_centro": webFunctions.leer_texto_por_campo(driver, "Provincia:"),
-        "codigo_INE_provincia_centro": webFunctions.leer_texto_por_campo(driver, "Código INE Provincia:")
+        "municipio_centro": webFunctions.leer_texto_por_campo_indice(driver, "Municipio:", indice=1),
+        "codigo_ine_municipio_centro": webFunctions.leer_texto_por_campo_indice(driver, "Código INE Municipio:", indice=1),
+        "cp_centro": webFunctions.leer_texto_por_campo_indice(driver, "CP:", indice=1),
+        "provincia_centro": webFunctions.leer_texto_por_campo_indice(driver, "Provincia:", indice=1),
+        "codigo_ine_provincia_centro": webFunctions.leer_texto_por_campo_indice(driver, "Código INE Provincia:", indice=1)
     }
     return {
-        "sede": datos_sede,
+        "empresa": datos_empresa,
         "centro": datos_centro
     }
 
 def busqueda_NIMA_Madrid(nif):
+    """
+    Busca todos los centros asociados a un NIF en la web de NIMA Madrid y devuelve un JSON con los datos de la sede
+    y una lista de sus centros asociados.
+    """
     driver = webConfiguration.configure()
+    webFunctions.abrir_web(driver, URL_NIMA_MADRID)
+    webFunctions.escribir_en_elemento_por_id(driver, "nif", nif)
+
+    # Buscar y hacer click en el enlace <a> con onclick="buscar('form');"
+    webFunctions.clickar_enlace_por_onclick(driver, "buscar('form');")
+
+    empresa = None
+    centros = []
     try:
-        webFunctions.abrir_web(driver, URL_NIMA_MADRID)
-        webFunctions.escribir_en_elemento_por_id(driver, "nif", nif)
-        webFunctions.clickar_enlace_por_onclick(driver, "buscar('form');")
-        webFunctions.clickar_boton_por_value(driver, "Consultar")
-        logging.info('Click realizado en el botón Consultar en Madrid.')
-        datos_json = extraer_datos_madrid(driver)
-        if not datos_json:
-            raise Exception("No se pudieron extraer los datos de NIMA Madrid")
-        logging.info('Datos de la empresa extraídos en Madrid.')
+        # Guarda todos los onclicks de los botones de consultar
+        botones = webFunctions.encontrar_elementos(
+            driver,
+            webFunctions.By.XPATH,
+            "//input[@type='button' and @value='Consultar' and contains(@onclick, 'consultar(')]"
+        )
+        logging.info(f"Encontrados {len(botones)} centros asociados al NIF {nif}.")
+        onclicks = [boton.get_attribute("onclick") for boton in botones]
+
+        for onclick in onclicks:
+            try:
+                boton = webFunctions.encontrar_elemento(
+                    driver,
+                    webFunctions.By.XPATH,
+                    f"//input[@type='button' and @value='Consultar' and @onclick=\"{onclick}\"]"
+                )
+                if boton:
+                    boton.click()
+                    try:
+                        datos_centro = extraer_datos_madrid(driver)
+                        if datos_centro:
+                            if empresa is None and "empresa" in datos_centro:
+                                empresa = datos_centro["empresa"]
+                            if "centro" in datos_centro:
+                                centros.append(datos_centro["centro"])
+                    except Exception as e:
+                        logging.error(f"ERROR: No se han podido extraer los datos del centro en Madrid: {e}")
+                    driver.back()
+                else:
+                    logging.warning("No se encontró el botón 'Consultar' para el onclick esperado.")
+            except Exception as e:
+                logging.error(f"ERROR: No se pudo encontrar o hacer click en el botón 'Consultar': {e}")
     except Exception as e:
-        raise Exception(f"Error en busqueda_NIMA_Madrid")
-    finally:
-        driver.quit()
-    return datos_json
+        logging.error(f"ERROR: No se han podido procesar los centros asociados en Madrid para el NIF {nif}. Excepción: {e}")
+    driver.quit()
+
+    if empresa and centros:
+        return {
+            "empresa": empresa,
+            "centros": centros
+        }
+    else:
+        return None
 
 def busqueda_NIMA_Castilla(nif):
     driver = webConfiguration.configure()
@@ -153,33 +202,95 @@ def busqueda_NIMA_Castilla(nif):
                 raise Exception("No se pudieron extraer los datos desde el Excel en Castilla")
             logging.info('Datos extraídos del Excel en Castilla.')
         else:
-            raise Exception("No se ha encontrado la imagen para generar el Excel en Castilla")
-    except Exception as e:
-        raise Exception(f"Error en busqueda_NIMA_Castilla")
-    finally:
-        driver.quit()
-    return datos_json
+            logging.info('ERROR: No se ha encontrado la imagen para generar el Excel.')
+    except Exception:
+        logging.info('ERROR: No se ha podido generar o procesar el Excel.')
+    driver.quit()
+
+     # --- Agregar el NIF como primer campo en la sección empresa ---
+    if datos_json and isinstance(datos_json, dict) and "empresa" in datos_json:
+         empresa = datos_json["empresa"]
+         # Crear un nuevo diccionario con el NIF como primer campo
+         nueva_empresa = {"nif": nif}
+         nueva_empresa.update(empresa)
+         datos_json["empresa"] = nueva_empresa
+
+    if datos_json:
+        return datos_json
+    else:
+        return None
 
 def extraer_datos_cataluña(driver, nif):
+    """
+    Extrae los datos principales de la ficha de un centro en la web de NIMA Cataluña.
+    Devuelve un diccionario con los datos relevantes y una lista de centros.
+    Lanza mensajes de error claros y evita mostrar stacktraces de Selenium.
+    """
+    logging.info(f"Buscando NIF: {nif}")
     selector_nif = f"//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nif:'] and contains(., '{nif}')]"
-    webFunctions.esperar_elemento(driver, "xpath", selector_nif)
-    texto_div_nif = webFunctions.esperar_y_obtener_texto(driver, "xpath", selector_nif)
-    valor_nif = texto_div_nif.split("Nif:")[-1].strip() if "Nif:" in texto_div_nif else None
+    try:
+        webFunctions.esperar_elemento(driver, "xpath", selector_nif)
+        logging.info("Elemento NIF encontrado")
+    except Exception as e:
+        mensaje = str(e).splitlines()[0] if str(e) else repr(e)
+        logging.error(f"No se encontró el elemento NIF para el NIF {nif}: {mensaje}")
+        return None
+
+    # Extraer NIF
+    valor_nif = None
+    try:
+        texto_div_nif = webFunctions.esperar_y_obtener_texto(driver, "xpath", selector_nif)
+        valor_nif = texto_div_nif.split("Nif:")[-1].strip() if "Nif:" in texto_div_nif else None
+    except Exception as e:
+        logging.error(f"Error extrayendo NIF del div: {e}")
 
     selector_nima = "//div[contains(@class, 'col-xs-4') and b[normalize-space(text())='Nima:']]"
-    texto_div_nima = webFunctions.esperar_y_obtener_texto(driver, "xpath", selector_nima)
-    nima = texto_div_nima.split("Nima:")[-1].strip() if "Nima:" in texto_div_nima else None
+    nima = None
+    try:
+        texto_div_nima = webFunctions.esperar_y_obtener_texto(driver, "xpath", selector_nima)
+        nima = texto_div_nima.split("Nima:")[-1].strip() if "Nima:" in texto_div_nima else None
+    except Exception as e:
+        logging.error(f"Error extrayendo NIMA: {e}")
 
     selector_razon = "//div[contains(@class, 'col-xs-8') and b[normalize-space(text())='Raó social:']]"
-    texto_div_razon = webFunctions.esperar_y_obtener_texto(driver, "xpath", selector_razon)
     nombre_centro = None
-    if "Raó social:" in texto_div_razon:
-        nombre_centro = texto_div_razon.split("Raó social:")[-1].strip()
-        nombre_centro = " ".join(nombre_centro.split())
+
+    try:
+        texto_div_razon = webFunctions.esperar_y_obtener_texto(driver, "xpath", selector_razon)
+        if "Raó social:" in texto_div_razon:
+            nombre_centro = texto_div_razon.split("Raó social:")[-1].strip()
+            nombre_centro = " ".join(nombre_centro.split())
+    except Exception as e:
+        logging.error(f"Error extrayendo Razón Social: {e}")
+
+    # Extraer todos los centros de la tabla
+    selector_trs = "//tr[contains(@class, 'llistaopen1') or contains(@class, 'llistaopen2')]"
+    centros = []
+    try:
+        filas = webFunctions.encontrar_elementos(driver, webFunctions.By.XPATH, selector_trs)
+        for fila in filas:
+            celdas = fila.find_elements("tag name", "td")
+            if len(celdas) >= 5:
+                centro = {
+                    "nima_centro": celdas[0].text.strip(),
+                    "direccion_centro": celdas[2].text.strip(),
+                    "cp_centro": celdas[3].text.strip().replace('\xa0', '').replace('&nbsp;', ''),
+                    "municipio_centro": celdas[4].text.strip()
+                }
+                centros.append(centro)
+    except Exception as e:
+        logging.error(f"Error extrayendo filas de centros: {e}")
+
+    # Si no hay datos relevantes, devuelve None
+    if not (valor_nif or nima or nombre_centro or centros):
+        logging.error(f"No se han encontrado datos relevantes para el NIF {nif} en Cataluña.")
+        return None
+
     return {
         "nif": valor_nif,
         "nima": nima,
-        "nombre_centro": nombre_centro
+        "nombre_centro": nombre_centro,
+        "centros": centros
     }
 
 def busqueda_NIMA_Cataluña(nif):
