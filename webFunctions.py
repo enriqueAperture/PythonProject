@@ -816,3 +816,20 @@ def leer_texto_por_campo(driver, campo, timeout=5):
     except Exception as e:
         logging.error(f"Error al leer el campo '{campo}': {e}")
         return None
+
+def leer_texto_por_campo_indice(driver, campo, indice=0, timeout=5):
+    """
+    Igual que leer_texto_por_campo, pero permite elegir el índice del elemento encontrado.
+    """
+    try:
+        xpath = f"(//td[b[normalize-space(text())='{campo}']])[{indice+1}]"
+        td = encontrar_elemento(driver, By.XPATH, xpath, timeout)
+        texto_completo = td.text
+        if texto_completo.startswith(campo):
+            valor = texto_completo[len(campo):].strip()
+        else:
+            valor = texto_completo.split(f"{campo}", 1)[-1].strip()
+        return valor if valor else None
+    except Exception as e:
+        logging.error(f"Error al leer el campo '{campo}' (índice {indice}): {e}")
+        return None
