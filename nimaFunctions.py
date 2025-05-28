@@ -73,24 +73,48 @@ def extraer_datos_valencia(driver):
 
 def busqueda_NIMA_Valencia(nif):
     """
-    Función para buscar los datos del NIF en la web de NIMA Valencia y devolver un JSON con los datos.
-    Solo extrae los datos si encuentra el enlace del gestor.
+    Busca todos los centros asociados a un NIF en la web de NIMA Valencia y devuelve un JSON con los datos de la empresa
+    y una lista de sus centros asociados.
     """
     driver = webConfiguration.configure()
+    webFunctions.abrir_web(driver, URL_NIMA_VALENCIA)
+    webFunctions.escribir_en_elemento_por_id(driver, "ctl00_ContentPlaceHolder1_txtNIF", nif)
+    webFunctions.clickar_boton_por_id(driver, "ctl00_ContentPlaceHolder1_btBuscar")
+
+    empresa = None
+    centros = []
     try:
-        webFunctions.abrir_web(driver, URL_NIMA_VALENCIA)
-        webFunctions.escribir_en_elemento_por_id(driver, "ctl00_ContentPlaceHolder1_txtNIF", nif)
-        webFunctions.clickar_boton_por_id(driver, "ctl00_ContentPlaceHolder1_btBuscar")
-        webFunctions.abrir_link_por_boton_id(driver, "ctl00_ContentPlaceHolder1_gvResultados_ctl03_hypGestor")
-        datos_json = extraer_datos_valencia(driver)
-        if not datos_json:
-            raise Exception("No se pudieron extraer los datos de NIMA Valencia")
-        logging.info("Datos de la empresa encontrados y extraídos correctamente en Valencia.")
+        # Buscar todos los enlaces de gestor en la tabla de resultados y guardar sus URLs
+        enlaces = webFunctions.encontrar_elementos(
+            driver,
+            webFunctions.By.XPATH,
+            "//a[starts-with(@id, 'ctl00_ContentPlaceHolder1_gvResultados_ctl') and contains(@id, '_hypGestor')]"
+        )
+        logging.info(f"Encontrados {len(enlaces)} centros asociados al NIF {nif}.")
+        urls_centros = [enlace.get_attribute("href") for enlace in enlaces]
+
+        for url in urls_centros:
+            driver.get(url)
+            datos_centro = extraer_datos_valencia(driver)
+            if datos_centro:
+                # Solo guardar los datos de empresa del primer centro
+                if empresa is None and "empresa" in datos_centro:
+                    empresa = datos_centro["empresa"]
+                # Guardar solo los datos del centro
+                if "centro" in datos_centro:
+                    centros.append(datos_centro["centro"])
+            # No es necesario hacer driver.back() porque vamos directo a la siguiente URL
     except Exception as e:
-        raise Exception(f"Error en busqueda_NIMA_Valencia")
-    finally:
-        driver.quit()
-    return datos_json
+        logging.error(f"ERROR: No se han podido procesar los centros asociados: {e}")
+    driver.quit()
+    
+    if empresa and centros:
+        return {
+            "empresa": empresa,
+            "centros": centros
+        }
+    else:
+        return None
 
 # Realiza cambios similares en las demás funciones de búsqueda.
 # Por ejemplo, en busqueda_NIMA_Madrid, busqueda_NIMA_Castilla y busqueda_NIMA_Cataluña, asegúrate
