@@ -48,7 +48,6 @@ def busqueda_NIMA_secuencial(nif):
             if resultado:
                 return resultado
         except Exception as e:
-            mensaje = f"{funcion_busqueda.__name__}: {e}"
             logging.info(f"No encontrado en {funcion_busqueda.__name__}: {e}")
 
     logging.error("NIF no encontrado en ninguna comunidad")
@@ -62,7 +61,7 @@ def busqueda_NIMA_secuencial(nif):
 # 1. Usar los 3 a la vez y ver si se puede hacer en paralelo. (CONSUME MUCHO RECURSOS)
 # 2. Usar los más rapidos primero (medir la velocidad de cada uno)
 
-def busqueda_NIMA(nif, umbral=5):
+def busqueda_NIMA(nif):
     """
     Lanza las búsquedas de NIMA en Valencia, Madrid, Castilla y Cataluña en paralelo.
     Si Valencia devuelve un resultado válido (JSON con centros), lo devuelve siempre, aunque otras comunidades sean más rápidas.
