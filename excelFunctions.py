@@ -577,3 +577,27 @@ def añadir_autorizaciones(driver, fila):
         driver = oldDriver
     except Exception as error:
         logging.error(f"Error al añadir autorización para la empresa {fila.get('nombre_recogida', '')}: {error}")
+
+def añadir_usuario(driver, fila):
+    """
+    Añade un usuario a la empresa usando los datos de la fila 'empresa'.
+    
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
+    """
+    try:
+        
+        # Completar campos del formulario
+        webFunctions.escribir_en_elemento_por_name(driver, "pUsuario", fila["nombre_recogida"].replace(" ", "") + "prueba")
+        webFunctions.escribir_en_elemento_por_name(driver, "pAlias", fila["nombre_recogida"])
+        webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
+        webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", fila["telf_recogida"])
+        webFunctions.seleccionar_elemento_por_name(driver, "pRol", "EMA")
+        
+        # Confirmar la adición
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.cancelar")
+        
+        time.sleep(1)  # Espera para que la acción se procese
+    except Exception as error:
+        logging.error(f"Error al añadir usuario para la empresa {fila.get('nombre_recogida', '')}: {error}")
