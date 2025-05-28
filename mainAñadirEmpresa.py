@@ -46,15 +46,16 @@ def main():
 
   empresa_prueba = excel_empresa.iloc[0] # Toma la fila del Excel como empresa de prueba
   excelFunctions.añadirEmpresa(driver, empresa_prueba)
-  # time.sleep(1)
-  # funcionesNubelus.crear_proveedor(driver)#
-  # time.sleep(1)
-  # funcionesNubelus.crear_cliente(driver)
-  # funcionesNubelus.entrar_en_centro_medioambiental(driver)
-  # excelFunctions.rellenar_datos_medioambientales(driver, empresa_prueba)
-  # excelFunctions.añadir_autorizaciones(driver, empresa_prueba)
-  # excelFunctions.añadir_horario(driver, empresa_prueba)
-  # excelFunctions.añadir_acuerdo_representacion(driver, empresa_prueba)
+  time.sleep(1)
+  funcionesNubelus.crear_proveedor(driver)
+  time.sleep(1)
+  funcionesNubelus.crear_cliente(driver)
+  funcionesNubelus.entrar_en_centro_medioambiental(driver)
+  excelFunctions.rellenar_datos_medioambientales(driver, empresa_prueba)
+  # excelFunctions.añadir_autorizaciones(driver, empresa_prueba) # SACAR TEMA RESIDUOS
+  excelFunctions.añadir_horario(driver, empresa_prueba)
+  webFunctions.abrir_web(driver, WEB_NUBELUS_ACUERDOS)
+  excelFunctions.añadir_acuerdo_representacion(driver, empresa_prueba)
   webFunctions.abrir_web(driver, WEB_NUBELUS_USUARIO)
   excelFunctions.añadir_usuario(driver, empresa_prueba)
 

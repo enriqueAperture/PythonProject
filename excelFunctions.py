@@ -198,9 +198,7 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         
         # 4. Completar el campo de Forma Jurídica y Nombre Fiscal si es Jurídica
         if forma_fiscal == "Jurídica":
-            webFunctions.clickar_elemento(driver,By.CLASS_NAME ,"pDenominacion_forma_juridica")
-            forma_juridica = forma_juridica(fila["cif_recogida"])
-            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_forma_juridica" ,forma_juridica)
+            webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_forma_juridica", forma_juridica(fila["cif_recogida"]), "BUSCAR_INE_FORMA_JURIDICA.noref.ui-menu-item")
             webFunctions.escribir_en_elemento_por_name(driver, "pNombre_fiscal", fila["nombre_recogida"] + " prueba")
 
         # 4. Completar el campo Nombre y Apellidos si es una persona física
@@ -213,7 +211,7 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
         
         # 6. Completar el campo Municipio
-        webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"]).rstrip(), "ui-a-value")
+        webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"]).rstrip(), "BUSCAR_INE_MUNICIPIO.noref.ui-menu-item")
 
         # 7. Completar el campo Provincia
         webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", fila["provincia_recogida"])
@@ -508,7 +506,9 @@ def añadir_horario(driver, fila):
         webFunctions.clickar_boton_con_titulo(driver, "Editar")
         oldDriver = driver
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_cambiar_aviso")
-        webFunctions.escribir_en_elemento_por_name(popup, "pAviso", str(fila.get("horario_m_1", "")))
+        str_horario = "MAÑANAS: " + str(fila.get("horario_m_1", "")) + " - " + str(fila.get("horario_m_2", "")) + "\n" + \
+            "TARDES: " + str(fila.get("horario_t_1", "")) + " - " + str(fila.get("horario_t_2", ""))
+        webFunctions.escribir_en_elemento_por_name(popup, "pAviso", str_horario)
         webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
         driver = oldDriver
     except Exception as error:
@@ -527,7 +527,8 @@ def rellenar_datos_medioambientales(driver, fila):
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_editar_DATOS_MEDIOAMBIENTALES")
 
         # Rellenar campos con los datos de la empresa
-        webFunctions.escribir_en_elemento_por_name(popup, "pNima", str(fila.get("nima_codigo", "")))
+        nima_str = str(fila.get("nima_codigo", ""))
+        webFunctions.escribir_en_elemento_por_name(popup, "pNima", nima_str[:10])
         webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nombre", str(fila.get("nombre_recogida", "")))
         #webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_apellidos", str(datos.get("responsable_apellidos", "")))
         webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nif", str(fila.get("cif_recogida", "")))
@@ -540,6 +541,24 @@ def rellenar_datos_medioambientales(driver, fila):
     except Exception as error:
         logging.error(f"Error al rellenar datos medioambientales para la empresa {fila.get('nombre_recogida', '')}: {error}")
     
+def obtener_fecha_modificada(fecha):
+    """
+    Obtiene la fecha y la convierte de formato YYYY-MM-DD a DD-MM-YYYY si es posible.
+
+    Args:
+        fecha (str): Fecha en formato string.
+
+    Returns:
+        str: Fecha en formato DD-MM-YYYY o la original si no es posible convertir.
+    """
+    fecha = str(fecha)[:10]  # Truncar a longitud 10
+    if len(fecha) == 10 and fecha[4] == '-' and fecha[7] == '-':
+        partes = fecha.split('-')
+        fecha_modificada = f"{partes[2]}-{partes[1]}-{partes[0]}"
+    else:
+        fecha_modificada = fecha
+    return fecha_modificada
+
 def añadir_acuerdo_representacion(driver, fila):
     """
     Navega a la sección de acuerdos de representación y añade un acuerdo usando los datos de la fila 'empresa'.
@@ -549,8 +568,10 @@ def añadir_acuerdo_representacion(driver, fila):
         webFunctions.completar_campo_y_confirmar_seleccion_por_name(
             driver, "pDenominacion_ema_representada", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item"
         )
-        webFunctions.escribir_en_elemento_por_name(driver, "pFecha", str(fila.get("fecha_inicio", "")))
-        webFunctions.escribir_en_elemento_por_name(driver, "pFecha_caducidad", str(fila.get("fecha_fin", "")))
+        fecha_inicio = obtener_fecha_modificada(str(fila.get("fecha_inicio", "")))
+        fecha_fin = obtener_fecha_modificada(str(fila.get("fecha_fin", "")))
+        webFunctions.escribir_en_elemento_por_name(driver, "pFecha", fecha_inicio)
+        webFunctions.escribir_en_elemento_por_name(driver, "pFecha_caducidad", fecha_fin)
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
     except Exception as error:
         logging.error(f"Error al añadir acuerdo de representación para la empresa.")
@@ -561,8 +582,7 @@ def añadir_autorizaciones(driver, fila):
     """
     try:
         webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Autorizaciones")
-        #time.sleep(1)
-        webFunctions.esperar_elemento(driver, By.XPATH)
+        time.sleep(1)
         webFunctions.clickar_boton_por_texto(driver, "Añadir autorización")
 
         oldDriver = driver
@@ -594,9 +614,15 @@ def añadir_usuario(driver, fila):
         webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
         webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", fila["telf_recogida"])
         webFunctions.seleccionar_elemento_por_name(driver, "pRol", "EMA")
+        webFunctions.completar_campo_y_confirmar_seleccion_por_name(
+            driver, "pDenominacion_ema", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item"
+        )
+        webFunctions.completar_campo_y_confirmar_seleccion_por_name(
+            driver, "pDenominacion_entidad_ma_centro", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item"
+        )
         
         # Confirmar la adición
-        webFunctions.clickar_boton_por_clase(driver, "miBoton.cancelar")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
         
         time.sleep(1)  # Espera para que la acción se procese
     except Exception as error:
