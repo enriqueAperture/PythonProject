@@ -29,8 +29,9 @@ import funcionesNubelus  # Módulo específico para la aplicación Nubelus
 
 # URLs de la aplicación Nubelus
 WEB_NUBELUS = "https://portal.nubelus.es"
-WEB_NUBELUS_AÑADIR = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales&pAccion=NUEVO"
+WEB_NUBELUS_ENTIDAD = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales&pAccion=NUEVO"
 WEB_NUBELUS_ACUERDOS = "https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion&pAccion=NUEVO"
+WEB_NUBELUS_USUARIO = "https://portal.nubelus.es/?clave=nubelus_gestionUsuarios&pAccion=NUEVO"
 
 def main():
   # Configurar el driver de Selenium
@@ -40,20 +41,23 @@ def main():
   funcionesNubelus.iniciar_sesion(driver)
   time.sleep(5) # Tiempo para aceptar el pop up de google
 
-  webFunctions.abrir_web(driver, WEB_NUBELUS_AÑADIR)
+  webFunctions.abrir_web(driver, WEB_NUBELUS_ENTIDAD)
   excel_empresa = pandas.read_excel(excelFunctions.EXCEL_RECOGIDAS)
 
   empresa_prueba = excel_empresa.iloc[0] # Toma la fila del Excel como empresa de prueba
   excelFunctions.añadirEmpresa(driver, empresa_prueba)
   time.sleep(1)
-  funcionesNubelus.crear_proveedor(driver)#
+  funcionesNubelus.crear_proveedor(driver)
   time.sleep(1)
   funcionesNubelus.crear_cliente(driver)
   funcionesNubelus.entrar_en_centro_medioambiental(driver)
   excelFunctions.rellenar_datos_medioambientales(driver, empresa_prueba)
-  excelFunctions.añadir_autorizaciones(driver, empresa_prueba)
+  # excelFunctions.añadir_autorizaciones(driver, empresa_prueba) # SACAR TEMA RESIDUOS
   excelFunctions.añadir_horario(driver, empresa_prueba)
+  webFunctions.abrir_web(driver, WEB_NUBELUS_ACUERDOS)
   excelFunctions.añadir_acuerdo_representacion(driver, empresa_prueba)
+  webFunctions.abrir_web(driver, WEB_NUBELUS_USUARIO)
+  excelFunctions.añadir_usuario(driver, empresa_prueba)
 
 if __name__ == "__main__":
   main()
