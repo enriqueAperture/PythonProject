@@ -10,8 +10,8 @@ import webConfiguration
 import webFunctions
 
 WEB_MITECO = "https://sede.miteco.gob.es/portal/site/seMITECO/login?urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2JmlkZW50aWZpY2Fkb3JfcGFzbz1QUkVJTklDSU8mc3ViX29yZ2Fubz0xMSZwcmV2aW9fbG9naW49MQ=="
-NOMBRE_CERT = "FRANCISCO JAV"
-ARCHIVO_XML = "C:/Users/Metalls1/Documents/GitHub/PythonProject/NotificacionTraslado.xml"
+NOMBRE_CERT = "RICARDO ESCUDE"
+ARCHIVO_XML = "C:/Users/Metalls1/Documents/GitHub/PythonProject/data/NT30460004811420250009891.xml"
 
 driver = webConfiguration.configure()
 
@@ -36,7 +36,7 @@ time.sleep(5)
 webFunctions.clickar_boton_por_id(driver, "tipoEnvioNtA")
 webFunctions.escribir_en_elemento_por_id(driver, "file", ARCHIVO_XML)
 webFunctions.clickar_boton_por_clase(driver, "loginBtn")
-time.sleep(10)
+time.sleep(3600)
 
 driver.quit()
 

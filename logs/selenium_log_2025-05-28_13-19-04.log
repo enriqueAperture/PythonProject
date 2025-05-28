@@ -1,0 +1,113 @@
+2025-05-28 13:19:07,217 - INFO - Inicializando navegador...
+2025-05-28 13:19:08,724 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-05-28 13:19:08,802 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-05-28 13:19:08,856 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-05-28 13:19:08,911 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-05-28 13:19:08,972 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-05-28 13:19:09,026 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-05-28 13:19:15,112 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales&pAccion=NUEVO' abierta.
+2025-05-28 13:19:15,119 - INFO - Añadiendo empresa: TALLERES HENARES SL
+2025-05-28 13:19:15,203 - INFO - Se escribió texto en el elemento localizado por id='pDenominacion': 'TALLERES HENARES SL prueba'
+2025-05-28 13:19:15,257 - INFO - Se escribió texto en el elemento localizado por name='pNif': 'B81400491'
+2025-05-28 13:19:15,322 - INFO - Opción 'Jurídica' seleccionada en el elemento con 'name' = 'pForma_fiscal'.
+2025-05-28 13:19:15,397 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_forma_juridica': 'Sociedades de responsabilidad limitada'
+2025-05-28 13:19:16,446 - INFO - Elemento clickado con 'css selector' = '.BUSCAR_INE_FORMA_JURIDICA.noref.ui-menu-item'.
+2025-05-28 13:19:16,523 - INFO - Se escribió texto en el elemento localizado por name='pNombre_fiscal': 'TALLERES HENARES SL prueba'
+2025-05-28 13:19:16,581 - INFO - Se escribió texto en el elemento localizado por name='pDomicilio': 'C/ JAEN, 3 , 6, 16,17'
+2025-05-28 13:19:16,644 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ine_municipio': 'ALCALA DE HENARES'
+2025-05-28 13:19:17,687 - INFO - Elemento clickado con 'css selector' = '.BUSCAR_INE_MUNICIPIO.noref.ui-menu-item'.
+2025-05-28 13:19:17,758 - INFO - Se escribió texto en el elemento localizado por name='pPoblacion': 'MADRID'
+2025-05-28 13:19:17,817 - INFO - Se escribió texto en el elemento localizado por name='pCodigoPostal': '28804'
+2025-05-28 13:19:17,890 - INFO - Se escribió texto en el elemento localizado por name='pTelefono': '615118365/ 918802269'
+2025-05-28 13:19:17,963 - INFO - Se escribió texto en el elemento localizado por name='pEmail': 'OFICINA@TALLERESHENARES.COM'
+2025-05-28 13:19:18,016 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-05-28 13:19:19,081 - INFO - Opción 'Centros' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-05-28 13:19:21,146 - INFO - Elemento clickado con 'css selector' = '.registro'.
+2025-05-28 13:19:21,211 - INFO - Opción 'Datos medioambientales' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-05-28 13:19:22,263 - INFO - Elemento clickado con 'css selector' = '.miBoton.editar.solapa_descripcion'.
+2025-05-28 13:19:22,340 - INFO - Se escribió texto en el elemento localizado por name='pNima': '2800012868'
+2025-05-28 13:19:22,399 - INFO - Se escribió texto en el elemento localizado por name='pResponsable_ma_nombre': 'TALLERES HENARES SL'
+2025-05-28 13:19:22,451 - INFO - Se escribió texto en el elemento localizado por name='pResponsable_ma_nif': 'B81400491'
+2025-05-28 13:19:22,511 - INFO - Se escribió texto en el elemento localizado por name='pResponsable_ma_cargo': 'TALLERES HENARES SL'
+2025-05-28 13:19:22,568 - INFO - Se escribió texto en el elemento localizado por name='pCodigo_prtr': 'ALCALA DE HENARES'
+2025-05-28 13:19:22,619 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-05-28 13:19:22,670 - INFO - Opción 'Autorizaciones' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-05-28 13:19:23,719 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'Añadir autorización')]'.
+2025-05-28 13:19:23,787 - INFO - Se escribió texto en el elemento localizado por name='pAutorizacion_medioambiental': 'B81400491/MD51/2002/4771'
+2025-05-28 13:19:23,853 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion': 'PRODUCTOR RESIDUOS PELIGROSOS'
+2025-05-28 13:19:23,897 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema': ''
+2025-05-28 13:19:30,001 - ERROR - Timeout al esperar el elemento con 'css selector' = '.BUSCAR_TIPO_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item'
+2025-05-28 13:19:30,001 - ERROR - Error al añadir autorización para la empresa TALLERES HENARES SL: Message: 
+Stacktrace:
+	GetHandleVerifier [0x0124FC03+61635]
+	GetHandleVerifier [0x0124FC44+61700]
+	(No symbol) [0x010705D3]
+	(No symbol) [0x010B899E]
+	(No symbol) [0x010B8D3B]
+	(No symbol) [0x01100E12]
+	(No symbol) [0x010DD2E4]
+	(No symbol) [0x010FE61B]
+	(No symbol) [0x010DD096]
+	(No symbol) [0x010AC840]
+	(No symbol) [0x010AD6A4]
+	GetHandleVerifier [0x014D4523+2701795]
+	GetHandleVerifier [0x014CFCA6+2683238]
+	GetHandleVerifier [0x014EA9EE+2793134]
+	GetHandleVerifier [0x012668C5+155013]
+	GetHandleVerifier [0x0126CFAD+181357]
+	GetHandleVerifier [0x01257458+92440]
+	GetHandleVerifier [0x01257600+92864]
+	GetHandleVerifier [0x01241FF0+5296]
+	BaseThreadInitThunk [0x75705D49+25]
+	RtlInitializeExceptionChain [0x775ED03B+107]
+	RtlGetAppContainerNamedObjectPath [0x775ECFC1+561]
+
+2025-05-28 13:19:30,051 - INFO - Opción 'Otros' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-05-28 13:19:32,147 - ERROR - Falló al clickar el elemento con 'xpath' = '//*[@title='Editar']': Message: element click intercepted: Element <button type="button" class="miBoton sinTexto centrado flota_derecha" title="Editar" onclick="cambiar_aviso()">...</button> is not clickable at point (680, 321). Other element would receive the click: <div id="cboxWrapper" style="height: 259px; width: 658px;">...</div>
+  (Session info: chrome=136.0.7103.114)
+Stacktrace:
+	GetHandleVerifier [0x0124FC03+61635]
+	GetHandleVerifier [0x0124FC44+61700]
+	(No symbol) [0x010705D3]
+	(No symbol) [0x010BECB0]
+	(No symbol) [0x010BD054]
+	(No symbol) [0x010BABF7]
+	(No symbol) [0x010B9EFB]
+	(No symbol) [0x010AE5A5]
+	(No symbol) [0x010DD29C]
+	(No symbol) [0x010AE034]
+	(No symbol) [0x010DD514]
+	(No symbol) [0x010FE61B]
+	(No symbol) [0x010DD096]
+	(No symbol) [0x010AC840]
+	(No symbol) [0x010AD6A4]
+	GetHandleVerifier [0x014D4523+2701795]
+	GetHandleVerifier [0x014CFCA6+2683238]
+	GetHandleVerifier [0x014EA9EE+2793134]
+	GetHandleVerifier [0x012668C5+155013]
+	GetHandleVerifier [0x0126CFAD+181357]
+	GetHandleVerifier [0x01257458+92440]
+	GetHandleVerifier [0x01257600+92864]
+	GetHandleVerifier [0x01241FF0+5296]
+	BaseThreadInitThunk [0x75705D49+25]
+	RtlInitializeExceptionChain [0x775ED03B+107]
+	RtlGetAppContainerNamedObjectPath [0x775ECFC1+561]
+
+2025-05-28 13:19:32,149 - ERROR - Error al añadir horario para la empresa.
+2025-05-28 13:19:34,934 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion&pAccion=NUEVO' abierta.
+2025-05-28 13:19:36,001 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema_representada': 'TALLERES HENARES SL'
+2025-05-28 13:19:37,045 - INFO - Elemento clickado con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item'.
+2025-05-28 13:19:37,124 - INFO - Se escribió texto en el elemento localizado por name='pFecha': '24-04-2025'
+2025-05-28 13:19:37,196 - INFO - Se escribió texto en el elemento localizado por name='pFecha_caducidad': '23-04-2030'
+2025-05-28 13:19:37,236 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-05-28 13:19:38,451 - INFO - Web 'https://portal.nubelus.es/?clave=nubelus_gestionUsuarios&pAccion=NUEVO' abierta.
+2025-05-28 13:19:38,515 - INFO - Se escribió texto en el elemento localizado por name='pUsuario': 'TALLERESHENARESSLprueba'
+2025-05-28 13:19:38,580 - INFO - Se escribió texto en el elemento localizado por name='pAlias': 'TALLERES HENARES SL'
+2025-05-28 13:19:38,645 - INFO - Se escribió texto en el elemento localizado por name='pEmail': 'OFICINA@TALLERESHENARES.COM'
+2025-05-28 13:19:38,705 - INFO - Se escribió texto en el elemento localizado por name='pTelefono': '615118365/ 918802269'
+2025-05-28 13:19:38,758 - INFO - Opción 'EMA' seleccionada en el elemento con 'name' = 'pRol'.
+2025-05-28 13:19:38,825 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema': 'TALLERES HENARES SL'
+2025-05-28 13:19:39,862 - INFO - Elemento clickado con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item'.
+2025-05-28 13:19:39,928 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_entidad_ma_centro': 'TALLERES HENARES SL'
+2025-05-28 13:19:40,969 - INFO - Elemento clickado con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item'.
+2025-05-28 13:19:41,010 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
