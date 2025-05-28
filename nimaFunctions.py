@@ -21,6 +21,7 @@ def extraer_datos_valencia(driver):
     """
     Extrae los datos principales de la ficha de un centro en la web de NIMA Valencia.
     Devuelve un diccionario con los datos relevantes.
+    Incluye todos los códigos de residuos disponibles para el centro.
     """
     # Datos de la empresa
     nombre_empresa = webFunctions.obtener_texto_elemento_por_id(driver, "NOMBREEMPRESA1-0")
@@ -38,17 +39,19 @@ def extraer_datos_valencia(driver):
     codigo_ine = webFunctions.obtener_texto_elemento_por_id(driver, "FCODINE1-0-0")
     telefono_centro = webFunctions.obtener_texto_elemento_por_id(driver, "FTELEFONO1-0-0")
 
-    # Códigos de residuos (estos datos son opcionales)
-    try:
-        codigo_residuo_1 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-0").split()[0]
-    except Exception:
-        logging.error("No se pudo encontrar el código de residuo 1")
-        codigo_residuo_1 = None
-    try:
-        codigo_residuo_2 = webFunctions.obtener_texto_elemento_por_id(driver, "Text10-0-0-1").split()[0]
-    except Exception:
-        logging.error("No se pudo encontrar el código de residuo 2")
-        codigo_residuo_2 = None
+    # Códigos de residuos (recorre todos los posibles)
+    codigos_residuo = []
+    idx = 0
+    while True:
+        try:
+            codigo = webFunctions.obtener_texto_elemento_por_id(driver, f"Text10-0-0-{idx}")
+            if codigo:
+                codigo_split = codigo.split()
+                if codigo_split:
+                    codigos_residuo[f"codigo_residuo_{idx+1}"] = codigo_split[0]
+            idx += 1
+        except Exception:
+            break  # Sale del bucle cuando no encuentra más códigos
 
     return {
         "empresa": {
@@ -65,10 +68,9 @@ def extraer_datos_valencia(driver):
             "direccion_centro": direccion_centro,
             "provincia_centro": localidad_provincia_centro,
             "codigo_ine_centro": codigo_ine,
-            "telefono_centro": telefono_centro
-        },
-        "codigo_residuo_1": codigo_residuo_1,
-        "codigo_residuo_2": codigo_residuo_2
+            "telefono_centro": telefono_centro,
+            **codigos_residuo
+        }
     }
 
 def busqueda_NIMA_Valencia(nif):
@@ -214,7 +216,12 @@ def busqueda_NIMA_Madrid(nif):
         return None
 
 def busqueda_NIMA_Castilla(nif):
+    """
+    Busca todos los centros asociados a un NIF en la web de NIMA Castilla-La Mancha y devuelve un JSON con los datos de la empresa
+    y una lista de sus centros asociados. Devuelve None si no encuentra resultados.
+    """
     driver = webConfiguration.configure()
+    datos_json = None
     try:
         webFunctions.abrir_web(driver, URL_NIMA_CASTILLA)
         webFunctions.clickar_boton_por_id(driver, "enlace_gestores")
@@ -223,23 +230,23 @@ def busqueda_NIMA_Castilla(nif):
         if webFunctions.clickar_imagen_generar_excel(driver):
             datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
             if not datos_json:
-                raise Exception("No se pudieron extraer los datos desde el Excel en Castilla")
-            logging.info('Datos extraídos del Excel en Castilla.')
+                logging.info("No se pudieron extraer los datos desde el Excel en Castilla")
         else:
-            logging.info('ERROR: No se ha encontrado la imagen para generar el Excel.')
+            logging.info("No se ha encontrado la imagen para generar el Excel en Castilla.")
     except Exception:
-        logging.info('ERROR: No se ha podido generar o procesar el Excel.')
-    driver.quit()
+        logging.info("No se ha podido generar o procesar el Excel en Castilla.")
+    finally:
+        driver.quit()
 
-     # --- Agregar el NIF como primer campo en la sección empresa ---
+    # Agregar el NIF como primer campo en la sección empresa si hay datos
     if datos_json and isinstance(datos_json, dict) and "empresa" in datos_json:
-         empresa = datos_json["empresa"]
-         # Crear un nuevo diccionario con el NIF como primer campo
-         nueva_empresa = {"nif": nif}
-         nueva_empresa.update(empresa)
-         datos_json["empresa"] = nueva_empresa
+        empresa = datos_json["empresa"]
+        nueva_empresa = {"nif": nif}
+        nueva_empresa.update(empresa)
+        datos_json["empresa"] = nueva_empresa
 
-    if datos_json:
+    # Solo devuelve resultados si los encuentra
+    if datos_json and "empresa" in datos_json and "centros" in datos_json and datos_json["centros"]:
         return datos_json
     else:
         return None

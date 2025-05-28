@@ -211,25 +211,32 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         webFunctions.escribir_en_elemento_por_name(driver, "pNif", fila["cif_recogida"])
         
         # 3. Completar el campo de forma fiscal: Física si el último carácter del CIF es letra, Jurídica si el primero es letra
-        cif = str(fila["cif_recogida"]).strip()
-        if cif and cif[-1].isalpha():
-            forma_fiscal = "Física"
-        elif cif and cif[0].isalpha():
-            forma_fiscal = "Jurídica"
-        webFunctions.seleccionar_elemento_por_nombre(driver, "pForma_fiscal", forma_fiscal)
+        # cif = str(fila["cif_recogida"]).strip()
+        # if cif and cif[-1].isalpha():
+        #     forma_fiscal = "Física"
+        # elif cif and cif[0].isalpha():
+        #     forma_fiscal = "Jurídica"
+        # webFunctions.seleccionar_elemento_por_nombre(driver, "pForma_fiscal", forma_fiscal)
         
-        # 4. Completar el campo de Forma Jurídica y Nombre Fiscal si es Jurídica
-        if forma_fiscal == "Jurídica":
-            webFunctions.clickar_elemento(driver,By.CLASS_NAME ,"pDenominacion_forma_juridica")
-            forma_juridica = forma_juridica(fila["cif_recogida"])
-            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_forma_juridica" ,forma_juridica)
-            webFunctions.escribir_en_elemento_por_name(driver, "pNombre_fiscal", fila["nombre_recogida"] + " prueba")
+        # # 4. Completar el campo de Forma Jurídica y Nombre Fiscal si es Jurídica
+        # if forma_fiscal == "Jurídica":
+        #     webFunctions.clickar_elemento(driver,By.CLASS_NAME ,"pDenominacion_forma_juridica")
+        #     forma_juridica = forma_juridica(fila["cif_recogida"])
+        #     webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_forma_juridica" ,forma_juridica)
+        #     webFunctions.escribir_en_elemento_por_name(driver, "pNombre_fiscal", fila["nombre_recogida"] + " prueba")
 
-        # 4. Completar el campo Nombre y Apellidos si es una persona física
-        elif forma_fiscal == "Física":
-            nombre_split = str(fila["nombre_recogida"]).split()
-            webFunctions.escribir_en_elemento_por_name(driver, "pNombre", nombre_split[0] if nombre_split else "")
-            webFunctions.escribir_en_elemento_por_name(driver, "pApellidos", " ".join(nombre_split[1:]) if len(nombre_split) > 1 else "")
+        # # 4. Completar el campo Nombre y Apellidos si es una persona física
+        # elif forma_fiscal == "Física":
+        #     nombre_split = str(fila["nombre_recogida"]).split()
+        #     webFunctions.escribir_en_elemento_por_name(driver, "pNombre", nombre_split[0] if nombre_split else "")
+        #     webFunctions.escribir_en_elemento_por_name(driver, "pApellidos", " ".join(nombre_split[1:]) if len(nombre_split) > 1 else "")
+
+        # Para la prueba
+        webFunctions.seleccionar_elemento_por_nombre(driver, "pForma_fiscal", "Física")
+        nombre_split = str(fila["nombre_recogida"]).split()
+        webFunctions.escribir_en_elemento_por_name(driver, "pNombre", nombre_split[0] if nombre_split else "")
+        webFunctions.escribir_en_elemento_por_name(driver, "pApellidos", " ".join(nombre_split[1:]) if len(nombre_split) > 1 else "")
+
 
         # 5. Completar el campo Domicilio
         webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
@@ -577,16 +584,30 @@ def añadir_acuerdo_representacion(driver, fila):
     except Exception as error:
         logging.error(f"Error al añadir acuerdo de representación para la empresa.")
 
-def codigo_residuos_por_autorizacion(numero_autorizacion: str) -> str:
+def codigo_residuos_por_autorizacion(codigo_autorizacion: str) -> str:
     """
     Devuelve la clave del código de residuos si la encuentra como subcadena exacta en el número de autorización.
     Si no encuentra ninguna clave, devuelve una cadena vacía.
     """
-    if not numero_autorizacion or not isinstance(numero_autorizacion, str):
+    if not codigo_autorizacion or not isinstance(codigo_autorizacion, str):
         return ""
-    autorizacion_limpia = ''.join(c for c in numero_autorizacion if c.isalnum()).upper()
-    # Devuelve la clave encontrada o una cadena vacía
+    autorizacion_limpia = ''.join(c for c in codigo_autorizacion if c.isalnum()).upper()
+    # Devuelve la clave encontrada o una cadena vacía #
     return next((clave for clave in dic_codigos_residuos_valencia if clave in autorizacion_limpia), "")
+
+def denominacion_por_autorizacion(codigo_autorizacion: str) -> str:
+    """
+    Devuelve la denominación (valor) asociada a la clave del diccionario dic_codigos_residuos_valencia
+    si alguna clave está como subcadena en el número de autorización.
+    Si no encuentra ninguna clave, devuelve una cadena vacía.
+    """
+    if not codigo_autorizacion or not isinstance(codigo_autorizacion, str):
+        return ""
+    autorizacion_limpia = ''.join(c for c in codigo_autorizacion if c.isalnum()).upper()
+    for clave, valor in dic_codigos_residuos_valencia.items():
+        if clave in autorizacion_limpia:
+            return valor
+    return ""
 
 def añadir_autorizaciones(driver, fila):
     """
@@ -595,15 +616,16 @@ def añadir_autorizaciones(driver, fila):
     try:
         webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Autorizaciones")
         #time.sleep(1)
-        webFunctions.esperar_elemento(driver, By.XPATH)
+        #webFunctions.esperar_elemento(driver, By.XPATH)
         webFunctions.clickar_boton_por_texto(driver, "Añadir autorización")
 
         oldDriver = driver
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_AUTORIZACIONES")
 
-        webFunctions.escribir_en_elemento_por_name(popup, "pAutorizacion_medioambiental", str(fila.get("nima_cod_peligrosos", "")))
-        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion", str(fila.get("nima_nom_peligrosos", "")))
-        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", str(fila.get("EMA", "")))
+        codigo_autorizacion = str(fila.get("nima_cod_peligrosos", ""))
+        webFunctions.escribir_en_elemento_por_name(popup, "pAutorizacion_medioambiental", codigo_autorizacion)
+        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion", denominacion_por_autorizacion(codigo_autorizacion))
+        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", codigo_residuos_por_autorizacion(codigo_autorizacion))
         time.sleep(1)
         
         webFunctions.clickar_boton_por_clase(driver, "BUSCAR_TIPO_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item")

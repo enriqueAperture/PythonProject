@@ -46,7 +46,7 @@ def main():
   empresa_prueba = excel_empresa.iloc[0] # Toma la fila del Excel como empresa de prueba
   excelFunctions.añadirEmpresa(driver, empresa_prueba)
   time.sleep(1)
-  funcionesNubelus.crear_proveedor(driver)#
+  funcionesNubelus.crear_proveedor(driver)
   time.sleep(1)
   funcionesNubelus.crear_cliente(driver)
   funcionesNubelus.entrar_en_centro_medioambiental(driver)

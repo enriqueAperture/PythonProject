@@ -108,3 +108,6 @@ def busqueda_NIMA(nif):
 
     logging.error("NIF no encontrado en ninguna comunidad")
     return None
+
+datos = busqueda_NIMA(nif_multicentro_valencia)
+print(datos)
