@@ -1,0 +1,28 @@
+2025-05-28 17:56:34,897 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\USUARIO\\Documents\\GitHub\\PythonProject\\.venv\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-05-28 17:56:34,897 - INFO - Using writeable comtypes cache directory: 'C:\Users\USUARIO\Documents\GitHub\PythonProject\.venv\Lib\site-packages\comtypes\gen'
+2025-05-28 17:56:37,617 - INFO - Inicializando navegador...
+2025-05-28 17:56:39,005 - INFO - Web 'https://sede.miteco.gob.es/portal/site/seMITECO/login?urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2JmlkZW50aWZpY2Fkb3JfcGFzbz1QUkVJTklDSU8mc3ViX29yZ2Fubz0xMSZwcmV2aW9fbG9naW49MQ==' abierta.
+2025-05-28 17:56:39,354 - INFO - Elemento clickado con 'css selector' = 'input[value='acceder']'.
+2025-05-28 17:56:40,270 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'Acceso DNIe / Certificado electrónico')]'.
+2025-05-28 17:56:40,270 - INFO - Buscando ventana de Chrome...
+2025-05-28 17:56:40,897 - INFO - Ventana de Chrome encontrada: Cl@ve - Google Chrome
+2025-05-28 17:56:41,399 - INFO - Esperando popup de certificado...
+2025-05-28 17:56:41,442 - INFO - Popup de certificado detectado.
+2025-05-28 17:56:41,508 - INFO - Nombres de certificados encontrados: ['19848505B FRANCISCO JAVIER CARBONELL (R: B19811983)', 'AC Representación', '320C7BDFA6C0EA12668BA73499176EE6', '26881018K LILIANA FERNANDA PEREZ (R:B43693274)', 'ACCVCA-120', '32207E732CFC55FBC69159D3BD3B0B7B']
+2025-05-28 17:56:41,509 - INFO - Primer certificado encontrado: 19848505B FRANCISCO JAVIER CARBONELL (R: B19811983)
+2025-05-28 17:56:47,519 - ERROR - No hay certificados con el nombre 'VICENTE'.
+2025-05-28 17:56:47,519 - INFO - Buscando botón 'Aceptar'...
+2025-05-28 17:56:47,646 - INFO - ¡Botón 'Aceptar' encontrado! Haciendo click...
+2025-05-28 17:56:55,075 - INFO - Se escribió texto en el elemento localizado por id='id_direccion': 'Direccion'
+2025-05-28 17:56:55,152 - INFO - Opción 'España' seleccionada en el elemento con 'id' = 'id_pais'.
+2025-05-28 17:56:55,479 - INFO - Opción 'València/Valencia' seleccionada en el elemento con 'id' = 'id_provincia'.
+2025-05-28 17:56:55,735 - INFO - Opción 'Aldaia' seleccionada en el elemento con 'id' = 'id_municipio'.
+2025-05-28 17:56:55,820 - INFO - Se escribió texto en el elemento localizado por id='id_codigo_postal': '46003'
+2025-05-28 17:56:55,909 - INFO - Se escribió texto en el elemento localizado por id='id_telefono': '912345678'
+2025-05-28 17:56:56,006 - INFO - Se escribió texto en el elemento localizado por id='id_telefono_movil': '612345678'
+2025-05-28 17:56:56,113 - INFO - Se escribió texto en el elemento localizado por id='id_correo_electronico': 'correo@electronico.com'
+2025-05-28 17:56:56,198 - INFO - Se escribió texto en el elemento localizado por id='id_fax': '012345678'
+2025-05-28 17:56:57,475 - INFO - Elemento clickado con 'id' = 'btnForm'.
+2025-05-28 17:57:02,713 - INFO - Elemento clickado con 'id' = 'tipoEnvioNtA'.
+2025-05-28 17:57:02,769 - INFO - Se escribió texto en el elemento localizado por id='file': 'C:/Users/USUARIO/Documents/GitHub/PythonProject/data/NT30460004811420250009891.xml'
+2025-05-28 17:57:02,838 - INFO - Elemento clickado con 'css selector' = '.loginBtn'.
