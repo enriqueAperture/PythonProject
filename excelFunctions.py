@@ -68,6 +68,28 @@ dic_formas_juridicas = {
     "W": "Establecimientos permanentes de entidades no residentes en España"
 }
 
+dic_codigos_residuos_valencia = {
+    "E01": "Gestor de tratamiento de residuos peligrosos",
+    "E02": "Gestor de tratamiento de residuos no peligrosos",
+    "G01": "Centro Gestor de residuos peligrosos",
+    "G02": "Centro Gestor intermedio de residuos peligrosos (almacenamiento)",
+    #"G03": "Transportista de residuos peligrosos asumiendo titularidad (Recogedor)",
+    "G04": "Centro Gestor de residuos no peligrosos",
+    "G05": "Centro Gestor intermedio de residuos no peligrosos (almacenamiento)",
+    "G06": "Plataforma logística de RAEE",
+    "N01": "Negociante de residuos peligrosos",
+    "N02": "Negociante de residuos no peligrosos",
+    "P01": "Productor de residuos peligrosos",
+    "P02": "Pequeño productor de residuos peligrosos",
+    "P03": "Productor de residuos no peligrosos",
+    "P04": "Actividad productora de Residuos No Peligrosos en cantidad inferior a 1000 tn anuales y por tanto no sometida al régimen de comu",
+    "P05": "Poseedor de residuos y, por tanto, no sometido a régimen de autorización o comunicación (accidentes, obras puntuales, comunidade",
+    "SCR": "Sistema colectivo de Responsabilidad ampliada",
+    "SIR": "Sistema individual de Responsabilidad ampliada",
+    "T01": "Transportista de residuos peligrosos",
+    "T02": "Transportista de residuos no peligrosos"
+}
+
 def _esperar_descarga(carpeta: str, extension: str = ".xlsx", timeout: int = 30) -> str:
     """
     Espera a que se descargue un archivo con la extensión especificada en la carpeta indicada.
@@ -555,6 +577,17 @@ def añadir_acuerdo_representacion(driver, fila):
     except Exception as error:
         logging.error(f"Error al añadir acuerdo de representación para la empresa.")
 
+def codigo_residuos_por_autorizacion(numero_autorizacion: str) -> str:
+    """
+    Devuelve la clave del código de residuos si la encuentra como subcadena exacta en el número de autorización.
+    Si no encuentra ninguna clave, devuelve una cadena vacía.
+    """
+    if not numero_autorizacion or not isinstance(numero_autorizacion, str):
+        return ""
+    autorizacion_limpia = ''.join(c for c in numero_autorizacion if c.isalnum()).upper()
+    # Devuelve la clave encontrada o una cadena vacía
+    return next((clave for clave in dic_codigos_residuos_valencia if clave in autorizacion_limpia), "")
+
 def añadir_autorizaciones(driver, fila):
     """
     Navega a la sección 'Autorizaciones' y añade una autorización usando los datos de la fila 'empresa'.
@@ -568,10 +601,11 @@ def añadir_autorizaciones(driver, fila):
         oldDriver = driver
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_AUTORIZACIONES")
 
-        webFunctions.escribir_en_elemento_por_name(popup, "pAutorizacion_medioambiental", str(fila.get("autorizacion_medioambiental", "")))
-        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion", str(fila.get("nombre_recogida", "")))
+        webFunctions.escribir_en_elemento_por_name(popup, "pAutorizacion_medioambiental", str(fila.get("nima_cod_peligrosos", "")))
+        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion", str(fila.get("nima_nom_peligrosos", "")))
         webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", str(fila.get("EMA", "")))
         time.sleep(1)
+        
         webFunctions.clickar_boton_por_clase(driver, "BUSCAR_TIPO_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item")
         webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
         driver = oldDriver
