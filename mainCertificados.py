@@ -3,6 +3,7 @@ import time
 
 from selenium.webdriver.common.by import By
 
+import autoFirmaHandler
 import certHandler
 import loggerConfig
 import logging
@@ -39,9 +40,7 @@ webFunctions.clickar_boton_por_clase(driver, "loginBtn")
 webFunctions.clickar_boton_por_texto(driver, "Continuar")
 webFunctions.clickar_boton_por_id(driver, "bSiguiente")
 webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
-ventana_chrome = certHandler._obtener_ventana_chrome()
-certHandler._obtener_pop_up_autofirma(ventana_chrome)
-certHandler._click_boton_abrir(ventana_chrome)
+autoFirmaHandler.firmar_en_AutoFirma()
 time.sleep(3600)
 
 driver.quit()
