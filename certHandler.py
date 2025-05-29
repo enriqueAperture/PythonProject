@@ -85,7 +85,12 @@ def seleccionar_certificado_chrome(nombre_certificado='RICARDO ESCUDE'):
         return False
 
     # Usar la versión modificada de _obtener_lista_certificados
-    lista_certificados = _obtener_lista_certificados(ventana_chrome)
+    lista_certificados = uiautomationHandler.esperar_popup_y_ejecutar(
+        ventana_chrome,
+        "Seleccionar un certificado",
+        accion=lambda popup: _obtener_data_item_control(popup),
+        timeout=10
+    )
     if lista_certificados is []:
         logging.warning("La lista de certificados está vacía.")
         return False
@@ -95,7 +100,7 @@ def seleccionar_certificado_chrome(nombre_certificado='RICARDO ESCUDE'):
     # Intenta seleccionar y hacer clic
     if lista_certificados:
         _seleccionar_certificado(lista_certificados, nombre_certificado)
-        _click_boton_aceptar(ventana_chrome)
+        uiautomationHandler.click_boton(ventana_chrome, "Seleccionar un certificado", "Aceptar")
         return True
     else:
         return False
