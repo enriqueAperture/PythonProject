@@ -17,28 +17,6 @@ def _obtener_data_item_control(control):
             data_items.extend(_obtener_data_item_control(child))
     return data_items
 
-def _obtener_lista_certificados(ventana_chrome, timeout=10):
-    """Espera y obtiene los controles DataItemControl de forma recursiva."""
-    logging.info("Esperando popup de certificado...")
-    popup_cert = None
-    start_time = time.time()
-    while not popup_cert and (time.time() - start_time) < timeout:
-        popup_cert = ventana_chrome.Control(searchDepth=20, ControlType=auto.ControlType.CustomControl,
-                                            Name='Seleccionar un certificado')
-        if not popup_cert.Exists():
-            popup_cert = None
-            time.sleep(0.5)
-
-    if popup_cert:
-        logging.info("Popup de certificado detectado.")
-        certificados = _obtener_data_item_control(popup_cert)
-        nombres_certificados = [cert.Name for cert in certificados]
-        logging.info(f"Nombres de certificados encontrados: {nombres_certificados}")
-        return certificados
-    else:
-        logging.error("No se encontró el popup de certificado.")
-        return []
-
 def _seleccionar_certificado(lista_certificados, nombre_certificado):
     """Selecciona el certificado deseado de la lista."""
     cert_encontrado = None
@@ -59,23 +37,6 @@ def _seleccionar_certificado(lista_certificados, nombre_certificado):
         logging.error(f"No hay certificados con el nombre '{nombre_certificado}'.")
 
     return found
-
-def _click_boton_aceptar(ventana_chrome, name: str = 'Seleccionar un certificado', timeout=5):
-    """Busca y hace clic en el botón 'Aceptar' en el popup de certificado."""
-    logging.info("Buscando botón 'Aceptar'...")
-    popup_cert = ventana_chrome.Control(searchDepth=20, ControlType=auto.ControlType.CustomControl, Name=name)
-    if popup_cert.Exists(maxSearchSeconds=timeout):
-        boton_aceptar = popup_cert.ButtonControl(Name='Aceptar')
-        if boton_aceptar.Exists(maxSearchSeconds=timeout):
-            logging.info("¡Botón 'Aceptar' encontrado! Haciendo click...")
-            boton_aceptar.Click()
-            return True
-        else:
-            logging.error("No se encontró el botón 'Aceptar' en el popup de certificado.")
-            return False
-    else:
-        logging.error("No se encontró el popup de certificado para buscar el botón 'Aceptar'.")
-        return False
 
 def seleccionar_certificado_chrome(nombre_certificado='RICARDO ESCUDE'):
     """Función principal para llegar a la ventana de Chrome, obtener los certificados
