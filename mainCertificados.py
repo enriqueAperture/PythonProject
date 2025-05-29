@@ -14,6 +14,18 @@ WEB_MITECO = "https://sede.miteco.gob.es/portal/site/seMITECO/login?urlLoginRedi
 NOMBRE_CERT = "FRANCISCO"
 ARCHIVO_XML = "C:/Users/USUARIO/Documents/GitHub/PythonProject/data/NT30460004811420250009971.xml"
 
+def print_open_windows_titles():
+    """
+    Imprime el título de todas las ventanas abiertas del ordenador.
+    """
+    root = auto.GetRootControl()
+    windows = root.GetChildren()
+    for win in windows:
+        # Verificar que es una ventana y tiene un título
+        if win.ControlTypeName == 'Window':
+            title = win.Name or '(Sin título)'
+            print(f'Window: {title}')
+
 driver = webConfiguration.configure()
 
 # Abrir Web
@@ -41,6 +53,7 @@ webFunctions.clickar_boton_por_texto(driver, "Continuar")
 webFunctions.clickar_boton_por_id(driver, "bSiguiente")
 webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
 autoFirmaHandler.firmar_en_AutoFirma()
+print_open_windows_titles()
 time.sleep(3600)
 
 driver.quit()
