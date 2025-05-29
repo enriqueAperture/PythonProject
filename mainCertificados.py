@@ -11,7 +11,7 @@ import webConfiguration
 import webFunctions
 
 WEB_MITECO = "https://sede.miteco.gob.es/portal/site/seMITECO/login?urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2JmlkZW50aWZpY2Fkb3JfcGFzbz1QUkVJTklDSU8mc3ViX29yZ2Fubz0xMSZwcmV2aW9fbG9naW49MQ=="
-NOMBRE_CERT = "LILIANA PEREZ"
+NOMBRE_CERT = "FRANCISCO"
 ARCHIVO_XML = "C:/Users/USUARIO/Documents/GitHub/PythonProject/data/NT30460004811420250009971.xml"
 
 driver = webConfiguration.configure()

@@ -81,11 +81,11 @@ def firmar_en_AutoFirma():
     )
     uiautomationHandler.esperar_popup_y_ejecutar(
         ventana_chrome,
-        "Diálogo de seguridad de almacén Windows",
+        "Seleccione un certificado",
         accion=lambda popup: seleccionar_certificado(ventana_chrome),
         timeout=10
     )
-    if seleccionar_certificado():
+    if seleccionar_certificado(ventana_chrome):
         logging.info("Procediendo con la firma en AutoFirma.")
         # Continuar con el proceso de firma
     else:
