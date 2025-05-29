@@ -9,22 +9,11 @@ import loggerConfig
 import logging
 import webConfiguration
 import webFunctions
+import uiautomation
 
 WEB_MITECO = "https://sede.miteco.gob.es/portal/site/seMITECO/login?urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2JmlkZW50aWZpY2Fkb3JfcGFzbz1QUkVJTklDSU8mc3ViX29yZ2Fubz0xMSZwcmV2aW9fbG9naW49MQ=="
 NOMBRE_CERT = "FRANCISCO"
-ARCHIVO_XML = "C:/Users/USUARIO/Documents/GitHub/PythonProject/data/NT30460004811420250009971.xml"
-
-def print_open_windows_titles():
-    """
-    Imprime el título de todas las ventanas abiertas del ordenador.
-    """
-    root = auto.GetRootControl()
-    windows = root.GetChildren()
-    for win in windows:
-        # Verificar que es una ventana y tiene un título
-        if win.ControlTypeName == 'Window':
-            title = win.Name or '(Sin título)'
-            print(f'Window: {title}')
+ARCHIVO_XML = "C:/Users/USUARIO/Documents/GitHub/PythonProject/data/NT30460004811420250009974.xml"
 
 driver = webConfiguration.configure()
 
@@ -52,9 +41,8 @@ webFunctions.clickar_boton_por_clase(driver, "loginBtn")
 webFunctions.clickar_boton_por_texto(driver, "Continuar")
 webFunctions.clickar_boton_por_id(driver, "bSiguiente")
 webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
-autoFirmaHandler.firmar_en_AutoFirma()
-print_open_windows_titles()
-time.sleep(3600)
+autoFirmaHandler.firmar_en_autofirma()
+time.sleep(10)
 
 driver.quit()
 

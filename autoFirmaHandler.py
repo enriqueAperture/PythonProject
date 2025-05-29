@@ -1,9 +1,16 @@
 import logging
 import time
 import loggerConfig
-import uiautomation as auto
+import uiautomation
+
 import uiautomationHandler
 
+def print_open_windows_titles():
+    """
+    Imprime el título de todas las ventanas abiertas del ordenador.
+    """
+    for w in uiautomation.GetRootControl().GetChildren():
+        logging.warning(f'Window: {w.Name}')
 def _obtener_radio_buttons(control):
     """
     Recorre recursivamente un control y devuelve todos los controles de tipo RadioButton.
@@ -71,7 +78,7 @@ def seleccionar_certificado(ventana_cert, nombre_certificado="FRANCISCO JAVIER")
         logging.error("No se pudo hacer clic en el botón 'Aceptar'.")
         return False
 
-def firmar_en_AutoFirma():
+def firmar_en_autofirma():
     ventana_chrome = uiautomationHandler.obtener_ventana_chrome()
     uiautomationHandler.esperar_popup_y_ejecutar(
         ventana_chrome,
@@ -79,9 +86,11 @@ def firmar_en_AutoFirma():
         accion=lambda popup: uiautomationHandler.click_boton(ventana_chrome, "¿Abrir AutoFirma?", "Abrir AutoFirma"),
         timeout=10
     )
+    time.sleep(5)
+    print_open_windows_titles()
     uiautomationHandler.esperar_popup_y_ejecutar(
         ventana_chrome,
-        "Seleccione un certificado",
+        "Diálogo de seguridad del almacén Windows",
         accion=lambda popup: seleccionar_certificado(ventana_chrome),
         timeout=10
     )
