@@ -1,0 +1,31 @@
+import webConfiguration
+import pandas
+import excelFunctions
+import webFunctions
+import funcionesNubelus
+import time
+
+# URLs de la aplicación Nubelus
+WEB_NUBELUS = "https://portal.nubelus.es"
+WEB_NUBELUS_ENTIDAD = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales&pAccion=NUEVO"
+WEB_NUBELUS_ACUERDOS = "https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion&pAccion=NUEVO"
+WEB_NUBELUS_CONTRATOS = "https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento&pAccion=NUEVO"
+
+
+def main():
+    # Configurar el driver de Selenium
+    driver = webConfiguration.configure()
+
+    # Iniciar sesión en Nubelus
+    funcionesNubelus.iniciar_sesion(driver)
+    time.sleep(5)  # Tiempo para aceptar el pop up de google
+
+    webFunctions.abrir_web(driver, WEB_NUBELUS_CONTRATOS)
+
+    excel_empresa = pandas.read_excel(excelFunctions.EXCEL_RECOGIDAS)
+    empresa_prueba = excel_empresa.iloc[17]  # Toma la fila del Excel como empresa de prueba METALLS DEL CAMP, S.L.
+
+    
+
+if __name__ == "__main__":
+    main()

@@ -867,6 +867,23 @@ def leer_texto_por_campo(driver, campo, timeout=5):
         logging.error(f"Error al leer el campo '{campo}': {e}")
         return None
 
+def leer_texto_por_campo_indice(driver, campo, indice=0, timeout=5):
+    """
+    Igual que leer_texto_por_campo, pero permite elegir el índice del elemento encontrado.
+    """
+    try:
+        xpath = f"(//td[b[normalize-space(text())='{campo}']])[{indice+1}]"
+        td = encontrar_elemento(driver, By.XPATH, xpath, timeout)
+        texto_completo = td.text
+        if texto_completo.startswith(campo):
+            valor = texto_completo[len(campo):].strip()
+        else:
+            valor = texto_completo.split(f"{campo}", 1)[-1].strip()
+        return valor if valor else None
+    except Exception as e:
+        logging.error(f"Error al leer el campo '{campo}' (índice {indice}): {e}")
+        return None
+
 def completar_campo_y_confirmar_seleccion(driver: webdriver.Chrome, buscar_por: By, locator: str, texto: str, boton_confirmacion_locator: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
     Ingresa un valor en un campo (usando el método especificado y locator),
@@ -925,3 +942,53 @@ def completar_campo_y_confirmar_seleccion_por_class(driver: webdriver.Chrome, cl
         delay (int, optional): Tiempo en segundos a esperar antes de hacer click.
     """
     completar_campo_y_confirmar_seleccion(driver, By.CLASS_NAME, class_name, texto, boton_confirmacion_locator, timeout)
+
+def completar_campo_y_enter_por_name(driver, campo_name, valor):
+    """
+    Completa un campo de formulario identificado por su atributo 'name' y simula la pulsación de la tecla Enter.
+
+    Args:
+        driver (selenium.webdriver): Instancia del controlador del navegador.
+        campo_name (str): Valor del atributo 'name' del campo de formulario a completar.
+        valor (str): Texto que se desea ingresar en el campo.
+    """
+    escribir_en_elemento_por_name(driver, campo_name, valor)
+    time.sleep(1)
+    pulsar_enter_en_elemento_por_name(driver, campo_name)
+
+def pulsar_enter_en_elemento(driver: webdriver.Chrome, by: By, value: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Espera a que un elemento sea visible y pulsa la tecla Enter sobre él.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        by (By): Estrategia de localización del elemento (By.ID, By.NAME, etc.).
+        value (str): Valor del selector.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+    """
+    try:
+        esperar_elemento(driver, by, value, timeout)
+        elemento = driver.find_element(by, value)
+        elemento.send_keys(Keys.ENTER)
+        logging.info(f"Se pulsó Enter en el elemento localizado por {by}='{value}'.")
+    except Exception as e:
+        logging.error(f"No se pudo pulsar Enter en el elemento con {by}='{value}': {e}")
+        raise
+
+def pulsar_enter_en_elemento_por_id(driver: webdriver.Chrome, element_id: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Pulsa Enter en un elemento identificado por su ID.
+    """
+    pulsar_enter_en_elemento(driver, By.ID, element_id, timeout)
+
+def pulsar_enter_en_elemento_por_name(driver: webdriver.Chrome, name: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Pulsa Enter en un elemento identificado por su atributo name.
+    """
+    pulsar_enter_en_elemento(driver, By.NAME, name, timeout)
+
+def pulsar_enter_en_elemento_por_class(driver: webdriver.Chrome, class_name: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Pulsa Enter en un elemento identificado por su clase CSS.
+    """
+    pulsar_enter_en_elemento(driver, By.CLASS_NAME, class_name, timeout)

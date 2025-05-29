@@ -69,6 +69,8 @@ dic_formas_juridicas = {
 }
 
 dic_codigos_residuos_valencia = {
+    "A01": "Agente de residuos peligrosos",
+    "A02": "Agente de residuos no peligrosos",
     "E01": "Gestor de tratamiento de residuos peligrosos",
     "E02": "Gestor de tratamiento de residuos no peligrosos",
     "G01": "Centro Gestor de residuos peligrosos",
@@ -242,7 +244,7 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
         
         # 6. Completar el campo Municipio
-        webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"]).rstrip(), "ui-a-value")
+        webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"]).rstrip(), "BUSCAR_INE_MUNICIPIO.noref.ui-menu-item")
 
         # 7. Completar el campo Provincia
         webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", fila["provincia_recogida"])
@@ -442,44 +444,67 @@ def añadirCentros(driver: webdriver.Chrome, centros_añadir: pd.DataFrame) -> N
 
 def extraer_datos_centro_castilla_desde_excel(ruta_excel):
     """
-    Lee un archivo Excel (.xls) con los datos de un centro de Castilla-La Mancha, convierte el archivo a formato .xlsx,
-    y extrae los datos relevantes de la segunda fila como diccionario.
-
-    Args:
-        ruta_excel (str): Ruta al archivo Excel (.xls) descargado.
-
-    Returns:
-        dict: Diccionario con los datos extraídos del centro.
+    Lee un archivo Excel (.xls) y devuelve un JSON estructurado con la información de la sede y los centros.
     """
     datos_castilla = pd.read_excel(ruta_excel, header=1)
     ruta_xlsx = ruta_excel.replace('.xls', '.xlsx')
     datos_castilla.to_excel(ruta_xlsx, index=False)
-    fila = datos_castilla.iloc[1]
-    datos = {
-        "DOMICILIO": fila.get('DOMICILIO', ''),
-        "NIMA": int(fila.get('NIMA ', 0)),
-        "nombre_EMA": fila.get('NOMBRE', ''),
-        "provincia_EMA": fila.get('PROVINCIA', ''),
-        "localidad_EMA": fila.get('LOCALIDAD', ''),
-        "telefono_EMA": int(fila.get('TELÉFONO', 0)),
-        "email_EMA": fila.get('E-MAIL', '')
+
+    # Filtra filas donde 'Unnamed: 0' es un número natural (entero positivo)
+    filas_naturales = datos_castilla[datos_castilla['Unnamed: 0'].apply(
+        lambda x: isinstance(x, (int, float)) and x > 0 and float(x).is_integer()
+    )]
+
+    # --- Sede (toma la primera fila válida como ejemplo, ajusta según tu lógica real) ---
+    if not filas_naturales.empty:
+        fila_empresa = filas_naturales.iloc[0]
+        empresa = {
+            "nombre": fila_empresa.get('NOMBRE', ''),
+            "direccion": fila_empresa.get('DOMICILIO', ''),
+            "municipio": fila_empresa.get('LOCALIDAD', ''),
+            "telefono": int(fila_empresa.get('TELÉFONO', 0)),
+            #"fax": int(fila_empresa.get('FAX', 0)),
+            "provincia": fila_empresa.get('PROVINCIA', ''),
+        }
+    else:
+        empresa = {}
+
+    # --- Centros ---
+    centros = []
+    # Saltamos la primera fila natural (que es la sede) y usamos las siguientes como centros
+    for _, fila in filas_naturales.iloc[0:].iterrows():
+        try:
+            nima_val = int(fila.get('NIMA ', 0))
+        except (ValueError, TypeError):
+            nima_val = 0
+        # Extraer códigos de residuos sin los que están entre paréntesis
+        codigos_raw = str(fila.get('TIPO EXPEDIENTEs', ''))
+        # Separa por espacios y filtra los que NO están entre paréntesis
+        codigos_residuos = [
+            cod for cod in codigos_raw.split()
+            if not (cod.startswith('(') and cod.endswith(')'))
+        ]
+        centro = {
+            "nombre_centro": fila.get('NOMBRE', ''),
+            "nima": nima_val,
+            "direccion_centro": fila.get('DOMICILIO', ''),
+            "municipio_centro": fila.get('LOCALIDAD', ''),
+            "telefono_centro": int(fila.get('TELÉFONO', 0)),
+            #"fax": int(fila.get('FAX', 0)),
+            "provincia_centro": fila.get('PROVINCIA', ''),
+            "codigos_residuos": codigos_residuos
+        }
+        centros.append(centro)
+
+    resultado = {
+        "empresa": empresa,
+        "centros": centros
     }
-    return datos
+    return resultado
 
 
 def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
-    """
-    Espera a que se descargue un archivo con la extensión indicada en la carpeta de descargas,
-    extrae los datos relevantes del Excel y devuelve el resultado en formato JSON.
-    Después borra el archivo descargado y el .xlsx generado.
-
-    Args:
-        extension (str): Extensión del archivo a buscar (por defecto ".xls").
-        timeout (int): Tiempo máximo de espera en segundos.
-
-    Returns:
-        str: Cadena JSON con los datos extraídos del centro, o None si falla la descarga.
-    """
+    import glob, os, time, logging
 
     carpeta_descargas = os.path.join(os.path.expanduser("~"), "Downloads")
     tiempo_inicio = time.time()
@@ -498,34 +523,36 @@ def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
                 size = new_size
                 time.sleep(1)
             break
-        time.sleep(1)
 
-    if not archivo_final:
-        logging.error("No se descargó ningún archivo en el tiempo esperado.")
-        return None
-
-    logging.info(f"Archivo descargado: {archivo_final}")
-    datos_dict = extraer_datos_centro_castilla_desde_excel(archivo_final)
-    datos_json = json.dumps(datos_dict, ensure_ascii=False, indent=4)
-    logging.info("Datos extraídos del Excel y convertidos a JSON.")
-
-    # Borrar el archivo .xls
+    datos_dict = None
+    archivo_xlsx = None
     try:
-        os.remove(archivo_final)
-        logging.info(f"Archivo eliminado: {archivo_final}")
-    except Exception as e:
-        logging.error(f"No se pudo eliminar el archivo: {archivo_final}. Error: {e}")
+        if not archivo_final:
+            logging.error("No se descargó ningún archivo en el tiempo esperado.")
+            return None
 
-    # Borrar el archivo .xlsx generado
-    archivo_xlsx = archivo_final.replace('.xls', '.xlsx')
-    if os.path.exists(archivo_xlsx):
-        try:
-            os.remove(archivo_xlsx)
-            logging.info(f"Archivo eliminado: {archivo_xlsx}")
-        except Exception as e:
-            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        logging.info(f"Archivo descargado: {archivo_final}")
+        datos_dict = extraer_datos_centro_castilla_desde_excel(archivo_final)
+        logging.info("Datos extraídos del Excel.")
+        archivo_xlsx = archivo_final.replace('.xls', '.xlsx')
+    finally:
+        # Borrar el archivo .xls
+        if archivo_final and os.path.exists(archivo_final):
+            try:
+                os.remove(archivo_final)
+                logging.info(f"Archivo eliminado: {archivo_final}")
+            except Exception as e:
+                logging.error(f"No se pudo eliminar el archivo: {archivo_final}. Error: {e}")
 
-    return datos_json
+        # Borrar el archivo .xlsx generado
+        if archivo_xlsx and os.path.exists(archivo_xlsx):
+            try:
+                os.remove(archivo_xlsx)
+                logging.info(f"Archivo eliminado: {archivo_xlsx}")
+            except Exception as e:
+                logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+
+    return datos_dict
 
 def añadir_horario(driver, fila):
     """
@@ -537,7 +564,9 @@ def añadir_horario(driver, fila):
         webFunctions.clickar_boton_con_titulo(driver, "Editar")
         oldDriver = driver
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_cambiar_aviso")
-        webFunctions.escribir_en_elemento_por_name(popup, "pAviso", str(fila.get("horario_m_1", "")))
+        str_horario = "MAÑANAS: " + str(fila.get("horario_m_1", "")) + " - " + str(fila.get("horario_m_2", "")) + "\n" + \
+            "TARDES: " + str(fila.get("horario_t_1", "")) + " - " + str(fila.get("horario_t_2", ""))
+        webFunctions.escribir_en_elemento_por_name(popup, "pAviso", str_horario)
         webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
         driver = oldDriver
     except Exception as error:
@@ -556,7 +585,8 @@ def rellenar_datos_medioambientales(driver, fila):
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_editar_DATOS_MEDIOAMBIENTALES")
 
         # Rellenar campos con los datos de la empresa
-        webFunctions.escribir_en_elemento_por_name(popup, "pNima", str(fila.get("nima_codigo", "")))
+        nima_str = str(fila.get("nima_codigo", ""))
+        webFunctions.escribir_en_elemento_por_name(popup, "pNima", nima_str[:10])
         webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nombre", str(fila.get("nombre_recogida", "")))
         #webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_apellidos", str(datos.get("responsable_apellidos", "")))
         webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nif", str(fila.get("cif_recogida", "")))
@@ -569,6 +599,24 @@ def rellenar_datos_medioambientales(driver, fila):
     except Exception as error:
         logging.error(f"Error al rellenar datos medioambientales para la empresa {fila.get('nombre_recogida', '')}: {error}")
     
+def obtener_fecha_modificada(fecha):
+    """
+    Obtiene la fecha y la convierte de formato YYYY-MM-DD a DD-MM-YYYY si es posible.
+
+    Args:
+        fecha (str): Fecha en formato string.
+
+    Returns:
+        str: Fecha en formato DD-MM-YYYY o la original si no es posible convertir.
+    """
+    fecha = str(fecha)[:10]  # Truncar a longitud 10
+    if len(fecha) == 10 and fecha[4] == '-' and fecha[7] == '-':
+        partes = fecha.split('-')
+        fecha_modificada = f"{partes[2]}-{partes[1]}-{partes[0]}"
+    else:
+        fecha_modificada = fecha
+    return fecha_modificada
+
 def añadir_acuerdo_representacion(driver, fila):
     """
     Navega a la sección de acuerdos de representación y añade un acuerdo usando los datos de la fila 'empresa'.
@@ -578,8 +626,10 @@ def añadir_acuerdo_representacion(driver, fila):
         webFunctions.completar_campo_y_confirmar_seleccion_por_name(
             driver, "pDenominacion_ema_representada", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item"
         )
-        webFunctions.escribir_en_elemento_por_name(driver, "pFecha", str(fila.get("fecha_inicio", "")))
-        webFunctions.escribir_en_elemento_por_name(driver, "pFecha_caducidad", str(fila.get("fecha_fin", "")))
+        fecha_inicio = obtener_fecha_modificada(str(fila.get("fecha_inicio", "")))
+        fecha_fin = obtener_fecha_modificada(str(fila.get("fecha_fin", "")))
+        webFunctions.escribir_en_elemento_por_name(driver, "pFecha", fecha_inicio)
+        webFunctions.escribir_en_elemento_por_name(driver, "pFecha_caducidad", fecha_fin)
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
     except Exception as error:
         logging.error(f"Error al añadir acuerdo de representación para la empresa.")
@@ -593,7 +643,7 @@ def codigo_residuos_por_autorizacion(codigo_autorizacion: str) -> str:
         return ""
     autorizacion_limpia = ''.join(c for c in codigo_autorizacion if c.isalnum()).upper()
     # Devuelve la clave encontrada o una cadena vacía #
-    return next((clave for clave in dic_codigos_residuos_valencia if clave in autorizacion_limpia), "")
+    return next((clave for clave in dic_codigos_residuos_valencia if clave in autorizacion_limpia), "P02")
 
 def denominacion_por_autorizacion(codigo_autorizacion: str) -> str:
     """
@@ -607,7 +657,7 @@ def denominacion_por_autorizacion(codigo_autorizacion: str) -> str:
     for clave, valor in dic_codigos_residuos_valencia.items():
         if clave in autorizacion_limpia:
             return valor
-    return ""
+    return codigo_autorizacion
 
 def añadir_autorizaciones(driver, fila):
     """
@@ -615,8 +665,7 @@ def añadir_autorizaciones(driver, fila):
     """
     try:
         webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Autorizaciones")
-        #time.sleep(1)
-        #webFunctions.esperar_elemento(driver, By.XPATH)
+        time.sleep(1)
         webFunctions.clickar_boton_por_texto(driver, "Añadir autorización")
 
         oldDriver = driver
@@ -633,3 +682,60 @@ def añadir_autorizaciones(driver, fila):
         driver = oldDriver
     except Exception as error:
         logging.error(f"Error al añadir autorización para la empresa {fila.get('nombre_recogida', '')}: {error}")
+
+def añadir_usuario(driver, fila):
+    """
+    Añade un usuario a la empresa usando los datos de la fila 'empresa'.
+    
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
+    """
+    try:
+        
+        # Completar campos del formulario
+        webFunctions.escribir_en_elemento_por_name(driver, "pUsuario", fila["nombre_recogida"].replace(" ", "") + "prueba")
+        webFunctions.escribir_en_elemento_por_name(driver, "pAlias", fila["nombre_recogida"])
+        webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
+        webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", fila["telf_recogida"])
+        webFunctions.seleccionar_elemento_por_name(driver, "pRol", "EMA")
+        webFunctions.completar_campo_y_confirmar_seleccion_por_name(
+            driver, "pDenominacion_ema", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item"
+        )
+        webFunctions.completar_campo_y_confirmar_seleccion_por_name(
+            driver, "pDenominacion_entidad_ma_centro", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item"
+        )
+        
+        # Confirmar la adición
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
+        
+        time.sleep(1)  # Espera para que la acción se procese
+    except Exception as error:
+        logging.error(f"Error al añadir usuario para la empresa {fila.get('nombre_recogida', '')}: {error}")
+
+def añadir_contrato_tratamiento(driver, fila):
+    """
+    Añade un contrato de tratamiento a la empresa usando los datos de la fila 'empresa'.
+    
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
+    """
+    try:
+        fecha_inicio = obtener_fecha_modificada(fila["fecha_inicio"])
+        fecha_fin = obtener_fecha_modificada(fila["fecha_fin"])
+
+        webFunctions.completar_campo_y_enter_por_name(driver, "pFecha", fecha_inicio)
+        webFunctions.completar_campo_y_enter_por_name(driver, "pFecha_caducidad", fecha_fin)
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_origen", fila["nombre_recogida"])
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_origen", fila["nima_cod_peligrosos"])
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. por defecto
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D'ESPADA )") # METALLS DEL CAMP ( SERRA D'ESPADA ) por defecto
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "157/G02/CV") # depende si los residuos son o no peligrosos
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_operador_traslados", "ECO TITAN S.L.") # ECO TITAN S.L. por defecto
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_operador_traslados", "87/A01/CV") # 87/A01/CV por defecto (peligroso)
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_residuo", "AEROSOLES*") # AEROSOLES* por defecto
+        webFunctions.escribir_en_elemento_por_name(driver, "pKilos_totales", str(fila["cantidad"]))
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.cancelar")
+    except Exception as error:
+        logging.error(f"Error al añadir contrato de tratamiento para la empresa {fila.get('nombre_recogida', '')}: {error}")

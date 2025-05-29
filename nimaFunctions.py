@@ -21,7 +21,7 @@ def extraer_datos_valencia(driver):
     """
     Extrae los datos principales de la ficha de un centro en la web de NIMA Valencia.
     Devuelve un diccionario con los datos relevantes.
-    Incluye todos los códigos de residuos disponibles para el centro.
+    Incluye todos los códigos de residuos disponibles para el centro como una lista.
     """
     # Datos de la empresa
     nombre_empresa = webFunctions.obtener_texto_elemento_por_id(driver, "NOMBREEMPRESA1-0")
@@ -36,23 +36,32 @@ def extraer_datos_valencia(driver):
     nima = webFunctions.obtener_texto_elemento_por_id(driver, "FCENCODCENTRO1-0-0")
     direccion_centro = webFunctions.obtener_texto_elemento_por_id(driver, "FDIRECCION1-0-0")
     localidad_provincia_centro = webFunctions.obtener_texto_elemento_por_id(driver, "Text7-0-0")
-    codigo_ine = webFunctions.obtener_texto_elemento_por_id(driver, "FCODINE1-0-0")
+    codigo_ine_municipio = webFunctions.obtener_texto_elemento_por_id(driver, "FCODINE1-0-0")
+    codigo_ine_provincia = codigo_ine_municipio[:2]
     telefono_centro = webFunctions.obtener_texto_elemento_por_id(driver, "FTELEFONO1-0-0")
 
-    # Códigos de residuos (recorre todos los posibles)
-    codigos_residuo = []
+    # Códigos de residuos (como lista)
+    autorizaciones = []
     idx = 0
     while True:
         try:
-            codigo = webFunctions.obtener_texto_elemento_por_id(driver, f"Text10-0-0-{idx}")
-            if codigo:
-                codigo_split = codigo.split()
-                if codigo_split:
-                    codigos_residuo[f"codigo_residuo_{idx+1}"] = codigo_split[0]
+            autorizacion = webFunctions.obtener_texto_elemento_por_id(driver, f"Text10-0-0-{idx}")
+            if autorizacion:
+                autorizacion_split = autorizacion.split()
+                if autorizacion_split:
+                    autorizaciones.append(autorizacion_split[0])
             idx += 1
         except Exception:
-            break  # Sale del bucle cuando no encuentra más códigos
-
+            break  # Sale del bucle cuando no encuentra más autorizaciones
+    
+    # Extraer codigos_residuos de las autorizaciones encontradas
+    claves_autorizacion = list(excelFunctions.dic_codigos_residuos_valencia.keys())
+    codigos_residuos = []
+    for autorizacion in autorizaciones:
+        for clave in claves_autorizacion:
+            if clave in autorizacion and clave not in codigos_residuos:
+                codigos_residuos.append(clave)
+    
     return {
         "empresa": {
             "nombre_empresa": nombre_empresa,
@@ -67,9 +76,11 @@ def extraer_datos_valencia(driver):
             "nima": nima,
             "direccion_centro": direccion_centro,
             "provincia_centro": localidad_provincia_centro,
-            "codigo_ine_centro": codigo_ine,
+            "codigo_ine_provincia": codigo_ine_provincia,
+            "codigo_ine_municipio": codigo_ine_municipio,
             "telefono_centro": telefono_centro,
-            **codigos_residuo
+            "autorizaciones": autorizaciones,
+            "codigos_residuos": codigos_residuos
         }
     }
 
@@ -126,7 +137,11 @@ def extraer_datos_madrid(driver):
     """
     Extrae los datos principales de la ficha de un centro en la web de NIMA Madrid.
     Devuelve un diccionario con los datos de la sede y del centro.
+    Además, extrae todas las autorizaciones válidas y las guarda en una lista bajo la clave 'autorizaciones' en el centro.
     """
+    # Usa las claves del diccionario de excelFunctions
+    claves_autorizacion = list(excelFunctions.dic_codigos_residuos_valencia.keys())
+
     # Datos del EMA (empresa)
     datos_empresa = {
         "nif": webFunctions.leer_texto_por_campo(driver, "NIF:"),
@@ -151,6 +166,29 @@ def extraer_datos_madrid(driver):
         "provincia_centro": webFunctions.leer_texto_por_campo_indice(driver, "Provincia:", indice=1),
         "codigo_ine_provincia_centro": webFunctions.leer_texto_por_campo_indice(driver, "Código INE Provincia:", indice=1)
     }
+
+    # Extraer autorizaciones válidas
+    autorizaciones = []
+    try:
+        elementos_p = driver.find_elements(webFunctions.By.TAG_NAME, "p")
+        for elem in elementos_p:
+            texto = elem.text
+            if len(texto) == 17: # Solo se queda con las autorizaciones con formato valido
+                autorizaciones.append(texto)
+
+    except Exception as e:
+        logging.error(f"Error extrayendo autorizaciones en Madrid: {e}")
+
+    datos_centro["autorizaciones"] = autorizaciones
+
+    # Extraer codigos_residuos de las autorizaciones encontradas
+    codigos_residuos = []
+    for autorizacion in autorizaciones:
+        for clave in claves_autorizacion:
+            if clave in autorizacion and clave not in codigos_residuos:
+                codigos_residuos.append(clave)
+    datos_centro["codigos_residuos"] = codigos_residuos
+
     return {
         "empresa": datos_empresa,
         "centro": datos_centro
@@ -227,7 +265,7 @@ def busqueda_NIMA_Castilla(nif):
         webFunctions.clickar_boton_por_id(driver, "enlace_gestores")
         webFunctions.escribir_en_elemento_por_id(driver, "input_NIF_CIF", nif)
         webFunctions.clickar_boton_por_id(driver, "boton_buscar")
-        if webFunctions.clickar_imagen_generar_excel(driver):
+        if webFunctions.clickar_imagen_generar_excel(driver, timeout=8):
             datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
             if not datos_json:
                 logging.info("No se pudieron extraer los datos desde el Excel en Castilla")
@@ -254,7 +292,7 @@ def busqueda_NIMA_Castilla(nif):
 def extraer_datos_cataluña(driver, nif):
     """
     Extrae los datos principales de la ficha de un centro en la web de NIMA Cataluña.
-    Devuelve un diccionario con los datos relevantes y una lista de centros.
+    Devuelve un diccionario con los datos de la empresa y una lista de centros.
     Lanza mensajes de error claros y evita mostrar stacktraces de Selenium.
     """
     logging.info(f"Buscando NIF: {nif}")
@@ -284,15 +322,24 @@ def extraer_datos_cataluña(driver, nif):
         logging.error(f"Error extrayendo NIMA: {e}")
 
     selector_razon = "//div[contains(@class, 'col-xs-8') and b[normalize-space(text())='Raó social:']]"
-    nombre_centro = None
-
+    nombre_empresa = None
     try:
         texto_div_razon = webFunctions.esperar_y_obtener_texto(driver, "xpath", selector_razon)
         if "Raó social:" in texto_div_razon:
-            nombre_centro = texto_div_razon.split("Raó social:")[-1].strip()
-            nombre_centro = " ".join(nombre_centro.split())
+            nombre_empresa = texto_div_razon.split("Raó social:")[-1].strip()
+            nombre_empresa = " ".join(nombre_empresa.split())
     except Exception as e:
         logging.error(f"Error extrayendo Razón Social: {e}")
+    
+    selector_codis = "//div[contains(@class, 'col-xs-8') and b[normalize-space(text())='Codis:']]"
+    codigos_residuo = None
+    try:
+        texto_div_codis = webFunctions.esperar_y_obtener_texto(driver, "xpath", selector_codis)
+        if "Codis:" in texto_div_codis:
+            codigos_residuo = texto_div_codis.split("Codis:")[-1].strip()
+            codigos_residuo = " ".join(codigos_residuo.split())
+    except Exception as e:
+        logging.error(f"Error extrayendo Códigos de residuo: {e}")
 
     # Extraer todos los centros de la tabla
     selector_trs = "//tr[contains(@class, 'llistaopen1') or contains(@class, 'llistaopen2')]"
@@ -301,26 +348,30 @@ def extraer_datos_cataluña(driver, nif):
         filas = webFunctions.encontrar_elementos(driver, webFunctions.By.XPATH, selector_trs)
         for fila in filas:
             celdas = fila.find_elements("tag name", "td")
-            if len(celdas) >= 5:
-                centro = {
-                    "nima_centro": celdas[0].text.strip(),
-                    "direccion_centro": celdas[2].text.strip(),
-                    "cp_centro": celdas[3].text.strip().replace('\xa0', '').replace('&nbsp;', ''),
-                    "municipio_centro": celdas[4].text.strip()
-                }
-                centros.append(centro)
+            centro = {
+                "nima_centro": celdas[0].text.strip(),
+                "autorizaciones_centro": celdas[1].text.strip(),
+                "direccion_centro": celdas[2].text.strip(),
+                "cp_centro": celdas[3].text.strip(),
+                "codigo_ine_provincia_centro": celdas[3].text.strip()[:2],
+                "municipio_centro": celdas[4].text.strip()
+            }
+            centros.append(centro)
     except Exception as e:
         logging.error(f"Error extrayendo filas de centros: {e}")
 
     # Si no hay datos relevantes, devuelve None
-    if not (valor_nif or nima or nombre_centro or centros):
+    if not (valor_nif or nima or nombre_empresa or centros):
         logging.error(f"No se han encontrado datos relevantes para el NIF {nif} en Cataluña.")
         return None
 
     return {
-        "nif": valor_nif,
-        "nima": nima,
-        "nombre_centro": nombre_centro,
+        "empresa": {
+            "nif": valor_nif,
+            "nima": nima,
+            "nombre_empresa": nombre_empresa,
+            "autorizaciones_empresa": codigos_residuo
+        },
         "centros": centros
     }
 
@@ -331,12 +382,18 @@ def busqueda_NIMA_Cataluña(nif):
         webFunctions.escribir_en_elemento_por_name(driver, "cercaNif", nif)
         webFunctions.clickar_boton_por_texto(driver, "CERCAR")
         datos_json = extraer_datos_cataluña(driver, nif)
-        if not datos_json or not any([
-            datos_json.get("nif"), datos_json.get("nima"), datos_json.get("nombre_centro")
-        ]):
+        # Comprobación correcta de datos válidos
+        if (
+            not datos_json or
+            not isinstance(datos_json, dict) or
+            "empresa" not in datos_json or
+            "centros" not in datos_json or
+            not datos_json["empresa"] or
+            not datos_json["centros"]
+        ):
             raise Exception("No se han extraído datos válidos para NIMA Cataluña")
     except Exception as e:
-        raise Exception(f"Error en busqueda_NIMA_Cataluña")
+        raise Exception(f"Error en busqueda_NIMA_Cataluña: {e}")
     finally:
         driver.quit()
     return datos_json
