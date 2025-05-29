@@ -1,63 +1,54 @@
+"""
+Módulo: certHandler.py
+
+Este módulo contiene funciones para la selección y manejo de certificados utilizando 
+la librería uiautomation. Las funcionalidades principales incluyen:
+
+  - _seleccionar_certificado(lista_certificados, nombre_certificado):
+      Recorre una lista de controles (certificados) y selecciona aquel que contenga 
+      una subcadena específica en su propiedad Name. Hace clic sobre el certificado 
+      encontrado y retorna True si la selección fue exitosa.
+
+  - seleccionar_certificado_chrome(nombre_certificado='RICARDO ESCUDE'):
+      Función principal que obtiene la ventana de certificados (a través de uiautomationHandler),
+      espera a que se muestre el popup "Seleccionar un certificado" y obtiene la lista de 
+      certificados. Luego, llama a _seleccionar_certificado para seleccionar el certificado 
+      adecuado y por último, realiza un clic en el botón "Aceptar" para confirmar la selección.
+
+Ejemplo de uso:
+
+    if seleccionar_certificado_chrome("FRANCISCO JAVIER"):
+        logging.info("Certificado seleccionado y confirmado correctamente.")
+    else:
+        logging.error("No se pudo seleccionar el certificado.")
+"""
+
 import loggerConfig
 import uiautomation as auto
 import time
 import logging
 
-def _obtener_ventana_chrome(timeout=10):
-    """Busca y activa la ventana de Google Chrome."""
-    logging.info("Buscando ventana de Chrome...")
-    ventana_chrome = None
-    start_time = time.time()
-    while not ventana_chrome and (time.time() - start_time) < timeout:
-        for w in auto.GetRootControl().GetChildren():
-            if w.ClassName == 'Chrome_WidgetWin_1' and 'Chrome' in w.Name:
-                ventana_chrome = w
-                break
-        time.sleep(0.5)
-
-    if ventana_chrome:
-        logging.info(f"Ventana de Chrome encontrada: {ventana_chrome.Name}")
-        ventana_chrome.SetActive()
-        return ventana_chrome
-    else:
-        logging.error("No se encontró la ventana de Chrome.")
-        return None
-
-def _obtener_data_item_control(control):
-    """Busca recursivamente controles de tipo DataItemControl dentro de un control."""
-    data_items = []
-    for child in control.GetChildren():
-        if child.ControlTypeName == 'DataItemControl':
-            data_items.append(child)
-        else:
-            # Si no es DataItemControl, busca recursivamente en sus hijos
-            data_items.extend(_obtener_data_item_control(child))
-    return data_items
-
-def _obtener_lista_certificados(ventana_chrome, timeout=10):
-    """Espera y obtiene los controles DataItemControl de forma recursiva."""
-    logging.info("Esperando popup de certificado...")
-    popup_cert = None
-    start_time = time.time()
-    while not popup_cert and (time.time() - start_time) < timeout:
-        popup_cert = ventana_chrome.Control(searchDepth=20, ControlType=auto.ControlType.CustomControl,
-                                            Name='Seleccionar un certificado')
-        if not popup_cert.Exists():
-            popup_cert = None
-            time.sleep(0.5)
-
-    if popup_cert:
-        logging.info("Popup de certificado detectado.")
-        certificados = _obtener_data_item_control(popup_cert)
-        nombres_certificados = [cert.Name for cert in certificados]
-        logging.info(f"Nombres de certificados encontrados: {nombres_certificados}")
-        return certificados
-    else:
-        logging.error("No se encontró el popup de certificado.")
-        return []
+import uiautomationHandler
 
 def _seleccionar_certificado(lista_certificados, nombre_certificado):
-    """Selecciona el certificado deseado de la lista."""
+    """
+    Selecciona el certificado deseado de una lista de certificados.
+
+    Recorre recursivamente la lista de controles (certificados) y busca aquel cuyo 
+    atributo Name contenga la subcadena especificada en 'nombre_certificado'. Una vez 
+    encontrado, realiza un clic en el certificado y retorna True; de lo contrario, 
+    registra un error y retorna False.
+
+    Args:
+        lista_certificados (list): Lista de controles obtenidos (ej. DataItemControl) que representan certificados.
+        nombre_certificado (str): Subcadena que debe contener el atributo Name del certificado deseado.
+
+    Returns:
+        bool: True si se encontró y se hizo clic en el certificado deseado, False en caso contrario.
+
+    Ejemplo:
+        found = _seleccionar_certificado(lista_certificados, "FRANCISCO JAVIER")
+    """
     cert_encontrado = None
     found = False
 
@@ -77,42 +68,53 @@ def _seleccionar_certificado(lista_certificados, nombre_certificado):
 
     return found
 
-def _click_boton_aceptar(ventana_chrome, name: str = 'Seleccionar un certificado', timeout=5):
-    """Busca y hace clic en el botón 'Aceptar' en el popup de certificado."""
-    logging.info("Buscando botón 'Aceptar'...")
-    popup_cert = ventana_chrome.Control(searchDepth=20, ControlType=auto.ControlType.CustomControl, Name=name)
-    if popup_cert.Exists(maxSearchSeconds=timeout):
-        boton_aceptar = popup_cert.ButtonControl(Name='Aceptar')
-        if boton_aceptar.Exists(maxSearchSeconds=timeout):
-            logging.info("¡Botón 'Aceptar' encontrado! Haciendo click...")
-            boton_aceptar.Click()
-            return True
-        else:
-            logging.error("No se encontró el botón 'Aceptar' en el popup de certificado.")
-            return False
-    else:
-        logging.error("No se encontró el popup de certificado para buscar el botón 'Aceptar'.")
-        return False
-
 def seleccionar_certificado_chrome(nombre_certificado='RICARDO ESCUDE'):
-    """Función principal para llegar a la ventana de Chrome, obtener los certificados
-    y seleccionar el certificado especificado."""
-    ventana_chrome = _obtener_ventana_chrome()
+    """
+    Función principal para obtener la ventana de certificados y seleccionar el certificado deseado.
+
+    Esta función utiliza uiautomationHandler para:
+      1. Obtener la ventana de certificados (se asume que es la ventana obtenida mediante obtener_ventana_chrome).
+      2. Esperar a que se muestre el popup "Seleccionar un certificado" y obtener la lista de 
+         controles que representan los certificados (usando esperar_popup_y_ejecutar y obtener_data_item_control).
+      3. Utilizar la función _seleccionar_certificado para buscar y hacer clic en el certificado cuyo 
+         atributo Name contenga la subcadena 'nombre_certificado'.
+      4. Finalmente, hace clic en el botón "Aceptar" del popup para confirmar la selección.
+
+    Args:
+        nombre_certificado (str, optional): Texto o subcadena del nombre del certificado a seleccionar.
+                                              Por defecto es 'RICARDO ESCUDE'.
+
+    Returns:
+        bool: True si se pudo seleccionar el certificado y se hizo clic en "Aceptar"; False en caso contrario.
+
+    Ejemplo de uso:
+        if seleccionar_certificado_chrome("FRANCISCO JAVIER"):
+            logging.info("Certificado seleccionado y confirmado correctamente.")
+        else:
+            logging.error("No se pudo seleccionar el certificado.")
+    """
+    ventana_chrome = uiautomationHandler.obtener_ventana_chrome()
     if not ventana_chrome:
+        logging.error("No se encontró la ventana de certificados.")
         return False
 
-    # Usar la versión modificada de _obtener_lista_certificados
-    lista_certificados = _obtener_lista_certificados(ventana_chrome)
+    # Esperar el popup y obtener la lista de certificados como controles (DataItemControl)
+    lista_certificados = uiautomationHandler.esperar_popup_y_ejecutar(
+        ventana_chrome,
+        "Seleccionar un certificado",
+        accion=lambda popup: uiautomationHandler.obtener_data_item_control(popup),
+        timeout=10
+    )
     if lista_certificados is []:
         logging.warning("La lista de certificados está vacía.")
         return False
 
     logging.info(f"Primer certificado encontrado: {lista_certificados[0].Name if lista_certificados else 'Ninguno'}")
 
-    # Intenta seleccionar y hacer clic
+    # Intentar seleccionar el certificado y confirmar haciendo clic en el botón "Aceptar"
     if lista_certificados:
         _seleccionar_certificado(lista_certificados, nombre_certificado)
-        _click_boton_aceptar(ventana_chrome)
+        uiautomationHandler.click_boton(ventana_chrome, "Seleccionar un certificado", "Aceptar")
         return True
     else:
         return False
