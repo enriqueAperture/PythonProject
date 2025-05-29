@@ -107,3 +107,29 @@ def esperar_popup_y_ejecutar(ventana_chrome, popup_name: str, accion: callable =
     else:
         logging.error(f"No se encontró el popup '{popup_name}'.")
         return None
+    
+def obtener_ventana_certificados(timeout=10):
+    """Busca y activa la ventana 'Diálogo de seguridad de almacén Windows'."""
+    logging.info("Buscando ventana 'Diálogo de seguridad de almacén Windows'...")
+    ventana_cert = None
+    start_time = time.time()
+    for w in auto.GetRootControl().GetChildren():
+        # Se busca la ventana cuyo título (Name) sea exactamente el de certificados.
+        if w.Name == "Diálogo de seguridad de almacén Windows":
+            ventana_cert = w
+            break
+    # Si no se encontró en el primer intento, se espera un tiempo
+    while not ventana_cert and (time.time() - start_time) < timeout:
+        for w in auto.GetRootControl().GetChildren():
+            if w.Name == "Diálogo de seguridad de almacén Windows":
+                ventana_cert = w
+                break
+        time.sleep(0.5)
+
+    if ventana_cert:
+        logging.info(f"Ventana de certificados encontrada: {ventana_cert.Name}")
+        ventana_cert.SetActive()
+        return ventana_cert
+    else:
+        logging.error("No se encontró la ventana de certificados.")
+        return None

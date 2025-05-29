@@ -31,10 +31,8 @@ def seleccionar_certificado_francisco():
         else:
             logging.error("No se pudo seleccionar el certificado.")
     """
-    import time
-    import logging
     # Obtener la ventana de la aplicación (se asume que la ventana de certificados es la ventana de Chrome)
-    ventana_cert = uiautomationHandler.obtener_ventana_chrome()
+    ventana_cert = uiautomationHandler.obtener_ventana_certificados()
     if not ventana_cert:
         logging.error("No se encontró la ventana de certificado.")
         return False
