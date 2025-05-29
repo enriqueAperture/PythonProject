@@ -5,18 +5,6 @@ import logging
 
 import uiautomationHandler
 
-
-def _obtener_data_item_control(control):
-    """Busca recursivamente controles de tipo DataItemControl dentro de un control."""
-    data_items = []
-    for child in control.GetChildren():
-        if child.ControlTypeName == 'DataItemControl':
-            data_items.append(child)
-        else:
-            # Si no es DataItemControl, busca recursivamente en sus hijos
-            data_items.extend(_obtener_data_item_control(child))
-    return data_items
-
 def _seleccionar_certificado(lista_certificados, nombre_certificado):
     """Selecciona el certificado deseado de la lista."""
     cert_encontrado = None
@@ -49,7 +37,7 @@ def seleccionar_certificado_chrome(nombre_certificado='RICARDO ESCUDE'):
     lista_certificados = uiautomationHandler.esperar_popup_y_ejecutar(
         ventana_chrome,
         "Seleccionar un certificado",
-        accion=lambda popup: _obtener_data_item_control(popup),
+        accion=lambda popup: uiautomationHandler.obtener_data_item_control(popup),
         timeout=10
     )
     if lista_certificados is []:
