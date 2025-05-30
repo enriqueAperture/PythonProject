@@ -22,6 +22,7 @@ Ejemplo de uso:
     Al finalizar, se cierra el navegador.
 """
 
+import os
 import time
 import autoFirmaHandler
 import certHandler
@@ -79,10 +80,11 @@ webFunctions.clickar_boton_por_clase(driver, "loginBtn")
 webFunctions.clickar_boton_por_texto(driver, "Continuar")
 webFunctions.clickar_boton_por_id(driver, "bSiguiente")
 webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
+time.sleep(3)
+webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
 
 # Ejecutar el proceso de firma mediante AutoFirma
 autoFirmaHandler.firmar_en_autofirma()
-time.sleep(10)
 
 # Cerrar el navegador
 driver.quit()

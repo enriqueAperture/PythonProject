@@ -1,33 +1,33 @@
 """
 Módulo: uiautomationHandler.py
 
-Este módulo contiene funciones auxiliares para la interacción con la interfaz 
-de usuario mediante la librería uiautomation. Entre las funcionalidades se incluyen:
+Este módulo proporciona funciones auxiliares para la interacción con la interfaz de usuario
+mediante la librería uiautomation. Permite localizar ventanas, popups y controles específicos,
+así como realizar acciones sobre ellos, facilitando la automatización de flujos de trabajo
+gráficos como la selección de certificados y la interacción con AutoFirma.
 
-  - obtener_ventana_chrome(timeout=10):
-      Busca y activa la ventana de Google Chrome basada en su clase y nombre.
-
-  - click_boton(ventana_chrome, popup_name, button_name, timeout=5):
-      Busca y hace clic en un botón específico dentro de un popup de la ventana proporcionada.
-
-  - esperar_popup_y_ejecutar(ventana_chrome, popup_name, accion=None, timeout=10):
-      Espera a que se muestre un popup (identificado por su Name) y, si se define una acción,
-      la ejecuta pasando el control del popup; en caso contrario, devuelve el control del popup.
-
-  - obtener_data_item_control(control):
-      Busca recursivamente todos los controles de tipo DataItemControl dentro de un control.
+Funcionalidades principales:
+  - Buscar y activar la ventana de Google Chrome.
+  - Buscar y activar la ventana de diálogo de certificados de Windows.
+  - Buscar y hacer clic en botones dentro de popups.
+  - Esperar la aparición de popups y ejecutar acciones sobre ellos.
+  - Buscar recursivamente controles de tipo DataItemControl.
 
 Ejemplos de uso:
 
     # Buscar la ventana de Chrome
-    ventana = obtener_ventana_chrome(timeout=10)
+    ventana_chrome = obtener_ventana_chrome(timeout=10)
 
     # Hacer clic en un botón "Abrir AutoFirma" dentro de un popup llamado "¿Abrir AutoFirma?"
-    click_boton(ventana, "¿Abrir AutoFirma?", "Abrir AutoFirma", timeout=5)
+    click_boton_en_popup(ventana_chrome, "¿Abrir AutoFirma?", "Abrir AutoFirma", timeout=5)
 
     # Esperar a que aparezca el popup "Seleccionar un certificado" y obtener los controles DataItemControl
-    certificados = esperar_popup_y_ejecutar(ventana, "Seleccionar un certificado", 
-                     accion=lambda popup: obtener_data_item_control(popup), timeout=10)
+    certificados = esperar_popup_y_ejecutar(
+        ventana_chrome,
+        "Seleccionar un certificado",
+        accion=lambda popup: obtener_data_item_control(popup),
+        timeout=10
+    )
 """
 
 import loggerConfig
@@ -46,15 +46,15 @@ def obtener_ventana_chrome(timeout=10):
         Control: El control de la ventana de Chrome encontrada o None si no se encuentra.
 
     Ejemplo de uso:
-        ventana = obtener_ventana_chrome(timeout=10)
+        ventana_chrome = obtener_ventana_chrome(timeout=10)
     """
     logging.info("Buscando ventana de Chrome...")
     ventana_chrome = None
     start_time = time.time()
     while not ventana_chrome and (time.time() - start_time) < timeout:
-        for w in auto.GetRootControl().GetChildren():
-            if w.ClassName == 'Chrome_WidgetWin_1' and 'Chrome' in w.Name:
-                ventana_chrome = w
+        for ventana in auto.GetRootControl().GetChildren():
+            if ventana.ClassName == 'Chrome_WidgetWin_1' and 'Chrome' in ventana.Name:
+                ventana_chrome = ventana
                 break
         time.sleep(0.5)
 
@@ -66,12 +66,44 @@ def obtener_ventana_chrome(timeout=10):
         logging.error("No se encontró la ventana de Chrome.")
         return None
 
-def click_boton(ventana_chrome, popup_name: str, button_name: str, timeout: int = 5) -> bool:
+def obtener_ventana_certificados(timeout=10):
+    """
+    Busca y activa la ventana de diálogo de certificados de Windows ("Diálogo de seguridad del almacén Windows").
+
+    Args:
+        timeout (int, optional): Tiempo máximo de espera en segundos. Por defecto 10.
+
+    Returns:
+        Control: El control de la ventana de certificados encontrada o None si no se encuentra.
+
+    Ejemplo de uso:
+        ventana_cert = obtener_ventana_certificados(timeout=10)
+    """
+    logging.info("Buscando ventana de diálogo de certificados de Windows...")
+    ventana_cert = None
+    start_time = time.time()
+    while not ventana_cert and (time.time() - start_time) < timeout:
+        for ventana in auto.GetRootControl().GetChildren():
+            if 'Diálogo de seguridad del almacén Windows' in ventana.Name:
+                logging.info(f"Ventana encontrada: {ventana.Name}")
+                ventana_cert = ventana
+                break
+        time.sleep(0.5)
+
+    if ventana_cert:
+        logging.info(f"Ventana de certificados encontrada: {ventana_cert.Name}")
+        ventana_cert.SetActive()
+        return ventana_cert
+    else:
+        logging.error("No se encontró la ventana de certificados.")
+        return None
+
+def click_boton_en_popup(ventana_principal, popup_name: str, button_name: str, timeout: int = 5) -> bool:
     """
     Busca y hace clic en un botón específico dentro de un popup dado.
 
     Args:
-        ventana_chrome: Control de la ventana sobre la cual se buscará el popup.
+        ventana_principal: Control de la ventana sobre la cual se buscará el popup.
         popup_name (str): Nombre del popup a buscar.
         button_name (str): Nombre del botón a clickar dentro del popup.
         timeout (int, optional): Tiempo máximo de espera en segundos. Por defecto 5.
@@ -79,18 +111,17 @@ def click_boton(ventana_chrome, popup_name: str, button_name: str, timeout: int 
     Returns:
         bool: True si se encontró y se hizo clic en el botón; False en caso contrario.
 
-    Ejemplos de uso:
-        click_boton(ventana_chrome, "¿Abrir AutoFirma?", "Abrir AutoFirma", timeout=5)
-        click_boton(ventana_chrome, "Seleccionar un certificado", "Aceptar", timeout=5)
+    Ejemplo de uso:
+        click_boton_en_popup(ventana_chrome, "¿Abrir AutoFirma?", "Abrir AutoFirma", timeout=5)
     """
     logging.info(f"Buscando botón '{button_name}' en popup '{popup_name}'...")
-    popup_cert = ventana_chrome.Control(
+    popup = ventana_principal.Control(
         searchDepth=20,
         ControlType=auto.ControlType.CustomControl,
         Name=popup_name
     )
-    if popup_cert.Exists(maxSearchSeconds=timeout):
-        boton = popup_cert.ButtonControl(Name=button_name)
+    if popup.Exists(maxSearchSeconds=timeout):
+        boton = popup.ButtonControl(Name=button_name)
         if boton.Exists(maxSearchSeconds=timeout):
             logging.info(f"¡Botón '{button_name}' encontrado! Haciendo click...")
             boton.Click()
@@ -102,13 +133,13 @@ def click_boton(ventana_chrome, popup_name: str, button_name: str, timeout: int 
         logging.error(f"No se encontró el popup '{popup_name}' para buscar el botón '{button_name}'.")
         return False
 
-def esperar_popup_y_ejecutar(ventana_chrome, popup_name: str, accion: callable = None, timeout: int = 10):
+def esperar_popup_y_ejecutar(ventana_principal, popup_name: str, accion: callable = None, timeout: int = 10):
     """
     Espera a que se muestre un popup (definido por su Name) en la ventana y,
     si se encuentra, ejecuta la función 'accion' pasándole el control del popup.
 
     Args:
-        ventana_chrome: Control de la ventana obtenido por uiautomation.
+        ventana_principal: Control de la ventana obtenido por uiautomation.
         popup_name (str): Nombre del popup a esperar.
         accion (callable, optional): Función que se ejecutará pasando el popup como argumento.
                                      Si no se proporciona, se devuelve el control del popup.
@@ -119,35 +150,33 @@ def esperar_popup_y_ejecutar(ventana_chrome, popup_name: str, accion: callable =
         Si no se define 'accion': devuelve el control del popup.
         En caso de error (no se encuentra el popup) se devuelve None.
 
-    Ejemplos de uso:
-        # Caso 1: Hacer click en "Abrir AutoFirma" en un popup llamado "¿Abrir AutoFirma?"
-        esperar_popup_y_ejecutar(ventana_chrome, "¿Abrir AutoFirma?",
-            accion=lambda popup: click_boton(ventana_chrome, "¿Abrir AutoFirma?", "Abrir AutoFirma", timeout=5),
-            timeout=10)
-        
-        # Caso 2: Obtener la lista de controles DataItemControl en el popup "Seleccionar un certificado"
-        certificados = esperar_popup_y_ejecutar(ventana_chrome, "Seleccionar un certificado",
-            accion=lambda popup: obtener_data_item_control(popup), timeout=10)
+    Ejemplo de uso:
+        # Hacer click en "Abrir AutoFirma" en un popup llamado "¿Abrir AutoFirma?"
+        esperar_popup_y_ejecutar(
+            ventana_chrome,
+            "¿Abrir AutoFirma?",
+            accion=lambda popup: click_boton_en_popup(ventana_chrome, "¿Abrir AutoFirma?", "Abrir AutoFirma", timeout=5),
+            timeout=10
+        )
     """
     logging.info(f"Esperando popup '{popup_name}'...")
-    popup_cert = None
+    popup = None
     start_time = time.time()
-    while not popup_cert and (time.time() - start_time) < timeout:
-        popup_cert = ventana_chrome.Control(
+    while not popup and (time.time() - start_time) < timeout:
+        popup = ventana_principal.Control(
             searchDepth=20,
             ControlType=auto.ControlType.CustomControl,
             Name=popup_name
         )
-        if not popup_cert.Exists():
-            popup_cert = None
+        if not popup.Exists():
+            popup = None
             time.sleep(0.5)
-    if popup_cert:
+    if popup:
         logging.info(f"Popup '{popup_name}' detectado.")
-        # Se pasa el control del popup a la acción o se devuelve el popup
         if accion is not None:
-            return accion(popup_cert)
+            return accion(popup)
         else:
-            return popup_cert
+            return popup
     else:
         logging.error(f"No se encontró el popup '{popup_name}'.")
         return None
@@ -166,10 +195,10 @@ def obtener_data_item_control(control):
         data_items = obtener_data_item_control(control_principal)
     """
     data_items = []
-    for child in control.GetChildren():
-        if child.ControlTypeName == 'DataItemControl':
-            data_items.append(child)
+    for hijo in control.GetChildren():
+        logging.debug(f"{hijo.ControlTypeName}")
+        if hijo.ControlTypeName == 'DataItemControl':
+            data_items.append(hijo)
         else:
-            # Si no es DataItemControl, se realiza una búsqueda recursiva en sus hijos
-            data_items.extend(obtener_data_item_control(child))
+            data_items.extend(obtener_data_item_control(hijo))
     return data_items

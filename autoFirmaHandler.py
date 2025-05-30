@@ -1,17 +1,17 @@
 """
 Módulo: autoFirmaHandler.py
 
-Este módulo contiene funciones para la automatización del proceso de firma mediante AutoFirma,
-utilizando la librería uiautomation junto con funciones auxiliares de uiautomationHandler para:
- 
-  - Imprimir los títulos de las ventanas abiertas.
-  - Obtener recursivamente todos los controles de tipo RadioButton.
-  - Seleccionar un certificado que contenga una subcadena específica y confirmar la selección 
-    haciendo clic en el botón "Aceptar" del popup "Diálogo de seguridad de almacén Windows".
-  - Administrar el flujo del proceso de firma en AutoFirma, incluyendo la interacción con el popup
-    "¿Abrir AutoFirma?".
+Este módulo proporciona funciones para la automatización del proceso de firma digital mediante AutoFirma,
+utilizando la librería uiautomation y funciones auxiliares de uiautomationHandler.
 
-Ejemplos de uso:
+Funcionalidades principales:
+  - Imprimir los títulos de las ventanas abiertas en el sistema.
+  - Recorrer y mostrar la jerarquía de controles de una ventana para depuración.
+  - Obtener recursivamente todos los controles de tipo RadioButton.
+  - Seleccionar un certificado específico y confirmar la selección en el diálogo de seguridad de Windows.
+  - Orquestar el flujo completo de interacción con AutoFirma, incluyendo la gestión de popups y selección de certificados.
+
+Ejemplo de uso:
 
     # Para seleccionar un certificado y confirmar en AutoFirma:
     if seleccionar_certificado(ventana_cert, "FRANCISCO JAVIER"):
@@ -28,6 +28,39 @@ import time
 import loggerConfig
 import uiautomation
 import uiautomationHandler
+
+def mostrar_arbol_elementos(control, nivel=0):
+    """
+    Recorre recursivamente un control y sus hijos, mostrando TypeName y Name en logging.warning(),
+    con indentación para visualizar la jerarquía.
+
+    Args:
+        control: Control raíz de uiautomation.
+        nivel (int): Nivel de profundidad para indentación visual.
+    """
+    if not control:
+        logging.warning("Control no encontrado o es None.")
+        return
+    indent = "  " * nivel
+    logging.warning(f"{indent}{control.ControlTypeName} | Name: {control.Name}")
+    for hijo in control.GetChildren():
+        mostrar_arbol_elementos(hijo, nivel + 1)
+
+def listar_elementos(control, nivel=0):
+    """
+    Recorre recursivamente un control y sus hijos, mostrando TypeName y Name en logging.warning().
+
+    Args:
+        control: Control raíz de uiautomation.
+        nivel (int): Nivel de profundidad para indentación visual.
+    """
+    if not control:
+        logging.warning("Control no encontrado o es None.")
+        return
+    indent = "  " * nivel
+    logging.warning(f"{indent}{control.ControlTypeName}: {control.Name}")
+    for hijo in control.GetChildren():
+        listar_elementos(hijo, nivel + 1)
 
 def print_open_windows_titles():
     """
@@ -71,7 +104,7 @@ def seleccionar_certificado(ventana_cert, nombre_certificado="FRANCISCO JAVIER")
     Args:
         ventana_cert: Control de la ventana de certificados.
         nombre_certificado (str, optional): Subcadena que debe contener el nombre del certificado. 
-                                              Por defecto "FRANCISCO JAVIER".
+                                            Por defecto "FRANCISCO JAVIER".
 
     Returns:
         bool: True si se pudo seleccionar el certificado y se hizo clic en "Aceptar"; False en caso contrario.
@@ -85,35 +118,19 @@ def seleccionar_certificado(ventana_cert, nombre_certificado="FRANCISCO JAVIER")
     if not ventana_cert:
         logging.error("No se encontró la ventana de certificado.")
         return False
-
+    
     # Obtener todos los controles tipo DataItemControl (se asume que representan los certificados)
-    certificados = uiautomationHandler.obtener_data_item_control(ventana_cert)
-    if not certificados:
+    boton = uiautomationHandler.obtener_data_item_control(ventana_cert)
+    if not boton:
         logging.error("No se encontraron controles de certificado.")
         return False
 
-    # Buscar en la lista el certificado que contenga el nombre deseado
-    certificado_encontrado = None
-    for cert in certificados:
-        time.sleep(0.5)  # Breve pausa para mayor estabilidad
-        if nombre_certificado in cert.Name:
-            certificado_encontrado = cert
-            break
-
-    if certificado_encontrado:
-        logging.info(f"Certificado encontrado: {certificado_encontrado.Name}. Seleccionándolo...")
-        certificado_encontrado.Click()
-    else:
-        logging.error(f"No se encontró un certificado que contenga '{nombre_certificado}'.")
-        return False
-
-    # Una vez seleccionado, se hace clic en el botón "Aceptar" en el popup 
-    # "Diálogo de seguridad de almacén Windows" mediante uiautomationHandler.click_boton.
-    if uiautomationHandler.click_boton(ventana_cert, "Diálogo de seguridad de almacén Windows", "Aceptar", timeout=5):
-        logging.info("Se hizo clic en el botón 'Aceptar'.")
+    if boton:
+        logging.info(f"Certificado encontrado: {boton.Name}. Seleccionándolo...")
+        boton.Click()
         return True
     else:
-        logging.error("No se pudo hacer clic en el botón 'Aceptar'.")
+        logging.error(f"No se encontró un certificado que contenga '{boton}'.")
         return False
 
 def firmar_en_autofirma():
@@ -142,10 +159,6 @@ def firmar_en_autofirma():
     # Imprimir títulos de las ventanas abiertas para depuración
     print_open_windows_titles()
     # Esperar el popup "Diálogo de seguridad del almacén Windows" y ejecutar la selección de certificado
-    ventana_chrome = uiautomationHandler.obtener_ventana_chrome()
-    uiautomationHandler.esperar_popup_y_ejecutar(
-        ventana_chrome,
-        "Diálogo de seguridad del almacén Windows",
-        accion=lambda popup: seleccionar_certificado(ventana_chrome),
-        timeout=10
-    )
+    ventana_openjdk = uiautomationHandler.obtener_ventana_openjdk()
+    time.sleep(20)
+    mostrar_arbol_elementos(ventana_openjdk)
