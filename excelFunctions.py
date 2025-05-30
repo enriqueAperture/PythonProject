@@ -760,19 +760,23 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
     """
     try:
         fecha_inicio = obtener_fecha_modificada(fila["fecha_inicio"])
-        fecha_fin = obtener_fecha_modificada(fila["fecha_fin"])
 
         webFunctions.completar_campo_y_enter_por_name(driver, "pFecha", fecha_inicio)
-        webFunctions.completar_campo_y_enter_por_name(driver, "pFecha_caducidad", fecha_fin)
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_origen", fila["nombre_recogida"])
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_origen", fila["nima_cod_peligrosos"])
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. por defecto
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA") # METALLS DEL CAMP ( SERRA D'ESPADA ) por defecto
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "157/G02/CV") # depende si los residuos son o no peligrosos
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_operador_traslados", "ECO TITAN S.L.") # ECO TITAN S.L. por defecto
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. siempre
+        time.sleep(0.5)
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SE") # METALLS DEL CAMP ( SERRA D'ESPADA ) siempre
+        time.sleep(0.5)
+        # Depende si los residuos son o no peligrosos
+        if residuo.get("tipo") == "peligroso":  
+            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "157/G02/CV")
+        elif residuo.get("tipo") == "no_peligroso":
+            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "374/G04/CV")
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_operador_traslados", "ECO TITAN S.L.") # Siempre ECO TITAN
+        time.sleep(0.5)
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_operador_traslados", "87/A01/CV") # 87/A01/CV (hacer)
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_residuo", residuo[1])
-        webFunctions.escribir_en_elemento_por_name(driver, "pKilos_totales", residuo[2])
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_residuo", residuo.get("nombre", ""))
+        webFunctions.escribir_en_elemento_por_name(driver, "pKilos_totales", residuo.get("cantidad", ""))
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
     except Exception as error:
         logging.error(f"Error al añadir contrato de tratamiento para la empresa {fila.get('nombre_recogida', '')}: {error}")
@@ -780,36 +784,41 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
 def añadir_contratos_tratamientos(driver, fila):
     """
     Añade los contratos de tratamiento para la empresa usando los datos de la fila 'empresa'
-    y todos los residuos y cantidades del archivo residuos.txt.
-    Para cada residuo, llama a añadir_contrato_tratamiento con una lista de tres elementos:
-    [peligrosidad, nombre del residuo, cantidad]
+    y todos los residuos y cantidades del archivo residuos.txt, junto con su centro y tratamiento asociado.
+    Para cada residuo, llama a añadir_contrato_tratamiento y al resto de funciones, pasando el residuo como json.
     """
-    ruta_residuos = os.path.join("data", "residuos.txt")
-    residuos = []
-    with open(ruta_residuos, encoding="utf-8") as f:
-        lineas = [line.strip() for line in f if line.strip()]
-    i = 0
-    while i < len(lineas):
-        peligrosidad = lineas[i]
-        nombre = lineas[i+1]
-        cantidad = lineas[i+2]
-        residuos.append([peligrosidad, nombre, cantidad])
-        i += 3
-
-    for residuo in residuos:
+    residuos_centros = residuos_y_tratamientos_json()
+    for item in residuos_centros:
+        residuo = item["residuo"]  # residuo es un dict/json
+        centro = item["centro"]
         webFunctions.clickar_boton_por_clase(driver, "miBoton.nuevo")
         añadir_contrato_tratamiento(driver, fila, residuo)
-        añadir_tratamientos(driver, fila, residuos)
+        time.sleep(1)
+        try:
+            añadir_tratamientos(driver, fila, residuo)
+        except Exception as error:
+            logging.error(f"Error al añadir tratamientos para el residuo {residuo.get('nombre', '')} de la empresa {fila.get('nombre_recogida', '')}: {error}")
         añadir_facturacion(driver, fila, residuo)
 
+def crear_notificacion_tratamiento(driver):
+  """
+  Crea una notificación en la plataforma Nubelus.
+  
+  Esta función hace clic en el botón 'Crear notificación' y acepta el pop-up correspondiente.
+  """
+  webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Notificación")
+  time.sleep(1)
+  webFunctions.clickar_boton_por_clase(driver, "miBoton.generar_xml")
+  time.sleep(1)
 
-def añadir_tratamiento(driver, fila, residuo, indice=1):
+def añadir_tratamiento(driver, fila, residuo, centro, indice=1):
     """
-    Añade un tratamiento individual usando los datos de la fila, el residuo y el índice de tratamiento.
+    Añade un tratamiento individual usando los datos de la fila, el residuo, su centro y el índice de tratamiento.
     Args:
         driver (webdriver.Chrome): Instancia del navegador.
         fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
-        residuo (list): Lista con [peligrosidad, nombre del residuo, cantidad].
+        residuo (dict): Diccionario con los datos del residuo.
+        centro (dict): Diccionario con los datos del centro asociado (debe tener 'centro' y 'tratamiento').
         indice (int): Índice del tratamiento (1, 2 o 3).
     """
     try:
@@ -817,13 +826,9 @@ def añadir_tratamiento(driver, fila, residuo, indice=1):
         oldDriver = driver
         popup = webFunctions.encontrar_pop_up_por_id(driver, f"div_editar_tratamiento_posterior_{indice}")
 
-        nombre_ema = str(fila.get("nombre_recogida", ""))
-        webFunctions.completar_campo_y_enter_por_name(popup, f"pDenominacion_ema_{indice}", nombre_ema)
-        webFunctions.completar_campo_y_enter_por_name(popup, f"pDenominacion_ema_centro_{indice}", nombre_ema)
-        # Usar el nombre del residuo en vez de nima_cod_peligrosos
-        webFunctions.completar_campo_y_enter_por_name(
-            popup, f"pTratamiento_posterior_{indice}_denominacion_autorizacion", str(residuo[1])
-        )
+        webFunctions.completar_campo_y_enter_por_name(popup, f"pDenominacion_ema_{indice}", centro.get("centro", ""))
+        webFunctions.completar_campo_y_enter_por_name(popup, f"pTratamiento_posterior_{indice}_codigo_ler_2", centro.get("tratamiento", ""))
+
         time.sleep(1)
 
         webFunctions.clickar_boton_por_clase(popup, "icon-ok")
@@ -832,45 +837,29 @@ def añadir_tratamiento(driver, fila, residuo, indice=1):
     except Exception as error:
         logging.error(f"Error al añadir tratamiento {indice} para la empresa {fila.get('nombre_recogida', '')}: {error}")
 
-def añadir_tratamientos(driver, fila, residuo):
+def añadir_tratamientos(driver, fila, residuo, centro):
     """
-    Añade los tratamientos indicados usando los datos de la fila y el residuo.
+    Añade los tratamientos indicados usando los datos de la fila, el residuo y el centro.
     Si el residuo es 'BATERIAS DE PLOMO*', añade tratamientos 1 y 2.
     Para el resto, solo añade el tratamiento 1.
     """
+    webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Tratamientos")
+    time.sleep(1)
     try:
-        nombre_residuo = residuo[1].strip().upper()
+        # residuo puede ser dict o lista, adaptamos para ambos casos
+        if isinstance(residuo, dict):
+            nombre_residuo = residuo.get("nombre", "").strip().upper()
+        else:
+            nombre_residuo = str(residuo[1]).strip().upper()
+
         if nombre_residuo == "BATERIAS DE PLOMO*":
             indices = [1, 2]
         else:
             indices = [1]
         for i in indices:
-            añadir_tratamiento(driver, fila, residuo, indice=i)
-
-        # Rellenar pop-up de origen
-        oldDriver = driver
-        popup = webFunctions.encontrar_pop_up_por_clase(driver, "miBoton.editar.editar_origen.sinTexto.dcha")
-
-        webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_origen", str(fila.get("nombre_recogida", "")))
-        webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_origen_centro", "METALLS DEL CAMP ( SERRA D'ESPADA )")
-        webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_autorizacion_origen_tratamiento", "157/G02/CV")
-
-        webFunctions.clickar_boton_por_clase(popup, "icon-ok")
-        driver = oldDriver
-
-        # Rellenar pop-up de destino
-        oldDriver = driver
-        popup = webFunctions.encontrar_pop_up_por_clase(driver, "miBoton.editar.editar_destino.sinTexto.dcha")
-
-        webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_destino", str(fila.get("nombre_recogida", "")))
-        webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D'ESPADA )")
-        webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_autorizacion_destino_tratamiento", "157/G02/CV")
-
-        webFunctions.clickar_boton_por_clase(popup, "icon-ok")
-        driver = oldDriver
+            añadir_tratamiento(driver, fila, residuo, centro, indice=i)
     except Exception as error:
-        logging.error(f"Error al añadir tratamientos para el residuo {residuo[1]} de la empresa {fila.get('nombre_recogida', '')}: {error}")
-
+        logging.error(f"Error al añadir tratamientos para el residuo {nombre_residuo} de la empresa {fila.get('nombre_recogida', '')}: {error}")
 def editar_notificacion_contratos_tratamiento(driver, fila):
 
     oldDriver = driver
@@ -948,23 +937,22 @@ def residuos_y_tratamientos_json():
 
     return resultado
 
-def distinguir_residuo(driver, residuo):
-    residuo_nombre = residuo[1].upper()
-    if residuo_nombre in ["ENVASES PLASTICOS CONTAMINADOS*", "FILTROS DE AIRE"]:
-        webFunctions.seleccionar_elemento_por_name(driver, "pCantidad_modo", "Valor fijo")
-        webFunctions.completar_campo_y_enter_por_name(driver, "pCantidad_valor", "1")
-
 def añadir_facturacion(driver, fila, residuo):
     webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Facturación")
-    time.sleep(1)
+    time.sleep(2)
 
     oldDriver = driver
-    driver = webFunctions.encontrar_pop_up_por_clase(driver, "icon-plus")
-    webFunctions.seleccionar_elemento_por_nombre(driver, "pTipo_accion", "Venta")
-    webFunctions.completar_campo_y_enter_por_name(driver, "pNombre_cliente", str(fila.get("nombre_recogida", "")))
-    webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_cliente_centro", "METALLS DEL CAMP ( SERRA D'ESPADA )")
-    webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_producto", residuo[1])
-    distinguir_residuo(residuo)
-    webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
+    webFunctions.clickar_boton_por_on_click(driver, "nuevo_FACTURACION()")
+    popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_FACTURACION")
 
+    webFunctions.completar_campo_y_enter_por_name(popup, "pNombre_cliente", fila.get("nombre_recogida", ""))
+    webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_producto", residuo.get("nombre", ""))
+    residuo_nombre = residuo.get("nombre", "").upper()
+
+    if residuo_nombre in ["ENVASES PLASTICOS CONTAMINADOS*", "FILTROS DE AIRE"]:
+        webFunctions.seleccionar_elemento_por_name(popup, "pCantidad_modo", "Valor fijo")
+        webFunctions.completar_campo_y_enter_por_name(popup, "pCantidad_valor", "1")
+    time.sleep(2)
+    webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
     driver = oldDriver
+    time.sleep(2)

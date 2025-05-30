@@ -992,3 +992,41 @@ def pulsar_enter_en_elemento_por_class(driver: webdriver.Chrome, class_name: str
     Pulsa Enter en un elemento identificado por su clase CSS.
     """
     pulsar_enter_en_elemento(driver, By.CLASS_NAME, class_name, timeout)
+
+def encontrar_pop_up_por_on_click(driver: webdriver.Chrome, onclick_value: str, timeout: int = DEFAULT_TIMEOUT) -> webdriver.remote.webelement.WebElement:
+    """
+    Busca y retorna un elemento pop-up localizado por el atributo 'onclick' con el valor especificado,
+    sin hacer click en el elemento.
+
+    Args:
+        driver (webdriver.Chrome): Instancia activa del navegador.
+        onclick_value (str): Valor exacto del atributo onclick a buscar.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        WebElement: Elemento WebElement correspondiente al pop-up encontrado.
+
+    Ejemplo:
+        popup = encontrar_pop_up_por_on_click(driver, "editar_empresa_autorizada_origen()")
+    """
+    xpath = f"//*[@onclick=\"{onclick_value}\"]"
+    popup = driver.find_element(By.XPATH, xpath)
+    popup.click()
+    return popup
+
+def clickar_boton_por_on_click(driver: webdriver.Chrome, onclick_value: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Hace clic en un botón o elemento que tenga el atributo onclick con el valor especificado.
+
+    Args:
+        driver (webdriver.Chrome): Instancia activa del navegador.
+        onclick_value (str): Valor exacto del atributo onclick a buscar (por ejemplo, 'nuevo_FACTURACION()').
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Ejemplo:
+        clickar_boton_por_on_click(driver, "nuevo_FACTURACION()")
+    """
+    xpath = f"//*[@onclick=\"{onclick_value}\"]"
+    esperar_elemento(driver, By.XPATH, xpath, timeout)
+    elemento = driver.find_element(By.XPATH, xpath)
+    elemento.click()

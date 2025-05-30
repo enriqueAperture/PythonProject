@@ -29,9 +29,7 @@ def main():
     #excelFunctions.añadir_acuerdo_representacion(driver, empresa_prueba)
     #excelFunctions.añadir_contrato_tratamiento(driver, empresa_prueba)
     #time.sleep(1)
-    #webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Tratamientos")
     excelFunctions.añadir_contratos_tratamientos(driver, empresa_prueba)
-    #excelFunctions.añadir_tratamientos(driver, empresa_prueba)
     time.sleep(5)
 
 

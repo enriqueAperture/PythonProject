@@ -73,17 +73,6 @@ def entrar_en_centro_medioambiental(driver):
   time.sleep(1)
   webFunctions.clickar_boton_por_clase(driver, "registro")
 
-def crear_notificacion_tratamiento(driver):
-  """
-  Crea una notificación en la plataforma Nubelus.
-  
-  Esta función hace clic en el botón 'Crear notificación' y acepta el pop-up correspondiente.
-  """
-  webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Notificación")
-  time.sleep(1)
-  webFunctions.clickar_boton_por_clase(driver, "miBoton.notificar.adcr")
-  time.sleep(1)
-
 def comprobar_integridad(driver):
   """
   Comprueba la integridad de los datos en la plataforma Nubelus.
