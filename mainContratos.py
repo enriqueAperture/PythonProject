@@ -27,8 +27,6 @@ def main():
     empresa_prueba = excel_empresa.iloc[17]  # Toma la fila del Excel como empresa de prueba METALLS DEL CAMP, S.L.
 
     #excelFunctions.añadir_acuerdo_representacion(driver, empresa_prueba)
-    #excelFunctions.añadir_contrato_tratamiento(driver, empresa_prueba)
-    #time.sleep(1)
     excelFunctions.añadir_contratos_tratamientos(driver, empresa_prueba)
     time.sleep(5)
 

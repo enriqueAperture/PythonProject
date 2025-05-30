@@ -765,7 +765,7 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_origen", fila["nombre_recogida"])
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. siempre
         time.sleep(0.5)
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SE") # METALLS DEL CAMP ( SERRA D'ESPADA ) siempre
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D") # METALLS DEL CAMP ( SERRA D'ESPADA ) siempre
         time.sleep(0.5)
         # Depende si los residuos son o no peligrosos
         if residuo.get("tipo") == "peligroso":  
@@ -791,13 +791,12 @@ def añadir_contratos_tratamientos(driver, fila):
     for item in residuos_centros:
         residuo = item["residuo"]  # residuo es un dict/json
         centro = item["centro"]
+        residuo["centro"] = centro  # Añadir el centro al residuo
         webFunctions.clickar_boton_por_clase(driver, "miBoton.nuevo")
         añadir_contrato_tratamiento(driver, fila, residuo)
         time.sleep(1)
-        try:
-            añadir_tratamientos(driver, fila, residuo)
-        except Exception as error:
-            logging.error(f"Error al añadir tratamientos para el residuo {residuo.get('nombre', '')} de la empresa {fila.get('nombre_recogida', '')}: {error}")
+        añadir_tratamientos(driver, fila, residuo)
+        time.sleep(1)
         añadir_facturacion(driver, fila, residuo)
 
 def crear_notificacion_tratamiento(driver):
@@ -811,22 +810,46 @@ def crear_notificacion_tratamiento(driver):
   webFunctions.clickar_boton_por_clase(driver, "miBoton.generar_xml")
   time.sleep(1)
 
-def añadir_tratamiento(driver, fila, residuo, centro, indice=1):
+def añadir_tratamientos(driver, fila, residuo):
     """
-    Añade un tratamiento individual usando los datos de la fila, el residuo, su centro y el índice de tratamiento.
+    Añade los tratamientos indicados usando los datos de la fila y el residuo (json).
+    Si el residuo es 'BATERIAS DE PLOMO*', añade tratamientos 1 y 2.
+    Para el resto, solo añade el tratamiento 1.
+    Usa el centro asociado que viene en residuo["centro"].
+    """
+    webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Tratamientos")
+    time.sleep(1)
+    try:
+        nombre_residuo = residuo.get("nombre", "").strip().upper()
+        centro = residuo.get("centro", {})
+        if nombre_residuo == "BATERIAS DE PLOMO*":
+            indices = [1, 2]
+        else:
+            indices = [1]
+        for i in indices:
+            añadir_tratamiento(driver, fila, residuo, indice=i)
+    except Exception as error:
+        logging.error(f"Error al añadir tratamientos para el residuo {nombre_residuo} de la empresa {fila.get('nombre_recogida', '')}: {error}")
+
+def añadir_tratamiento(driver, fila, residuo, indice=1):
+    """
+    Añade un tratamiento individual usando los datos de la fila, el residuo (json) y el índice de tratamiento.
+    Usa el centro y tratamiento asociados que vienen en el json de residuo["centro"].
+
     Args:
         driver (webdriver.Chrome): Instancia del navegador.
         fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
-        residuo (dict): Diccionario con los datos del residuo.
-        centro (dict): Diccionario con los datos del centro asociado (debe tener 'centro' y 'tratamiento').
+        residuo (dict): Diccionario con los datos del residuo y su centro asociado (debe tener clave 'centro').
         indice (int): Índice del tratamiento (1, 2 o 3).
     """
     try:
+        centro = residuo.get("centro", {})
         webFunctions.clickar_boton_por_clase(driver, f"miBoton.editar.editar_{indice}.sinTexto.dcha")
         oldDriver = driver
         popup = webFunctions.encontrar_pop_up_por_id(driver, f"div_editar_tratamiento_posterior_{indice}")
-
+        time.sleep(0.5)
         webFunctions.completar_campo_y_enter_por_name(popup, f"pDenominacion_ema_{indice}", centro.get("centro", ""))
+        time.sleep(0.5)
         webFunctions.completar_campo_y_enter_por_name(popup, f"pTratamiento_posterior_{indice}_codigo_ler_2", centro.get("tratamiento", ""))
 
         time.sleep(1)
@@ -837,29 +860,6 @@ def añadir_tratamiento(driver, fila, residuo, centro, indice=1):
     except Exception as error:
         logging.error(f"Error al añadir tratamiento {indice} para la empresa {fila.get('nombre_recogida', '')}: {error}")
 
-def añadir_tratamientos(driver, fila, residuo, centro):
-    """
-    Añade los tratamientos indicados usando los datos de la fila, el residuo y el centro.
-    Si el residuo es 'BATERIAS DE PLOMO*', añade tratamientos 1 y 2.
-    Para el resto, solo añade el tratamiento 1.
-    """
-    webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Tratamientos")
-    time.sleep(1)
-    try:
-        # residuo puede ser dict o lista, adaptamos para ambos casos
-        if isinstance(residuo, dict):
-            nombre_residuo = residuo.get("nombre", "").strip().upper()
-        else:
-            nombre_residuo = str(residuo[1]).strip().upper()
-
-        if nombre_residuo == "BATERIAS DE PLOMO*":
-            indices = [1, 2]
-        else:
-            indices = [1]
-        for i in indices:
-            añadir_tratamiento(driver, fila, residuo, centro, indice=i)
-    except Exception as error:
-        logging.error(f"Error al añadir tratamientos para el residuo {nombre_residuo} de la empresa {fila.get('nombre_recogida', '')}: {error}")
 def editar_notificacion_contratos_tratamiento(driver, fila):
 
     oldDriver = driver
@@ -947,7 +947,7 @@ def añadir_facturacion(driver, fila, residuo):
 
     webFunctions.completar_campo_y_enter_por_name(popup, "pNombre_cliente", fila.get("nombre_recogida", ""))
     webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_producto", residuo.get("nombre", ""))
-    residuo_nombre = residuo.get("nombre", "").upper()
+    residuo_nombre = residuo.get("nombre")
 
     if residuo_nombre in ["ENVASES PLASTICOS CONTAMINADOS*", "FILTROS DE AIRE"]:
         webFunctions.seleccionar_elemento_por_name(popup, "pCantidad_modo", "Valor fijo")
