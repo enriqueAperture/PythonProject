@@ -35,6 +35,7 @@ def extraer_datos_valencia(driver):
     nombre_centro = webFunctions.obtener_texto_elemento_por_id(driver, "NOMBRECENTRO1-0-0")
     nima = webFunctions.obtener_texto_elemento_por_id(driver, "FCENCODCENTRO1-0-0")
     direccion_centro = webFunctions.obtener_texto_elemento_por_id(driver, "FDIRECCION1-0-0")
+    #codigo_postal_centro = webFunctions.obtener_texto_elemento_por_id(driver, "Text2-0-0")
     localidad_provincia_centro = webFunctions.obtener_texto_elemento_por_id(driver, "Text7-0-0")
     codigo_ine_municipio = webFunctions.obtener_texto_elemento_por_id(driver, "FCODINE1-0-0")
     codigo_ine_provincia = codigo_ine_municipio[:2]
@@ -75,6 +76,7 @@ def extraer_datos_valencia(driver):
             "nombre_centro": nombre_centro,
             "nima": nima,
             "direccion_centro": direccion_centro,
+            #"cp_centro": codigo_postal_centro,
             "provincia_centro": localidad_provincia_centro,
             "codigo_ine_provincia": codigo_ine_provincia,
             "codigo_ine_municipio": codigo_ine_municipio,

@@ -11,6 +11,7 @@ WEB_NUBELUS_ENTIDAD = "https://portal.nubelus.es/?clave=waster2_gestionEntidades
 WEB_NUBELUS_ACUERDOS = "https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion&pAccion=NUEVO"
 WEB_NUBELUS_CONTRATOS = "https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento&pAccion=NUEVO"
 
+WEB_NUBELUS_TRATAMIENTOS = "https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento"
 
 def main():
     # Configurar el driver de Selenium
@@ -20,12 +21,21 @@ def main():
     funcionesNubelus.iniciar_sesion(driver)
     time.sleep(5)  # Tiempo para aceptar el pop up de google
 
-    webFunctions.abrir_web(driver, WEB_NUBELUS_CONTRATOS)
+    webFunctions.abrir_web(driver, WEB_NUBELUS_TRATAMIENTOS)
 
     excel_empresa = pandas.read_excel(excelFunctions.EXCEL_RECOGIDAS)
     empresa_prueba = excel_empresa.iloc[17]  # Toma la fila del Excel como empresa de prueba METALLS DEL CAMP, S.L.
 
-    
+    #excelFunctions.añadir_acuerdo_representacion(driver, empresa_prueba)
+    #excelFunctions.añadir_contrato_tratamiento(driver, empresa_prueba)
+    #time.sleep(1)
+    #webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Tratamientos")
+    excelFunctions.añadir_contratos_tratamientos(driver, empresa_prueba)
+    #excelFunctions.añadir_tratamientos(driver, empresa_prueba)
+    time.sleep(5)
+
+
+
 
 if __name__ == "__main__":
     main()

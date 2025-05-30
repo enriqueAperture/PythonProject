@@ -72,3 +72,30 @@ def entrar_en_centro_medioambiental(driver):
   webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Centros")
   time.sleep(1)
   webFunctions.clickar_boton_por_clase(driver, "registro")
+
+def crear_notificacion_tratamiento(driver):
+  """
+  Crea una notificación en la plataforma Nubelus.
+  
+  Esta función hace clic en el botón 'Crear notificación' y acepta el pop-up correspondiente.
+  """
+  webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Notificación")
+  time.sleep(1)
+  webFunctions.clickar_boton_por_clase(driver, "miBoton.notificar.adcr")
+  time.sleep(1)
+
+def comprobar_integridad(driver):
+  """
+  Comprueba la integridad de los datos en la plataforma Nubelus.
+  
+  Esta función hace clic en el botón 'Comprobar integridad' y acepta el pop-up correspondiente.
+  """
+  webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Integridad")
+  time.sleep(1)
+  try:
+    mensaje = webFunctions.obtener_texto_elemento_por_xpath(driver, "//*[contains(text(), 'El contrato es E3L válido')]")
+    if "El contrato es E3L válido" in mensaje:
+      return  # Todo correcto, sigue normalmente
+  except Exception:
+    pass  # No se encontró el texto
+  time.sleep(30)
