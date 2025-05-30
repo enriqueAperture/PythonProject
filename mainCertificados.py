@@ -22,24 +22,21 @@ Ejemplo de uso:
     Al finalizar, se cierra el navegador.
 """
 
-import shutil
 import time
-from selenium.webdriver.common.by import By
-
 import autoFirmaHandler
 import certHandler
+from config import BASE_DIR
 import loggerConfig
 import logging
 import webConfiguration
 import webFunctions
-import uiautomation
 
 # URL y configuraciones
 WEB_MITECO = ("https://sede.miteco.gob.es/portal/site/seMITECO/login?"
               "urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2"
               "JmlkZW50aWZpY2Fkb3JfcGFzbz1QUkVJTklDSU8mc3ViX29yZ2Fubz0xMSZwcmV2aW9fbG9naW49MQ==")
 NOMBRE_CERT = "FRANCISCO"
-ARCHIVO_XML = "C:/Users/USUARIO/Documents/GitHub/PythonProject/data/NT30460004811420250009974.xml"
+ARCHIVO_XML = os.path.join(BASE_DIR, "data", "NT30460004811420250009974.xml")
 
 # Configurar el driver de Selenium
 driver = webConfiguration.configure()

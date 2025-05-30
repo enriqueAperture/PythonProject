@@ -2,14 +2,17 @@ import logging
 import os
 from datetime import datetime
 
+from config import BASE_DIR
+
 # Crear carpeta de logs si no existe
-os.makedirs("logs", exist_ok=True)
+logs_dir = os.path.join(BASE_DIR, "logs")
+os.makedirs(logs_dir, exist_ok=True)
 
 logger = logging.getLogger()
 if not logger.handlers:
     logger.setLevel(logging.INFO)
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    log_file = os.path.join("logs", f"selenium_log_{timestamp}.log")
+    log_file = os.path.join(logs_dir, f"selenium_log_{timestamp}.log")
     
     # Crear handler para archivo
     file_handler = logging.FileHandler(log_file, encoding="utf-8")

@@ -142,6 +142,7 @@ def firmar_en_autofirma():
     # Imprimir títulos de las ventanas abiertas para depuración
     print_open_windows_titles()
     # Esperar el popup "Diálogo de seguridad del almacén Windows" y ejecutar la selección de certificado
+    ventana_chrome = uiautomationHandler.obtener_ventana_chrome()
     uiautomationHandler.esperar_popup_y_ejecutar(
         ventana_chrome,
         "Diálogo de seguridad del almacén Windows",
