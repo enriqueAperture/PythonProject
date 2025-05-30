@@ -57,15 +57,12 @@ certHandler.seleccionar_certificado_chrome(NOMBRE_CERT)
 webFunctions.esperar_elemento_por_id(driver, "wrapper", timeout=15)
 
 # Rellenar los datos del formulario
-webFunctions.escribir_en_elemento_por_id(driver, "id_direccion", "Direccion")
+webFunctions.escribir_en_elemento_por_id(driver, "id_direccion", "C/ PINTOR BENLLIURE, 6-C")
 webFunctions.seleccionar_elemento_por_id(driver, "id_pais", "España")
 webFunctions.seleccionar_elemento_por_id(driver, "id_provincia", "València/Valencia")
-webFunctions.seleccionar_elemento_por_id(driver, "id_municipio", "Aldaia")
-webFunctions.escribir_en_elemento_por_id(driver, "id_codigo_postal", "46003")
-webFunctions.escribir_en_elemento_por_id(driver, "id_telefono", "912345678")
-webFunctions.escribir_en_elemento_por_id(driver, "id_telefono_movil", "612345678")
-webFunctions.escribir_en_elemento_por_id(driver, "id_correo_electronico", "correo@electronico.com")
-webFunctions.escribir_en_elemento_por_id(driver, "id_fax", "012345678")
+webFunctions.seleccionar_elemento_por_id(driver, "id_municipio", "Alzira")
+webFunctions.escribir_en_elemento_por_id(driver, "id_codigo_postal", "46111")
+webFunctions.escribir_en_elemento_por_id(driver, "id_correo_electronico", "medioambiente@ecotitan.es")
 
 # Enviar el formulario
 webFunctions.clickar_boton_por_id(driver, "btnForm")

@@ -114,7 +114,7 @@ def seleccionar_certificado_chrome(nombre_certificado='RICARDO ESCUDE'):
     # Intentar seleccionar el certificado y confirmar haciendo clic en el botón "Aceptar"
     if lista_certificados:
         _seleccionar_certificado(lista_certificados, nombre_certificado)
-        uiautomationHandler.click_boton(ventana_chrome, "Seleccionar un certificado", "Aceptar")
+        uiautomationHandler.click_boton_en_popup(ventana_chrome, "Seleccionar un certificado", "Aceptar")
         return True
     else:
         return False

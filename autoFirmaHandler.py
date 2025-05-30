@@ -29,6 +29,20 @@ import loggerConfig
 import uiautomation
 import uiautomationHandler
 
+def enviar_enter_a_ventana(ventana_control):
+    """
+    Envía la tecla Enter al WindowControl especificado.
+
+    Args:
+        ventana_control: Control de ventana (WindowControl) de uiautomation.
+    """
+    if ventana_control and ventana_control.Exists():
+        ventana_control.SetActive()
+        ventana_control.Click()
+        uiautomation.SendKeys('{Enter}')
+    else:
+        logging.error("No se encontró la ventana o no está activa para enviar Enter.")
+
 def mostrar_arbol_elementos(control, nivel=0):
     """
     Recorre recursivamente un control y sus hijos, mostrando TypeName y Name en logging.warning(),
@@ -152,13 +166,14 @@ def firmar_en_autofirma():
     uiautomationHandler.esperar_popup_y_ejecutar(
         ventana_chrome,
         "¿Abrir AutoFirma?",
-        accion=lambda popup: uiautomationHandler.click_boton(ventana_chrome, "¿Abrir AutoFirma?", "Abrir AutoFirma"),
+        accion=lambda popup: uiautomationHandler.click_boton_en_popup(ventana_chrome, "¿Abrir AutoFirma?", "Abrir AutoFirma"),
         timeout=10
     )
     time.sleep(5)
     # Imprimir títulos de las ventanas abiertas para depuración
     print_open_windows_titles()
     # Esperar el popup "Diálogo de seguridad del almacén Windows" y ejecutar la selección de certificado
-    ventana_openjdk = uiautomationHandler.obtener_ventana_openjdk()
+    ventana_certificados = uiautomationHandler.obtener_ventana_certificados()
     time.sleep(20)
-    mostrar_arbol_elementos(ventana_openjdk)
+    mostrar_arbol_elementos(ventana_certificados)
+    enviar_enter_a_ventana(ventana_certificados)
