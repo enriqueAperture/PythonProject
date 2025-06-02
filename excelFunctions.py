@@ -35,6 +35,7 @@ import pandas as pd
 import json
 import logging
 import re
+from config import BASE_DIR
 import webFunctions
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -43,9 +44,7 @@ from selenium.webdriver.common.keys import Keys
 # Directorio donde se espera la descarga de archivos Excel
 DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
 # Ruta del archivo Excel recogidas
-#EXCEL_RECOGIDAS = r"C:\Users\Metalls1\Downloads\excel_recogidas.xls"
-
-EXCEL_RECOGIDAS = "data/excel_recogidas.xls"
+EXCEL_RECOGIDAS = os.path.join(BASE_DIR, "data", "excel_recogidas.xls")
 data_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
 
 dic_formas_juridicas = {

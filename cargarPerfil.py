@@ -5,15 +5,15 @@ import logging
 import subprocess
 import re
 import glob
-from cryptography import x509
-from cryptography.hazmat.primitives.serialization import pkcs12
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+
+from config import BASE_DIR
 
 logging.basicConfig(level=logging.INFO)
 
 # 🗂️ Ruta donde están los certificados PFX
-PFX_FOLDER = r"C:\Ruta\A\Certificados"
+PFX_FOLDER = os.path.join(BASE_DIR, "certificados")
 CERT_PASSWORD = "tu_contraseña"
 NOMBRE_CERTIFICADO = "RICARDO ESCUDE"  # parte del nombre del sujeto (CN)
 
