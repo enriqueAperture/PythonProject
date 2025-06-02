@@ -1,0 +1,66 @@
+[
+    {
+        "nombre_representante": "ECO TITAN S.L.",
+        "nif_representante": "19848505B",
+        "nombre_productor": "JOSE",
+        "nif_productor": "01187639B",
+        "nombre_residuo": "FILTROS DE ACEITE*",
+        "regage": "REGAGE25e00047586010"
+    },
+    {
+        "nombre_representante": "ECO TITAN S.L.",
+        "nif_representante": "19848505B",
+        "nombre_productor": "JOSE",
+        "nif_productor": "01187639B",
+        "nombre_residuo": "FILTROS DE ACEITE*",
+        "regage": "REGAGE25e00047597697"
+    },
+    {
+        "nombre_representante": "ECO TITAN S.L.",
+        "nif_representante": "19848505B",
+        "nombre_productor": "JOSE",
+        "nif_productor": "01187639B",
+        "nombre_residuo": "LÍQUIDO DE FRENOS*",
+        "regage": "REGAGE25e00047621075"
+    },
+    {
+        "nombre_representante": "ECO TITAN S.L.",
+        "nif_representante": "19848505B",
+        "nombre_productor": "",
+        "nif_productor": "01187639B",
+        "nombre_residuo": "ANTICONGELANTE*",
+        "regage": "REGAGE25e00047634150"
+    },
+    {
+        "nombre_representante": "ECO TITAN S.L.",
+        "nif_representante": "19848505B",
+        "nombre_productor": "JOSE FERNANDO PEREZ",
+        "nif_productor": "01187639B",
+        "nombre_residuo": "ENVASES METALICOS CONTAMINADOS*",
+        "regage": "REGAGE25e00047703172"
+    },
+    {
+        "nombre_representante": "ECO TITAN S.L.",
+        "nif_representante": "19848505B",
+        "nombre_productor": "JOSE FERNANDO PEREZ",
+        "nif_productor": "01187639B",
+        "nombre_residuo": "ENVASES PLASTICOS CONTAMINADOS*",
+        "regage": "REGAGE25e00047707208"
+    },
+    {
+        "nombre_representante": "ECO TITAN S.L.",
+        "nif_representante": "19848505B",
+        "nombre_productor": "JOSE FERNANDO PEREZ",
+        "nif_productor": "01187639B",
+        "nombre_residuo": "TRAPOS Y ABSORBENTES CONTAMINADOS*",
+        "regage": "REGAGE25e00047719401"
+    },
+    {
+        "nombre_representante": "ECO TITAN S.L.",
+        "nif_representante": "19848505B",
+        "nombre_productor": "JOSE FERNANDO PEREZ",
+        "nif_productor": "01187639B",
+        "nombre_residuo": "ABSORBENTES (SEPIOLITA)*",
+        "regage": "REGAGE25e00047723508"
+    }
+]

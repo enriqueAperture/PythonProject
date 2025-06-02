@@ -841,6 +841,32 @@ def obtener_texto_elemento_por_id(driver: webdriver.Chrome, elemento_id: str, ti
     finally:
         driver.switch_to.default_content()
 
+def obtener_texto_por_parte(driver: webdriver.Chrome, parte_texto: str, timeout: int = DEFAULT_TIMEOUT) -> Optional[str]:
+    """
+    Busca un elemento que contenga una parte del texto especificado y devuelve la cadena de texto completa de ese elemento.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        parte_texto (str): Fragmento del texto a buscar dentro de los elementos.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        str or None: El texto completo del elemento encontrado, o None si no se encuentra.
+
+    Ejemplo:
+        texto = buscar_texto_por_parte(driver, "Ejemplo de texto")
+    """
+    try:
+        xpath = f"//*[contains(text(), '{parte_texto}')]"
+        esperar_elemento(driver, By.XPATH, xpath, timeout)
+        elemento = driver.find_element(By.XPATH, xpath)
+        texto_completo = elemento.text
+        logging.info(f"Texto encontrado que contiene '{parte_texto}': {texto_completo}")
+        return texto_completo
+    except Exception as e:
+        logging.error(f"No se encontró ningún elemento que contenga '{parte_texto}': {e}")
+        return None
+
 def leer_texto_por_campo(driver, campo, timeout=5):
     """
     Busca un <td> que contenga un <b> con el texto 'campo' y devuelve el texto que sigue a ese campo.

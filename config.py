@@ -8,7 +8,7 @@ else:
     # Ejecución como script (.py)
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-def load_strings(filepath):
+def cargar_variables(filepath):
     strings = {}
     with open(filepath, 'r', encoding='utf-8') as f:
         for line in f:
