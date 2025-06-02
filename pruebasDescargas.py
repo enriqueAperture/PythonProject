@@ -11,6 +11,8 @@ from selenium.webdriver.chrome.options import Options
 import webConfiguration
 import webFunctions
 
+WEB = "https://ash-speed.hetzner.com/"
+
 
 def ensure_download_path(path: str) -> str:
     """Crea el directorio si no existe y devuelve la ruta absoluta."""
@@ -95,8 +97,8 @@ def main():
     # Paso 3: Esperar nueva descarga
     # Se carga el snapshot de la carpeta "temp"
     old_state = load_snapshot(snapshot_filename)
-    webFunctions.abrir_web(driver, "https://ash-speed.hetzner.com/")
-    webFunctions.clickar_boton_por_link(driver, "1GB.bin")
+    webFunctions.abrir_web(driver, WEB)
+    webFunctions.clickar_boton_por_link(driver, "100MB.bin")
     success = wait_for_new_download(download_path, old_state)
 
     # Cierre

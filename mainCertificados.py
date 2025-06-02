@@ -26,7 +26,7 @@ import os
 import time
 import autoFirmaHandler
 import certHandler
-from config import BASE_DIR
+from config import BASE_DIR, load_strings
 import loggerConfig
 import logging
 import webConfiguration
@@ -36,8 +36,9 @@ import webFunctions
 WEB_MITECO = ("https://sede.miteco.gob.es/portal/site/seMITECO/login?"
               "urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2"
               "JmlkZW50aWZpY2Fkb3JfcGFzbz1QUkVJTklDSU8mc3ViX29yZ2Fubz0xMSZwcmV2aW9fbG9naW49MQ==")
-NOMBRE_CERT = "FRANCISCO"
 ARCHIVO_XML = os.path.join(BASE_DIR, "data", "NT30460004811420250009974.xml")
+INFO_CERTS = os.path.join(BASE_DIR, "data", "informacionCerts.txt")
+info = load_strings(INFO_CERTS)
 
 # Configurar el driver de Selenium
 driver = webConfiguration.configure()
@@ -51,18 +52,18 @@ webFunctions.clickar_boton_por_value(driver, "acceder")
 webFunctions.clickar_boton_por_texto(driver, "Acceso DNIe / Certificado electrónico")
 
 # Selección del certificado (utiliza certHandler para buscar y confirmar el certificado deseado)
-certHandler.seleccionar_certificado_chrome(NOMBRE_CERT)
+certHandler.seleccionar_certificado_chrome(info.get("NOMBRE_CERT"))
 
 # Espera a que la página principal del formulario cargue
 webFunctions.esperar_elemento_por_id(driver, "wrapper", timeout=15)
 
 # Rellenar los datos del formulario
-webFunctions.escribir_en_elemento_por_id(driver, "id_direccion", "C/ PINTOR BENLLIURE, 6-C")
-webFunctions.seleccionar_elemento_por_id(driver, "id_pais", "España")
-webFunctions.seleccionar_elemento_por_id(driver, "id_provincia", "València/Valencia")
-webFunctions.seleccionar_elemento_por_id(driver, "id_municipio", "Alzira")
-webFunctions.escribir_en_elemento_por_id(driver, "id_codigo_postal", "46111")
-webFunctions.escribir_en_elemento_por_id(driver, "id_correo_electronico", "medioambiente@ecotitan.es")
+webFunctions.escribir_en_elemento_por_id(driver, "id_direccion", info.get("DIRECCION"))
+webFunctions.seleccionar_elemento_por_id(driver, "id_pais", info.get("PAIS"))
+webFunctions.seleccionar_elemento_por_id(driver, "id_provincia", info.get("PROVINCIA"))
+webFunctions.seleccionar_elemento_por_id(driver, "id_municipio", info.get("MUNICIPIO"))
+webFunctions.escribir_en_elemento_por_id(driver, "id_codigo_postal", info.get("CODIGO_POSTAL"))
+webFunctions.escribir_en_elemento_por_id(driver, "id_correo_electronico", info.get("CORREO_ELECTRONICO"))
 
 # Enviar el formulario
 webFunctions.clickar_boton_por_id(driver, "btnForm")
