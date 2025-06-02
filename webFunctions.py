@@ -77,6 +77,8 @@ def esperar_elemento(driver: webdriver.Chrome, by: By, value: str, timeout: int 
         logging.error(f"Timeout al esperar el elemento con '{by}' = '{value}'")
         raise
 
+def esperar_elemento_por_id(driver: webdriver.Chrome, element_id: str, timeout: int = DEFAULT_TIMEOUT) -> WebDriverWait:
+
 def encontrar_elemento(driver, by, value, timeout=DEFAULT_TIMEOUT):
     """
     Espera y devuelve un elemento localizado en toda la página.

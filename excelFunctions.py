@@ -762,19 +762,31 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         fecha_inicio = obtener_fecha_modificada(fila["fecha_inicio"])
 
         webFunctions.completar_campo_y_enter_por_name(driver, "pFecha", fecha_inicio)
+        time.sleep(0.5)
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_origen", fila["nombre_recogida"])
+        time.sleep(0.5)
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. siempre
         time.sleep(0.5)
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D") # METALLS DEL CAMP ( SERRA D'ESPADA ) siempre
-        time.sleep(0.5)
-        # Depende si los residuos son o no peligrosos
-        if residuo.get("tipo") == "peligroso":  
-            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "157/G02/CV")
-        elif residuo.get("tipo") == "no_peligroso":
-            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "374/G04/CV")
+        if fila.get("provincia_recogida") == "Valencia":
+            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D") # METALLS DEL CAMP ( SERRA D'ESPADA ) si es de valencia
+            # Depende si el residuo es o no peligroso
+            if residuo.get("tipo") == "peligroso":  
+                webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "157/G02/CV")
+            elif residuo.get("tipo") == "no_peligroso":
+                webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "374/G04/CV")
+
+        else:
+            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP, S.L.U. (EL ROMERAL)") # Si es de otra parte
+            time.sleep(1)
+            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "G04") # Siempre suponer que es peligroso
+        time.sleep(0.1)
+
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_operador_traslados", "ECO TITAN S.L.") # Siempre ECO TITAN
-        time.sleep(0.5)
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_operador_traslados", "87/A01/CV") # 87/A01/CV (hacer)
+        time.sleep(2)
+        if residuo.get("tipo") == "peligroso":
+            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_operador_traslados", "87/A01/CV") # Si es peligroso
+        elif residuo.get("tipo") == "no_peligroso":
+            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_operador_traslados", "305/A02/CV")
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_residuo", residuo.get("nombre", ""))
         webFunctions.escribir_en_elemento_por_name(driver, "pKilos_totales", residuo.get("cantidad", ""))
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
@@ -797,6 +809,8 @@ def añadir_contratos_tratamientos(driver, fila):
         time.sleep(1)
         añadir_tratamientos(driver, fila, residuo)
         time.sleep(1)
+        crear_notificacion_tratamiento(driver)
+        time.sleep(1)
         añadir_facturacion(driver, fila, residuo)
 
 def crear_notificacion_tratamiento(driver):
@@ -807,7 +821,7 @@ def crear_notificacion_tratamiento(driver):
   """
   webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Notificación")
   time.sleep(1)
-  webFunctions.clickar_boton_por_clase(driver, "miBoton.generar_xml")
+  webFunctions.clickar_boton_por_clase(driver, "icon-magic")
   time.sleep(1)
 
 def añadir_tratamientos(driver, fila, residuo):
