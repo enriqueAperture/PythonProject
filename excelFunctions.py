@@ -47,6 +47,9 @@ DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
 EXCEL_RECOGIDAS = os.path.join(BASE_DIR, "data", "excel_recogidas.xls")
 data_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
 
+WEB_NUBELUS_CENTROS = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros&pAccion=NUEVO"
+WEB_NUBELUS_EMPRESAS = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros"
+
 dic_formas_juridicas = {
     "A": "Sociedades anónimas",
     "B": "Sociedades de responsabilidad limitada",
@@ -138,6 +141,20 @@ def _nif_no_encontrados_en_nubelus(cif_nubelus, datos_recogidas: pd.DataFrame) -
     return pd.DataFrame(filas_no_encontradas)
 
 
+def limpiar_campo(valor):
+    # Si es NaN o None, devolver vacío
+    if pd.isnull(valor):
+        return ""
+    # Convertir a string y quitar espacios al principio y final
+    valor_str = str(valor).strip()
+    # Normalizar acentos y ñ
+    valor_str = unicodedata.normalize('NFKD', valor_str).encode('ascii', 'ignore').decode('ascii')
+    # Si es un número de teléfono, quitar decimales y ceros a la izquierda
+    if valor_str.replace('.', '', 1).isdigit():
+        valor_str = valor_str.split('.')[0]  # Quitar decimales
+        valor_str = valor_str.lstrip('0')    # Quitar ceros a la izquierda
+    return valor_str
+
 def sacarEmpresasNoAñadidas(driver: webdriver.Chrome) -> pd.DataFrame:
     """
     Procesa los archivos Excel para identificar las empresas que aún no han sido añadidas en Nubelus.
@@ -193,6 +210,28 @@ def forma_juridica(cif: str) -> str:
     letra = cif.strip().upper()[0]
     return dic_formas_juridicas.get(letra, "Otros")
 
+def validar_nif(nif):
+    """
+    Valida el formato del NIF español (empresa o persona física).
+    Ejemplos válidos: B86681426, 12345678B
+    Lanza ValueError si el formato es incorrecto.
+    """
+    if not isinstance(nif, str):
+        raise ValueError("El NIF debe ser una cadena de texto.")
+    nif = nif.strip().upper()
+    if not re.fullmatch(r"([A-Z]\d{8}|\d{8}[A-Z])", nif):
+        raise ValueError(f"Formato de NIF incorrecto: {nif}")
+    return True
+
+def forma_fiscal_por_cif(cif: str) -> str:
+    if cif and cif[-1].isalpha():
+        forma_fiscal = "Física"
+    elif cif and cif[0].isalpha():
+        forma_fiscal = "Jurídica"
+    
+    return forma_fiscal
+        
+
 def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
     """
     Añade una empresa individualmente en la aplicación web mediante Selenium.
@@ -201,6 +240,7 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         driver (webdriver.Chrome): Instancia del navegador.
         empresa (Union[pandas.Series, dict]): Datos de la empresa a añadir. Puede ser una Serie de pandas o un diccionario.
     """
+    webFunctions.abrir_web(driver, WEB_NUBELUS_EMPRESAS)
     try:
         logging.info(f"Añadiendo empresa: {fila['nombre_recogida']}")
         
@@ -208,35 +248,31 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         webFunctions.esperar_elemento(driver, By.ID, "pDenominacion", timeout=10)
         webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"]+ " prueba")
         
-        # 2. Completar el campo NIF
+        # 2. Validar y completar el campo NIF
+        validar_nif(fila["cif_recogida"])  # Validar el formato del NIF
         webFunctions.escribir_en_elemento_por_name(driver, "pNif", fila["cif_recogida"])
         
         # 3. Completar el campo de forma fiscal: Física si el último carácter del CIF es letra, Jurídica si el primero es letra
-        # cif = str(fila["cif_recogida"]).strip()
-        # if cif and cif[-1].isalpha():
-        #     forma_fiscal = "Física"
-        # elif cif and cif[0].isalpha():
-        #     forma_fiscal = "Jurídica"
-        # webFunctions.seleccionar_elemento_por_nombre(driver, "pForma_fiscal", forma_fiscal)
+        cif = str(fila["cif_recogida"]).strip()
+        forma_fiscal = forma_fiscal_por_cif(cif)
+        webFunctions.seleccionar_elemento_por_nombre(driver, "pForma_fiscal", forma_fiscal)
         
-        # # 4. Completar el campo de Forma Jurídica y Nombre Fiscal si es Jurídica
-        # if forma_fiscal == "Jurídica":
-        #     webFunctions.clickar_elemento(driver,By.CLASS_NAME ,"pDenominacion_forma_juridica")
-        #     forma_juridica = forma_juridica(fila["cif_recogida"])
-        #     webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_forma_juridica" ,forma_juridica)
-        #     webFunctions.escribir_en_elemento_por_name(driver, "pNombre_fiscal", fila["nombre_recogida"] + " prueba")
+        # 4. Completar el campo de Forma Jurídica y Nombre Fiscal si es Jurídica
+        if forma_fiscal == "Jurídica":
+            #webFunctions.clickar_elemento(driver,By.CLASS_NAME ,"pDenominacion_forma_juridica")
+            forma_juridica = forma_juridica(fila["cif_recogida"])
+            time.sleep(1)  # Espera para que el campo se active
+            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_forma_juridica" ,forma_juridica)
+            time.sleep(0.5)
+            webFunctions.escribir_en_elemento_por_name(driver, "pNombre_fiscal", fila["nombre_recogida"] + " prueba")
 
-        # # 4. Completar el campo Nombre y Apellidos si es una persona física
-        # elif forma_fiscal == "Física":
-        #     nombre_split = str(fila["nombre_recogida"]).split()
-        #     webFunctions.escribir_en_elemento_por_name(driver, "pNombre", nombre_split[0] if nombre_split else "")
-        #     webFunctions.escribir_en_elemento_por_name(driver, "pApellidos", " ".join(nombre_split[1:]) if len(nombre_split) > 1 else "")
+        # 4. Completar el campo Nombre y Apellidos si es una persona física
+        elif forma_fiscal == "Física":
+            webFunctions.escribir_en_elemento_por_name(driver, "pNombre", str(fila["nombre_recogida"]))
 
         # Para la prueba
         webFunctions.seleccionar_elemento_por_nombre(driver, "pForma_fiscal", "Física")
-        nombre_split = str(fila["nombre_recogida"]).split()
-        webFunctions.escribir_en_elemento_por_name(driver, "pNombre", nombre_split[0] if nombre_split else "")
-        webFunctions.escribir_en_elemento_por_name(driver, "pApellidos", " ".join(nombre_split[1:]) if len(nombre_split) > 1 else "")
+        webFunctions.escribir_en_elemento_por_name(driver, "pNombre", str(fila["nombre_recogida"]))
 
 
         # 5. Completar el campo Domicilio
@@ -347,6 +383,34 @@ def sacar_centros_no_encontrados_en_nubelus(centros_nubelus: pd.DataFrame, datos
 
     return pd.DataFrame(filas_no_encontradas)
 
+def sacar_empresas_no_encontradas_en_nubelus(centros_nubelus: pd.DataFrame, datos_recogidas: pd.DataFrame) -> pd.DataFrame:
+    """
+    Filtra los centros de datos_recogidas cuyos nombres no se encuentran (según comparación flexible)
+    en la columna 'Denominación' de centros_nubelus.
+
+    Args:
+        centros_nubelus (pandas.DataFrame): DataFrame con columnas 'Denominación' y 'EMA'.
+        datos_recogidas (pandas.DataFrame): DataFrame con columna 'nombre_recogida' y otros datos.
+
+    Returns:
+        pandas.DataFrame: DataFrame con los centros no encontrados, añadiendo la columna 'EMA' si corresponde.
+    """
+    filas_no_encontradas = []
+    denominacion_to_ema = dict(zip(centros_nubelus['Denominación'], centros_nubelus['EMA']))
+
+    for idx, fila in datos_recogidas.iterrows():
+        encontrado = False
+        for denominacion in centros_nubelus['Denominación']:
+            if is_denominacion_correcto(fila['nombre_recogida'], denominacion):
+                encontrado = True
+                break
+        if not encontrado:
+            fila_dict = fila.to_dict()
+            # Intenta asociar la EMA si el nombre coincide exactamente, si no, deja vacío
+            fila_dict['EMA'] = denominacion_to_ema.get(fila['nombre_recogida'], '')
+            filas_no_encontradas.append(fila_dict)
+
+    return pd.DataFrame(filas_no_encontradas)
 
 def sacar_centros_no_añadidos(driver: webdriver.Chrome) -> pd.DataFrame:
     """
@@ -386,7 +450,8 @@ def sacar_centros_no_añadidos(driver: webdriver.Chrome) -> pd.DataFrame:
     return datos
 
 
-def añadirCentro(driver: webdriver.Chrome, fila) -> None:
+
+def añadir_Centro(driver: webdriver.Chrome, fila) -> None:
     """
     Añade un centro individualmente en la aplicación web mediante Selenium.
 
@@ -394,15 +459,14 @@ def añadirCentro(driver: webdriver.Chrome, fila) -> None:
         driver (webdriver.Chrome): Instancia del navegador.
         centro (Union[pandas.Series, dict]): Datos del centro a añadir. Puede ser una Serie de pandas o un diccionario.
     """
+    webFunctions.abrir_web(driver, WEB_NUBELUS_CENTROS)
     try:
         logging.info(f"Añadiendo centro: {fila['nombre_recogida']}")
 
         # 1. Completar el campo Denominación
         webFunctions.esperar_elemento(driver, By.ID, "pDenominacion", timeout=10)
-        webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"])
-
-        # 2. (Opcional) Completar el campo EMA si fuese necesario
-        webFunctions.escribir_en_elemento_por_name(driver, "pNif", fila.get("EMA", ""))
+        webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"] + " prueba")
+        webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_ema", fila["nombre_recogida"] + " prueba")
 
         # 3. Completar el campo Domicilio
         webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
@@ -432,13 +496,13 @@ def añadirCentro(driver: webdriver.Chrome, fila) -> None:
     except Exception as error:
         logging.error(f"Error al añadir el centro {fila.get('nombre_recogida', '')}: {error}")
 
-def añadirCentros(driver: webdriver.Chrome, centros_añadir: pd.DataFrame) -> None:
+def añadir_Centros(driver: webdriver.Chrome, centros_añadir: pd.DataFrame) -> None:
     """
     Itera sobre el DataFrame 'centros_añadir' y añade cada centro usando añadirCentro.
     """
     for idx, centro in centros_añadir.iterrows():
         webFunctions.clickar_boton_por_clase(driver, "miBoton.nuevo")
-        añadirCentro(driver, centro)
+        añadir_Centro(driver, centro)
 
 
 def extraer_datos_centro_castilla_desde_excel(ruta_excel):
@@ -727,6 +791,7 @@ def añadir_usuario(driver, fila):
         driver (webdriver.Chrome): Instancia del navegador.
         fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
     """
+    webFunctions.abrir_web(driver, "https://portal.nubelus.es/?clave=nubelus_gestionUsuarios&pAccion=NUEVO")
     try:
         
         # Completar campos del formulario
@@ -735,13 +800,15 @@ def añadir_usuario(driver, fila):
         webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
         webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", fila["telf_recogida"])
         webFunctions.seleccionar_elemento_por_name(driver, "pRol", "EMA")
-        webFunctions.completar_campo_y_confirmar_seleccion_por_name(
-            driver, "pDenominacion_ema", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item"
-        )
-        webFunctions.completar_campo_y_confirmar_seleccion_por_name(
-            driver, "pDenominacion_entidad_ma_centro", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item"
-        )
-        
+        try:
+            webFunctions.completar_campo_y_confirmar_seleccion_por_name(
+                driver, "pDenominacion_ema", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item"
+            )
+            webFunctions.completar_campo_y_confirmar_seleccion_por_name(
+                driver, "pDenominacion_entidad_ma_centro", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item"
+            )
+        except Exception as e:
+            logging.error(f"Error al completar campos de denominación EMA o centro: {e}")
         # Confirmar la adición
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
         
@@ -777,7 +844,7 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         else:
             webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP, S.L.U. (EL ROMERAL)") # Si es de otra parte
             time.sleep(1)
-            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "G04") # Siempre suponer que es peligroso
+            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "4570002919") # Siempre suponer que es peligroso
         time.sleep(0.1)
 
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_operador_traslados", "ECO TITAN S.L.") # Siempre ECO TITAN
@@ -813,15 +880,19 @@ def añadir_contratos_tratamientos(driver, fila):
         añadir_facturacion(driver, fila, residuo)
 
 def crear_notificacion_tratamiento(driver):
-  """
-  Crea una notificación en la plataforma Nubelus.
-  
-  Esta función hace clic en el botón 'Crear notificación' y acepta el pop-up correspondiente.
-  """
-  webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Notificación")
-  time.sleep(1)
-  webFunctions.clickar_boton_por_clase(driver, "icon-magic")
-  time.sleep(1)
+    """
+    Crea una notificación en la plataforma Nubelus.
+    
+    Esta función hace clic en el botón 'Crear notificación' y acepta el pop-up correspondiente.
+    """
+    webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Notificación")
+    time.sleep(1)
+    try:
+        webFunctions.clickar_boton_por_clase(driver, "icon-magic")
+    except Exception as error:
+        logging.error(f"Error al crear notificación de tratamiento: {error}")
+        return
+
 
 def añadir_tratamientos(driver, fila, residuo):
     """
@@ -889,6 +960,7 @@ def residuos_y_tratamientos_json():
     """
     Lee los archivos residuos.txt y centro_tratamientos.txt y devuelve una lista de diccionarios
     con la información de cada residuo y su centro/tratamiento asociado.
+    Si el residuo NO tiene asterisco en el nombre, no tendrá centro ni tratamiento asociado (devolverá {}).
     Si en centro_tratamientos.txt hay un guión '-', se asocia ese centro/tratamiento al residuo correspondiente.
     """
 
@@ -940,13 +1012,29 @@ def residuos_y_tratamientos_json():
             })
             i += 2
 
-    # Asociar residuos y centros uno a uno
+    # Asociar residuos y centros uno a uno, pero solo si el residuo tiene asterisco en el nombre
     resultado = []
-    for residuo, centro in zip(residuos, centros):
-        resultado.append({
-            "residuo": residuo,
-            "centro": centro
-        })
+    centro_idx = 0
+    for residuo in residuos:
+        if "*" in residuo["nombre"]:
+            # Asociar centro y tratamiento solo si hay asterisco
+            if centro_idx < len(centros):
+                resultado.append({
+                    "residuo": residuo,
+                    "centro": centros[centro_idx]
+                })
+                centro_idx += 1
+            else:
+                resultado.append({
+                    "residuo": residuo,
+                    "centro": {}
+                })
+        else:
+            # Sin centro ni tratamiento
+            resultado.append({
+                "residuo": residuo,
+                "centro": {}
+            })
 
     return resultado
 
