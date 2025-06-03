@@ -166,7 +166,6 @@ def main():
     Función principal que inicia el procesamiento de los archivos XML.
     """
     procesar_archivos_xml()
-    linkRegage.procesar_regages()  # Llamada al script de regage para procesar los enlaces
     logging.info("Todos los procesos han finalizado correctamente.")
     
 if __name__ == "__main__":
