@@ -16,11 +16,13 @@ Ejemplo de uso:
 """
 
 import os
+import json
 import time
 import shutil
 import autoFirmaHandler
 import certHandler
 import extraerXMLE3L
+import linkRegage
 import loggerConfig
 import logging
 import webConfiguration
@@ -28,72 +30,49 @@ import webFunctions
 from config import BASE_DIR, cargar_variables
 
 # URL y configuraciones
-WEB_MITECO = ("https://sede.miteco.gob.es/portal/site/seMITECO/login?"
-              "urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2"
-              "JmlkZW50aWZpY2Fkb3JfcGFzbz1QUkVJTklDSU8mc3ViX29yZ2Fubz0xMSZwcmV2aW9fbG9naW49MQ==")
+WEB_MITECO = (
+    "https://sede.miteco.gob.es/portal/site/seMITECO/login?"
+    "urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2"
+    "JmlkZW50aWZpY2Fkb3JfcGFzbz1QUkVJTklDSU8mc3ViX29yZ2Fubz0xMSZwcmV2aW9fbG9naW49MQ=="
+)
 INPUT_DIR = os.path.join(BASE_DIR, "input")
 TRASH_DIR = os.path.join(BASE_DIR, "trash")
 PDF_FILE = os.path.join(INPUT_DIR, "acuerdo-29-5-2025-JOSE FERNANDO PEREZ .pdf")
 INFO_CERTS = os.path.join(BASE_DIR, "data", "informacionCerts.txt")
 info = cargar_variables(INFO_CERTS)
 
-def get_linkMiteco(regage_val, nif_productor, nif_representante):
-      linkMiteco = (
-         "https://sede.miteco.gob.es/portal/site/seMITECO/area_personal"
-         "?btnDetalleProc=btnDetalleProc"
-         "&pagina=1"
-         f"&idExpediente={regage_val}"
-         "&idProcedimiento=736"
-         "&idSubOrganoResp=11"
-         f"&idDocIdentificativo={nif_productor}"
-         f"&idDocRepresentante={nif_representante}"
-         "&idEstadoSeleccionado=-1"
-         "&idTipoProcSeleccionado=EN+REPRESENTACION+(CERTIFICADO)"
-         f"&regInicial={regage_val}"
-         "&numPagSolSelec=10#no-back-button"
-      )
-      return linkMiteco
-def abrir_link_miteco_con_json(driver, json_result):
-      """
-      Abre el enlace de MITECO generado a partir de los datos de json_result.
-      """
-      regage_val = json_result.get("regage", "")
-      nif_productor = json_result.get("nif_productor", "")
-      nif_representante = json_result.get("nif_representante", "")
-
-      linkMiteco = get_linkMiteco(regage_val, nif_productor, nif_representante)
-
-      logging.info(f"Abrir enlace MITECO: {linkMiteco}")
-      webFunctions.abrir_web(driver, linkMiteco)
-      time.sleep(30)
+def guardar_regage_json(data, output_dir):
+    """
+    Guarda el contenido en un archivo regage.json en output_dir.
+    Si ya existe, crea regage_1.json, regage_2.json, etc. para no sobrescribir.
+    """
+    base_name = "regage"
+    ext = ".json"
+    filename = base_name + ext
+    counter = 1
+    full_path = os.path.join(output_dir, filename)
+    while os.path.exists(full_path):
+        filename = f"{base_name}_{counter}{ext}"
+        full_path = os.path.join(output_dir, filename)
+        counter += 1
+    with open(full_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    return full_path
 
 def mover_a_trash(origen, nombre_productor):
+    """
+    Mueve un archivo a la carpeta /trash/{nombre_productor}.
+    """
     destino_dir = os.path.join(TRASH_DIR, nombre_productor)
     os.makedirs(destino_dir, exist_ok=True)
     destino = os.path.join(destino_dir, os.path.basename(origen))
     shutil.move(origen, destino)
     logging.info(f"Archivo '{os.path.basename(origen)}' movido a '{destino_dir}'.")
 
-def procesar_xml(xml_path):
-    logging.info(f"--- Procesando archivo XML: {os.path.basename(xml_path)} ---")
-    # Configurar el driver de Selenium
-    driver = webConfiguration.configure()
-
-    # Abrir la web de MITECO
-    webFunctions.abrir_web(driver, WEB_MITECO)
-    webFunctions.esperar_elemento_por_id(driver, "breadcrumb")
-
-    # Proceso de autenticación y selección de acceso
-    webFunctions.clickar_boton_por_value(driver, "acceder")
-    webFunctions.clickar_boton_por_texto(driver, "Acceso DNIe / Certificado electrónico")
-
-    # Selección del certificado (utiliza certHandler para buscar y confirmar el certificado deseado)
-    certHandler.seleccionar_certificado_chrome(info.get("NOMBRE_CERT"))
-
-    # Espera a que la página principal del formulario cargue
-    webFunctions.esperar_elemento_por_id(driver, "wrapper", timeout=15)
-
-    # Rellenar los datos del formulario
+def rellenar_formulario(driver):
+    """
+    Rellena el formulario principal de la web de MITECO con los datos del certificado.
+    """
     webFunctions.escribir_en_elemento_por_id(driver, "id_direccion", info.get("DIRECCION"))
     webFunctions.seleccionar_elemento_por_id(driver, "id_pais", info.get("PAIS"))
     webFunctions.seleccionar_elemento_por_id(driver, "id_provincia", info.get("PROVINCIA"))
@@ -101,15 +80,33 @@ def procesar_xml(xml_path):
     webFunctions.escribir_en_elemento_por_id(driver, "id_codigo_postal", info.get("CODIGO_POSTAL"))
     webFunctions.escribir_en_elemento_por_id(driver, "id_correo_electronico", info.get("CORREO_ELECTRONICO"))
 
-    # Enviar el formulario
+def autenticar_y_seleccionar_certificado(driver):
+    """
+    Realiza el proceso de autenticación y selección de certificado en la web de MITECO.
+    """
+    webFunctions.clickar_boton_por_value(driver, "acceder")
+    webFunctions.clickar_boton_por_texto(driver, "Acceso DNIe / Certificado electrónico")
+    certHandler.seleccionar_certificado_chrome(info.get("NOMBRE_CERT"))
+
+def procesar_xml(xml_path):
+    """
+    Procesa un archivo XML: automatiza el flujo web, ejecuta la firma y extrae la información relevante.
+    """
+    logging.info(f"--- Procesando archivo XML: {os.path.basename(xml_path)} ---")
+    driver = webConfiguration.configure()
+    webFunctions.abrir_web(driver, WEB_MITECO)
+    webFunctions.esperar_elemento_por_id(driver, "breadcrumb")
+
+    autenticar_y_seleccionar_certificado(driver)
+    webFunctions.esperar_elemento_por_id(driver, "wrapper", timeout=15)
+    rellenar_formulario(driver)
+
     webFunctions.clickar_boton_por_id(driver, "btnForm")
     time.sleep(5)
 
-    # Seleccionar el método de envío de datos
     webFunctions.clickar_boton_por_id(driver, "tipoEnvioNtA")
     webFunctions.escribir_en_elemento_por_id(driver, "file", xml_path)
 
-    # Continuar con el proceso de autenticación y firma
     webFunctions.clickar_boton_por_clase(driver, "loginBtn")
     webFunctions.clickar_boton_por_texto(driver, "Continuar")
     webFunctions.escribir_en_elemento_por_id(driver, "idFichero", PDF_FILE)
@@ -119,7 +116,6 @@ def procesar_xml(xml_path):
     time.sleep(2)
     webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
 
-    # Ejecutar el proceso de firma mediante AutoFirma
     autoFirmaHandler.firmar_en_autofirma()
 
     regage = webFunctions.obtener_texto_por_parte(driver, "Descargar Justificante:").split()[-1]
@@ -128,17 +124,15 @@ def procesar_xml(xml_path):
     json_result = extraerXMLE3L.extraer_info_xml(xml_path, regage)
     logging.info(f"Información extraída del XML: {json_result}")
 
-   
-
-    # Cerrar el navegador
     driver.quit()
     return json_result
 
-def main():
-    # Obtener todos los archivos XML ordenados
+def procesar_archivos_xml():
+    """
+    Procesa todos los archivos XML de la carpeta /input, gestionando los errores y moviendo los archivos procesados.
+    """
     xml_files = sorted([os.path.join(INPUT_DIR, f) for f in os.listdir(INPUT_DIR) if f.lower().endswith('.xml')])
     ultimo_nombre_productor = None
-    fallidos = []
 
     while xml_files:
         procesados_esta_vuelta = []
@@ -167,5 +161,13 @@ def main():
         mover_a_trash(PDF_FILE, ultimo_nombre_productor)
     logging.info("Proceso completado. Todos los archivos procesados y movidos.")
 
+def main():
+    """
+    Función principal que inicia el procesamiento de los archivos XML.
+    """
+    procesar_archivos_xml()
+    linkRegage.procesar_regages()  # Llamada al script de regage para procesar los enlaces
+    logging.info("Todos los procesos han finalizado correctamente.")
+    
 if __name__ == "__main__":
     main()

@@ -2,6 +2,24 @@ import os
 import json
 import xml.etree.ElementTree as ET
 
+def guardar_regage_json(data, output_dir):
+    """
+    Guarda el contenido en un archivo regage.json en output_dir.
+    Si ya existe, crea regage_1.json, regage_2.json, etc. para no sobrescribir.
+    """
+    base_name = "regage"
+    ext = ".json"
+    filename = base_name + ext
+    counter = 1
+    full_path = os.path.join(output_dir, filename)
+    while os.path.exists(full_path):
+        filename = f"{base_name}_{counter}{ext}"
+        full_path = os.path.join(output_dir, filename)
+        counter += 1
+    with open(full_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    return full_path
+
 def extraer_info_xml(path_xml, regage):
     """
     Extrae información relevante del archivo E3L/XML para construir el objeto JSON solicitado.
