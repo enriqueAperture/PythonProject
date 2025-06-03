@@ -14,16 +14,41 @@ Ejemplo de uso:
     Ejecutar este script abrirá secuencialmente todos los enlaces de regage.json en el navegador y descargará los archivos correspondientes.
 """
 
-import logging
+# Imports básicos de Python
 import os
+import sys
 import json
 import time
+import logging
+from typing import Union, Optional, List, Dict
+import xml.etree.ElementTree as ET
+from datetime import datetime
+
+# Imports de Selenium y WebDriver
+from selenium import webdriver
+from selenium.common import TimeoutException, NoSuchWindowException, NoSuchFrameException, WebDriverException, NoSuchElementException, ElementNotInteractableException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
+# Imports de uiautomation
+import uiautomation as auto
+import uiautomationHandler
+
+# Imports propios del proyecto
 import certHandler
 import downloadFunctions
 import webConfiguration
 import webFunctions
+import loggerConfig
+import extraerXMLE3L
 from config import BASE_DIR, cargar_variables
 
+# Variables de configuración
 INFO_CERTS = os.path.join(BASE_DIR, "data", "informacionCerts.txt")
 info = cargar_variables(INFO_CERTS)
 

@@ -15,21 +15,42 @@ Ejemplo de uso:
     Al finalizar, se cierra el navegador.
 """
 
+# Imports básicos de Python
 import os
 import json
 import time
 import shutil
+import logging
+import sys
+from typing import Union, Optional, List, Dict
+import xml.etree.ElementTree as ET
+from datetime import datetime
+
+# Imports de Selenium y WebDriver
+from selenium import webdriver
+from selenium.common import TimeoutException, NoSuchWindowException, NoSuchFrameException, WebDriverException, NoSuchElementException, ElementNotInteractableException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
+# Imports de uiautomation
+import uiautomation as auto
+import uiautomationHandler
+
+# Imports propios del proyecto
 import autoFirmaHandler
 import certHandler
 import extraerXMLE3L
-import linkRegage
 import loggerConfig
-import logging
 import webConfiguration
 import webFunctions
 from config import BASE_DIR, cargar_variables
 
-# URL y configuraciones
+# Variables de configuración
 WEB_MITECO = (
     "https://sede.miteco.gob.es/portal/site/seMITECO/login?"
     "urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2"
@@ -37,9 +58,9 @@ WEB_MITECO = (
 )
 INPUT_DIR = os.path.join(BASE_DIR, "input")
 TRASH_DIR = os.path.join(BASE_DIR, "trash")
-PDF_FILE = os.path.join(INPUT_DIR, "acuerdo-29-5-2025-JOSE FERNANDO PEREZ .pdf")
 INFO_CERTS = os.path.join(BASE_DIR, "data", "informacionCerts.txt")
 info = cargar_variables(INFO_CERTS)
+PDF_FILE = os.path.join(INPUT_DIR, info.get("NOMBRE_PDF"))
 
 def guardar_regage_json(data, output_dir):
     """
@@ -75,7 +96,7 @@ def rellenar_formulario(driver):
     """
     webFunctions.escribir_en_elemento_por_id(driver, "id_direccion", info.get("DIRECCION"))
     webFunctions.seleccionar_elemento_por_id(driver, "id_pais", info.get("PAIS"))
-    webFunctions.seleccionar_elemento_por_id(driver, "id_provincia", info.get("PROVINCIA"))
+    webFunctions.esseleccionar_elemento_por_id(driver, "id_provincia", info.get("PROVINCIA"))
     webFunctions.seleccionar_elemento_por_id(driver, "id_municipio", info.get("MUNICIPIO"))
     webFunctions.escribir_en_elemento_por_id(driver, "id_codigo_postal", info.get("CODIGO_POSTAL"))
     webFunctions.escribir_en_elemento_por_id(driver, "id_correo_electronico", info.get("CORREO_ELECTRONICO"))
@@ -167,6 +188,6 @@ def main():
     """
     procesar_archivos_xml()
     logging.info("Todos los procesos han finalizado correctamente.")
-    
+
 if __name__ == "__main__":
     main()
