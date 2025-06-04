@@ -112,41 +112,50 @@ def autenticar_y_seleccionar_certificado(driver):
 def procesar_xml(xml_path):
     """
     Procesa un archivo XML: automatiza el flujo web, ejecuta la firma y extrae la información relevante.
+    Si ocurre cualquier error, se informa y se cierra el driver actual.
     """
     logging.info(f"--- Procesando archivo XML: {os.path.basename(xml_path)} ---")
     driver = webConfiguration.configure()
-    webFunctions.abrir_web(driver, WEB_MITECO)
-    webFunctions.esperar_elemento_por_id(driver, "breadcrumb")
+    try:
+        webFunctions.abrir_web(driver, WEB_MITECO)
+        webFunctions.esperar_elemento_por_id(driver, "breadcrumb")
 
-    autenticar_y_seleccionar_certificado(driver)
-    webFunctions.esperar_elemento_por_id(driver, "wrapper", timeout=15)
-    rellenar_formulario(driver)
+        autenticar_y_seleccionar_certificado(driver)
+        webFunctions.esperar_elemento_por_id(driver, "wrapper", timeout=15)
+        rellenar_formulario(driver)
 
-    webFunctions.clickar_boton_por_id(driver, "btnForm")
-    time.sleep(5)
+        webFunctions.clickar_boton_por_id(driver, "btnForm")
+        time.sleep(5)
 
-    webFunctions.clickar_boton_por_id(driver, "tipoEnvioNtA")
-    webFunctions.escribir_en_elemento_por_id(driver, "file", xml_path)
+        webFunctions.clickar_boton_por_id(driver, "tipoEnvioNtA")
+        webFunctions.escribir_en_elemento_por_id(driver, "file", xml_path)
 
-    webFunctions.clickar_boton_por_clase(driver, "loginBtn")
-    webFunctions.clickar_boton_por_texto(driver, "Continuar")
-    webFunctions.escribir_en_elemento_por_id(driver, "idFichero", PDF_FILE)
-    webFunctions.clickar_boton_por_id(driver, "btnForm")
-    webFunctions.clickar_boton_por_id(driver, "bSiguiente")
-    webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
-    time.sleep(2)
-    webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
+        webFunctions.clickar_boton_por_clase(driver, "loginBtn")
+        webFunctions.clickar_boton_por_texto(driver, "Continuar")
+        webFunctions.escribir_en_elemento_por_id(driver, "idFichero", PDF_FILE)
+        webFunctions.clickar_boton_por_id(driver, "btnForm")
+        webFunctions.clickar_boton_por_id(driver, "bSiguiente")
+        webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
+        time.sleep(2)
+        webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
 
-    autoFirmaHandler.firmar_en_autofirma()
+        autoFirmaHandler.firmar_en_autofirma()
 
-    regage = webFunctions.obtener_texto_por_parte(driver, "Descargar Justificante:").split()[-1]
-    logging.info(f"Código de justificante obtenido: {regage}")
+        regage = webFunctions.obtener_texto_por_parte(driver, "Descargar Justificante:").split()[-1]
+        logging.info(f"Código de justificante obtenido: {regage}")
 
-    json_result = extraerXMLE3L.extraer_info_xml(xml_path, regage)
-    logging.info(f"Información extraída del XML: {json_result}")
+        json_result = extraerXMLE3L.extraer_info_xml(xml_path, regage)
+        logging.info(f"Información extraída del XML: {json_result}")
 
-    driver.quit()
-    return json_result
+        return json_result
+
+    except Exception as e:
+        logging.error(f"Error procesando '{os.path.basename(xml_path)}': {e}", exc_info=True)
+    finally:
+        try:
+            driver.quit()
+        except Exception as e_quit:
+            logging.error(f"Error cerrando driver: {e_quit}")
 
 def procesar_archivos_xml():
     """
