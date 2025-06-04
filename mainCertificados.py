@@ -96,7 +96,7 @@ def rellenar_formulario(driver):
     """
     webFunctions.escribir_en_elemento_por_id(driver, "id_direccion", info.get("DIRECCION"))
     webFunctions.seleccionar_elemento_por_id(driver, "id_pais", info.get("PAIS"))
-    webFunctions.esseleccionar_elemento_por_id(driver, "id_provincia", info.get("PROVINCIA"))
+    webFunctions.seleccionar_elemento_por_id(driver, "id_provincia", info.get("PROVINCIA"))
     webFunctions.seleccionar_elemento_por_id(driver, "id_municipio", info.get("MUNICIPIO"))
     webFunctions.escribir_en_elemento_por_id(driver, "id_codigo_postal", info.get("CODIGO_POSTAL"))
     webFunctions.escribir_en_elemento_por_id(driver, "id_correo_electronico", info.get("CORREO_ELECTRONICO"))
