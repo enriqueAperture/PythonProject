@@ -44,11 +44,11 @@ def main():
   excel_empresa = pandas.read_excel(excelFunctions.EXCEL_RECOGIDAS)
 
   empresa_prueba = excel_empresa.iloc[0] # Toma la fila del Excel como empresa de prueba
-  excelFunctions.añadirEmpresa(driver, empresa_prueba)
+  excelFunctions.añadir_empresa(driver, empresa_prueba)
   
   
-  excelFunctions.añadir_Centro(driver, empresa_prueba)
-  #funcionesNubelus.crear_proveedor(driver)
+  excelFunctions.añadir_centro(driver, empresa_prueba)
+  # funcionesNubelus.crear_proveedor(driver)
   # time.sleep(1)
   # funcionesNubelus.crear_cliente(driver)
   # excelFunctions.añadir_usuario(driver, empresa_prueba)

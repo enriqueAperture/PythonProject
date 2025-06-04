@@ -35,11 +35,14 @@ import pandas as pd
 import json
 import logging
 import re
+import unicodedata
 from config import BASE_DIR
 import webFunctions
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+import shutil
+import funcionesNubelus
 
 # Directorio donde se espera la descarga de archivos Excel
 DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -47,8 +50,20 @@ DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
 EXCEL_RECOGIDAS = os.path.join(BASE_DIR, "data", "excel_recogidas.xls")
 data_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
 
-WEB_NUBELUS_CENTROS = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros&pAccion=NUEVO"
-WEB_NUBELUS_EMPRESAS = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros"
+URL_SEGURIDAD = "chrome://settings/security"
+WEB_NUBELUS = "https://portal.nubelus.es"
+WEB_NUBELUS_ENTIDAD = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales"
+WEB_NUBELUS_ENTIDAD_NUEVO = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales&pAccion=NUEVO"
+WEB_NUBELUS_ACUERDOS = "https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion"
+WEB_NUBELUS_ACUERDOS_NUEVO = "https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion&pAccion=NUEVO"
+WEB_NUBELUS_USUARIO = "https://portal.nubelus.es/?clave=nubelus_gestionUsuarios"
+WEB_NUBELUS_USUARIO_NUEVO = "https://portal.nubelus.es/?clave=nubelus_gestionUsuarios&pAccion=NUEVO"
+WEB_NUBELUS_CENTROS = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros"
+WEB_NUBELUS_CENTROS_NUEVO = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros&pAccion=NUEVO"
+WEB_NUBELUS_CONTRATOS = "https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento"
+WEB_NUBELUS_CONTRATOS_NUEVO = "https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento&pAccion=NUEVO"
+WEB_NUBELUS_CLIENTES = "https://portal.nubelus.es/?clave=factucit2_gestionClientes_n1"
+WEB_NUBELUS_CLIENTES_NUEVO = "https://portal.nubelus.es/?clave=factucit2_gestionClientes_n1&pAccion=NUEVO"
 
 dic_formas_juridicas = {
     "A": "Sociedades anónimas",
@@ -155,7 +170,7 @@ def limpiar_campo(valor):
         valor_str = valor_str.lstrip('0')    # Quitar ceros a la izquierda
     return valor_str
 
-def sacarEmpresasNoAñadidas(driver: webdriver.Chrome) -> pd.DataFrame:
+def sacar_empresas_no_añadidas(driver: webdriver.Chrome) -> pd.DataFrame:
     """
     Procesa los archivos Excel para identificar las empresas que aún no han sido añadidas en Nubelus.
     
@@ -195,7 +210,7 @@ def sacarEmpresasNoAñadidas(driver: webdriver.Chrome) -> pd.DataFrame:
 
     datos_no_encontrados = _nif_no_encontrados_en_nubelus(cif_nubelus, datos)
     return datos_no_encontrados
-def forma_juridica(cif: str) -> str:
+def forma_juridica_empresa(cif: str) -> str:
     """
     Determina la forma jurídica de una empresa según su CIF.
 
@@ -232,7 +247,7 @@ def forma_fiscal_por_cif(cif: str) -> str:
     return forma_fiscal
         
 
-def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
+def añadir_empresa(driver: webdriver.Chrome, fila) -> None:
     """
     Añade una empresa individualmente en la aplicación web mediante Selenium.
 
@@ -240,13 +255,13 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         driver (webdriver.Chrome): Instancia del navegador.
         empresa (Union[pandas.Series, dict]): Datos de la empresa a añadir. Puede ser una Serie de pandas o un diccionario.
     """
-    webFunctions.abrir_web(driver, WEB_NUBELUS_EMPRESAS)
+    webFunctions.abrir_web(driver, WEB_NUBELUS_ENTIDAD_NUEVO)
     try:
         logging.info(f"Añadiendo empresa: {fila['nombre_recogida']}")
         
-        # 1. Completar el campo Nombre (con ID "pDenominacion")
+        # 1. Completar el campo Nombre
         webFunctions.esperar_elemento(driver, By.ID, "pDenominacion", timeout=10)
-        webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"]+ " prueba")
+        webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"])
         
         # 2. Validar y completar el campo NIF
         validar_nif(fila["cif_recogida"])  # Validar el formato del NIF
@@ -256,24 +271,22 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         cif = str(fila["cif_recogida"]).strip()
         forma_fiscal = forma_fiscal_por_cif(cif)
         webFunctions.seleccionar_elemento_por_nombre(driver, "pForma_fiscal", forma_fiscal)
+
+        time.sleep(1)
         
         # 4. Completar el campo de Forma Jurídica y Nombre Fiscal si es Jurídica
         if forma_fiscal == "Jurídica":
-            #webFunctions.clickar_elemento(driver,By.CLASS_NAME ,"pDenominacion_forma_juridica")
-            forma_juridica = forma_juridica(fila["cif_recogida"])
+            forma_juridica = forma_juridica_empresa(fila["cif_recogida"])
             time.sleep(1)  # Espera para que el campo se active
-            webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_forma_juridica" ,forma_juridica)
+            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_forma_juridica" ,forma_juridica)
             time.sleep(0.5)
-            webFunctions.escribir_en_elemento_por_name(driver, "pNombre_fiscal", fila["nombre_recogida"] + " prueba")
+            webFunctions.escribir_en_elemento_por_name_y_enter(driver, "pNombre_fiscal", fila["nombre_recogida"])
 
         # 4. Completar el campo Nombre y Apellidos si es una persona física
         elif forma_fiscal == "Física":
-            webFunctions.escribir_en_elemento_por_name(driver, "pNombre", str(fila["nombre_recogida"]))
-
-        # Para la prueba
-        webFunctions.seleccionar_elemento_por_nombre(driver, "pForma_fiscal", "Física")
-        webFunctions.escribir_en_elemento_por_name(driver, "pNombre", str(fila["nombre_recogida"]))
-
+            nombre, *apellidos = str(fila["nombre_recogida"]).strip().split()
+            webFunctions.escribir_en_elemento_por_name(driver, "pNombre", nombre)
+            webFunctions.escribir_en_elemento_por_name(driver, "pApellidos", " ".join(apellidos))
 
         # 5. Completar el campo Domicilio
         webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
@@ -300,8 +313,14 @@ def añadirEmpresa(driver: webdriver.Chrome, fila) -> None:
         time.sleep(1)
     except Exception as error:
         logging.error(f"Error al añadir la empresa {fila.get('nombre_recogida', '')}: {error}")
+        if funcionesNubelus.preguntar_por_pantalla():
+            logging.info("Continuando con la siguiente empresa...")
+        else:
+            logging.info("Saliendo del proceso de adición de empresas.")
+            driver.quit()
+            exit()
 
-def añadirEmpresas(driver: webdriver.Chrome, empresas_añadir: pd.DataFrame) -> None:
+def añadir_empresas(driver: webdriver.Chrome, empresas_añadir: pd.DataFrame) -> None:
     """
     Itera sobre el DataFrame 'empresas_añadir' y realiza las acciones necesarias para 
     añadir cada empresa en la aplicación web mediante Selenium.
@@ -318,24 +337,23 @@ def añadirEmpresas(driver: webdriver.Chrome, empresas_añadir: pd.DataFrame) ->
     for idx, empresa in empresas_añadir.iterrows():
         # Clic en el botón "nuevo"
         webFunctions.clickar_boton_por_clase(driver, "miBoton.nuevo")
-        añadirEmpresa(driver, empresa)
+        añadir_empresa(driver, empresa)
 
+
+def quitar_tildes(texto):
+    return ''.join(
+        c for c in unicodedata.normalize('NFD', texto)
+        if unicodedata.category(c) != 'Mn'
+    )
 
 def is_denominacion_correcto(nombre_recogida: str, denominacion: str) -> bool:
     """
     Compara dos cadenas (nombre_recogida y denominacion) para determinar si coinciden
-    ignorando signos especiales, mayúsculas/minúsculas y contenido entre paréntesis.
-
-    Args:
-        nombre_recogida (str): Nombre del centro recogido.
-        denominacion (str): Denominación del centro en Nubelus.
-
-    Returns:
-        bool: True si todas las palabras de nombre_recogida están en denominacion, False en caso contrario.
+    ignorando signos especiales, mayúsculas/minúsculas, tildes y contenido entre paréntesis.
     """
     # Convierte a string y mayúsculas
-    nombre_recogida = str(nombre_recogida).upper()
-    denominacion = str(denominacion).upper()
+    nombre_recogida = quitar_tildes(str(nombre_recogida).upper())
+    denominacion = quitar_tildes(str(denominacion).upper())
 
     # Quita signos especiales
     signos_especiales = ['.', ',', '-', '&', 'Y']
@@ -449,9 +467,92 @@ def sacar_centros_no_añadidos(driver: webdriver.Chrome) -> pd.DataFrame:
     sacar_centros_no_encontrados_en_nubelus(centros, datos)
     return datos
 
+def coincidencias_en_entidades(excel_input, excel_entidades):
+    """
+    Devuelve True si el 'cif_recogida' de excel_input está en 'NIF' de excel_entidades.
+    Si no hay coincidencia, devuelve None.
+    """
+    try:
+        if excel_input['cif_recogida'] in excel_entidades['NIF'].values:
+            return True
+        else:
+            return None
+    except Exception as error:
+        logging.error(f"Error en coincidencias_en_entidades: {error}")
+        return None
 
+def coincidencias_en_centros(excel_input, excel_centros):
+    """
+    Devuelve True si el 'nombre_recogida' de excel_input está en 'Denominación' de excel_centros.
+    Si no hay coincidencia, devuelve None.
+    """
+    try:
+        if excel_input['nombre_recogida'] in excel_centros['Denominación'].values:
+            return True
+        else:
+            return None
+    except Exception as error:
+        logging.error(f"Error en coincidencias_en_centros: {error}")
+        return None
 
-def añadir_Centro(driver: webdriver.Chrome, fila) -> None:
+def coincidencias_en_usuarios(excel_input, excel_usuarios):
+    """
+    Devuelve True si el 'nombre_recogida' de excel_input está en 'Nombre' de excel_usuarios.
+    Si no hay coincidencia, devuelve None.
+    """
+    try:
+        if excel_input['nombre_recogida'] in excel_usuarios['Nombre'].values:
+            return True
+        else:
+            return None
+    except Exception as error:
+        logging.error(f"Error en coincidencias_en_usuarios: {error}")
+        return None
+
+def coincidencias_en_acuerdos_representacion(excel_input, excel_acuerdos):
+    """
+    Devuelve True si el 'nombre_recogida' de excel_input está en 'EMA representada' de excel_acuerdos.
+    Si no hay coincidencia, devuelve None.
+    """
+    try:
+        if excel_input['nombre_recogida'] in excel_acuerdos['EMA representada'].values:
+            return True
+        else:
+            return None
+    except Exception as error:
+        logging.error(f"Error en coincidencias_en_acuerdos_representacion: {error}")
+        return None
+
+def coincidencias_en_contratos(excel_input, excel_contratos):
+    """
+    Devuelve un DataFrame con las filas de excel_contratos cuyo 'Origen' coincide con 'nombre_recogida' de excel_input.
+    Si no hay coincidencias, devuelve None.
+    """
+    try:
+        coincidencias = excel_contratos[excel_contratos['Origen'] == excel_input['nombre_recogida']]
+        if not coincidencias.empty:
+            return coincidencias
+        else:
+            return None
+    except Exception as error:
+        logging.error(f"Error en coincidencias_en_contratos: {error}")
+        return None
+
+def coincidencias_en_clientes(excel_input, excel_clientes):
+    """
+    Devuelve True si el 'nombre_recogida' de excel_input está en 'Denominación' de excel_clientes.
+    Si no hay coincidencia, devuelve None.
+    """
+    try:
+        if excel_input['nombre_recogida'] in excel_clientes['Denominación'].values:
+            return True
+        else:
+            return None
+    except Exception as error:
+        logging.error(f"Error en coincidencias_en_clientes: {error}")
+        return None
+
+def añadir_centro(driver: webdriver.Chrome, fila) -> None:
     """
     Añade un centro individualmente en la aplicación web mediante Selenium.
 
@@ -459,21 +560,20 @@ def añadir_Centro(driver: webdriver.Chrome, fila) -> None:
         driver (webdriver.Chrome): Instancia del navegador.
         centro (Union[pandas.Series, dict]): Datos del centro a añadir. Puede ser una Serie de pandas o un diccionario.
     """
-    webFunctions.abrir_web(driver, WEB_NUBELUS_CENTROS)
+    webFunctions.abrir_web(driver, WEB_NUBELUS_CENTROS_NUEVO)
     try:
         logging.info(f"Añadiendo centro: {fila['nombre_recogida']}")
 
         # 1. Completar el campo Denominación
         webFunctions.esperar_elemento(driver, By.ID, "pDenominacion", timeout=10)
-        webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"] + " prueba")
-        webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_ema", fila["nombre_recogida"] + " prueba")
+        webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"])
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_ema", fila["nombre_recogida"])
 
         # 3. Completar el campo Domicilio
         webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
 
         # 4. Completar el campo Municipio
-        webFunctions.completar_campo_y_confirmar_seleccion_por_name(
-            driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"]).rstrip(), "ui-a-value"
+        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"])
         )
 
         # 5. Completar el campo Provincia
@@ -493,16 +593,27 @@ def añadir_Centro(driver: webdriver.Chrome, fila) -> None:
 
         # Espera para que la acción se procese
         time.sleep(1)
+
+        # Añade las autorizaciones del centro
+        añadir_autorizaciones(driver, fila)
+        rellenar_datos_medioambientales(driver, fila)
     except Exception as error:
         logging.error(f"Error al añadir el centro {fila.get('nombre_recogida', '')}: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if continuar:
+            logging.info("Continuando con el siguiente centro...")
+        else:
+            logging.info("Saliendo del proceso de adición de centros.")
+            driver.quit()
+            exit()
 
-def añadir_Centros(driver: webdriver.Chrome, centros_añadir: pd.DataFrame) -> None:
+def añadir_centros(driver: webdriver.Chrome, centros_añadir: pd.DataFrame) -> None:
     """
     Itera sobre el DataFrame 'centros_añadir' y añade cada centro usando añadirCentro.
     """
     for idx, centro in centros_añadir.iterrows():
         webFunctions.clickar_boton_por_clase(driver, "miBoton.nuevo")
-        añadir_Centro(driver, centro)
+        añadir_centro(driver, centro)
 
 
 def extraer_datos_centro_castilla_desde_excel(ruta_excel):
@@ -651,10 +762,8 @@ def rellenar_datos_medioambientales(driver, fila):
         nima_str = str(fila.get("nima_codigo", ""))
         webFunctions.escribir_en_elemento_por_name(popup, "pNima", nima_str[:10])
         webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nombre", str(fila.get("nombre_recogida", "")))
-        #webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_apellidos", str(datos.get("responsable_apellidos", "")))
         webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nif", str(fila.get("cif_recogida", "")))
         webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_cargo", str(fila.get("nombre_recogida", "")))
-        #webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_vial", str(datos.get("denominacion_vial", "")), "ui-a-label")
         webFunctions.escribir_en_elemento_por_name(popup, "pCodigo_prtr", str(fila.get("poblacion_recogida", "")))
 
         webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
@@ -720,19 +829,32 @@ def fecha_caducidad(fecha_inicio):
 def añadir_acuerdo_representacion(driver, fila):
     """
     Navega a la sección de acuerdos de representación y añade un acuerdo usando los datos de la fila 'empresa'.
+    Reintenta hasta 5 veces en caso de error.
     """
-    try:
-        time.sleep(1)
-        webFunctions.completar_campo_y_confirmar_seleccion_por_name(
-            driver, "pDenominacion_ema_representada", str(fila.get("nombre_recogida", "")), "BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item"
-        )
-        fecha_inicio = obtener_fecha_modificada(str(fila.get("fecha_inicio", "")))
-        fecha_fin = obtener_fecha_modificada(str(fila.get("fecha_fin", "")))
-        webFunctions.escribir_en_elemento_por_name(driver, "pFecha", fecha_inicio)
-        webFunctions.escribir_en_elemento_por_name(driver, "pFecha_caducidad", fecha_fin)
-        webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
-    except Exception as error:
-        logging.error(f"Error al añadir acuerdo de representación para la empresa.")
+    webFunctions.abrir_web(driver, WEB_NUBELUS_ACUERDOS_NUEVO)
+    intentos = 5
+    for intento in range(intentos):
+        try:
+            time.sleep(1)
+            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_ema_representada", str(fila.get("nombre_recogida", "")))
+            fecha_inicio = obtener_fecha_modificada(str(fila.get("fecha_inicio", "")))
+            fecha_fin = obtener_fecha_modificada(str(fila.get("fecha_fin", "")))
+            webFunctions.escribir_en_elemento_por_name(driver, "pFecha", fecha_inicio)
+            webFunctions.escribir_en_elemento_por_name(driver, "pFecha_caducidad", fecha_fin)
+            webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
+            time.sleep(1)  # Espera para que la acción se procese
+            return
+        except Exception as error:
+            logging.error(f"Error al añadir acuerdo de representación para la empresa (intento {intento+1}): {error}")
+            if intento == intentos - 1:
+                continuar = funcionesNubelus.preguntar_por_pantalla()
+                if continuar:
+                    logging.info("Continuando tras error en acuerdo de representación...")
+                else:
+                    logging.info("Saliendo del proceso de adición de acuerdos de representación.")
+                    driver.quit()
+                    exit()
+            time.sleep(1)
 
 def codigo_residuos_por_autorizacion(codigo_autorizacion: str) -> str:
     """
@@ -782,6 +904,13 @@ def añadir_autorizaciones(driver, fila):
         driver = oldDriver
     except Exception as error:
         logging.error(f"Error al añadir autorización para la empresa {fila.get('nombre_recogida', '')}: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if continuar:
+            logging.info("Continuando con la siguiente autorización...")
+        else:
+            logging.info("Saliendo del proceso de adición de autorizaciones.")
+            driver.quit()
+            exit()
 
 def añadir_usuario(driver, fila):
     """
@@ -791,11 +920,11 @@ def añadir_usuario(driver, fila):
         driver (webdriver.Chrome): Instancia del navegador.
         fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
     """
-    webFunctions.abrir_web(driver, "https://portal.nubelus.es/?clave=nubelus_gestionUsuarios&pAccion=NUEVO")
+    webFunctions.abrir_web(driver, WEB_NUBELUS_USUARIO_NUEVO)
     try:
         
         # Completar campos del formulario
-        webFunctions.escribir_en_elemento_por_name(driver, "pUsuario", fila["nombre_recogida"].replace(" ", "") + "prueba")
+        webFunctions.escribir_en_elemento_por_name(driver, "pUsuario", fila["nombre_recogida"].replace(" ", ""))
         webFunctions.escribir_en_elemento_por_name(driver, "pAlias", fila["nombre_recogida"])
         webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
         webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", fila["telf_recogida"])
@@ -810,11 +939,19 @@ def añadir_usuario(driver, fila):
         except Exception as e:
             logging.error(f"Error al completar campos de denominación EMA o centro: {e}")
         # Confirmar la adición
+        webFunctions.esperar_elemento(driver, By.CLASS_NAME, "miBoton.aceptar")
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
         
         time.sleep(1)  # Espera para que la acción se procese
     except Exception as error:
         logging.error(f"Error al añadir usuario para la empresa {fila.get('nombre_recogida', '')}: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if continuar:
+            logging.info("Continuando con el siguiente usuario...")
+        else:
+            logging.info("Saliendo del proceso de adición de usuarios.")
+            driver.quit()
+            exit()
 
 def añadir_contrato_tratamiento(driver, fila, residuo):
     """
@@ -824,6 +961,7 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         driver (webdriver.Chrome): Instancia del navegador.
         fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
     """
+    webFunctions.abrir_web(driver, WEB_NUBELUS_CONTRATOS_NUEVO)
     try:
         fecha_inicio = obtener_fecha_modificada(fila["fecha_inicio"])
 
@@ -833,51 +971,146 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         time.sleep(0.5)
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. siempre
         time.sleep(0.5)
-        if fila.get("provincia_recogida") == "Valencia":
+        if fila.get("provincia_recogida") == "VALENCIA":
             webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D") # METALLS DEL CAMP ( SERRA D'ESPADA ) si es de valencia
             # Depende si el residuo es o no peligroso
             if residuo.get("tipo") == "peligroso":  
                 webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "157/G02/CV")
-            elif residuo.get("tipo") == "no_peligroso":
+            elif residuo.get("tipo") == "no peligroso":
                 webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "374/G04/CV")
 
         else:
             webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP, S.L.U. (EL ROMERAL)") # Si es de otra parte
             time.sleep(1)
-            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "4570002919") # Siempre suponer que es peligroso
+            if residuo.get("tipo") == "peligroso":
+                webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "4570002919") # Siempre suponer que es peligroso
+            elif residuo.get("tipo") == "no peligroso":
+                webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "G04") # Siempre suponer que es no peligroso
         time.sleep(0.1)
 
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_operador_traslados", "ECO TITAN S.L.") # Siempre ECO TITAN
         time.sleep(2)
         if residuo.get("tipo") == "peligroso":
             webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_operador_traslados", "87/A01/CV") # Si es peligroso
-        elif residuo.get("tipo") == "no_peligroso":
+        elif residuo.get("tipo") == "no peligroso":
             webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_operador_traslados", "305/A02/CV")
         webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_residuo", residuo.get("nombre", ""))
         webFunctions.escribir_en_elemento_por_name(driver, "pKilos_totales", residuo.get("cantidad", ""))
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
     except Exception as error:
         logging.error(f"Error al añadir contrato de tratamiento para la empresa {fila.get('nombre_recogida', '')}: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if continuar:
+            logging.info("Continuando con el siguiente contrato de tratamiento...")
+        else:
+            logging.info("Saliendo del proceso de adición de contratos de tratamiento.")
+            driver.quit()
+            exit()
 
 def añadir_contratos_tratamientos(driver, fila):
     """
     Añade los contratos de tratamiento para la empresa usando los datos de la fila 'empresa'
-    y todos los residuos y cantidades del archivo residuos.txt, junto con su centro y tratamiento asociado.
-    Para cada residuo, llama a añadir_contrato_tratamiento y al resto de funciones, pasando el residuo como json.
+    y todos los residuos y cantidades del archivo residuos.txt, junto con su(s) centro(s) y tratamiento(s) asociado(s).
+    Incluye manejo de errores con varios intentos.
     """
-    residuos_centros = residuos_y_tratamientos_json()
-    for item in residuos_centros:
-        residuo = item["residuo"]  # residuo es un dict/json
-        centro = item["centro"]
-        residuo["centro"] = centro  # Añadir el centro al residuo
-        webFunctions.clickar_boton_por_clase(driver, "miBoton.nuevo")
-        añadir_contrato_tratamiento(driver, fila, residuo)
+    intentos = 5
+    for intento in range(intentos):
+        try:
+            residuos_centros = residuos_y_tratamientos_json()
+            for item in residuos_centros:
+                residuo = item["residuo"]
+                centros = item.get("centros", [])
+                nombre_residuo = residuo.get("nombre", "").strip().upper()
+
+                # Siempre se usa el primer centro si existe, si no, solo el residuo
+                if centros:
+                    residuo_con_centro = residuo.copy()
+                    residuo_con_centro["centro"] = centros[0]
+                    contrato_residuo = residuo_con_centro
+                else:
+                    contrato_residuo = residuo
+
+                # Crear contrato de tratamiento para todos los residuos
+                añadir_contrato_tratamiento(driver, fila, contrato_residuo)
+
+                # Solo para peligrosos (con asterisco) añadir tratamientos y notificación
+                if "*" in nombre_residuo:
+                    time.sleep(1)
+                    añadir_tratamientos(driver, fila, item)
+                    time.sleep(1)
+                    crear_notificacion_tratamiento(driver)
+                    time.sleep(1)
+
+                # Crear facturación para todos los residuos
+                añadir_facturacion(driver, fila, contrato_residuo)
+            return
+        except Exception as error:
+            logging.error(f"Error al añadir contratos de tratamiento (intento {intento+1}): {error}")
+            if intento == intentos - 1:
+                continuar = funcionesNubelus.preguntar_por_pantalla()
+                if continuar:
+                    logging.info("Continuando tras error en contratos de tratamiento...")
+                else:
+                    logging.info("Saliendo del proceso de adición de contratos de tratamiento.")
+                    driver.quit()
+                    exit()
+            time.sleep(1)
+
+
+def añadir_tratamientos(driver, fila, residuo_item):
+    """
+    Añade los tratamientos indicados usando los datos de la fila y el residuo (json).
+    Si el residuo es 'BATERIAS DE PLOMO*', añade tratamientos para todos los centros asociados.
+    Para el resto, solo añade el primero.
+    """
+    webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Tratamientos")
+    time.sleep(1)
+    try:
+        residuo = residuo_item["residuo"]
+        nombre_residuo = residuo.get("nombre", "").strip().upper()
+        centros = residuo_item.get("centros", [])
+        if "BATERIAS DE PLOMO*" in nombre_residuo and centros and isinstance(centros, list):
+            for idx, centro in enumerate(centros, start=1):
+                residuo_con_centro = residuo.copy()
+                residuo_con_centro["centro"] = centro
+                añadir_tratamiento(driver, fila, residuo_con_centro, indice=idx)
+        else:
+            if centros and isinstance(centros, list) and len(centros) > 0:
+                residuo_con_centro = residuo.copy()
+                residuo_con_centro["centro"] = centros[0]
+                añadir_tratamiento(driver, fila, residuo_con_centro, indice=1)
+            else:
+                añadir_tratamiento(driver, fila, residuo, indice=1)
+    except Exception as error:
+        logging.error(f"Error al añadir tratamientos para el residuo {residuo.get('nombre', '')} de la empresa {fila.get('nombre_recogida', '')}: {error}")
+
+def añadir_tratamiento(driver, fila, residuo, indice=1):
+    """
+    Añade un tratamiento individual usando los datos de la fila, el residuo (json) y el índice de tratamiento.
+    Usa el centro y tratamiento asociados que vienen en el json de residuo["centro"].
+    """
+    try:
+        webFunctions.clickar_boton_por_clase(driver, f"miBoton.editar.editar_{indice}.sinTexto.dcha")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, f"div_editar_tratamiento_posterior_{indice}")
+        time.sleep(0.5)
+        centro = residuo.get("centro", {})
+        webFunctions.completar_campo_y_enter_por_name(popup, f"pDenominacion_ema_{indice}", centro.get("centro", ""))
+        time.sleep(0.5)
+        webFunctions.completar_campo_y_enter_por_name(popup, f"pTratamiento_posterior_{indice}_codigo_ler_2", centro.get("tratamiento", ""))
         time.sleep(1)
-        añadir_tratamientos(driver, fila, residuo)
+        webFunctions.clickar_boton_por_clase(popup, "icon-ok")
+        driver = oldDriver
         time.sleep(1)
-        crear_notificacion_tratamiento(driver)
-        time.sleep(1)
-        añadir_facturacion(driver, fila, residuo)
+    except Exception as error:
+        logging.error(f"Error al añadir tratamiento {indice} para la empresa {fila.get('nombre_recogida', '')}: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if continuar:
+            logging.info(f"Continuando con el siguiente tratamiento {indice}...")
+        else:
+            logging.info("Saliendo del proceso de adición de tratamientos.")
+            driver.quit()
+            exit()
 
 def crear_notificacion_tratamiento(driver):
     """
@@ -891,27 +1124,33 @@ def crear_notificacion_tratamiento(driver):
         webFunctions.clickar_boton_por_clase(driver, "icon-magic")
     except Exception as error:
         logging.error(f"Error al crear notificación de tratamiento: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if continuar:
+            logging.info("Continuando con la siguiente notificación...")
+        else:
+            logging.info("Saliendo del proceso de creación de notificaciones.")
+            driver.quit()
+            exit()
         return
-
 
 def añadir_tratamientos(driver, fila, residuo):
     """
     Añade los tratamientos indicados usando los datos de la fila y el residuo (json).
-    Si el residuo es 'BATERIAS DE PLOMO*', añade tratamientos 1 y 2.
-    Para el resto, solo añade el tratamiento 1.
-    Usa el centro asociado que viene en residuo["centro"].
+    Si el residuo tiene varios centros, añade tratamientos para cada uno.
+    Usa el centro asociado que viene en residuo["centro"] o en residuo["centros"].
     """
     webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Tratamientos")
     time.sleep(1)
     try:
         nombre_residuo = residuo.get("nombre", "").strip().upper()
-        centro = residuo.get("centro", {})
-        if nombre_residuo == "BATERIAS DE PLOMO*":
-            indices = [1, 2]
+        centros = residuo.get("centros", [])
+        if centros and isinstance(centros, list):
+            for idx, centro in enumerate(centros, start=1):
+                residuo_con_centro = residuo.copy()
+                residuo_con_centro["centro"] = centro
+                añadir_tratamiento(driver, fila, residuo_con_centro, indice=idx)
         else:
-            indices = [1]
-        for i in indices:
-            añadir_tratamiento(driver, fila, residuo, indice=i)
+            añadir_tratamiento(driver, fila, residuo, indice=1)
     except Exception as error:
         logging.error(f"Error al añadir tratamientos para el residuo {nombre_residuo} de la empresa {fila.get('nombre_recogida', '')}: {error}")
 
@@ -923,15 +1162,15 @@ def añadir_tratamiento(driver, fila, residuo, indice=1):
     Args:
         driver (webdriver.Chrome): Instancia del navegador.
         fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
-        residuo (dict): Diccionario con los datos del residuo y su centro asociado (debe tener clave 'centro').
+        residuo (dict): Diccionario con los datos del residuo.
         indice (int): Índice del tratamiento (1, 2 o 3).
     """
     try:
-        centro = residuo.get("centro", {})
         webFunctions.clickar_boton_por_clase(driver, f"miBoton.editar.editar_{indice}.sinTexto.dcha")
         oldDriver = driver
         popup = webFunctions.encontrar_pop_up_por_id(driver, f"div_editar_tratamiento_posterior_{indice}")
         time.sleep(0.5)
+        centro = residuo.get("centro", {})
         webFunctions.completar_campo_y_enter_por_name(popup, f"pDenominacion_ema_{indice}", centro.get("centro", ""))
         time.sleep(0.5)
         webFunctions.completar_campo_y_enter_por_name(popup, f"pTratamiento_posterior_{indice}_codigo_ler_2", centro.get("tratamiento", ""))
@@ -940,30 +1179,35 @@ def añadir_tratamiento(driver, fila, residuo, indice=1):
 
         webFunctions.clickar_boton_por_clase(popup, "icon-ok")
         driver = oldDriver
-        time.sleep(3)
+        time.sleep(1)
     except Exception as error:
         logging.error(f"Error al añadir tratamiento {indice} para la empresa {fila.get('nombre_recogida', '')}: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if continuar:
+            logging.info(f"Continuando con el siguiente tratamiento {indice}...")
+        else:
+            logging.info("Saliendo del proceso de adición de tratamientos.")
+            driver.quit()
+            exit()
 
-def editar_notificacion_contratos_tratamiento(driver, fila):
+# def editar_notificacion_contratos_tratamiento(driver, fila):
 
-    oldDriver = driver
-    popup = webFunctions.encontrar_pop_up_por_clase(driver, "miBoton.editar")
+#     oldDriver = driver
+#     popup = webFunctions.encontrar_pop_up_por_clase(driver, "miBoton.editar")
 
-    webFunctions.seleccionar_elemento_por_name(popup, "pNt_notificada_sn", "SI")
-    # Completar la funcion
+#     webFunctions.seleccionar_elemento_por_name(popup, "pNt_notificada_sn", "SI")
+#     # Completar la funcion
 
-    driver = oldDriver
+#     driver = oldDriver
 
-    webFunctions.clickar_boton_por_clase(driver, "miBoton.notificar.adcr")
+#     webFunctions.clickar_boton_por_clase(driver, "miBoton.notificar.adcr")
 
 def residuos_y_tratamientos_json():
     """
-    Lee los archivos residuos.txt y centro_tratamientos.txt y devuelve una lista de diccionarios
-    con la información de cada residuo y su centro/tratamiento asociado.
-    Si el residuo NO tiene asterisco en el nombre, no tendrá centro ni tratamiento asociado (devolverá {}).
-    Si en centro_tratamientos.txt hay un guión '-', se asocia ese centro/tratamiento al residuo correspondiente.
+    Devuelve una lista de diccionarios, cada uno con un residuo y una lista de centros asociados.
+    Si en centro_tratamientos.txt hay un guión '-', se asocian varios centros al mismo residuo.
+    Si hay más residuos que bloques de centros, los residuos sobrantes se añaden con centros vacíos.
     """
-
     ruta_residuos = os.path.join("data", "residuos.txt")
     ruta_centros = os.path.join("data", "centro_tratamientos.txt")
 
@@ -972,7 +1216,6 @@ def residuos_y_tratamientos_json():
     with open(ruta_residuos, encoding="utf-8") as f:
         lineas = [line.strip() for line in f if line.strip()]
     i = 0
-
     while i < len(lineas):
         tipo_raw = lineas[i].lower()
         if tipo_raw == "p":
@@ -990,70 +1233,738 @@ def residuos_y_tratamientos_json():
         })
         i += 3
 
-    # Leer centro_tratamientos.txt
-    centros = []
+    # Leer centro_tratamientos.txt y asociar a residuos
+    centros_bloques = []
     with open(ruta_centros, encoding="utf-8") as f:
         lineas = [line.strip() for line in f if line.strip()]
     i = 0
     while i < len(lineas):
-        centro = lineas[i]
-        tratamiento = lineas[i+1]
-        # Si el siguiente es un guión, es un centro vacío para el siguiente residuo
         if i+2 < len(lineas) and lineas[i+2] == "-":
-            centros.append({
-                "centro": centro,
-                "tratamiento": tratamiento
-            })
-            i += 3  # Saltar el guión
+            # Dos centros/tratamientos para el mismo residuo
+            centros_bloques.append([
+                {"centro": lineas[i], "tratamiento": lineas[i+1]},
+                {"centro": lineas[i+3], "tratamiento": lineas[i+4]}
+            ])
+            i += 5  # Saltar centro1, trat1, guion, centro2, trat2
         else:
-            centros.append({
-                "centro": centro,
-                "tratamiento": tratamiento
-            })
+            centros_bloques.append([
+                {"centro": lineas[i], "tratamiento": lineas[i+1]}
+            ])
             i += 2
 
-    # Asociar residuos y centros uno a uno, pero solo si el residuo tiene asterisco en el nombre
+    # Asociar residuos y centros (agrupando centros en una lista bajo cada residuo)
     resultado = []
-    centro_idx = 0
-    for residuo in residuos:
-        if "*" in residuo["nombre"]:
-            # Asociar centro y tratamiento solo si hay asterisco
-            if centro_idx < len(centros):
-                resultado.append({
-                    "residuo": residuo,
-                    "centro": centros[centro_idx]
-                })
-                centro_idx += 1
-            else:
-                resultado.append({
-                    "residuo": residuo,
-                    "centro": {}
-                })
+    for idx, residuo in enumerate(residuos):
+        if idx < len(centros_bloques):
+            bloque = centros_bloques[idx]
         else:
-            # Sin centro ni tratamiento
-            resultado.append({
-                "residuo": residuo,
-                "centro": {}
-            })
+            bloque = []  # Sin centros asociados
+        resultado.append({
+            "residuo": residuo,
+            "centros": bloque
+        })
 
     return resultado
 
 def añadir_facturacion(driver, fila, residuo):
-    webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Facturación")
-    time.sleep(2)
+    """
+    Añade la facturación para un residuo concreto usando los datos de la fila y el residuo.
+    Incluye manejo de errores con try-except.
+    """
+    try:
+        webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Facturación")
+        time.sleep(2)
 
-    oldDriver = driver
-    webFunctions.clickar_boton_por_on_click(driver, "nuevo_FACTURACION()")
-    popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_FACTURACION")
+        oldDriver = driver
+        webFunctions.clickar_boton_por_on_click(driver, "nuevo_FACTURACION()")
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_FACTURACION")
 
-    webFunctions.completar_campo_y_enter_por_name(popup, "pNombre_cliente", fila.get("nombre_recogida", ""))
-    webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_producto", residuo.get("nombre", ""))
-    residuo_nombre = residuo.get("nombre")
+        webFunctions.completar_campo_y_enter_por_name(popup, "pNombre_cliente", fila.get("nombre_recogida", ""))
+        webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_producto", residuo.get("nombre", ""))
+        residuo_nombre = residuo.get("nombre")
 
-    if residuo_nombre in ["ENVASES PLASTICOS CONTAMINADOS*", "FILTROS DE AIRE"]:
-        webFunctions.seleccionar_elemento_por_name(popup, "pCantidad_modo", "Valor fijo")
-        webFunctions.completar_campo_y_enter_por_name(popup, "pCantidad_valor", "1")
-    time.sleep(2)
-    webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
-    driver = oldDriver
-    time.sleep(2)
+        if residuo_nombre in ["ENVASES PLASTICOS CONTAMINADOS*", "FILTROS DE AIRE"]:
+            webFunctions.seleccionar_elemento_por_name(popup, "pCantidad_modo", "Valor fijo")
+            webFunctions.completar_campo_y_enter_por_name(popup, "pCantidad_valor", "1")
+        time.sleep(2)
+        webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
+        driver = oldDriver
+        time.sleep(2)
+    except Exception as error:
+        logging.error(f"Error al añadir facturación para la empresa {fila.get('nombre_recogida', '')}: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if continuar:
+            logging.info("Continuando con la siguiente facturación...")
+        else:
+            logging.info("Saliendo del proceso de adición de facturación.")
+            driver.quit()
+            exit()
+
+def activar_proteccion_mejorada(driver):
+    """
+    Activa la protección mejorada en la plataforma Nubelus.
+    Esta función navega a la sección de configuración y activa la protección mejorada.
+    Reintenta hasta 3 veces en caso de error.
+    """
+    intentos = 3
+    for intento in range(intentos):
+        try:
+            webFunctions.abrir_web(driver, URL_SEGURIDAD)
+            time.sleep(3)
+            # Aquí puedes añadir más pasos si necesitas interactuar con la página de seguridad
+            return
+        except Exception as error:
+            logging.error(f"Error al activar la protección mejorada (intento {intento+1}): {error}")
+            if intento == intentos - 1:
+                continuar = funcionesNubelus.preguntar_por_pantalla()
+                if continuar:
+                    logging.info("Continuando tras error en protección mejorada...")
+                else:
+                    logging.info("Saliendo del proceso de protección mejorada.")
+                    driver.quit()
+                    exit()
+            time.sleep(1)
+
+def leer_excel(ruta_excel):
+    """
+    Lee un archivo Excel desde la carpeta 'data' y devuelve un DataFrame.
+    
+    Args:
+        excel_input (str): Nombre del archivo Excel a leer (por ejemplo, 'mi_excel.xlsx').
+        
+    Returns:
+        pd.DataFrame: DataFrame con los datos del archivo Excel.
+    """
+    return pd.read_excel(ruta_excel)
+
+def comprobar_datos_excel(excel_input):
+    """
+    Comprueba si el archivo Excel tiene las columnas necesarias para el proceso de adición de centros.
+    Además, limpia cada campo usando limpiar_campo para que los datos sean utilizables.
+    Lee el archivo desde la carpeta 'data'.
+
+    Args:
+        excel_input (str): Nombre del archivo Excel a comprobar (por ejemplo, 'mi_excel.xlsx').
+
+    Returns:
+        pd.DataFrame or bool: DataFrame limpio si el archivo tiene las columnas necesarias, False en caso contrario.
+    """
+    try:
+        df = leer_excel(excel_input)
+        required_columns = ['nombre_recogida', 'direccion_recogida', 'cp_recogida',
+                            'poblacion_recogida', 'provincia_recogida', 'email_recogida',
+                            'telf_recogida']
+        if not all(col in df.columns for col in required_columns):
+            return False
+        
+        # Comprobar que existen todas las columnas requeridas
+        if not all(col in df.columns for col in required_columns):
+            logging.info("Faltan columnas requeridas en el archivo Excel.")
+            return False
+
+        # Limpiar cada campo de las columnas requeridas
+        for col in required_columns:
+            df[col] = df[col].apply(limpiar_campo)
+
+        return df
+    except Exception as e:
+        logging.error(f"Error al comprobar el archivo Excel: {e}. Los datos no están en el formato correcto.")
+        exit()
+def esperar_descarga_completa(ruta_archivo, timeout=30):
+    """
+    Espera a que el archivo exista y no tenga extensión .crdownload.
+    """
+    tiempo_inicio = time.time()
+    while True:
+        if os.path.exists(ruta_archivo) and not os.path.exists(ruta_archivo + ".crdownload"):
+            break
+        if time.time() - tiempo_inicio > timeout:
+            raise TimeoutError("Descarga no completada en el tiempo esperado.")
+        time.sleep(1)
+
+def descargar_excel_usuarios(driver):
+    """
+    Descarga el Excel de usuarios desde Nubelus y devuelve un DataFrame con su contenido.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_USUARIO)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Usuarios.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de usuarios: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+
+def descargar_excel_entidades(driver):
+    """
+    Descarga el Excel de entidades desde Nubelus y devuelve un DataFrame con su contenido.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_ENTIDAD)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Entidades medioambientales.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de entidades: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+
+def descargar_excel_centros(driver):
+    """
+    Descarga el Excel de centros desde Nubelus y devuelve un DataFrame con su contenido.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_CENTROS)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Centros de entidades medioambientales.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de centros: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+
+def descargar_excel_acuerdos_representacion(driver):
+    """
+    Descarga el Excel de acuerdos de representación desde Nubelus y devuelve un DataFrame con su contenido.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_ACUERDOS)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Acuerdos de representación.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de acuerdos de representación: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+
+def descargar_excel_contratos(driver):
+    """
+    Descarga el Excel de contratos desde Nubelus y devuelve un DataFrame con su contenido.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_CONTRATOS)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Contratos tratamiento.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de contratos: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+
+def descargar_excel_clientes(driver):
+    """
+    Descarga el Excel de clientes desde Nubelus y devuelve un DataFrame con su contenido.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_CLIENTES)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Clientes.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de clientes: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+
+def descargar_excel_entidades(driver):
+    """
+    Descarga el Excel de entidades desde Nubelus y devuelve un DataFrame con su contenido.
+    Incluye manejo de errores con try-except.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_ENTIDAD)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Entidades medioambientales.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de entidades: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+
+def descargar_excel_centros(driver):
+    """
+    Descarga el Excel de centros desde Nubelus y devuelve un DataFrame con su contenido.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_CENTROS)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Centros de entidades medioambientales.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de centros: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+
+def descargar_excel_acuerdos_representacion(driver):
+    """
+    Descarga el Excel de acuerdos de representación desde Nubelus y devuelve un DataFrame con su contenido.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_ACUERDOS)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Acuerdos de representación.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de acuerdos de representación: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+
+def descargar_excel_contratos(driver):
+    """
+    Descarga el Excel de contratos desde Nubelus y devuelve un DataFrame con su contenido.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_CONTRATOS)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Contratos tratamiento.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de contratos: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+
+def completar_datos_centro(driver, fila):
+    """
+    Completa los datos del centro de la empresa en la plataforma Nubelus.
+    
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_CENTROS)
+        webFunctions.clickar_boton_por_clase(driver, "icon-bolt")
+
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_buscar_1")
+        webFunctions.completar_campo_y_enter_por_name(popup, 
+            "pDenominacion", fila.get("nombre_recogida", ""))
+        webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
+        añadir_autorizaciones(driver, fila)
+        rellenar_datos_medioambientales(driver, fila)
+    except Exception as error:
+        logging.error(f"Error al completar datos del centro para la empresa {fila.get('nombre_recogida', '')}: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if continuar:
+            logging.info("Continuando con el siguiente centro...")
+        else:
+            logging.info("Saliendo del proceso de adición de centros.")
+            driver.quit()
+            exit()
+
+def añadir_cliente_empresa(driver, fila):
+    """
+    Añade un cliente a la plataforma Nubelus usando los datos de la fila 'empresa'.
+    
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        fila (pandas.Series): Fila del DataFrame con los datos de la empresa.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_ENTIDAD)
+        webFunctions.clickar_boton_por_clase(driver, "icon-bolt")
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_buscar_1")
+        webFunctions.completar_campo_y_enter_por_name(popup, 
+            "pDenominacion", fila.get("nombre_recogida", ""))
+        webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
+        time.sleep(0.5)
+        funcionesNubelus.crear_proveedor(driver)
+        funcionesNubelus.crear_cliente(driver)
+    except Exception as error:
+        logging.error(f"Error al añadir cliente para la empresa {fila.get('nombre_recogida', '')}: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if continuar:
+            logging.info("Continuando con el siguiente cliente...")
+        else:
+            logging.info("Saliendo del proceso de adición de clientes.")
+            driver.quit()
+            exit()
+
+def descargar_excel_clientes(driver):
+    """
+    Descarga el Excel de clientes desde Nubelus y devuelve un DataFrame con su contenido.
+    """
+    try:
+        webFunctions.abrir_web(driver, WEB_NUBELUS_CLIENTES)
+        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
+        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
+        oldDriver = driver
+        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
+        try:
+            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
+        except Exception as e:
+            logging.info(f"Error al aceptar el pop-up: {e}")
+        driver = oldDriver
+
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Clientes.xlsx")
+        try:
+            esperar_descarga_completa(archivo_xlsx)
+            logging.info(f"Archivo descargado: {archivo_xlsx}")
+        except TimeoutError as e:
+            logging.error(e)
+            continuar = funcionesNubelus.preguntar_por_pantalla()
+            if not continuar:
+                driver.quit()
+                exit()
+            return None
+
+        df = pd.read_excel(archivo_xlsx)
+        try:
+            os.remove(archivo_xlsx)
+            logging.info(f"Archivo eliminado: {archivo_xlsx}")
+        except Exception as e:
+            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
+        return df
+    except Exception as error:
+        logging.error(f"Error al descargar el Excel de clientes: {error}")
+        continuar = funcionesNubelus.preguntar_por_pantalla()
+        if not continuar:
+            driver.quit()
+            exit()
+        return None
+    
+def crear_contratos_faltantes(driver, fila, coincidencias_contratos):
+    """
+    Crea contratos de tratamiento solo para los residuos que no están ya en los contratos existentes
+    para la empresa actual, usando la columna 'Denominacion' del DataFrame coincidencias_contratos.
+    Si todos los residuos ya están creados, muestra un mensaje y no hace nada.
+    """
+    residuos_centros = residuos_y_tratamientos_json()
+    residuos_excel = list(coincidencias_contratos['Denominacion'])
+
+    # Identificar residuos faltantes usando comparación flexible
+    residuos_faltantes = []
+    for item in residuos_centros:
+        residuo = item["residuo"]
+        nombre_residuo = str(residuo.get("nombre", "")).strip().upper()
+        existe = any(is_denominacion_correcto(nombre_residuo, str(r_excel)) for r_excel in residuos_excel)
+        if not existe:
+            residuos_faltantes.append(item)
+
+    if not residuos_faltantes:
+        print("Todos los contratos de tratamiento ya están creados para esta empresa.")
+        logging.info("Todos los contratos de tratamiento ya están creados para esta empresa.")
+        exit()
+
+    for item in residuos_faltantes:
+        residuo = item["residuo"]
+        nombre_residuo = str(residuo.get("nombre", "")).strip().upper()
+        centros = item.get("centros", [])
+
+        if centros:
+            residuo_con_centro = residuo.copy()
+            residuo_con_centro["centro"] = centros[0]
+            contrato_residuo = residuo_con_centro
+        else:
+            contrato_residuo = residuo
+
+        añadir_contrato_tratamiento(driver, fila, contrato_residuo)
+
+        if "*" in nombre_residuo:
+            time.sleep(1)
+            añadir_tratamientos(driver, fila, item)
+            time.sleep(1)
+            crear_notificacion_tratamiento(driver)
+            time.sleep(1)
+
+        añadir_facturacion(driver, fila, contrato_residuo)

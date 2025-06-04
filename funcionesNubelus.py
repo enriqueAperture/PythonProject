@@ -16,54 +16,88 @@ Ejemplo de uso:
 
 import webFunctions
 import time
+import logging
+import tkinter as tk
+import pandas as pd
+from tkinter import ttk
+
 
 # URL de la web de Nubelus
 WEB_NUBELUS = "https://portal.nubelus.es"
+WEB_NUBELUS_ENTIDAD = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales"
+WEB_NUBELUS_ENTIDAD_NUEVO = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales&pAccion=NUEVO"
+WEB_NUBELUS_ACUERDOS_NUEVO = "https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion&pAccion=NUEVO"
+WEB_NUBELUS_USUARIO_NUEVO = "https://portal.nubelus.es/?clave=nubelus_gestionUsuarios&pAccion=NUEVO"
+WEB_NUBELUS_CENTROS = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros"
+WEB_NUBELUS_CENTROS_NUEVO = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros&pAccion=NUEVO"
 
 def iniciar_sesion(driver):
     """
     Inicia sesión en la plataforma Nubelus utilizando el driver de Selenium.
-    
-    La función realiza las siguientes acciones:
-      1. Abre la web de Nubelus.
-      2. Escribe en el campo con id "pNick_gestor" el valor "ecotitan".
-      3. Hace clic en el botón con id "btContinuar".
-      4. Escribe en el campo con placeholder "Usuario" el valor "dani".
-      5. Escribe en el campo con placeholder "Contraseña" el valor "123456".
-      6. Hace clic en el botón con id "btAceptar".
-    
-    Args:
-        driver (webdriver.Chrome): Instancia del navegador Selenium.
-    
-    Ejemplo:
-        iniciar_sesion(driver)
+    Reintenta hasta 3 veces en caso de error.
     """
-    webFunctions.abrir_web(driver, WEB_NUBELUS)
-    webFunctions.escribir_en_elemento_por_id(driver, "pNick_gestor", "ecotitan")
-    webFunctions.clickar_boton_por_id(driver, "btContinuar")
-    webFunctions.escribir_en_elemento_por_placeholder(driver, "Usuario", "dani")
-    webFunctions.escribir_en_elemento_por_placeholder(driver, "Contraseña", "123456")
-    webFunctions.clickar_boton_por_id(driver, "btAceptar")
+    intentos = 3
+    for intento in range(intentos):
+        try:
+            webFunctions.abrir_web(driver, WEB_NUBELUS)
+            webFunctions.escribir_en_elemento_por_id(driver, "pNick_gestor", "ecotitan")
+            webFunctions.clickar_boton_por_id(driver, "btContinuar")
+            webFunctions.escribir_en_elemento_por_placeholder(driver, "Usuario", "dani")
+            webFunctions.escribir_en_elemento_por_placeholder(driver, "Contraseña", "123456")
+            webFunctions.clickar_boton_por_id(driver, "btAceptar")
+            time.sleep(5)  # Tiempo para aceptar el pop-up de Google
+            return
+        except Exception as error:
+            logging.error(f"Error al iniciar sesión en Nubelus (intento {intento+1}): {error}")
+            if intento == intentos - 1:
+                continuar = preguntar_por_pantalla()
+                if continuar:
+                    logging.info("Continuando tras error en inicio de sesión...")
+                else:
+                    logging.info("Saliendo del proceso de inicio de sesión.")
+                    driver.quit()
+                    exit()
+            time.sleep(1)
 
 def crear_proveedor(driver):
-  """
-  Hace clic en 'Crear proveedor' y acepta el pop-up correspondiente.
-  """
-  webFunctions.clickar_boton_por_texto(driver, "Crear proveedor")
-  oldDriver = driver
-  popup = webFunctions.encontrar_pop_up_por_id(driver, "div_crear_proveedor")
-  webFunctions.clickar_boton_por_clase(popup, "miBoton_cuadrado.aceptar")
-  driver = oldDriver
+    """
+    Hace clic en 'Crear proveedor' y acepta el pop-up correspondiente.
+    Reintenta hasta 5 veces en caso de error.
+    """
+    intentos = 5
+    for intento in range(intentos):
+        try:
+            webFunctions.clickar_boton_por_on_click(driver, "crear_proveedor()")
+            oldDriver = driver
+            popup = webFunctions.encontrar_pop_up_por_id(driver, "div_crear_proveedor")
+            webFunctions.clickar_boton_por_clase(popup, "miBoton_cuadrado.aceptar")
+            driver = oldDriver
+            return
+        except Exception as e:
+            logging.error(f"Error al crear proveedor (intento {intento+1}): {e}")
+            if intento == intentos - 1:
+                raise
+            time.sleep(1)
 
 def crear_cliente(driver):
-  """
-  Hace clic en 'Crear cliente' y acepta el pop-up correspondiente.
-  """
-  webFunctions.clickar_boton_por_texto(driver, "Crear cliente")
-  oldDriver = driver
-  popup = webFunctions.encontrar_pop_up_por_id(driver, "div_crear_cliente")
-  webFunctions.clickar_boton_por_clase(popup, "miBoton_cuadrado.aceptar")
-  driver = oldDriver
+    """
+    Hace clic en 'Crear cliente' y acepta el pop-up correspondiente.
+    Reintenta hasta 5 veces en caso de error.
+    """
+    intentos = 5
+    for intento in range(intentos):
+        try:
+            webFunctions.clickar_boton_por_texto(driver, "Crear cliente")
+            oldDriver = driver
+            popup = webFunctions.encontrar_pop_up_por_id(driver, "div_crear_cliente")
+            webFunctions.clickar_boton_por_clase(popup, "miBoton_cuadrado.aceptar")
+            driver = oldDriver
+            return
+        except Exception as e:
+            logging.error(f"Error al crear cliente (intento {intento+1}): {e}")
+            if intento == intentos - 1:
+                raise
+            time.sleep(1)
 
 def entrar_en_centro_medioambiental(driver):
   """
@@ -88,3 +122,51 @@ def comprobar_integridad(driver):
   except Exception:
     pass  # No se encontró el texto
   time.sleep(30)
+
+def preguntar_por_pantalla():
+    root = tk.Tk()
+    root.withdraw()  # Oculta la ventana principal
+
+    win = tk.Toplevel()
+    win.title("Error del programa")
+    win.geometry("840x340")  # Doble de grande
+    win.resizable(False, False)
+    win.configure(bg="#f3f3f3")
+
+    # Icono de pregunta estilo Windows 11 (doble de grande)
+    icon_canvas = tk.Canvas(win, width=120, height=120, bg="#f3f3f3", highlightthickness=0)
+    icon_canvas.create_oval(20, 20, 100, 100, fill="#0078d4", outline="#0078d4")
+    icon_canvas.create_text(60, 64, text="?", font=("Segoe UI", 64, "bold"), fill="white")
+    icon_canvas.grid(row=0, column=0, rowspan=2, padx=(60, 20), pady=40)
+
+    # Mensaje (doble de grande)
+    label = tk.Label(win, text="¿Desea continuar?", font=("Segoe UI", 28), bg="#f3f3f3")
+    label.grid(row=0, column=1, sticky="w", pady=(60, 0), padx=(0, 40))
+
+    continuar = False
+
+    def on_continuar():
+        continuar = True
+        win.destroy()
+        root.destroy()
+
+    def on_cerrar():
+        continuar = False
+        win.destroy()
+        root.destroy()
+
+    # Botones estilo Windows 11 (doble de grande)
+    style = ttk.Style()
+    style.configure("W11.TButton", font=("Segoe UI", 22), padding=16)
+
+    frame = tk.Frame(win, bg="#f3f3f3")
+    frame.grid(row=1, column=1, sticky="e", padx=(0, 40), pady=(20, 40))
+
+    btn_continuar = ttk.Button(frame, text="Continuar", command=on_continuar, style="W11.TButton")
+    btn_continuar.pack(side="left", padx=(0, 20))
+    btn_cerrar = ttk.Button(frame, text="Cerrar el programa", command=on_cerrar, style="W11.TButton")
+    btn_cerrar.pack(side="left")
+
+    win.grab_set()
+    win.mainloop()
+    return continuar
