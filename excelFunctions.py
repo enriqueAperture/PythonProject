@@ -827,6 +827,43 @@ def fecha_caducidad(fecha_inicio):
     except Exception:
         return fecha_inicio
 
+def fecha_caducidad_3(fecha_inicio):
+    """
+    Recibe una fecha en formato DD-MM-YYYY, suma 5 años y resta un día.
+    Devuelve la fecha resultante en el mismo formato DD-MM-YYYY.
+    """
+    # Extraer día, mes y año
+    try:
+        partes = str(fecha_inicio)[:10].split('-')
+        dia = int(partes[0])
+        mes = int(partes[1])
+        anio = int(partes[2])
+
+        # Sumar 3 años
+        nuevo_anio = anio + 3
+
+        # Restar un día
+        dia -= 1
+        if dia == 0:
+            mes -= 1
+            if mes == 0:
+                mes = 12
+                nuevo_anio -= 1
+            # Días por mes (considerando años bisiestos para febrero)
+            if mes == 2:
+                if (nuevo_anio % 4 == 0 and (nuevo_anio % 100 != 0 or nuevo_anio % 400 == 0)):
+                    dia = 29
+                else:
+                    dia = 28
+            elif mes in [1,3,5,7,8,10,12]:
+                dia = 31
+            else:
+                dia = 30
+
+        return f"{dia:02d}-{mes:02d}-{nuevo_anio:04d}"
+    except Exception:
+        return fecha_inicio
+
 def añadir_acuerdo_representacion(driver, fila):
     """
     Navega a la sección de acuerdos de representación y añade un acuerdo usando los datos de la fila 'empresa'.
@@ -967,6 +1004,8 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         fecha_inicio = obtener_fecha_modificada(fila["fecha_inicio"])
 
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pFecha", fecha_inicio)
+        time.sleep(0.5)
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pFecha_caducidad", fecha_caducidad_3(fecha_inicio))
         time.sleep(0.5)
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_origen", fila["nombre_recogida"])
         time.sleep(0.5)
