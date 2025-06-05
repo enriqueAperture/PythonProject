@@ -121,31 +121,29 @@ def wait_for_new_download(download_path: str, old_state: dict, num_descargas: in
 def setup_descarga(driver: webdriver.Chrome, folder_name: str, product_name: str) -> str:
     """
     Prepara el entorno de descargas para Selenium.
-    Crea la carpeta BASE_DIR/descargas/[folder_name]/[product_name] y configura el driver para descargar ahí.
-    Si la carpeta [folder_name] ya existe, crea [folder_name]_1, [folder_name]_2, etc.
-    Si la carpeta [product_name] ya existe dentro, crea [product_name]_1, [product_name]_2, etc.
-    Devuelve la ruta absoluta de la carpeta de descargas.
+    Crea (o utiliza, si ya existe) la carpeta BASE_DIR/descargas/[folder_name]/[product_name] y configura el driver para descargar ahí.
+    
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        folder_name (str): Nombre de la carpeta de la empresa.
+        product_name (str): Nombre de la carpeta para el producto (en este caso, para el PDF).
+    
+    Returns:
+        str: Ruta absoluta de la carpeta de descargas.
     """
     base_download_folder = os.path.join(BASE_DIR, "descargas")
-    # Lógica para evitar sobrescribir carpetas existentes para folder_name
-    final_folder_name = folder_name
-    folder_path = os.path.join(base_download_folder, final_folder_name)
-    counter_folder = 1
-    while os.path.exists(folder_path):
-        final_folder_name = f"{folder_name}_{counter_folder}"
-        folder_path = os.path.join(base_download_folder, final_folder_name)
-        counter_folder += 1
-
-    # Lógica para evitar sobrescribir carpetas existentes para product_name
-    final_product_name = product_name
-    full_path = os.path.join(folder_path, final_product_name)
-    counter_product = 1
-    while os.path.exists(full_path):
-        final_product_name = f"{product_name}_{counter_product}"
-        full_path = os.path.join(folder_path, final_product_name)
-        counter_product += 1
-
-    download_path = ensure_download_path(full_path)
+    
+    # Usar (o crear) la carpeta de la empresa
+    empresa_folder = os.path.join(base_download_folder, folder_name)
+    if not os.path.exists(empresa_folder):
+        os.makedirs(empresa_folder, exist_ok=True)
+    
+    # Usar (o crear) la carpeta del producto dentro de la empresa
+    producto_folder = os.path.join(empresa_folder, product_name)
+    if not os.path.exists(producto_folder):
+        os.makedirs(producto_folder, exist_ok=True)
+    
+    download_path = ensure_download_path(producto_folder)
     configure_driver_download_path(driver, download_path)
     logging.info(f"Descargas configuradas en: {download_path}")
     return download_path

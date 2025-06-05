@@ -136,14 +136,14 @@ def procesar_regages():
     """
     output_path = os.path.join(BASE_DIR, "output", "regage.json")
     if not os.path.exists(output_path):
-        print(f"No se encontró el archivo: {output_path}")
+        logging.error(f"No se encontró el archivo: {output_path}")
         return
 
     with open(output_path, "r", encoding="utf-8") as f:
         try:
             registros = json.load(f)
         except Exception as e:
-            print(f"Error leyendo regage.json: {e}")
+            logging.error(f"Error leyendo regage.json: {e}")
             return
 
     if not isinstance(registros, list):
