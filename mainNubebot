@@ -10,6 +10,7 @@ import subprocess
 import re
 import json
 import glob
+import sys
 import unicodedata
 import loggerConfig
 import tkinter as tk
@@ -74,7 +75,7 @@ def main():
         excelFunctions.añadir_acuerdo_representacion(driver, excel_fila)
         excelFunctions.añadir_contratos_tratamientos(driver, excel_fila)
         logging.info("Contratos creados correctamente: desde empresa a contratos")
-        exit()
+        sys.exit()
     # Descarga el Excel de centros medioambientales
     excel_centros = excelFunctions.descargar_excel_centros(driver)
     coincidencias_centros = excelFunctions.coincidencias_en_centros(excel_fila, excel_centros)
@@ -86,7 +87,7 @@ def main():
         excelFunctions.añadir_acuerdo_representacion(driver, excel_fila)
         excelFunctions.añadir_contratos_tratamientos(driver, excel_fila)
         logging.info("Contratos creados correctamente: desde centro a contratos")
-        exit()
+        sys.exit()
     excel_clientes = excelFunctions.descargar_excel_clientes(driver)
     # Comprueba si el cliente ya está en nubelus
     coincidencias_clientes = excelFunctions.coincidencias_en_clientes(excel_fila, excel_clientes)
@@ -97,7 +98,7 @@ def main():
         excelFunctions.añadir_acuerdo_representacion(driver, excel_fila)
         excelFunctions.añadir_contratos_tratamientos(driver, excel_fila)
         logging.info("Contratos creados correctamente: desde cliente a contratos")
-        exit()
+        sys.exit()
     # Descarga el Excel de usuarios
     usuarios = excelFunctions.descargar_excel_usuarios(driver)
     # Si el usuario no está en nubelus, lo añade
@@ -107,7 +108,7 @@ def main():
         excelFunctions.añadir_acuerdo_representacion(driver, excel_fila)
         excelFunctions.añadir_contratos_tratamientos(driver, excel_fila)
         logging.info("Contratos creados correctamente: desde usuario a contratos")
-        exit()
+        sys.exit()
     # Descarga el Excel de acuerdos de representación
     acuerdos_representacion = excelFunctions.descargar_excel_acuerdos_representacion(driver)
     # Comprueba si el acuerdo de representación ya existe
@@ -117,7 +118,7 @@ def main():
         excelFunctions.añadir_acuerdo_representacion(driver, excel_fila)
         excelFunctions.añadir_contratos_tratamientos(driver, excel_fila)
         logging.info("Contratos creados correctamente: desde acuerdo de representación a contratos")
-        exit()
+        sys.exit()
     # Descarga el Excel de contratos de tratamiento
     contratos_tratamiento = excelFunctions.descargar_excel_contratos(driver)
     # Comprueba si el contrato de tratamiento ya existe
@@ -126,7 +127,7 @@ def main():
     if coincidencias_contratos is None:
         excelFunctions.añadir_contratos_tratamientos(driver, excel_fila)
         logging.info("Contratos creados correctamente: desde contratos")
-        exit()
+        sys.exit()
         # Modificar este bloque para que se pueda añadir un contrato de tratamiento por cada residuo
     else:
         excelFunctions.crear_contratos_faltantes(driver, excel_fila, coincidencias_contratos)

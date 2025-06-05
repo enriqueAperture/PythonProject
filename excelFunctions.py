@@ -194,7 +194,7 @@ def sacar_empresas_no_añadidas(driver: webdriver.Chrome) -> pd.DataFrame:
     except TimeoutError as e:
         logging.error(e)
         driver.quit()
-        exit()
+        sys.exit()
 
     # Leer los Excel con pandas
     entidades_medioambientales = pd.read_excel(archivo_xlsx)
@@ -319,7 +319,7 @@ def añadir_empresa(driver: webdriver.Chrome, fila) -> None:
         else:
             logging.info("Saliendo del proceso de adición de empresas.")
             driver.quit()
-            exit()
+            sys.exit()
 
 def añadir_empresas(driver: webdriver.Chrome, empresas_añadir: pd.DataFrame) -> None:
     """
@@ -453,7 +453,7 @@ def sacar_centros_no_añadidos(driver: webdriver.Chrome) -> pd.DataFrame:
     except TimeoutError as e:
         logging.error(e)
         driver.quit()
-        exit()
+        sys.exit()
 
     centros_medioambientales = pd.read_excel(archivo_xlsx)
     excel_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
@@ -606,7 +606,7 @@ def añadir_centro(driver: webdriver.Chrome, fila) -> None:
         else:
             logging.info("Saliendo del proceso de adición de centros.")
             driver.quit()
-            exit()
+            sys.exit()
 
 def añadir_centros(driver: webdriver.Chrome, centros_añadir: pd.DataFrame) -> None:
     """
@@ -854,7 +854,7 @@ def añadir_acuerdo_representacion(driver, fila):
                 else:
                     logging.info("Saliendo del proceso de adición de acuerdos de representación.")
                     driver.quit()
-                    exit()
+                    sys.exit()
             time.sleep(1)
 
 def codigo_residuos_por_autorizacion(codigo_autorizacion: str) -> str:
@@ -911,7 +911,7 @@ def añadir_autorizaciones(driver, fila):
         else:
             logging.info("Saliendo del proceso de adición de autorizaciones.")
             driver.quit()
-            exit()
+            sys.exit()
 
 def añadir_usuario(driver, fila):
     """
@@ -952,7 +952,7 @@ def añadir_usuario(driver, fila):
         else:
             logging.info("Saliendo del proceso de adición de usuarios.")
             driver.quit()
-            exit()
+            sys.exit()
 
 def añadir_contrato_tratamiento(driver, fila, residuo):
     """
@@ -1006,7 +1006,7 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         else:
             logging.info("Saliendo del proceso de adición de contratos de tratamiento.")
             driver.quit()
-            exit()
+            sys.exit()
 
 def añadir_contratos_tratamientos(driver, fila):
     """
@@ -1054,7 +1054,7 @@ def añadir_contratos_tratamientos(driver, fila):
                 else:
                     logging.info("Saliendo del proceso de adición de contratos de tratamiento.")
                     driver.quit()
-                    exit()
+                    sys.exit()
             time.sleep(1)
 
 def crear_notificacion_tratamiento(driver):
@@ -1075,7 +1075,7 @@ def crear_notificacion_tratamiento(driver):
         else:
             logging.info("Saliendo del proceso de creación de notificaciones.")
             driver.quit()
-            exit()
+            sys.exit()
         return
 
 def añadir_tratamientos(driver, fila, residuo):
@@ -1133,7 +1133,7 @@ def añadir_tratamiento(driver, fila, residuo, indice=1):
         else:
             logging.info("Saliendo del proceso de adición de tratamientos.")
             driver.quit()
-            exit()
+            sys.exit()
 
 def residuos_y_tratamientos_json():
     """
@@ -1231,7 +1231,7 @@ def añadir_facturacion(driver, fila, residuo):
         else:
             logging.info("Saliendo del proceso de adición de facturación.")
             driver.quit()
-            exit()
+            sys.exit()
 
 def activar_proteccion_mejorada(driver):
     """
@@ -1255,7 +1255,7 @@ def activar_proteccion_mejorada(driver):
                 else:
                     logging.info("Saliendo del proceso de protección mejorada.")
                     driver.quit()
-                    exit()
+                    sys.exit()
             time.sleep(1)
 
 def leer_excel(ruta_excel):
@@ -1298,11 +1298,21 @@ def comprobar_datos_excel(excel_input):
         # Limpiar cada campo de las columnas requeridas
         for col in required_columns:
             df[col] = df[col].apply(limpiar_campo)
+        
+        # Validar que el teléfono tenga 9 dígitos, si no, dejarlo vacío
+        def limpiar_telefono(tel):
+            tel_str = str(tel)
+            solo_digitos = ''.join(filter(str.isdigit, tel_str))
+            if len(solo_digitos) == 9:
+                return solo_digitos
+            return ""
+
+        df['telf_recogida'] = df['telf_recogida'].apply(limpiar_telefono)
 
         return df
     except Exception as e:
         logging.error(f"Error al comprobar el archivo Excel: {e}. Los datos no están en el formato correcto.")
-        exit()
+        sys.exit()
 def esperar_descarga_completa(ruta_archivo, timeout=30):
     """
     Espera a que el archivo exista y no tenga extensión .crdownload.
@@ -1341,7 +1351,7 @@ def descargar_excel_entidades(driver):
             continuar = funcionesNubelus.preguntar_por_pantalla()
             if not continuar:
                 driver.quit()
-                exit()
+                sys.exit()
             return None
 
         df = pd.read_excel(archivo_xlsx)
@@ -1356,7 +1366,7 @@ def descargar_excel_entidades(driver):
         continuar = funcionesNubelus.preguntar_por_pantalla()
         if not continuar:
             driver.quit()
-            exit()
+            sys.exit()
         return None
 
 def descargar_excel_centros(driver):
@@ -1385,7 +1395,7 @@ def descargar_excel_centros(driver):
             continuar = funcionesNubelus.preguntar_por_pantalla()
             if not continuar:
                 driver.quit()
-                exit()
+                sys.exit()
             return None
 
         df = pd.read_excel(archivo_xlsx)
@@ -1400,7 +1410,7 @@ def descargar_excel_centros(driver):
         continuar = funcionesNubelus.preguntar_por_pantalla()
         if not continuar:
             driver.quit()
-            exit()
+            sys.exit()
         return None
 
 def descargar_excel_clientes(driver):
@@ -1429,7 +1439,7 @@ def descargar_excel_clientes(driver):
             continuar = funcionesNubelus.preguntar_por_pantalla()
             if not continuar:
                 driver.quit()
-                exit()
+                sys.exit()
             return None
 
         df = pd.read_excel(archivo_xlsx)
@@ -1444,7 +1454,7 @@ def descargar_excel_clientes(driver):
         continuar = funcionesNubelus.preguntar_por_pantalla()
         if not continuar:
             driver.quit()
-            exit()
+            sys.exit()
         return None
 
 def descargar_excel_usuarios(driver):
@@ -1473,7 +1483,7 @@ def descargar_excel_usuarios(driver):
             continuar = funcionesNubelus.preguntar_por_pantalla()
             if not continuar:
                 driver.quit()
-                exit()
+                sys.exit()
             return None
 
         df = pd.read_excel(archivo_xlsx)
@@ -1488,7 +1498,7 @@ def descargar_excel_usuarios(driver):
         continuar = funcionesNubelus.preguntar_por_pantalla()
         if not continuar:
             driver.quit()
-            exit()
+            sys.exit()
         return None
 
 def descargar_excel_acuerdos_representacion(driver):
@@ -1517,7 +1527,7 @@ def descargar_excel_acuerdos_representacion(driver):
             continuar = funcionesNubelus.preguntar_por_pantalla()
             if not continuar:
                 driver.quit()
-                exit()
+                sys.exit()
             return None
 
         df = pd.read_excel(archivo_xlsx)
@@ -1532,7 +1542,7 @@ def descargar_excel_acuerdos_representacion(driver):
         continuar = funcionesNubelus.preguntar_por_pantalla()
         if not continuar:
             driver.quit()
-            exit()
+            sys.exit()
         return None
 
 def descargar_excel_contratos(driver):
@@ -1561,7 +1571,7 @@ def descargar_excel_contratos(driver):
             continuar = funcionesNubelus.preguntar_por_pantalla()
             if not continuar:
                 driver.quit()
-                exit()
+                sys.exit()
             return None
 
         df = pd.read_excel(archivo_xlsx)
@@ -1576,7 +1586,7 @@ def descargar_excel_contratos(driver):
         continuar = funcionesNubelus.preguntar_por_pantalla()
         if not continuar:
             driver.quit()
-            exit()
+            sys.exit()
         return None
 
 def completar_datos_centro(driver, fila):
@@ -1605,7 +1615,7 @@ def completar_datos_centro(driver, fila):
         else:
             logging.info("Saliendo del proceso de adición de centros.")
             driver.quit()
-            exit()
+            sys.exit()
 
 def añadir_cliente_empresa(driver, fila):
     """
@@ -1633,7 +1643,7 @@ def añadir_cliente_empresa(driver, fila):
         else:
             logging.info("Saliendo del proceso de adición de clientes.")
             driver.quit()
-            exit()
+            sys.exit()
     
 def crear_contratos_faltantes(driver, fila, coincidencias_contratos):
     """
@@ -1656,7 +1666,7 @@ def crear_contratos_faltantes(driver, fila, coincidencias_contratos):
     if not residuos_faltantes:
         print("Todos los contratos de tratamiento ya están creados para esta empresa.")
         logging.info("Todos los contratos de tratamiento ya están creados para esta empresa.")
-        exit()
+        sys.exit()
 
     for item in residuos_faltantes:
         residuo = item["residuo"]

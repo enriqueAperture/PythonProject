@@ -20,6 +20,7 @@ import logging
 import tkinter as tk
 import pandas as pd
 from tkinter import ttk
+import sys
 
 
 # URL de la web de Nubelus
@@ -56,7 +57,7 @@ def iniciar_sesion(driver):
                 else:
                     logging.info("Saliendo del proceso de inicio de sesión.")
                     driver.quit()
-                    exit()
+                    sys.exit()
             time.sleep(1)
 
 def crear_proveedor(driver):
