@@ -93,7 +93,7 @@ def seleccionar_certificado_chrome(nombre_certificado='RICARDO ESCUDE'):
         else:
             logging.error("No se pudo seleccionar el certificado.")
     """
-    ventana_chrome = uiautomationHandler.obtener_ventana_chrome()
+    ventana_chrome = uiautomationHandler.obtener_ventana("Chrome", class_name="Chrome_WidgetWin_1")
     if not ventana_chrome:
         logging.error("No se encontró la ventana de certificados.")
         return False

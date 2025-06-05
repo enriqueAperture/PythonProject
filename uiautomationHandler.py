@@ -35,67 +35,38 @@ import uiautomation as auto
 import time
 import logging
 
-def obtener_ventana_chrome(timeout=10):
+def obtener_ventana(nombre_ventana: str, class_name: str = None, timeout: int = 10):
     """
-    Busca y activa la ventana de Google Chrome.
+    Busca y activa una ventana por nombre y opcionalmente por class_name.
 
     Args:
+        nombre_ventana (str): Nombre (o parte del nombre) de la ventana a buscar.
+        class_name (str, optional): Nombre de la clase de la ventana (ClassName). Si es None, no se filtra por clase.
         timeout (int, optional): Tiempo máximo de espera en segundos. Por defecto 10.
 
     Returns:
-        Control: El control de la ventana de Chrome encontrada o None si no se encuentra.
+        Control: El control de la ventana encontrada o None si no se encuentra.
 
     Ejemplo de uso:
-        ventana_chrome = obtener_ventana_chrome(timeout=10)
+        ventana_chrome = obtener_ventana("Chrome", class_name="Chrome_WidgetWin_1", timeout=10)
+        ventana_cert = obtener_ventana("Diálogo de seguridad del almacén Windows", timeout=10)
     """
-    logging.info("Buscando ventana de Chrome...")
-    ventana_chrome = None
+    logging.info(f"Buscando ventana: '{nombre_ventana}'" + (f", class_name: '{class_name}'" if class_name else ""))
+    ventana_encontrada = None
     start_time = time.time()
-    while not ventana_chrome and (time.time() - start_time) < timeout:
+    while not ventana_encontrada and (time.time() - start_time) < timeout:
         for ventana in auto.GetRootControl().GetChildren():
-            if ventana.ClassName == 'Chrome_WidgetWin_1' and 'Chrome' in ventana.Name:
-                ventana_chrome = ventana
+            if nombre_ventana in ventana.Name and (class_name is None or ventana.ClassName == class_name):
+                ventana_encontrada = ventana
                 break
         time.sleep(0.5)
 
-    if ventana_chrome:
-        logging.info(f"Ventana de Chrome encontrada: {ventana_chrome.Name}")
-        ventana_chrome.SetActive()
-        return ventana_chrome
+    if ventana_encontrada:
+        logging.info(f"Ventana encontrada: {ventana_encontrada.Name}")
+        ventana_encontrada.SetActive()
+        return ventana_encontrada
     else:
-        logging.error("No se encontró la ventana de Chrome.")
-        return None
-
-def obtener_ventana_certificados(timeout=10):
-    """
-    Busca y activa la ventana de diálogo de certificados de Windows ("Diálogo de seguridad del almacén Windows").
-
-    Args:
-        timeout (int, optional): Tiempo máximo de espera en segundos. Por defecto 10.
-
-    Returns:
-        Control: El control de la ventana de certificados encontrada o None si no se encuentra.
-
-    Ejemplo de uso:
-        ventana_cert = obtener_ventana_certificados(timeout=10)
-    """
-    logging.info("Buscando ventana de diálogo de certificados de Windows...")
-    ventana_cert = None
-    start_time = time.time()
-    while not ventana_cert and (time.time() - start_time) < timeout:
-        for ventana in auto.GetRootControl().GetChildren():
-            if 'Diálogo de seguridad del almacén Windows' in ventana.Name:
-                logging.info(f"Ventana encontrada: {ventana.Name}")
-                ventana_cert = ventana
-                break
-        time.sleep(0.5)
-
-    if ventana_cert:
-        logging.info(f"Ventana de certificados encontrada: {ventana_cert.Name}")
-        ventana_cert.SetActive()
-        return ventana_cert
-    else:
-        logging.error("No se encontró la ventana de certificados.")
+        logging.error(f"No se encontró la ventana '{nombre_ventana}'.")
         return None
 
 def click_boton_en_popup(ventana_principal, popup_name: str, button_name: str, timeout: int = 5) -> bool:

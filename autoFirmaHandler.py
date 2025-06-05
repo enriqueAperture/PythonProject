@@ -39,7 +39,15 @@ def enviar_enter_a_ventana(ventana_control):
     if ventana_control and ventana_control.Exists():
         ventana_control.SetActive()
         ventana_control.Click()
+        time.sleep(1)  # Espera breve para asegurar que la ventana está activa
+        uiautomation.SendKeys('{Tab}')
+        time.sleep(1)  # Espera breve para asegurar que la ventana está activa
         uiautomation.SendKeys('{Enter}')
+        time.sleep(1)  # Espera breve para asegurar que la ventana está activa
+        uiautomation.SendKeys('{Tab}')
+        time.sleep(1)  # Espera breve para asegurar que la ventana está activa
+        uiautomation.SendKeys('{Enter}')
+        logging.info("Se envió Enter a la ventana activa.")
     else:
         logging.error("No se encontró la ventana o no está activa para enviar Enter.")
 
@@ -161,7 +169,7 @@ def firmar_en_autofirma():
     Ejemplo de uso:
         firmar_en_autofirma()
     """
-    ventana_chrome = uiautomationHandler.obtener_ventana_chrome()
+    ventana_chrome = uiautomationHandler.obtener_ventana("Chrome", class_name="Chrome_WidgetWin_1")
     # Esperar el popup "¿Abrir AutoFirma?" y hacer clic en el botón "Abrir AutoFirma"
     uiautomationHandler.esperar_popup_y_ejecutar(
         ventana_chrome,
@@ -169,12 +177,10 @@ def firmar_en_autofirma():
         accion=lambda popup: uiautomationHandler.click_boton_en_popup(ventana_chrome, "¿Abrir AutoFirma?", "Abrir AutoFirma"),
         timeout=10
     )
-    time.sleep(5)
-    # Imprimir títulos de las ventanas abiertas para depuración
-    print_open_windows_titles()
     # Esperar el popup "Diálogo de seguridad del almacén Windows" y ejecutar la selección de certificado
-    ventana_certificados = uiautomationHandler.obtener_ventana_certificados()
-    time.sleep(20)
-    mostrar_arbol_elementos(ventana_certificados)
-    enviar_enter_a_ventana(ventana_certificados)
+    time.sleep(5)
+    ventana_dialogo = uiautomationHandler.obtener_ventana("Diálogo de seguridad del almacén Windows")
+    enviar_enter_a_ventana(ventana_dialogo)
+    time.sleep(100)
+    
     
