@@ -49,7 +49,7 @@ import webConfiguration
 
 
 
-ruta_excel_input = "input/excel_input.xls"  # Ruta del Excel de entrada
+ruta_excel_input = "entrada/excel_input.xls"  # Ruta del Excel de entrada
 
 def main():
     # Comprueba que el formato de los datos del Excel son correctos
