@@ -173,7 +173,7 @@ def limpiar_campo(valor):
 
 # def sacar_empresas_no_añadidas(driver: webdriver.Chrome) -> pd.DataFrame:
 #     """
-#     Procesa los archivos Excel para identificar las empresas que aún no han sido añadidas en Nubelus.
+#     Procesa los  archivos Excel para identificar las empresas que aún no han sido añadidas en Nubelus.
     
 #     El proceso consiste en:
 #       1. Esperar a que se descargue el archivo Excel esperado.
