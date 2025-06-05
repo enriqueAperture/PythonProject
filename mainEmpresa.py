@@ -56,6 +56,6 @@ webFunctions.aceptar_pop_up(popup, "miBoton.aceptar")
 webFunctions.clickar_boton_por_clase(driver, "navbar.superMenu")
 
 # Obtener las empresas que aún no han sido añadidas (según el Excel recogido)
-empresas_añadir = excelFunctions.sacarEmpresasNoAñadidas(driver)
+empresas_añadir = excelFunctions.sacar_empresas_no_añadidas(driver)
 # Añadir las empresas obtenidas en el sistema
-excelFunctions.añadirEmpresas(driver, empresas_añadir)
+excelFunctions.añadir_empresa(driver, empresas_añadir)
