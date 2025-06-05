@@ -1,10 +1,54 @@
+# Importar módulos y librerías generales
+
+import pandas as pd
+import logging
+import time
+import os
+import shutil
+import tempfile
+import subprocess
+import re
+import json
+import glob
+import unicodedata
+import loggerConfig
+import tkinter as tk
+from tkinter import ttk
+import typing
+from typing import Union, Optional, List, Dict
+
+# Importar modulos de Selenium
+import selenium
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common import (
+    TimeoutException,
+    NoSuchWindowException,
+    NoSuchFrameException,
+    WebDriverException,
+    NoSuchElementException,
+    ElementNotInteractableException
+)
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
+
+
+# Importar modulos del proyecto
 import funcionesNubelus
 import excelFunctions
 import webConfiguration
-import logging
+import webFunctions
+import config
+import loggerConfig
+import webConfiguration
 
 
-ruta_excel_input = "data/excel_input.xls"  # Ruta del Excel de entrada
+
+ruta_excel_input = "input/excel_input.xls"  # Ruta del Excel de entrada
 
 def main():
     # Comprueba que el formato de los datos del Excel son correctos
@@ -17,7 +61,6 @@ def main():
     funcionesNubelus.iniciar_sesion(driver)
     # Descarga el Excel de entidades medioambientales
     excel_entidades = excelFunctions.descargar_excel_entidades(driver)
-    # Esperar descarga y guardar los excel en una ruta local
     # Comprueba si la empresa ya está en nubelus
     excel_fila = excel_input.iloc[0]
     coincidencias_entidades = excelFunctions.coincidencias_en_entidades(excel_fila, excel_entidades)

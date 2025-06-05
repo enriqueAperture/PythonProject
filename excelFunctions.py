@@ -36,6 +36,7 @@ import json
 import logging
 import re
 import unicodedata
+import sys
 from config import BASE_DIR
 import webFunctions
 from selenium import webdriver
@@ -47,8 +48,8 @@ import funcionesNubelus
 # Directorio donde se espera la descarga de archivos Excel
 DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
 # Ruta del archivo Excel recogidas
-EXCEL_RECOGIDAS = os.path.join(BASE_DIR, "data", "excel_recogidas.xls")
-data_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
+#EXCEL_RECOGIDAS = os.path.join(BASE_DIR, "data", "excel_recogidas.xls")
+#data_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
 
 URL_SEGURIDAD = "chrome://settings/security"
 WEB_NUBELUS = "https://portal.nubelus.es"
@@ -1056,62 +1057,6 @@ def añadir_contratos_tratamientos(driver, fila):
                     exit()
             time.sleep(1)
 
-
-def añadir_tratamientos(driver, fila, residuo_item):
-    """
-    Añade los tratamientos indicados usando los datos de la fila y el residuo (json).
-    Si el residuo es 'BATERIAS DE PLOMO*', añade tratamientos para todos los centros asociados.
-    Para el resto, solo añade el primero.
-    """
-    webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Tratamientos")
-    time.sleep(1)
-    try:
-        residuo = residuo_item["residuo"]
-        nombre_residuo = residuo.get("nombre", "").strip().upper()
-        centros = residuo_item.get("centros", [])
-        if "BATERIAS DE PLOMO*" in nombre_residuo and centros and isinstance(centros, list):
-            for idx, centro in enumerate(centros, start=1):
-                residuo_con_centro = residuo.copy()
-                residuo_con_centro["centro"] = centro
-                añadir_tratamiento(driver, fila, residuo_con_centro, indice=idx)
-        else:
-            if centros and isinstance(centros, list) and len(centros) > 0:
-                residuo_con_centro = residuo.copy()
-                residuo_con_centro["centro"] = centros[0]
-                añadir_tratamiento(driver, fila, residuo_con_centro, indice=1)
-            else:
-                añadir_tratamiento(driver, fila, residuo, indice=1)
-    except Exception as error:
-        logging.error(f"Error al añadir tratamientos para el residuo {residuo.get('nombre', '')} de la empresa {fila.get('nombre_recogida', '')}: {error}")
-
-def añadir_tratamiento(driver, fila, residuo, indice=1):
-    """
-    Añade un tratamiento individual usando los datos de la fila, el residuo (json) y el índice de tratamiento.
-    Usa el centro y tratamiento asociados que vienen en el json de residuo["centro"].
-    """
-    try:
-        webFunctions.clickar_boton_por_clase(driver, f"miBoton.editar.editar_{indice}.sinTexto.dcha")
-        oldDriver = driver
-        popup = webFunctions.encontrar_pop_up_por_id(driver, f"div_editar_tratamiento_posterior_{indice}")
-        time.sleep(0.5)
-        centro = residuo.get("centro", {})
-        webFunctions.completar_campo_y_enter_por_name(popup, f"pDenominacion_ema_{indice}", centro.get("centro", ""))
-        time.sleep(0.5)
-        webFunctions.completar_campo_y_enter_por_name(popup, f"pTratamiento_posterior_{indice}_codigo_ler_2", centro.get("tratamiento", ""))
-        time.sleep(1)
-        webFunctions.clickar_boton_por_clase(popup, "icon-ok")
-        driver = oldDriver
-        time.sleep(1)
-    except Exception as error:
-        logging.error(f"Error al añadir tratamiento {indice} para la empresa {fila.get('nombre_recogida', '')}: {error}")
-        continuar = funcionesNubelus.preguntar_por_pantalla()
-        if continuar:
-            logging.info(f"Continuando con el siguiente tratamiento {indice}...")
-        else:
-            logging.info("Saliendo del proceso de adición de tratamientos.")
-            driver.quit()
-            exit()
-
 def crear_notificacion_tratamiento(driver):
     """
     Crea una notificación en la plataforma Nubelus.
@@ -1189,18 +1134,6 @@ def añadir_tratamiento(driver, fila, residuo, indice=1):
             logging.info("Saliendo del proceso de adición de tratamientos.")
             driver.quit()
             exit()
-
-# def editar_notificacion_contratos_tratamiento(driver, fila):
-
-#     oldDriver = driver
-#     popup = webFunctions.encontrar_pop_up_por_clase(driver, "miBoton.editar")
-
-#     webFunctions.seleccionar_elemento_por_name(popup, "pNt_notificada_sn", "SI")
-#     # Completar la funcion
-
-#     driver = oldDriver
-
-#     webFunctions.clickar_boton_por_clase(driver, "miBoton.notificar.adcr")
 
 def residuos_y_tratamientos_json():
     """
@@ -1310,7 +1243,7 @@ def activar_proteccion_mejorada(driver):
     for intento in range(intentos):
         try:
             webFunctions.abrir_web(driver, URL_SEGURIDAD)
-            time.sleep(3)
+            time.sleep(5)
             # Aquí puedes añadir más pasos si necesitas interactuar con la página de seguridad
             return
         except Exception as error:
@@ -1382,50 +1315,6 @@ def esperar_descarga_completa(ruta_archivo, timeout=30):
             raise TimeoutError("Descarga no completada en el tiempo esperado.")
         time.sleep(1)
 
-def descargar_excel_usuarios(driver):
-    """
-    Descarga el Excel de usuarios desde Nubelus y devuelve un DataFrame con su contenido.
-    """
-    try:
-        webFunctions.abrir_web(driver, WEB_NUBELUS_USUARIO)
-        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
-        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
-        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
-        oldDriver = driver
-        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
-        try:
-            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
-        except Exception as e:
-            logging.info(f"Error al aceptar el pop-up: {e}")
-        driver = oldDriver
-
-        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Usuarios.xlsx")
-        try:
-            esperar_descarga_completa(archivo_xlsx)
-            logging.info(f"Archivo descargado: {archivo_xlsx}")
-        except TimeoutError as e:
-            logging.error(e)
-            continuar = funcionesNubelus.preguntar_por_pantalla()
-            if not continuar:
-                driver.quit()
-                exit()
-            return None
-
-        df = pd.read_excel(archivo_xlsx)
-        try:
-            os.remove(archivo_xlsx)
-            logging.info(f"Archivo eliminado: {archivo_xlsx}")
-        except Exception as e:
-            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
-        return df
-    except Exception as error:
-        logging.error(f"Error al descargar el Excel de usuarios: {error}")
-        continuar = funcionesNubelus.preguntar_por_pantalla()
-        if not continuar:
-            driver.quit()
-            exit()
-        return None
-
 def descargar_excel_entidades(driver):
     """
     Descarga el Excel de entidades desde Nubelus y devuelve un DataFrame con su contenido.
@@ -1508,94 +1397,6 @@ def descargar_excel_centros(driver):
         return df
     except Exception as error:
         logging.error(f"Error al descargar el Excel de centros: {error}")
-        continuar = funcionesNubelus.preguntar_por_pantalla()
-        if not continuar:
-            driver.quit()
-            exit()
-        return None
-
-def descargar_excel_acuerdos_representacion(driver):
-    """
-    Descarga el Excel de acuerdos de representación desde Nubelus y devuelve un DataFrame con su contenido.
-    """
-    try:
-        webFunctions.abrir_web(driver, WEB_NUBELUS_ACUERDOS)
-        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
-        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
-        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
-        oldDriver = driver
-        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
-        try:
-            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
-        except Exception as e:
-            logging.info(f"Error al aceptar el pop-up: {e}")
-        driver = oldDriver
-
-        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Acuerdos de representación.xlsx")
-        try:
-            esperar_descarga_completa(archivo_xlsx)
-            logging.info(f"Archivo descargado: {archivo_xlsx}")
-        except TimeoutError as e:
-            logging.error(e)
-            continuar = funcionesNubelus.preguntar_por_pantalla()
-            if not continuar:
-                driver.quit()
-                exit()
-            return None
-
-        df = pd.read_excel(archivo_xlsx)
-        try:
-            os.remove(archivo_xlsx)
-            logging.info(f"Archivo eliminado: {archivo_xlsx}")
-        except Exception as e:
-            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
-        return df
-    except Exception as error:
-        logging.error(f"Error al descargar el Excel de acuerdos de representación: {error}")
-        continuar = funcionesNubelus.preguntar_por_pantalla()
-        if not continuar:
-            driver.quit()
-            exit()
-        return None
-
-def descargar_excel_contratos(driver):
-    """
-    Descarga el Excel de contratos desde Nubelus y devuelve un DataFrame con su contenido.
-    """
-    try:
-        webFunctions.abrir_web(driver, WEB_NUBELUS_CONTRATOS)
-        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
-        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
-        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
-        oldDriver = driver
-        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
-        try:
-            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
-        except Exception as e:
-            logging.info(f"Error al aceptar el pop-up: {e}")
-        driver = oldDriver
-
-        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Contratos tratamiento.xlsx")
-        try:
-            esperar_descarga_completa(archivo_xlsx)
-            logging.info(f"Archivo descargado: {archivo_xlsx}")
-        except TimeoutError as e:
-            logging.error(e)
-            continuar = funcionesNubelus.preguntar_por_pantalla()
-            if not continuar:
-                driver.quit()
-                exit()
-            return None
-
-        df = pd.read_excel(archivo_xlsx)
-        try:
-            os.remove(archivo_xlsx)
-            logging.info(f"Archivo eliminado: {archivo_xlsx}")
-        except Exception as e:
-            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
-        return df
-    except Exception as error:
-        logging.error(f"Error al descargar el Excel de contratos: {error}")
         continuar = funcionesNubelus.preguntar_por_pantalla()
         if not continuar:
             driver.quit()
@@ -1646,13 +1447,12 @@ def descargar_excel_clientes(driver):
             exit()
         return None
 
-def descargar_excel_entidades(driver):
+def descargar_excel_usuarios(driver):
     """
-    Descarga el Excel de entidades desde Nubelus y devuelve un DataFrame con su contenido.
-    Incluye manejo de errores con try-except.
+    Descarga el Excel de usuarios desde Nubelus y devuelve un DataFrame con su contenido.
     """
     try:
-        webFunctions.abrir_web(driver, WEB_NUBELUS_ENTIDAD)
+        webFunctions.abrir_web(driver, WEB_NUBELUS_USUARIO)
         webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
         webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
         webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
@@ -1664,7 +1464,7 @@ def descargar_excel_entidades(driver):
             logging.info(f"Error al aceptar el pop-up: {e}")
         driver = oldDriver
 
-        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Entidades medioambientales.xlsx")
+        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Usuarios.xlsx")
         try:
             esperar_descarga_completa(archivo_xlsx)
             logging.info(f"Archivo descargado: {archivo_xlsx}")
@@ -1684,51 +1484,7 @@ def descargar_excel_entidades(driver):
             logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
         return df
     except Exception as error:
-        logging.error(f"Error al descargar el Excel de entidades: {error}")
-        continuar = funcionesNubelus.preguntar_por_pantalla()
-        if not continuar:
-            driver.quit()
-            exit()
-        return None
-
-def descargar_excel_centros(driver):
-    """
-    Descarga el Excel de centros desde Nubelus y devuelve un DataFrame con su contenido.
-    """
-    try:
-        webFunctions.abrir_web(driver, WEB_NUBELUS_CENTROS)
-        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
-        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
-        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
-        oldDriver = driver
-        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
-        try:
-            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
-        except Exception as e:
-            logging.info(f"Error al aceptar el pop-up: {e}")
-        driver = oldDriver
-
-        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Centros de entidades medioambientales.xlsx")
-        try:
-            esperar_descarga_completa(archivo_xlsx)
-            logging.info(f"Archivo descargado: {archivo_xlsx}")
-        except TimeoutError as e:
-            logging.error(e)
-            continuar = funcionesNubelus.preguntar_por_pantalla()
-            if not continuar:
-                driver.quit()
-                exit()
-            return None
-
-        df = pd.read_excel(archivo_xlsx)
-        try:
-            os.remove(archivo_xlsx)
-            logging.info(f"Archivo eliminado: {archivo_xlsx}")
-        except Exception as e:
-            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
-        return df
-    except Exception as error:
-        logging.error(f"Error al descargar el Excel de centros: {error}")
+        logging.error(f"Error al descargar el Excel de usuarios: {error}")
         continuar = funcionesNubelus.preguntar_por_pantalla()
         if not continuar:
             driver.quit()
@@ -1878,50 +1634,6 @@ def añadir_cliente_empresa(driver, fila):
             logging.info("Saliendo del proceso de adición de clientes.")
             driver.quit()
             exit()
-
-def descargar_excel_clientes(driver):
-    """
-    Descarga el Excel de clientes desde Nubelus y devuelve un DataFrame con su contenido.
-    """
-    try:
-        webFunctions.abrir_web(driver, WEB_NUBELUS_CLIENTES)
-        webFunctions.esperar_elemento_por_clase(driver, "miBoton.mas_opciones")
-        webFunctions.clickar_boton_por_clase(driver, "miBoton.mas_opciones")
-        webFunctions.clickar_boton_por_id(driver, "moa_bGenerar_excel")
-        oldDriver = driver
-        popup = webFunctions.encontrar_pop_up_por_id(driver, "div_relacion2excel")
-        try:
-            webFunctions.clickar_boton_por_on_click(popup, "aceptar_relacion2excel()")
-        except Exception as e:
-            logging.info(f"Error al aceptar el pop-up: {e}")
-        driver = oldDriver
-
-        archivo_xlsx = os.path.join(DOWNLOAD_DIR, "Clientes.xlsx")
-        try:
-            esperar_descarga_completa(archivo_xlsx)
-            logging.info(f"Archivo descargado: {archivo_xlsx}")
-        except TimeoutError as e:
-            logging.error(e)
-            continuar = funcionesNubelus.preguntar_por_pantalla()
-            if not continuar:
-                driver.quit()
-                exit()
-            return None
-
-        df = pd.read_excel(archivo_xlsx)
-        try:
-            os.remove(archivo_xlsx)
-            logging.info(f"Archivo eliminado: {archivo_xlsx}")
-        except Exception as e:
-            logging.error(f"No se pudo eliminar el archivo: {archivo_xlsx}. Error: {e}")
-        return df
-    except Exception as error:
-        logging.error(f"Error al descargar el Excel de clientes: {error}")
-        continuar = funcionesNubelus.preguntar_por_pantalla()
-        if not continuar:
-            driver.quit()
-            exit()
-        return None
     
 def crear_contratos_faltantes(driver, fila, coincidencias_contratos):
     """

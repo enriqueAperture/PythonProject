@@ -64,7 +64,7 @@ def crear_proveedor(driver):
     Hace clic en 'Crear proveedor' y acepta el pop-up correspondiente.
     Reintenta hasta 5 veces en caso de error.
     """
-    intentos = 5
+    intentos = 10
     for intento in range(intentos):
         try:
             webFunctions.clickar_boton_por_on_click(driver, "crear_proveedor()")
@@ -77,14 +77,14 @@ def crear_proveedor(driver):
             logging.error(f"Error al crear proveedor (intento {intento+1}): {e}")
             if intento == intentos - 1:
                 raise
-            time.sleep(1)
+            time.sleep(0.5)
 
 def crear_cliente(driver):
     """
     Hace clic en 'Crear cliente' y acepta el pop-up correspondiente.
     Reintenta hasta 5 veces en caso de error.
     """
-    intentos = 5
+    intentos = 10
     for intento in range(intentos):
         try:
             webFunctions.clickar_boton_por_texto(driver, "Crear cliente")
@@ -97,7 +97,7 @@ def crear_cliente(driver):
             logging.error(f"Error al crear cliente (intento {intento+1}): {e}")
             if intento == intentos - 1:
                 raise
-            time.sleep(1)
+            time.sleep(0.5)
 
 def entrar_en_centro_medioambiental(driver):
   """

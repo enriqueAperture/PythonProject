@@ -1062,3 +1062,25 @@ def clickar_boton_por_on_click(driver: webdriver.Chrome, onclick_value: str, tim
     esperar_elemento(driver, By.XPATH, xpath, timeout)
     elemento = driver.find_element(By.XPATH, xpath)
     elemento.click()
+
+def obtener_texto_elemento_por_xpath(driver: webdriver.Chrome, xpath: str, timeout: int = DEFAULT_TIMEOUT) -> str:
+    """
+    Obtiene el texto de un elemento localizado por su XPath.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        xpath (str): Expresión XPath del elemento.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        str: El texto del elemento, o "" si no se encuentra.
+    """
+    try:
+        esperar_elemento(driver, By.XPATH, xpath, timeout)
+        elemento = driver.find_element(By.XPATH, xpath)
+        texto = elemento.text
+        logging.info(f"Texto obtenido del elemento con XPath '{xpath}': {texto}")
+        return texto
+    except Exception as e:
+        logging.error(f"Error al obtener texto del elemento con XPath '{xpath}': {e}")
+        return ""
