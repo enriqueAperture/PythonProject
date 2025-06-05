@@ -966,37 +966,37 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
     try:
         fecha_inicio = obtener_fecha_modificada(fila["fecha_inicio"])
 
-        webFunctions.completar_campo_y_enter_por_name(driver, "pFecha", fecha_inicio)
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pFecha", fecha_inicio)
         time.sleep(0.5)
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_origen", fila["nombre_recogida"])
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_origen", fila["nombre_recogida"])
         time.sleep(0.5)
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. siempre
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. siempre
         time.sleep(0.5)
         if fila.get("provincia_recogida") == "VALENCIA":
-            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D") # METALLS DEL CAMP ( SERRA D'ESPADA ) si es de valencia
+            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D") # METALLS DEL CAMP ( SERRA D'ESPADA ) si es de valencia
             # Depende si el residuo es o no peligroso
             if residuo.get("tipo") == "peligroso":  
-                webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "157/G02/CV")
+                webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_autorizacion_destino", "157/G02/CV")
             elif residuo.get("tipo") == "no peligroso":
-                webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "374/G04/CV")
+                webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_autorizacion_destino", "374/G04/CV")
 
         else:
-            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP, S.L.U. (EL ROMERAL)") # Si es de otra parte
+            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP, S.L.U. (EL ROMERAL)") # Si es de otra parte
             time.sleep(1)
             if residuo.get("tipo") == "peligroso":
-                webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "4570002919") # Siempre suponer que es peligroso
+                webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_autorizacion_destino", "4570002919") # Siempre suponer que es peligroso
             elif residuo.get("tipo") == "no peligroso":
-                webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_destino", "G04") # Siempre suponer que es no peligroso
+                webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_autorizacion_destino", "G04") # Siempre suponer que es no peligroso
         time.sleep(0.1)
 
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_operador_traslados", "ECO TITAN S.L.") # Siempre ECO TITAN
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_operador_traslados", "ECO TITAN S.L.") # Siempre ECO TITAN
         time.sleep(2)
         if residuo.get("tipo") == "peligroso":
-            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_operador_traslados", "87/A01/CV") # Si es peligroso
+            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_autorizacion_operador_traslados", "87/A01/CV") # Si es peligroso
         elif residuo.get("tipo") == "no peligroso":
-            webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_autorizacion_operador_traslados", "305/A02/CV")
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_residuo", residuo.get("nombre", ""))
-        webFunctions.escribir_en_elemento_por_name(driver, "pKilos_totales", residuo.get("cantidad", ""))
+            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_autorizacion_operador_traslados", "305/A02/CV")
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_residuo", residuo.get("nombre", ""))
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pKilos_totales", residuo.get("cantidad", ""))
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
     except Exception as error:
         logging.error(f"Error al añadir contrato de tratamiento para la empresa {fila.get('nombre_recogida', '')}: {error}")
@@ -1116,9 +1116,9 @@ def añadir_tratamiento(driver, fila, residuo, indice=1):
         popup = webFunctions.encontrar_pop_up_por_id(driver, f"div_editar_tratamiento_posterior_{indice}")
         time.sleep(0.5)
         centro = residuo.get("centro", {})
-        webFunctions.completar_campo_y_enter_por_name(popup, f"pDenominacion_ema_{indice}", centro.get("centro", ""))
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(popup, f"pDenominacion_ema_{indice}", centro.get("centro", ""))
         time.sleep(0.5)
-        webFunctions.completar_campo_y_enter_por_name(popup, f"pTratamiento_posterior_{indice}_codigo_ler_2", centro.get("tratamiento", ""))
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(popup, f"pTratamiento_posterior_{indice}_codigo_ler_2", centro.get("tratamiento", ""))
 
         time.sleep(1)
 
@@ -1212,13 +1212,13 @@ def añadir_facturacion(driver, fila, residuo):
         webFunctions.clickar_boton_por_on_click(driver, "nuevo_FACTURACION()")
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_FACTURACION")
 
-        webFunctions.completar_campo_y_enter_por_name(popup, "pNombre_cliente", fila.get("nombre_recogida", ""))
-        webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion_producto", residuo.get("nombre", ""))
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(popup, "pNombre_cliente", fila.get("nombre_recogida", ""))
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(popup, "pDenominacion_producto", residuo.get("nombre", ""))
         residuo_nombre = residuo.get("nombre")
 
         if residuo_nombre in ["ENVASES PLASTICOS CONTAMINADOS*", "FILTROS DE AIRE"]:
             webFunctions.seleccionar_elemento_por_name(popup, "pCantidad_modo", "Valor fijo")
-            webFunctions.completar_campo_y_enter_por_name(popup, "pCantidad_valor", "1")
+            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(popup, "pCantidad_valor", "1")
         time.sleep(2)
         webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
         driver = oldDriver
