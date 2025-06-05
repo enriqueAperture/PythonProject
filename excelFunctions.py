@@ -171,46 +171,46 @@ def limpiar_campo(valor):
         valor_str = valor_str.lstrip('0')    # Quitar ceros a la izquierda
     return valor_str
 
-def sacar_empresas_no_añadidas(driver: webdriver.Chrome) -> pd.DataFrame:
-    """
-    Procesa los archivos Excel para identificar las empresas que aún no han sido añadidas en Nubelus.
+# def sacar_empresas_no_añadidas(driver: webdriver.Chrome) -> pd.DataFrame:
+#     """
+#     Procesa los archivos Excel para identificar las empresas que aún no han sido añadidas en Nubelus.
     
-    El proceso consiste en:
-      1. Esperar a que se descargue el archivo Excel esperado.
-      2. Leer el archivo Excel descargado y el Excel de recogida.
-      3. Comparar el NIF de las entidades medioambientales con el listado recogido.
+#     El proceso consiste en:
+#       1. Esperar a que se descargue el archivo Excel esperado.
+#       2. Leer el archivo Excel descargado y el Excel de recogida.
+#       3. Comparar el NIF de las entidades medioambientales con el listado recogido.
       
-    Args:
-        driver (webdriver.Chrome): Instancia del navegador.
+#     Args:
+#         driver (webdriver.Chrome): Instancia del navegador.
         
-    Returns:
-        pandas.DataFrame: DataFrame con los datos de las empresas no añadidas.
+#     Returns:
+#         pandas.DataFrame: DataFrame con los datos de las empresas no añadidas.
         
-    Si la descarga falla, se cierra el navegador y se finaliza la ejecución.
-    """
-    try:
-        archivo_xlsx = _esperar_descarga(DOWNLOAD_DIR)
-        logging.info(f"Archivo descargado: {archivo_xlsx}")
-    except TimeoutError as e:
-        logging.error(e)
-        driver.quit()
-        sys.exit()
+#     Si la descarga falla, se cierra el navegador y se finaliza la ejecución.
+#     """
+#     try:
+#         archivo_xlsx = _esperar_descarga(DOWNLOAD_DIR)
+#         logging.info(f"Archivo descargado: {archivo_xlsx}")
+#     except TimeoutError as e:
+#         logging.error(e)
+#         driver.quit()
+#         sys.exit()
 
-    # Leer los Excel con pandas
-    entidades_medioambientales = pd.read_excel(archivo_xlsx)
-    excel_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
+#     # Leer los Excel con pandas
+#     entidades_medioambientales = pd.read_excel(archivo_xlsx)
+#     #excel_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
 
-    # Obtener los NIF de Nubelus
-    cif_nubelus = entidades_medioambientales["NIF"]
+#     # Obtener los NIF de Nubelus
+#     cif_nubelus = entidades_medioambientales["NIF"]
 
-    # Seleccionar únicamente las columnas de interés del Excel recogidas
-    datos = excel_recogidas[[
-        'cif_recogida', 'nombre_recogida', 'direccion_recogida', 'cp_recogida',
-        'poblacion_recogida', 'provincia_recogida', 'email_recogida', 'telf_recogida'
-    ]]
+#     # Seleccionar únicamente las columnas de interés del Excel recogidas
+#     datos = excel_recogidas[[
+#         'cif_recogida', 'nombre_recogida', 'direccion_recogida', 'cp_recogida',
+#         'poblacion_recogida', 'provincia_recogida', 'email_recogida', 'telf_recogida'
+#     ]]
 
-    datos_no_encontrados = _nif_no_encontrados_en_nubelus(cif_nubelus, datos)
-    return datos_no_encontrados
+#     datos_no_encontrados = _nif_no_encontrados_en_nubelus(cif_nubelus, datos)
+#     return datos_no_encontrados
 def forma_juridica_empresa(cif: str) -> str:
     """
     Determina la forma jurídica de una empresa según su CIF.
@@ -431,42 +431,42 @@ def sacar_empresas_no_encontradas_en_nubelus(centros_nubelus: pd.DataFrame, dato
 
     return pd.DataFrame(filas_no_encontradas)
 
-def sacar_centros_no_añadidos(driver: webdriver.Chrome) -> pd.DataFrame:
-    """
-    Procesa los archivos Excel para obtener los centros medioambientales que aún no han sido añadidos en Nubelus.
+# def sacar_centros_no_añadidos(driver: webdriver.Chrome) -> pd.DataFrame:
+#     """
+#     Procesa los archivos Excel para obtener los centros medioambientales que aún no han sido añadidos en Nubelus.
     
-    El proceso es el siguiente:
-      1. Espera la descarga del archivo Excel.
-      2. Lee el archivo Excel descargado y el archivo de recogida.
-      3. Selecciona los datos relevantes de cada uno.
-      4. Llama a la función de filtrado para identificar centros no encontrados.
+#     El proceso es el siguiente:
+#       1. Espera la descarga del archivo Excel.
+#       2. Lee el archivo Excel descargado y el archivo de recogida.
+#       3. Selecciona los datos relevantes de cada uno.
+#       4. Llama a la función de filtrado para identificar centros no encontrados.
       
-    Args:
-        driver (webdriver.Chrome): Instancia del navegador.
+#     Args:
+#         driver (webdriver.Chrome): Instancia del navegador.
         
-    Returns:
-        pandas.DataFrame: DataFrame con los centros no añadidos.
-    """
-    try:
-        archivo_xlsx = _esperar_descarga(DOWNLOAD_DIR)
-        logging.info(f"Archivo descargado: {archivo_xlsx}")
-    except TimeoutError as e:
-        logging.error(e)
-        driver.quit()
-        sys.exit()
+#     Returns:
+#         pandas.DataFrame: DataFrame con los centros no añadidos.
+#     """
+#     try:
+#         archivo_xlsx = _esperar_descarga(DOWNLOAD_DIR)
+#         logging.info(f"Archivo descargado: {archivo_xlsx}")
+#     except TimeoutError as e:
+#         logging.error(e)
+#         driver.quit()
+#         sys.exit()
 
-    centros_medioambientales = pd.read_excel(archivo_xlsx)
-    excel_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
+#     centros_medioambientales = pd.read_excel(archivo_xlsx)
+#     excel_recogidas = pd.read_excel(EXCEL_RECOGIDAS)
 
-    # Seleccionar columnas de interés
-    centros = centros_medioambientales[['Denominación', 'EMA']]
-    datos = excel_recogidas[['nombre_recogida', 'direccion_recogida', 'cp_recogida',
-                              'poblacion_recogida', 'provincia_recogida', 'email_recogida',
-                              'telf_recogida']]
+#     # Seleccionar columnas de interés
+#     centros = centros_medioambientales[['Denominación', 'EMA']]
+#     datos = excel_recogidas[['nombre_recogida', 'direccion_recogida', 'cp_recogida',
+#                               'poblacion_recogida', 'provincia_recogida', 'email_recogida',
+#                               'telf_recogida']]
 
-    # Llamar a la función para filtrar centros no encontrados
-    sacar_centros_no_encontrados_en_nubelus(centros, datos)
-    return datos
+#     # Llamar a la función para filtrar centros no encontrados
+#     sacar_centros_no_encontrados_en_nubelus(centros, datos)
+#     return datos
 
 def coincidencias_en_entidades(excel_input, excel_entidades):
     """
