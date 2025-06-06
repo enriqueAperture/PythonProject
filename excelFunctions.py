@@ -44,6 +44,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import shutil
 import funcionesNubelus
+import downloadFunctions
 
 # Directorio donde se espera la descarga de archivos Excel
 DOWNLOAD_DIR = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -351,8 +352,8 @@ def is_denominacion_correcto(nombre_recogida: str, denominacion: str) -> bool:
     """
     Compara dos cadenas (nombre_recogida y denominacion) para determinar si coinciden
     ignorando signos especiales, mayúsculas/minúsculas, tildes y contenido entre paréntesis.
+    Considera coincidencia si al menos una palabra clave está en la denominación.
     """
-    # Convierte a string y mayúsculas
     nombre_recogida = quitar_tildes(str(nombre_recogida).upper())
     denominacion = quitar_tildes(str(denominacion).upper())
 
@@ -758,15 +759,15 @@ def rellenar_datos_medioambientales(driver, fila):
 
         oldDriver = driver
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_editar_DATOS_MEDIOAMBIENTALES")
-
+        webFunctions.esperar_elemento(popup, By.CLASS_NAME, "pNima")
         # Rellenar campos con los datos de la empresa
-        nima_str = str(fila.get("nima_codigo", ""))
-        webFunctions.escribir_en_elemento_por_name(popup, "pNima", nima_str[:10])
+        webFunctions.escribir_en_elemento_por_name(popup, "pNima", str(fila.get("nima_codigo", "")))
         webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nombre", str(fila.get("nombre_recogida", "")))
         webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_nif", str(fila.get("cif_recogida", "")))
         webFunctions.escribir_en_elemento_por_name(popup, "pResponsable_ma_cargo", str(fila.get("nombre_recogida", "")))
-        webFunctions.escribir_en_elemento_por_name(popup, "pCodigo_prtr", str(fila.get("poblacion_recogida", "")))
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(popup, "pDenominacion_ine_municipio", str(fila.get("poblacion_recogida", "")))
 
+        time.sleep(1)
         webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
         driver = oldDriver
     except Exception as error:
@@ -1011,9 +1012,11 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         time.sleep(0.5)
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. siempre
         time.sleep(0.5)
+        print(fila.get("provincia_recogida", ""))
         if fila.get("provincia_recogida") == "VALENCIA":
             webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D") # METALLS DEL CAMP ( SERRA D'ESPADA ) si es de valencia
             # Depende si el residuo es o no peligroso
+            time.sleep(1)
             if residuo.get("tipo") == "peligroso":  
                 webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_autorizacion_destino", "157/G02/CV")
             elif residuo.get("tipo") == "no peligroso":
@@ -1026,10 +1029,10 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
                 webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_autorizacion_destino", "4570002919") # Siempre suponer que es peligroso
             elif residuo.get("tipo") == "no peligroso":
                 webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_autorizacion_destino", "G04") # Siempre suponer que es no peligroso
-        time.sleep(0.1)
+        time.sleep(1)
 
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_operador_traslados", "ECO TITAN S.L.") # Siempre ECO TITAN
-        time.sleep(2)
+        time.sleep(1)
         if residuo.get("tipo") == "peligroso":
             webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_autorizacion_operador_traslados", "87/A01/CV") # Si es peligroso
         elif residuo.get("tipo") == "no peligroso":
@@ -1072,10 +1075,9 @@ def añadir_contratos_tratamientos(driver, fila):
 
                 # Crear contrato de tratamiento para todos los residuos
                 añadir_contrato_tratamiento(driver, fila, contrato_residuo)
-
+                time.sleep(1)
                 # Solo para peligrosos (con asterisco) añadir tratamientos y notificación
                 if "*" in nombre_residuo:
-                    time.sleep(1)
                     añadir_tratamientos(driver, fila, item)
                     time.sleep(1)
                     crear_notificacion_tratamiento(driver)
@@ -1099,13 +1101,28 @@ def añadir_contratos_tratamientos(driver, fila):
 def crear_notificacion_tratamiento(driver):
     """
     Crea una notificación en la plataforma Nubelus.
-    
-    Esta función hace clic en el botón 'Crear notificación' y acepta el pop-up correspondiente.
+    Tras hacer clic en el botón 'Crear notificación', espera a que se descargue el archivo en la carpeta 'input' del proyecto.
     """
     webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Notificación")
     time.sleep(1)
     try:
+        # Configura la carpeta de descargas a 'input' dentro del proyecto
+        download_path = os.path.join(BASE_DIR, "input")
+        downloadFunctions.ensure_download_path(download_path)
+        downloadFunctions.configure_driver_download_path(driver, download_path)
+
+        # Snapshot del estado de la carpeta antes de descargar
+        old_state = downloadFunctions.snapshot_folder_state(download_path)
+
         webFunctions.clickar_boton_por_clase(driver, "icon-magic")
+
+        # Espera a que se descargue el archivo nuevo en la carpeta 'input'
+        nuevos = downloadFunctions.wait_for_new_download(download_path, old_state, num_descargas=1, timeout=120)
+        if nuevos:
+            logging.info(f"Archivo de notificación descargado en input: {nuevos[0]}")
+        else:
+            logging.error("No se detectó la descarga del archivo de notificación en la carpeta input.")
+
     except Exception as error:
         logging.error(f"Error al crear notificación de tratamiento: {error}")
         continuar = funcionesNubelus.preguntar_por_pantalla()
@@ -1159,7 +1176,7 @@ def añadir_tratamiento(driver, fila, residuo, indice=1):
         time.sleep(0.5)
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(popup, f"pTratamiento_posterior_{indice}_codigo_ler_2", centro.get("tratamiento", ""))
 
-        time.sleep(1)
+        webFunctions.esperar_elemento(popup, By.CLASS_NAME, "icon-ok")
 
         webFunctions.clickar_boton_por_clase(popup, "icon-ok")
         driver = oldDriver
@@ -1693,12 +1710,12 @@ def crear_contratos_faltantes(driver, fila, coincidencias_contratos):
     residuos_centros = residuos_y_tratamientos_json()
     residuos_excel = list(coincidencias_contratos['Denominacion'])
 
-    # Identificar residuos faltantes usando comparación flexible
+    # Identificar residuos faltantes usando comparación exacta
     residuos_faltantes = []
     for item in residuos_centros:
         residuo = item["residuo"]
         nombre_residuo = str(residuo.get("nombre", "")).strip().upper()
-        existe = any(is_denominacion_correcto(nombre_residuo, str(r_excel)) for r_excel in residuos_excel)
+        existe = nombre_residuo in (str(r_excel).strip().upper() for r_excel in residuos_excel)
         if not existe:
             residuos_faltantes.append(item)
 
