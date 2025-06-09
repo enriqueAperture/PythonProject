@@ -41,16 +41,26 @@ def extraer_info_xml(path_xml, regage):
 
     # Productor
     nombre_productor = ""
-    productor_name = root.find('.//NTProducerData/entityName/fullName/name')
-    productor_surname = root.find('.//NTProducerData/entityName/fullName/surname1')
-    if productor_name is not None and productor_name.text:
-        nombre_productor = productor_name.text.strip()
-        if productor_surname is not None and productor_surname.text:
-            nombre_productor += " " + productor_surname.text.strip()
+    productor_surname = ""
+    # Buscar el responsable del centro del productor
+    producer_data = root.find('.//NTProducerData')
+    if producer_data is not None:
+        responsible = producer_data.find('.//centerResponsiblePerson/personName')
+        if responsible is not None:
+            name_elem = responsible.find('name')
+            surname_elem = responsible.find('surname1')
+            if name_elem is not None and name_elem.text:
+                nombre_productor = name_elem.text.strip()
+            if surname_elem is not None and surname_elem.text:
+                productor_surname = surname_elem.text.strip()
+            if productor_surname and productor_surname != "-":
+                nombre_productor += " " + productor_surname
+
     nif_productor = ""
     productor_nif = root.find('.//NTProducerData/entityId/nationalId')
     if productor_nif is not None and productor_nif.text:
         nif_productor = productor_nif.text.strip()
+
 
     # Residuo
     nombre_residuo = ""
