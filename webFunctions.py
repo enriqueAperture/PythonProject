@@ -17,6 +17,7 @@ Cada función incluye documentación sobre sus parámetros, lo que retorna o si 
 import glob
 import logging
 import os
+import unicodedata
 import time
 from typing import Union, Optional, List, Dict
 from selenium import webdriver
@@ -1110,3 +1111,28 @@ def obtener_texto_elemento_por_xpath(driver: webdriver.Chrome, xpath: str, timeo
     except Exception as e:
         logging.error(f"Error al obtener texto del elemento con XPath '{xpath}': {e}")
         return ""
+
+def clickar_div_residuo_por_nombre(driver, nombre_residuo, timeout=10):
+    """
+    Hace clic en el <div> con clase 'denominacion col-3-5 tab-3-5 tel-9' que contiene un <label> con 'Denominación'
+    y cuyo texto contiene el nombre del residuo (comparación flexible: sin tildes, mayúsculas ni espacios extra).
+    """
+    xpath = (
+        "//div[contains(@class, 'denominacion') and contains(@class, 'col-3-5') "
+        "and contains(@class, 'tab-3-5') and contains(@class, 'tel-9') "
+        "and .//label[contains(text(),'Denominación')] "
+        "and contains(normalize-space(.), '{}')]"
+    ).format(nombre_residuo.strip())
+
+    intentos = 5
+    for intento in range(intentos):
+        try:
+            elemento = WebDriverWait(driver, timeout).until(
+                EC.element_to_be_clickable((By.XPATH, xpath))
+            )
+            elemento.click()
+            return
+        except Exception as e:
+            if intento == intentos - 1:
+                raise
+            time.sleep(0.5)

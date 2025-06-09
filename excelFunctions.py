@@ -1134,6 +1134,29 @@ def crear_notificacion_tratamiento(driver):
             sys.exit()
         return
 
+def editar_notificacion_tratamiento(driver):
+    webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Notificación")
+    time.sleep(1)
+    webFunctions.clickar_boton_por_on_click(driver, "editar_NOTIFICACION()")
+    popup = webFunctions.encontrar_pop_up_por_id(driver, "div_editar_NOTIFICACION")
+    webFunctions.seleccionar_elemento_por_name(popup, "pNt_notificada_sn", "Si")
+    webFunctions.clickar_boton_por_clase(popup, "icon-ok")
+
+def editar_notificaciones_peligrosos(driver):
+    """
+    Edita la notificación de cada contrato de tratamiento para los residuos peligrosos (con asterisco)
+    usando la función editar_notificacion_tratamiento de excelFunctions.
+    """
+    residuos_centros = residuos_y_tratamientos_json()
+    for item in residuos_centros:
+        residuo = item["residuo"]
+        nombre_residuo = str(residuo.get("nombre", "")).strip().upper()
+        if "*" in nombre_residuo:
+            print(nombre_residuo)
+            webFunctions.clickar_div_residuo_por_nombre(driver, nombre_residuo)
+            editar_notificacion_tratamiento(driver)
+            webFunctions.abrir_web(driver, WEB_NUBELUS_CONTRATOS)
+
 def añadir_tratamientos(driver, fila, residuo):
     """
     Añade los tratamientos indicados usando los datos de la fila y el residuo (json).
@@ -1708,15 +1731,18 @@ def crear_contratos_faltantes(driver, fila, coincidencias_contratos):
     Si todos los residuos ya están creados, muestra un mensaje y no hace nada.
     """
     residuos_centros = residuos_y_tratamientos_json()
-    residuos_excel = list(coincidencias_contratos['Denominacion'])
+    # Normaliza los nombres de los residuos del Excel de contratos
+    residuos_excel = [
+        quitar_tildes(str(r_excel)).strip().upper()
+        for r_excel in coincidencias_contratos['Denominacion']
+    ]
 
-    # Identificar residuos faltantes usando comparación exacta
     residuos_faltantes = []
     for item in residuos_centros:
         residuo = item["residuo"]
-        nombre_residuo = str(residuo.get("nombre", "")).strip().upper()
-        existe = nombre_residuo in (str(r_excel).strip().upper() for r_excel in residuos_excel)
-        if not existe:
+        nombre_residuo = quitar_tildes(str(residuo.get("nombre", ""))).strip().upper()
+        # Coincidencia literal (exacta, pero sin tildes)
+        if nombre_residuo not in residuos_excel:
             residuos_faltantes.append(item)
 
     if not residuos_faltantes:
@@ -1726,7 +1752,7 @@ def crear_contratos_faltantes(driver, fila, coincidencias_contratos):
 
     for item in residuos_faltantes:
         residuo = item["residuo"]
-        nombre_residuo = str(residuo.get("nombre", "")).strip().upper()
+        nombre_residuo = quitar_tildes(str(residuo.get("nombre", ""))).strip().upper()
         centros = item.get("centros", [])
 
         if centros:
