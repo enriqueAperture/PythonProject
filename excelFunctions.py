@@ -1152,7 +1152,6 @@ def editar_notificaciones_peligrosos(driver):
         residuo = item["residuo"]
         nombre_residuo = str(residuo.get("nombre", "")).strip().upper()
         if "*" in nombre_residuo:
-            print(nombre_residuo)
             webFunctions.clickar_div_residuo_por_nombre(driver, nombre_residuo)
             editar_notificacion_tratamiento(driver)
             webFunctions.abrir_web(driver, WEB_NUBELUS_CONTRATOS)
