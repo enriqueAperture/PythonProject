@@ -16,12 +16,22 @@ Ejemplo de uso:
 """
 
 # Imports básicos de Python
-import os
-import json
-import time
-import shutil
+import pandas as pd
 import logging
+import time
+import os
+import shutil
+import tempfile
+import subprocess
+import re
+import json
+import glob
 import sys
+import unicodedata
+import loggerConfig
+import tkinter as tk
+from tkinter import ttk
+import typing
 from typing import Union, Optional, List, Dict
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
@@ -48,9 +58,10 @@ import extraerXMLE3L
 import loggerConfig
 import webConfiguration
 import webFunctions
+import funcionesNubelus
+import excelFunctions
 from config import BASE_DIR, cargar_variables
 from datetime import datetime, timedelta
-import re
 
 # Variables de configuración
 WEB_MITECO = (
@@ -58,7 +69,9 @@ WEB_MITECO = (
     "urlLoginRedirect=L3BvcnRhbC9zaXRlL3NlTUlURUNPL3BvcnRsZXRfYnVzP2lkX3Byb2NlZGltaWVudG89NzM2"
     "JmlkZW50aWZpY2Fkb3JfcGFzbz1QUkVJTklDSU8mc3ViX29yZ2Fubz0xMSZwcmV2aW9fbG9naW49MQ=="
 )
+URL_CONTRATOS_TRATAMIENTOS = "https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento"
 INPUT_DIR = os.path.join(BASE_DIR, "input")
+EXCEL_INPUT_DIR = os.path.join(BASE_DIR, "entrada", "excel_input.xls")  # Ruta del Excel de entrada
 TRASH_DIR = os.path.join(BASE_DIR, "trash")
 INFO_CERTS = os.path.join(BASE_DIR, "data", "informacionCerts.txt")
 info = cargar_variables(INFO_CERTS)
@@ -232,12 +245,30 @@ def procesar_archivos_xml():
         mover_a_trash(PDF_FILE, ultimo_nombre_productor)
     logging.info("Proceso completado. Todos los archivos procesados y movidos.")
 
+def notificar_contratos_tratamiento():
+    excel_input = pd.read_excel(EXCEL_INPUT_DIR)
+    fila = excel_input.iloc[0]  # Obtiene la primera fila del DataFrame
+    # Configura el navegador de Selenium
+    driver = webConfiguration.configure()
+    # Inicia sesión en Nubelus
+    funcionesNubelus.iniciar_sesion(driver)
+    webFunctions.abrir_web(driver, URL_CONTRATOS_TRATAMIENTOS)
+    
+    # Filtra la busqueda por el nombre del cliente
+    webFunctions.clickar_boton_por_on_click(driver, "filtrar()")
+    webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "waster2_gestionContratosTratamiento__fDenominacion_origen", fila.get("nombre_recogida"))
+    webFunctions.clickar_boton_por_clase(driver, "miBoton.buscar")
+    excelFunctions.editar_notificaciones_peligrosos(driver)
+    logging.info("Notificaciones de peligrosos editadas correctamente.")
+    driver.quit()
 def main():
     """
     Función principal que inicia el procesamiento de los archivos XML.
     """
     procesar_archivos_xml()
     logging.info("Todos los procesos han finalizado correctamente.")
+    notificar_contratos_tratamiento()
+    logging.info("Notificaciones de contratos de tratamiento editadas correctamente.")
 
 if __name__ == "__main__":
     main()
