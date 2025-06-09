@@ -49,6 +49,8 @@ import loggerConfig
 import webConfiguration
 import webFunctions
 from config import BASE_DIR, cargar_variables
+from datetime import datetime, timedelta
+import re
 
 # Variables de configuración
 WEB_MITECO = (
@@ -65,32 +67,39 @@ PDF_FILE = os.path.join(INPUT_DIR, info.get("NOMBRE_PDF"))
 def actualizar_fechas_xml(xml_path):
     """
     Modifica las fechas del XML en las etiquetas <prepared> y atributos NTDate, NTStartDate, NTEndDate de <wasteNT>.
-    Guarda el XML sobrescribiendo el original y devuelve el xml_path.
+    Procesa el archivo como texto plano, sin usar ElementTree.
     """
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
 
-    # Fechas requeridas
     hoy = datetime.now()
     hoy_str = hoy.strftime("%Y-%m-%d")
     hoy_iso = hoy.strftime("%Y-%m-%dT%H:%M:%S")
     start_date = (hoy + timedelta(days=11)).strftime("%Y-%m-%d")
     end_date = (hoy + timedelta(days=3*365)).strftime("%Y-%m-%d")  # Aproximación de 3 años
 
-    # Modificar <prepared>
-    for prepared in root.iter("prepared"):
-        prepared.text = hoy_iso
+    with open(xml_path, "r", encoding="utf-8") as f:
+        xml_text = f.read()
 
-    # Modificar atributos de <wasteNT>
-    for waste_nt in root.iter("wasteNT"):
-        if "NTDate" in waste_nt.attrib:
-            waste_nt.set("NTDate", hoy_str)
-        if "NTStartDate" in waste_nt.attrib:
-            waste_nt.set("NTStartDate", start_date)
-        if "NTEndDate" in waste_nt.attrib:
-            waste_nt.set("NTEndDate", end_date)
+    # Reemplazar <prepared>...</prepared>
+    xml_text = re.sub(r"<prepared>.*?</prepared>", f"<prepared>{hoy_iso}</prepared>", xml_text, flags=re.DOTALL)
 
-    tree.write(xml_path, encoding="utf-8", xml_declaration=True)
+    # Reemplazar atributos en <wasteNT ...>
+    def replace_nt_attrs(match):
+        tag = match.group(0)
+        tag = re.sub(r'NTDate="[^"]*"', f'NTDate="{hoy_str}"', tag)
+        tag = re.sub(r'NTStartDate="[^"]*"', f'NTStartDate="{start_date}"', tag)
+        tag = re.sub(r'NTEndDate="[^"]*"', f'NTEndDate="{end_date}"', tag)
+        return tag
+
+    xml_text = re.sub(r"<wasteNT\b[^>]*>", replace_nt_attrs, xml_text)
+
+    # Asegurar que la raíz sea <ns2:e3l> con los namespaces requeridos
+    # Si no está, reemplazar la etiqueta raíz
+    ns2_tag = '<ns2:e3l xmlns:ns2="e3l://eterproject.org/3.0/e3l" xmlns:ns3="e3l://eterproject.org/3.0/documentation" schemaVersion="3.0">'
+    xml_text = re.sub(r"<e3l\b[^>]*>", ns2_tag, xml_text, count=1)
+    xml_text = re.sub(r"<ns2:e3l\b[^>]*>", ns2_tag, xml_text, count=1)
+
+    with open(xml_path, "w", encoding="utf-8") as f:
+        f.write(xml_text)
     return xml_path
 
 def guardar_regage_json(data, output_dir):
