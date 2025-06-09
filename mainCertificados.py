@@ -109,7 +109,7 @@ def autenticar_y_seleccionar_certificado(driver):
     webFunctions.clickar_boton_por_texto(driver, "Acceso DNIe / Certificado electrónico")
     certHandler.seleccionar_certificado_chrome(info.get("NOMBRE_CERT"))
 
-def procesar_xml(xml_path):
+def procesar_xml(xml_path, pdf_path=PDF_FILE):
     """
     Procesa un archivo XML: automatiza el flujo web, ejecuta la firma y extrae la información relevante.
     Si ocurre cualquier error, se informa y se cierra el driver actual.
@@ -132,7 +132,7 @@ def procesar_xml(xml_path):
 
         webFunctions.clickar_boton_por_clase(driver, "loginBtn")
         webFunctions.clickar_boton_por_texto(driver, "Continuar")
-        webFunctions.escribir_en_elemento_por_id(driver, "idFichero", PDF_FILE)
+        webFunctions.escribir_en_elemento_por_id(driver, "idFichero", pdf_path)
         webFunctions.clickar_boton_por_id(driver, "btnForm")
         webFunctions.clickar_boton_por_id(driver, "bSiguiente")
         webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
@@ -168,7 +168,7 @@ def procesar_archivos_xml():
         procesados_esta_vuelta = []
         for xml_file in xml_files:
             try:
-                resultado = procesar_xml(xml_file)
+                resultado = procesar_xml(xml_file, PDF_FILE)
                 nombre_productor = resultado.get("nombre_productor", "desconocido").replace(" ", "_")
                 mover_a_trash(xml_file, nombre_productor)
                 ultimo_nombre_productor = nombre_productor
