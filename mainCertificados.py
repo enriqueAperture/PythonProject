@@ -6,9 +6,10 @@ utilizando Selenium para interactuar con la interfaz web y uiautomation junto co
 de autoFirmaHandler y certHandler para la selección del certificado a utilizar (por DNIe o certificado electrónico).
 
 Flujo general:
-  1. Procesa todos los archivos XML de la carpeta /input uno a uno.
-  2. Para cada XML, ejecuta el flujo de automatización y mueve el XML procesado a /trash/{nombre_productor}.
-  3. Cuando no quedan XML, mueve el PDF a la carpeta del último {nombre_productor} en /trash y termina.
+  1. Procesa todas las subcarpetas dentro de la carpeta /input.
+  2. En cada subcarpeta, procesa todos los archivos XML y mueve el XML procesado a /trash/{nombre_productor}.
+  3. Cuando no quedan XML en la subcarpeta, mueve el PDF de esa subcarpeta a la carpeta del último {nombre_productor} en /trash.
+  4. Cuando termina con una subcarpeta, pasa a la siguiente y al finalizar todas termina el proceso.
 
 Ejemplo de uso:
     Ejecutar este script inicia el flujo de automatización para el proceso de certificados en MITECO.
@@ -25,6 +26,7 @@ import sys
 from typing import Union, Optional, List, Dict
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
+import re
 
 # Imports de Selenium y WebDriver
 from selenium import webdriver
@@ -49,8 +51,6 @@ import loggerConfig
 import webConfiguration
 import webFunctions
 from config import BASE_DIR, cargar_variables
-from datetime import datetime, timedelta
-import re
 
 # Variables de configuración
 WEB_MITECO = (
@@ -62,14 +62,24 @@ INPUT_DIR = os.path.join(BASE_DIR, "input")
 TRASH_DIR = os.path.join(BASE_DIR, "trash")
 INFO_CERTS = os.path.join(BASE_DIR, "data", "informacionCerts.txt")
 info = cargar_variables(INFO_CERTS)
-PDF_FILE = os.path.join(INPUT_DIR, info.get("NOMBRE_PDF"))
+
+def get_pdf_file_from_folder(folder_path):
+    """
+    Busca el primer archivo PDF en la carpeta indicada.
+    Si no encuentra ninguno, devuelve None.
+    """
+    for f in os.listdir(folder_path):
+        if f.lower().endswith('.pdf'):
+            logging.info(f"Archivo PDF encontrado: {f}")
+            return os.path.join(folder_path, f)
+    logging.error(f"No se encontró ningún archivo PDF en la carpeta '{folder_path}'.")
+    return None
 
 def actualizar_fechas_xml(xml_path):
     """
     Modifica las fechas del XML en las etiquetas <prepared> y atributos NTDate, NTStartDate, NTEndDate de <wasteNT>.
     Procesa el archivo como texto plano, sin usar ElementTree.
     """
-
     hoy = datetime.now()
     hoy_str = hoy.strftime("%Y-%m-%d")
     hoy_iso = hoy.strftime("%Y-%m-%dT%H:%M:%S")
@@ -93,7 +103,6 @@ def actualizar_fechas_xml(xml_path):
     xml_text = re.sub(r"<wasteNT\b[^>]*>", replace_nt_attrs, xml_text)
 
     # Asegurar que la raíz sea <ns2:e3l> con los namespaces requeridos
-    # Si no está, reemplazar la etiqueta raíz
     ns2_tag = '<ns2:e3l xmlns:ns2="e3l://eterproject.org/3.0/e3l" xmlns:ns3="e3l://eterproject.org/3.0/documentation" schemaVersion="3.0">'
     xml_text = re.sub(r"<e3l\b[^>]*>", ns2_tag, xml_text, count=1)
     xml_text = re.sub(r"<ns2:e3l\b[^>]*>", ns2_tag, xml_text, count=1)
@@ -149,7 +158,7 @@ def autenticar_y_seleccionar_certificado(driver):
     webFunctions.clickar_boton_por_texto(driver, "Acceso DNIe / Certificado electrónico")
     certHandler.seleccionar_certificado_chrome(info.get("NOMBRE_CERT"))
 
-def procesar_xml(xml_path):
+def procesar_xml(xml_path, get_pdf_file_func):
     """
     Procesa un archivo XML: automatiza el flujo web, ejecuta la firma y extrae la información relevante.
     Si ocurre cualquier error, se informa y se cierra el driver actual.
@@ -173,7 +182,8 @@ def procesar_xml(xml_path):
 
         webFunctions.clickar_boton_por_clase(driver, "loginBtn")
         webFunctions.clickar_boton_por_texto(driver, "Continuar")
-        webFunctions.escribir_en_elemento_por_id(driver, "idFichero", PDF_FILE)
+        pdf_file = get_pdf_file_func()
+        webFunctions.escribir_en_elemento_por_id(driver, "idFichero", pdf_file)
         webFunctions.clickar_boton_por_id(driver, "btnForm")
         webFunctions.clickar_boton_por_id(driver, "bSiguiente")
         webFunctions.clickar_boton_por_id(driver, "idFirmarRegistrar")
@@ -198,45 +208,64 @@ def procesar_xml(xml_path):
         except Exception as e_quit:
             logging.error(f"Error cerrando driver: {e_quit}")
 
-def procesar_archivos_xml():
+def procesar_archivos_xml_en_subcarpetas():
     """
-    Procesa todos los archivos XML de la carpeta /input, gestionando los errores y moviendo los archivos procesados.
+    Procesa todas las subcarpetas dentro de INPUT_DIR.
+    En cada subcarpeta, procesa los XML y mueve los archivos igual que antes.
+    Al terminar con una subcarpeta, pasa a la siguiente.
     """
-    xml_files = sorted([os.path.join(INPUT_DIR, f) for f in os.listdir(INPUT_DIR) if f.lower().endswith('.xml')])
-    ultimo_nombre_productor = None
+    subcarpetas = [os.path.join(INPUT_DIR, d) for d in os.listdir(INPUT_DIR) if os.path.isdir(os.path.join(INPUT_DIR, d))]
+    if not subcarpetas:
+        logging.info("No se encontraron subcarpetas en la carpeta 'input'.")
+        return
 
-    while xml_files:
-        procesados_esta_vuelta = []
-        for xml_file in xml_files:
-            try:
-                resultado = procesar_xml(xml_file)
-                nombre_productor = resultado.get("nombre_productor", "desconocido").replace(" ", "_")
-                mover_a_trash(xml_file, nombre_productor)
-                ultimo_nombre_productor = nombre_productor
-                procesados_esta_vuelta.append(xml_file)
-            except Exception as e:
-                logging.error(f"Error procesando '{os.path.basename(xml_file)}': {e}")
-                # No mover el archivo, se queda en input para el siguiente intento
+    for subdir in subcarpetas:
+        logging.info(f"Procesando subcarpeta: {os.path.basename(subdir)}")
+        xml_files = sorted([os.path.join(subdir, f) for f in os.listdir(subdir) if f.lower().endswith('.xml')])
+        pdf_files = [os.path.join(subdir, f) for f in os.listdir(subdir) if f.lower().endswith('.pdf')]
+        ultimo_nombre_productor = None
 
-        # Actualizar la lista de archivos xml para la siguiente vuelta (solo los que no se han procesado)
-        xml_files = sorted([os.path.join(INPUT_DIR, f) for f in os.listdir(INPUT_DIR) if f.lower().endswith('.xml')])
+        def get_pdf_file_sub():
+            for f in pdf_files:
+                if os.path.exists(f):
+                    logging.info(f"Archivo PDF encontrado: {f}")
+                    return f
+            logging.error(f"No se encontró ningún archivo PDF en la carpeta '{subdir}'.")
+            return None
 
-        # Si no se ha procesado ningún archivo en esta vuelta, salir para evitar bucle infinito
-        if not procesados_esta_vuelta and xml_files:
-            logging.error("No se ha podido procesar ninguno de los archivos XML restantes. Revisa los archivos en /input.")
-            break
+        while xml_files:
+            procesados_esta_vuelta = []
+            for xml_file in xml_files:
+                try:
+                    resultado = procesar_xml(xml_file, get_pdf_file_sub)
+                    if resultado is None:
+                        continue
+                    nombre_productor = resultado.get("nombre_productor", "desconocido").replace(" ", "_")
+                    mover_a_trash(xml_file, nombre_productor)
+                    ultimo_nombre_productor = nombre_productor
+                    procesados_esta_vuelta.append(xml_file)
+                except Exception as e:
+                    logging.error(f"Error procesando '{os.path.basename(xml_file)}': {e}")
 
-    # Cuando no quedan XML, mover el PDF a la carpeta del último productor
-    if ultimo_nombre_productor and os.path.exists(PDF_FILE):
-        logging.info(f"Moviendo PDF '{os.path.basename(PDF_FILE)}' a la carpeta '{ultimo_nombre_productor}' en trash.")
-        mover_a_trash(PDF_FILE, ultimo_nombre_productor)
-    logging.info("Proceso completado. Todos los archivos procesados y movidos.")
+            xml_files = sorted([os.path.join(subdir, f) for f in os.listdir(subdir) if f.lower().endswith('.xml')])
+            if not procesados_esta_vuelta and xml_files:
+                logging.error(f"No se ha podido procesar ninguno de los archivos XML restantes en {subdir}.")
+                break
+
+        # Cuando no quedan XML, mover el PDF a la carpeta del último productor
+        pdf_file = get_pdf_file_sub()
+        if ultimo_nombre_productor and pdf_file and os.path.exists(pdf_file):
+            logging.info(f"Moviendo PDF '{os.path.basename(pdf_file)}' a la carpeta '{ultimo_nombre_productor}' en trash.")
+            mover_a_trash(pdf_file, ultimo_nombre_productor)
+        logging.info(f"Procesamiento completado para subcarpeta: {os.path.basename(subdir)}")
+
+    logging.info("Proceso completado. Todas las subcarpetas procesadas.")
 
 def main():
     """
-    Función principal que inicia el procesamiento de los archivos XML.
+    Función principal que inicia el procesamiento de los archivos XML en todas las subcarpetas de input.
     """
-    procesar_archivos_xml()
+    procesar_archivos_xml_en_subcarpetas()
     logging.info("Todos los procesos han finalizado correctamente.")
 
 if __name__ == "__main__":
