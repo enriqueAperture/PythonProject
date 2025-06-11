@@ -16,6 +16,7 @@ Ejemplo de uso:
 
 # Imports básicos de Python
 import os
+import shutil
 import sys
 import json
 import time
@@ -129,30 +130,47 @@ def procesar_registro(registro):
     driver.quit()
     return archivos_descargados
 
-def procesar_regages():
+def procesar_multiple_regages():
     """
-    Procesa todos los registros de /output/regage.json, construye el enlace de MITECO y lo abre con Selenium.
-    Descarga los archivos asociados en una carpeta única por iteración.
+    Procesa todos los archivos JSON en la carpeta output.
+    Para cada archivo JSON:
+      - Se leen todos los registros y se procesan uno a uno.
+      - Una vez procesado el archivo, se mueve a la carpeta trash.
     """
-    output_path = os.path.join(BASE_DIR, "output", "regage.json")
-    if not os.path.exists(output_path):
-        logging.error(f"No se encontró el archivo: {output_path}")
+    output_dir = os.path.join(BASE_DIR, "output")
+    if not os.path.exists(output_dir):
+        logging.error(f"No existe la carpeta de output: {output_dir}")
         return
 
-    with open(output_path, "r", encoding="utf-8") as f:
+    json_files = [os.path.join(output_dir, f) for f in os.listdir(output_dir) if f.endswith(".json")]
+    if not json_files:
+        logging.info("No se encontró ningún archivo JSON en output.")
+        return
+
+    for json_file in json_files:
+        logging.info(f"Procesando archivo: {json_file}")
         try:
-            registros = json.load(f)
+            with open(json_file, "r", encoding="utf-8") as f:
+                registros = json.load(f)
         except Exception as e:
-            logging.error(f"Error leyendo regage.json: {e}")
-            return
+            logging.error(f"Error al leer {json_file}: {e}")
+            continue
 
-    if not isinstance(registros, list):
-        registros = [registros]
+        if not isinstance(registros, list):
+            registros = [registros]
 
-    for registro in registros:
-        procesar_registro(registro)
+        for registro in registros:
+            procesar_registro(registro)
 
-    logging.info("Proceso completado. Todos los enlaces han sido abiertos y procesados.")
+        # Una vez procesado el archivo, moverlo a la carpeta trash
+        trash_dir = os.path.join(BASE_DIR, "trash")
+        os.makedirs(trash_dir, exist_ok=True)
+        destino = os.path.join(trash_dir, os.path.basename(json_file))
+        try:
+            shutil.move(json_file, destino)
+            logging.info(f"Archivo {os.path.basename(json_file)} movido a {destino}.")
+        except Exception as e:
+            logging.error(f"Error al mover {json_file} a trash: {e}")
 
 if __name__ == "__main__":
-    procesar_regages()
+    procesar_multiple_regages()

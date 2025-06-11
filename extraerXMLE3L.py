@@ -61,7 +61,6 @@ def extraer_info_xml(path_xml, regage):
     if productor_nif is not None and productor_nif.text:
         nif_productor = productor_nif.text.strip()
 
-
     # Residuo
     nombre_residuo = ""
     residuo = root.find('.//NTResidueIdentification/residueDescription')
@@ -78,10 +77,14 @@ def extraer_info_xml(path_xml, regage):
         "regage": regage
     }
 
-    # Guardar el JSON en un archivo regage.json
+    # Guardar el JSON en un archivo llamado regage_{nombre_productor}.json en la carpeta output
     output_dir = "output"
     os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, "regage.json")
+    # Limpia el nombre del productor para usarlo en el nombre de archivo
+    nombre_prod_clean = nombre_productor.replace(" ", "_") if nombre_productor else "desconocido"
+    output_filename = f"regage_{nombre_prod_clean}.json"
+    output_path = os.path.join(output_dir, output_filename)
+    
     if os.path.exists(output_path):
         with open(output_path, "r", encoding="utf-8") as f:
             try:
@@ -92,9 +95,9 @@ def extraer_info_xml(path_xml, regage):
                 existing_data = []
     else:
         existing_data = []
-
+    
     existing_data.append(data)
-
+    
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(existing_data, f, ensure_ascii=False, indent=4)
 
