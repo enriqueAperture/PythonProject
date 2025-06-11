@@ -243,7 +243,7 @@ def validar_nif(nif):
 def forma_fiscal_por_cif(cif: str) -> str:
     if cif and cif[-1].isalpha():
         forma_fiscal = "Física"
-    elif cif and cif[0].isalpha():
+    else:
         forma_fiscal = "Jurídica"
     
     return forma_fiscal
@@ -266,7 +266,7 @@ def añadir_empresa(driver: webdriver.Chrome, fila) -> None:
         webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"])
         
         # 2. Validar y completar el campo NIF
-        validar_nif(fila["cif_recogida"])  # Validar el formato del NIF
+        # validar_nif(fila["cif_recogida"])  # Validar el formato del NIF
         webFunctions.escribir_en_elemento_por_name(driver, "pNif", fila["cif_recogida"])
         
         # 3. Completar el campo de forma fiscal: Física si el último carácter del CIF es letra, Jurídica si el primero es letra
@@ -1370,7 +1370,9 @@ def comprobar_datos_excel(excel_input):
         
         # Comprobar que existen todas las columnas requeridas
         if not all(col in df.columns for col in required_columns):
-            logging.info("Faltan columnas requeridas en el archivo Excel.")
+            for col in required_columns:
+                if col not in df.columns:
+                    logging.info(f"Falta la columna requerida en el archivo Excel: {col}")
             return False
 
         # Limpiar cada campo de las columnas requeridas
@@ -1379,7 +1381,17 @@ def comprobar_datos_excel(excel_input):
         
         # Validar que el teléfono tenga 9 dígitos, si no, dejarlo vacío
         def limpiar_telefono(tel):
+            """
+            Limpia el campo teléfono:
+            - Si hay dos números separados por una barra ("/"), toma solo el primero.
+            - Elimina cualquier carácter no numérico.
+            - Si el resultado tiene 9 dígitos, lo devuelve; si no, devuelve cadena vacía.
+            """
             tel_str = str(tel)
+            # Si hay una barra, toma solo la parte antes de la barra
+            if "/" in tel_str:
+                tel_str = tel_str.split("/")[0]
+            # Elimina cualquier carácter que no sea dígito
             solo_digitos = ''.join(filter(str.isdigit, tel_str))
             if len(solo_digitos) == 9:
                 return solo_digitos
