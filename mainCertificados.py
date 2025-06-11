@@ -258,6 +258,7 @@ def notificar_contratos_tratamiento():
     webFunctions.clickar_boton_por_on_click(driver, "filtrar()")
     webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "waster2_gestionContratosTratamiento__fDenominacion_origen", fila.get("nombre_recogida"))
     webFunctions.clickar_boton_por_clase(driver, "miBoton.buscar")
+    # Edita las notificaciones de peligrosos a: Sí
     excelFunctions.editar_notificaciones_peligrosos(driver)
     logging.info("Notificaciones de peligrosos editadas correctamente.")
     driver.quit()
