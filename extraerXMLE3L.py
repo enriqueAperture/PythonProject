@@ -2,12 +2,29 @@ import os
 import json
 import xml.etree.ElementTree as ET
 
-def guardar_regage_json(data, output_dir):
+def normalizar_nombre(nombre):
     """
-    Guarda el contenido en un archivo regage.json en output_dir.
-    Si ya existe, crea regage_1.json, regage_2.json, etc. para no sobrescribir.
+    Normaliza el nombre para usarlo como nombre de archivo/carpeta.
     """
-    base_name = "regage"
+    return (
+        nombre.replace(" ", "_")
+        .replace("*", "")
+        .replace("/", "_")
+        .replace("\\", "_")
+        .replace(":", "_")
+        .replace("?", "")
+        .replace('"', "")
+        .replace("<", "")
+        .replace(">", "")
+        .replace("|", "")
+    )
+
+def guardar_regage_json(data, output_dir, nombre_residuo):
+    """
+    Guarda el contenido en un archivo regage_{nombre_residuo}.json en output_dir.
+    Si ya existe, crea regage_{nombre_residuo}_1.json, etc. para no sobrescribir.
+    """
+    base_name = f"regage_{normalizar_nombre(nombre_residuo)}"
     ext = ".json"
     filename = base_name + ext
     counter = 1
@@ -78,24 +95,9 @@ def extraer_info_xml(path_xml, regage):
         "regage": regage
     }
 
-    # Guardar el JSON en un archivo regage.json
-    output_dir = "output"
+    # Guardar el JSON en output/{nombre_productor}/regage_{nombre_residuo}.json
+    output_dir = os.path.join("output", normalizar_nombre(nombre_productor))
     os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, "regage.json")
-    if os.path.exists(output_path):
-        with open(output_path, "r", encoding="utf-8") as f:
-            try:
-                existing_data = json.load(f)
-                if not isinstance(existing_data, list):
-                    existing_data = [existing_data]
-            except json.JSONDecodeError:
-                existing_data = []
-    else:
-        existing_data = []
-
-    existing_data.append(data)
-
-    with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(existing_data, f, ensure_ascii=False, indent=4)
+    guardar_regage_json(data, output_dir, nombre_residuo)
 
     return data
