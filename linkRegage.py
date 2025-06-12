@@ -112,7 +112,7 @@ def procesar_registro(registro):
     driver.quit()
     return archivos_descargados
 
-def procesar_regages():
+def procesar_multiple_regages():
     """
     Procesa todos los registros de /output/{nombre_productor}/regage_{nombre_residuo}.json,
     construye el enlace de MITECO y lo abre con Selenium.
@@ -140,7 +140,15 @@ def procesar_regages():
                     continue
             procesar_registro(registro)
 
-    logging.info("Proceso completado. Todos los enlaces han sido abiertos y procesados.")
+        # Una vez procesado el archivo, moverlo a la carpeta trash
+        trash_dir = os.path.join(BASE_DIR, "trash")
+        os.makedirs(trash_dir, exist_ok=True)
+        destino = os.path.join(trash_dir, os.path.basename(json_file))
+        try:
+            shutil.move(json_file, destino)
+            logging.info(f"Archivo {os.path.basename(json_file)} movido a {destino}.")
+        except Exception as e:
+            logging.error(f"Error al mover {json_file} a trash: {e}")
 
 if __name__ == "__main__":
-    procesar_regages()
+    procesar_multiple_regages()

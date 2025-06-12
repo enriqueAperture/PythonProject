@@ -78,7 +78,6 @@ def extraer_info_xml(path_xml, regage):
     if productor_nif is not None and productor_nif.text:
         nif_productor = productor_nif.text.strip()
 
-
     # Residuo
     nombre_residuo = ""
     residuo = root.find('.//NTResidueIdentification/residueDescription')
