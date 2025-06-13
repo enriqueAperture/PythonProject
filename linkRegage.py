@@ -1,43 +1,26 @@
 """
 Módulo: linkRegage.py
 
-Este módulo recorre el archivo /output/regage.json, construye el enlace de detalle de expediente de MITECO
-para cada registro y lo abre en el navegador utilizando Selenium y las funciones auxiliares de webFunctions y downloadFunctions.
+Este módulo recorre todas las carpetas dentro de /output, lee los archivos .json de cada una,
+construye el enlace de detalle de expediente de MITECO para cada registro y lo abre en el navegador
+utilizando Selenium y las funciones auxiliares de webFunctions y downloadFunctions.
 
 Flujo general:
-  1. Lee todos los objetos del archivo regage.json.
-  2. Para cada objeto, construye el enlace personalizado de MITECO.
+  1. Lee todas las carpetas dentro de output.
+  2. Para cada archivo .json dentro de cada carpeta, construye el enlace personalizado de MITECO.
   3. Abre el enlace en el navegador con Selenium, realiza la autenticación y descarga los archivos asociados en una carpeta única por iteración.
   4. Repite el proceso para todos los registros.
 
 Ejemplo de uso:
-    Ejecutar este script abrirá secuencialmente todos los enlaces de regage.json en el navegador y descargará los archivos correspondientes.
+    Ejecutar este script abrirá secuencialmente todos los enlaces de los .json en output en el navegador y descargará los archivos correspondientes.
 """
 
 # Imports básicos de Python
 import os
-import sys
 import json
 import time
 import logging
-from typing import Union, Optional, List, Dict
-import xml.etree.ElementTree as ET
-from datetime import datetime
-
-# Imports de Selenium y WebDriver
-from selenium import webdriver
-from selenium.common import TimeoutException, NoSuchWindowException, NoSuchFrameException, WebDriverException, NoSuchElementException, ElementNotInteractableException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-
-# Imports de uiautomation
-import uiautomation as auto
-import uiautomationHandler
+from typing import List
 
 # Imports propios del proyecto
 import certHandler
@@ -129,30 +112,43 @@ def procesar_registro(registro):
     driver.quit()
     return archivos_descargados
 
-def procesar_regages():
+def procesar_multiple_regages():
     """
-    Procesa todos los registros de /output/regage.json, construye el enlace de MITECO y lo abre con Selenium.
+    Procesa todos los registros de /output/{nombre_productor}/regage_{nombre_residuo}.json,
+    construye el enlace de MITECO y lo abre con Selenium.
     Descarga los archivos asociados en una carpeta única por iteración.
     """
-    output_path = os.path.join(BASE_DIR, "output", "regage.json")
-    if not os.path.exists(output_path):
-        logging.error(f"No se encontró el archivo: {output_path}")
+    output_base = os.path.join(BASE_DIR, "output")
+    if not os.path.exists(output_base):
+        logging.error(f"No se encontró la carpeta: {output_base}")
         return
 
-    with open(output_path, "r", encoding="utf-8") as f:
+    carpetas = [os.path.join(output_base, d) for d in os.listdir(output_base) if os.path.isdir(os.path.join(output_base, d))]
+    if not carpetas:
+        logging.error(f"No se encontraron carpetas de productor en: {output_base}")
+        return
+
+    for carpeta in carpetas:
+        archivos_json = [f for f in os.listdir(carpeta) if f.lower().endswith('.json')]
+        for archivo_json in archivos_json:
+            ruta_json = os.path.join(carpeta, archivo_json)
+            with open(ruta_json, "r", encoding="utf-8") as f:
+                try:
+                    registro = json.load(f)
+                except Exception as e:
+                    logging.error(f"Error leyendo {ruta_json}: {e}")
+                    continue
+            procesar_registro(registro)
+
+        # Una vez procesado el archivo, moverlo a la carpeta trash
+        trash_dir = os.path.join(BASE_DIR, "trash")
+        os.makedirs(trash_dir, exist_ok=True)
+        destino = os.path.join(trash_dir, os.path.basename(json_file))
         try:
-            registros = json.load(f)
+            shutil.move(json_file, destino)
+            logging.info(f"Archivo {os.path.basename(json_file)} movido a {destino}.")
         except Exception as e:
-            logging.error(f"Error leyendo regage.json: {e}")
-            return
-
-    if not isinstance(registros, list):
-        registros = [registros]
-
-    for registro in registros:
-        procesar_registro(registro)
-
-    logging.info("Proceso completado. Todos los enlaces han sido abiertos y procesados.")
+            logging.error(f"Error al mover {json_file} a trash: {e}")
 
 if __name__ == "__main__":
-    procesar_regages()
+    procesar_multiple_regages()
