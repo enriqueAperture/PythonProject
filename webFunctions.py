@@ -1136,3 +1136,27 @@ def clickar_div_residuo_por_nombre(driver, nombre_residuo, timeout=10):
             if intento == intentos - 1:
                 raise
             time.sleep(0.5)
+
+def escribir_en_elemento_por_name_y_enter_escape(driver: webdriver.Chrome, name: str, texto: str) -> None:
+    """
+    Escribe en un elemento identificado por el atributo name y pulsa Enter después de escribir.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        name (str): Valor del atributo name del elemento.
+        texto (str): Texto a escribir.
+
+    Ejemplo:
+        escribir_en_elemento_por_name_y_enter(driver, "usuario", "admin")
+    """
+    try:
+        escribir_en_elemento(driver, By.NAME, name, texto)
+        input_element = driver.find_element(By.NAME, name)
+        time.sleep(2)
+        input_element.send_keys(Keys.ESCAPE)
+        logging.info(f"Se escribió texto y se pulsó Enter en el elemento con name '{name}'.")
+    except Exception as e:
+        logging.error(f"No se pudo escribir y pulsar Enter en el elemento con name '{name}': {e}")
+        raise
+
+## Probar con el campo de codigo de tratamiento en nubelus

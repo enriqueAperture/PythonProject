@@ -65,7 +65,7 @@ def main():
     # Comprueba si la empresa ya está en nubelus
     excel_fila = excel_input.iloc[0]
     coincidencias_entidades = excelFunctions.coincidencias_en_entidades(excel_fila, excel_entidades)
-    # Si la empresa no está en nubelus, la añade y ejecuta todo el proceso de creación: desde empresa a contratos
+    # # Si la empresa no está en nubelus, la añade y ejecuta todo el proceso de creación: desde empresa a contratos
     if coincidencias_entidades is None:
         excelFunctions.añadir_empresa(driver, excel_fila)
         funcionesNubelus.crear_proveedor(driver)
