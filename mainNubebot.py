@@ -49,7 +49,7 @@ import webConfiguration
 
 
 
-ruta_excel_input = "entrada/excel_input.xls"  # Ruta del Excel de entrada
+ruta_excel_input = "entrada/excel_recogidas.xls"  # Ruta del Excel de entrada
 
 def main():
     # Comprueba que el formato de los datos del Excel son correctos
@@ -67,27 +67,13 @@ def main():
     coincidencias_entidades = excelFunctions.coincidencias_en_entidades(excel_fila, excel_entidades)
     # # Si la empresa no está en nubelus, la añade y ejecuta todo el proceso de creación: desde empresa a contratos
     if coincidencias_entidades is None:
-        excelFunctions.añadir_empresa(driver, excel_fila)
-        funcionesNubelus.crear_proveedor(driver)
-        funcionesNubelus.crear_cliente(driver)
-        excelFunctions.completar_datos_centro(driver, excel_fila)
-        excelFunctions.añadir_usuario(driver, excel_fila)
-        excelFunctions.añadir_acuerdo_representacion(driver, excel_fila)
-        excelFunctions.añadir_contratos_tratamientos(driver, excel_fila)
-        logging.info("Contratos creados correctamente: desde empresa a contratos")
-        sys.exit()
+        excelFunctions.crear_contratos_desde_empresa(driver, excel_fila)
     # Descarga el Excel de centros medioambientales
     excel_centros = excelFunctions.descargar_excel_centros(driver)
     coincidencias_centros = excelFunctions.coincidencias_en_centros(excel_fila, excel_centros)
     # Si el centro no está en nubelus, lo añade y ejecuta todo el proceso de creación: desde centro a contratos
     if coincidencias_centros is None:
-        excelFunctions.añadir_centro(driver, excel_fila)
-        excelFunctions.añadir_cliente_empresa(driver,excel_fila)
-        excelFunctions.añadir_usuario(driver, excel_fila)
-        excelFunctions.añadir_acuerdo_representacion(driver, excel_fila)
-        excelFunctions.añadir_contratos_tratamientos(driver, excel_fila)
-        logging.info("Contratos creados correctamente: desde centro a contratos")
-        sys.exit()
+        excelFunctions.crear_contratos_desde_centros(driver, excel_fila)
     excel_clientes = excelFunctions.descargar_excel_clientes(driver)
     # Comprueba si el cliente ya está en nubelus
     coincidencias_clientes = excelFunctions.coincidencias_en_clientes(excel_fila, excel_clientes)

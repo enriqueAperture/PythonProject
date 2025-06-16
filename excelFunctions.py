@@ -307,9 +307,18 @@ def añadir_empresa(driver: webdriver.Chrome, fila) -> None:
         
         # 10. Completar el campo Email
         webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
+
+        # 11. Completar el campo Autorización
+        webFunctions.escribir_en_elemento_por_name(driver, "pAutorizacion_medioambiental", str(fila.get("nima_cod_peligrosos", "")))
         
+        # 12. Añadir tipo
+        codigo_autorizacion = fila.get("nima_cod_peligrosos", "")
+        webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_ema", denominacion_por_autorizacion(codigo_autorizacion))
+
         # 11. Confirmar la adición (clic en botón de aceptar o cancelar o guardar según corresponda)
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
+
+
         
         # Espera para que la acción se procese
         time.sleep(1)
@@ -1196,7 +1205,7 @@ def añadir_tratamiento(driver, fila, residuo, indice=1):
         centro = residuo.get("centro", {})
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(popup, f"pDenominacion_ema_{indice}", centro.get("centro", ""))
         time.sleep(0.5)
-        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(popup, f"pTratamiento_posterior_{indice}_codigo_ler_2", centro.get("tratamiento", ""))
+        webFunctions.escribir_en_elemento_por_name_y_enter_escape(popup, f"pTratamiento_posterior_{indice}_codigo_ler_2", centro.get("tratamiento", ""))
 
         webFunctions.esperar_elemento(popup, By.CLASS_NAME, "icon-ok")
 
@@ -1296,6 +1305,7 @@ def añadir_facturacion(driver, fila, residuo):
 
         if residuo_nombre in ["ENVASES PLASTICOS CONTAMINADOS*", "FILTROS DE AIRE"]:
             webFunctions.seleccionar_elemento_por_name(popup, "pCantidad_modo", "Valor fijo")
+            webFunctions.seleccionar_elemento_por_name(popup, "pPrecio_modo_venta", "T/Precio 1")
             webFunctions.escribir_en_elemento_por_name_y_enter_pausa(popup, "pCantidad_valor", "1")
         time.sleep(2)
         webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
@@ -1317,24 +1327,12 @@ def activar_proteccion_mejorada(driver):
     Esta función navega a la sección de configuración y activa la protección mejorada.
     Reintenta hasta 3 veces en caso de error.
     """
-    intentos = 3
-    for intento in range(intentos):
-        try:
-            webFunctions.abrir_web(driver, URL_SEGURIDAD)
-            time.sleep(5)
-            # Aquí puedes añadir más pasos si necesitas interactuar con la página de seguridad
-            return
-        except Exception as error:
-            logging.error(f"Error al activar la protección mejorada (intento {intento+1}): {error}")
-            if intento == intentos - 1:
-                continuar = funcionesNubelus.preguntar_por_pantalla()
-                if continuar:
-                    logging.info("Continuando tras error en protección mejorada...")
-                else:
-                    logging.info("Saliendo del proceso de protección mejorada.")
-                    driver.quit()
-                    sys.exit()
-            time.sleep(1)
+    try:
+        webFunctions.abrir_web(driver, URL_SEGURIDAD)
+        time.sleep(5)
+        # Aquí puedes añadir más pasos si necesitas interactuar con la página de seguridad
+    except Exception as error:
+        logging.error(f"Error al activar la protección mejorada.")
 
 def leer_excel(ruta_excel):
     """
@@ -1695,7 +1693,7 @@ def completar_datos_centro(driver, fila):
         webFunctions.completar_campo_y_enter_por_name(popup, 
             "pDenominacion", fila.get("nombre_recogida", ""))
         webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
-        añadir_autorizaciones(driver, fila)
+        # añadir_autorizaciones(driver, fila)
         rellenar_datos_medioambientales(driver, fila)
     except Exception as error:
         logging.error(f"Error al completar datos del centro para la empresa {fila.get('nombre_recogida', '')}: {error}")
@@ -1783,3 +1781,27 @@ def crear_contratos_faltantes(driver, fila, coincidencias_contratos):
             time.sleep(1)
 
         añadir_facturacion(driver, fila, contrato_residuo)
+
+def crear_contratos_desde_empresa(driver, fila):
+        añadir_empresa(driver, fila)
+        funcionesNubelus.crear_proveedor(driver)
+        funcionesNubelus.crear_cliente(driver)
+        completar_datos_centro(driver, fila)
+        añadir_usuario(driver, fila)
+        añadir_acuerdo_representacion(driver, fila)
+        añadir_contratos_tratamientos(driver, fila)
+        logging.info("Contratos creados correctamente: desde empresa a contratos")
+        sys.exit()
+
+def crear_contratos_desde_centros(driver, fila):
+    """
+    Crea contratos de tratamiento desde la pestaña 'Centros' de la empresa.
+    Primero añade el centro, luego crea los contratos de tratamiento para cada residuo.
+    """
+    añadir_centro(driver, fila)
+    añadir_cliente_empresa(driver,fila)
+    añadir_usuario(driver, fila)
+    añadir_acuerdo_representacion(driver, fila)
+    añadir_contratos_tratamientos(driver, fila)
+    logging.info("Contratos creados correctamente: desde centro a contratos")
+    sys.exit()
