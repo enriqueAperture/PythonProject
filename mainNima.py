@@ -107,4 +107,4 @@ def busqueda_NIMA(nif):
             return resultados[nombre]
 
     logging.error("NIF no encontrado en ninguna comunidad")
-    return None
+    return {"error": "NIF no encontrado en ninguna comunidad"}

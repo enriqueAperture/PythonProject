@@ -37,6 +37,30 @@ def guardar_regage_json(data, output_dir, nombre_residuo):
         json.dump(data, f, ensure_ascii=False, indent=2)
     return full_path
 
+# Guardar historial global en BASE_DIR/historial.json usando una función
+def guardar_historial(data):
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    historial_path = os.path.join(BASE_DIR, "historial.json")
+
+    # Leer historial existente o crear uno nuevo
+    if os.path.exists(historial_path):
+        with open(historial_path, "r", encoding="utf-8") as f:
+            try:
+                historial = json.load(f)
+                if not isinstance(historial, list):
+                    historial = []
+            except Exception:
+                historial = []
+    else:
+        historial = []
+
+    # Añadir el nuevo registro
+    historial.append(data)
+
+    # Guardar historial actualizado
+    with open(historial_path, "w", encoding="utf-8") as f:
+        json.dump(historial, f, ensure_ascii=False, indent=2)
+
 def extraer_info_xml(path_xml, regage):
     """
     Extrae información relevante del archivo E3L/XML para construir el objeto JSON solicitado.
@@ -94,6 +118,8 @@ def extraer_info_xml(path_xml, regage):
         "regage": regage
     }
 
+    guardar_historial(data)
+    
     # Guardar el JSON en output/{nombre_productor}/regage_{nombre_residuo}.json
     output_dir = os.path.join("output", normalizar_nombre(nombre_productor))
     os.makedirs(output_dir, exist_ok=True)
