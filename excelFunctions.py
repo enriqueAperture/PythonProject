@@ -1059,7 +1059,7 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
             driver.quit()
             sys.exit()
 
-def añadir_contratos_tratamientos(driver, fila):
+def añadir_contratos_tratamientos(driver, fila, ruta_destino=None):
     """
     Añade los contratos de tratamiento para la empresa usando los datos de la fila 'empresa'
     y todos los residuos y cantidades del archivo residuos.txt, junto con su(s) centro(s) y tratamiento(s) asociado(s).
@@ -1089,7 +1089,7 @@ def añadir_contratos_tratamientos(driver, fila):
                 if "*" in nombre_residuo:
                     añadir_tratamientos(driver, fila, item)
                     time.sleep(1)
-                    crear_notificacion_tratamiento(driver)
+                    crear_notificacion_tratamiento(driver, ruta_destino)
                     time.sleep(1)
 
                 # Crear facturación para todos los residuos
@@ -1107,30 +1107,32 @@ def añadir_contratos_tratamientos(driver, fila):
                     sys.exit()
             time.sleep(1)
 
-def crear_notificacion_tratamiento(driver):
+def crear_notificacion_tratamiento(driver, ruta_destino=None):
     """
     Crea una notificación en la plataforma Nubelus.
-    Tras hacer clic en el botón 'Crear notificación', espera a que se descargue el archivo en la carpeta 'input' del proyecto.
+    Descarga el archivo en la carpeta 'ruta_destino' si se indica, si no en 'input'.
     """
+    import downloadFunctions
+    import os
+
     webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Notificación")
     time.sleep(1)
     try:
-        # Configura la carpeta de descargas a 'input' dentro del proyecto
-        download_path = os.path.join(BASE_DIR, "input")
+        if ruta_destino is None:
+            download_path = os.path.join(BASE_DIR, "input")
+        else:
+            download_path = ruta_destino
+
         downloadFunctions.ensure_download_path(download_path)
         downloadFunctions.configure_driver_download_path(driver, download_path)
 
-        # Snapshot del estado de la carpeta antes de descargar
         old_state = downloadFunctions.snapshot_folder_state(download_path)
-
         webFunctions.clickar_boton_por_clase(driver, "icon-magic")
-
-        # Espera a que se descargue el archivo nuevo en la carpeta 'input'
         nuevos = downloadFunctions.wait_for_new_download(download_path, old_state, num_descargas=1, timeout=120)
         if nuevos:
-            logging.info(f"Archivo de notificación descargado en input: {nuevos[0]}")
+            logging.info(f"Archivo de notificación descargado en: {nuevos[0]}")
         else:
-            logging.error("No se detectó la descarga del archivo de notificación en la carpeta input.")
+            logging.error("No se detectó la descarga del archivo de notificación en la carpeta destino.")
 
     except Exception as error:
         logging.error(f"Error al crear notificación de tratamiento: {error}")
@@ -1733,7 +1735,7 @@ def añadir_cliente_empresa(driver, fila):
             driver.quit()
             sys.exit()
     
-def crear_contratos_faltantes(driver, fila, coincidencias_contratos):
+def crear_contratos_faltantes(driver, fila, coincidencias_contratos, ruta_destino=None):
     """
     Crea contratos de tratamiento solo para los residuos que no están ya en los contratos existentes
     para la empresa actual, usando la columna 'Denominacion' del DataFrame coincidencias_contratos.
@@ -1777,23 +1779,23 @@ def crear_contratos_faltantes(driver, fila, coincidencias_contratos):
             time.sleep(1)
             añadir_tratamientos(driver, fila, item)
             time.sleep(1)
-            crear_notificacion_tratamiento(driver)
+            crear_notificacion_tratamiento(driver, ruta_destino)
             time.sleep(1)
 
         añadir_facturacion(driver, fila, contrato_residuo)
 
-def crear_contratos_desde_empresa(driver, fila):
+def crear_contratos_desde_empresa(driver, fila, ruta_destino=None):
         añadir_empresa(driver, fila)
         funcionesNubelus.crear_proveedor(driver)
         funcionesNubelus.crear_cliente(driver)
         completar_datos_centro(driver, fila)
         añadir_usuario(driver, fila)
         añadir_acuerdo_representacion(driver, fila)
-        añadir_contratos_tratamientos(driver, fila)
+        añadir_contratos_tratamientos(driver, fila, ruta_destino)
         logging.info("Contratos creados correctamente: desde empresa a contratos")
         sys.exit()
 
-def crear_contratos_desde_centros(driver, fila):
+def crear_contratos_desde_centros(driver, fila, ruta_destino=None):
     """
     Crea contratos de tratamiento desde la pestaña 'Centros' de la empresa.
     Primero añade el centro, luego crea los contratos de tratamiento para cada residuo.
@@ -1802,6 +1804,56 @@ def crear_contratos_desde_centros(driver, fila):
     añadir_cliente_empresa(driver,fila)
     añadir_usuario(driver, fila)
     añadir_acuerdo_representacion(driver, fila)
-    añadir_contratos_tratamientos(driver, fila)
+    añadir_contratos_tratamientos(driver, fila, ruta_destino)
     logging.info("Contratos creados correctamente: desde centro a contratos")
     sys.exit()
+
+def crear_contratos_desde_clientes(driver, fila, ruta_destino=None):
+    """
+    Crea contratos de tratamiento desde la pestaña 'Clientes' de la empresa.
+    Primero añade el cliente, luego crea los contratos de tratamiento para cada residuo.
+    """
+    añadir_cliente_empresa(driver, fila)
+    añadir_usuario(driver, fila)
+    añadir_acuerdo_representacion(driver, fila)
+    añadir_contratos_tratamientos(driver, fila, ruta_destino)
+    logging.info("Contratos creados correctamente: desde cliente a contratos")
+    sys.exit()
+
+def crear_contratos_desde_usuarios(driver, fila, ruta_destino=None):
+    """
+    Crea contratos de tratamiento desde la pestaña 'Acuerdos de representación' de la empresa.
+    Primero añade el acuerdo, luego crea los contratos de tratamiento para cada residuo.
+    """
+    añadir_usuario(driver, fila)
+    añadir_acuerdo_representacion(driver, fila)
+    añadir_contratos_tratamientos(driver, fila, ruta_destino)
+    logging.info("Contratos creados correctamente: desde usuario a contratos")
+    sys.exit()
+
+def preparar_carpeta_para_pdf_y_xml():
+    """
+    Busca el PDF en la carpeta 'entrada', crea una carpeta en 'input' con el mismo nombre (sin extensión),
+    mueve el PDF a esa carpeta y devuelve la ruta para guardar los XML ahí.
+    """
+    carpeta_entrada = "entrada"
+    carpeta_input = "input"
+
+    # Busca el primer PDF en la carpeta entrada
+    pdfs = [f for f in os.listdir(carpeta_entrada) if f.lower().endswith(".pdf")]
+    if not pdfs:
+        raise FileNotFoundError("No se encontró ningún PDF en la carpeta 'entrada'.")
+    nombre_pdf = pdfs[0]
+    nombre_carpeta = os.path.splitext(nombre_pdf)[0]
+    ruta_destino = os.path.join(carpeta_input, nombre_carpeta)
+
+    # Crea la carpeta destino si no existe
+    os.makedirs(ruta_destino, exist_ok=True)
+
+    # Mueve el PDF a la nueva carpeta
+    ruta_pdf_origen = os.path.join(carpeta_entrada, nombre_pdf)
+    ruta_pdf_destino = os.path.join(ruta_destino, nombre_pdf)
+    shutil.copy2(ruta_pdf_origen, ruta_pdf_destino)
+
+    # Devuelve la ruta donde guardar los XML
+    return ruta_destino
