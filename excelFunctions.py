@@ -313,7 +313,7 @@ def añadir_empresa(driver: webdriver.Chrome, fila) -> None:
         
         # 12. Añadir tipo
         codigo_autorizacion = fila.get("nima_cod_peligrosos", "")
-        webFunctions.escribir_en_elemento_por_name(driver, "pDenominacion_ema", denominacion_por_autorizacion(codigo_autorizacion))
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", codigo_residuos_por_autorizacion(codigo_autorizacion))
 
         # 11. Confirmar la adición (clic en botón de aceptar o cancelar o guardar según corresponda)
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
