@@ -38,6 +38,7 @@ async def busqueda_nima_endpoint(
     """
     try:
         resultado = mainNima.busqueda_NIMA(nif)
+        logging.info(f"Resultado: {resultado}")
         return resultado
     except Exception as e:
         logging.error(f"Error en busqueda_nima_endpoint: {e}")
