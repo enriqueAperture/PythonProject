@@ -268,7 +268,13 @@ def busqueda_NIMA_Madrid(nif):
                             if empresa is None and "empresa" in datos_centro:
                                 empresa = datos_centro["empresa"]
                             if "centros" in datos_centro:
-                                centros.extend(datos_centro["centros"])
+                                for centro in datos_centro["centros"]:
+                                    if "codigos_residuos" in centro:
+                                        if "P02" not in centro["codigos_residuos"]:
+                                            centro["codigos_residuos"].append("P02")
+                                    else:
+                                        centro["codigos_residuos"] = ["P02"]
+                                    centros.append(centro)
                     except Exception as e:
                         logging.error(f"ERROR: No se han podido extraer los datos del centro en Madrid: {e}")
                     driver.back()
@@ -318,6 +324,11 @@ def busqueda_NIMA_Castilla(nif):
     centros = []
     if datos_json and "centros" in datos_json:
         for centro in datos_json["centros"]:
+            # Añadir P02 si no está
+            codigos = centro.get("codigos_residuos", [])
+            if "P02" not in codigos:
+                codigos.append("P02")
+            centro["codigos_residuos"] = codigos
             centros.append(_fill_centro(centro))
     return {
         "empresa": empresa,
