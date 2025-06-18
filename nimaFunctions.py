@@ -36,6 +36,9 @@ def _fill_empresa(data):
     }
 
 def _fill_centro(data):
+    codigos = data.get("codigos_residuos", [])
+    if "P02" not in codigos:
+        codigos.append("P02")
     return {
         "nima": data.get("nima", ""),
         "nombre": data.get("nombre", ""),
@@ -45,7 +48,7 @@ def _fill_centro(data):
         "codigo_ine": data.get("codigo_ine", ""),
         "telefono": data.get("telefono", ""),
         "autorizaciones": data.get("autorizaciones", []),
-        "codigos_residuos": data.get("codigos_residuos", [])
+        "codigos_residuos": codigos
     }
 
 # --- VALENCIA ---
@@ -269,6 +272,7 @@ def busqueda_NIMA_Madrid(nif):
                                 empresa = datos_centro["empresa"]
                             if "centros" in datos_centro:
                                 for centro in datos_centro["centros"]:
+                                    # Añadir P02 si no está
                                     if "codigos_residuos" in centro:
                                         if "P02" not in centro["codigos_residuos"]:
                                             centro["codigos_residuos"].append("P02")
