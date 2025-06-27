@@ -17,9 +17,9 @@ app = FastAPI()
 # Permitir CORS desde localhost:5173 (o usar "*" para permitir todos los orígenes)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://recogidas.ecotitan.es",],  # Permitir solo este origen
+    allow_origins=["*"],  # Permitir solo este origen
     allow_credentials=True,
-    allow_methods=["POST"],  # Permitir todos los métodos (POST, GET, etc.)
+    allow_methods=["*"],  # Permitir todos los métodos (POST, GET, etc.)
     allow_headers=["*"],  # Permitir todos los encabezados
 )
 
