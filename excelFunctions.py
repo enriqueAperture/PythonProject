@@ -308,14 +308,17 @@ def añadir_empresa(driver: webdriver.Chrome, fila) -> None:
         # 10. Completar el campo Email
         webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
 
-        # 11. Completar el campo Autorización
+        # 11. Añadir NIMA
+        webFunctions.escribir_en_elemento_por_name(driver, "pNima", str(fila.get("nima_codigo", "")))
+
+        # 12. Completar el campo Autorización
         webFunctions.escribir_en_elemento_por_name(driver, "pAutorizacion_medioambiental", str(fila.get("nima_cod_peligrosos", "")))
         
-        # 12. Añadir tipo
+        # 13. Añadir tipo
         codigo_autorizacion = fila.get("nima_cod_peligrosos", "")
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", codigo_residuos_por_autorizacion(codigo_autorizacion))
 
-        # 11. Confirmar la adición (clic en botón de aceptar o cancelar o guardar según corresponda)
+        # 14. Confirmar la adición (clic en botón de aceptar o cancelar o guardar según corresponda)
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
 
 
@@ -1022,7 +1025,7 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. siempre
         time.sleep(0.5)
         print(fila.get("provincia_recogida", ""))
-        if fila.get("provincia_recogida") == "VALENCIA":
+        if fila.get("provincia_recogida") == "VALENCIA" or residuo.get("nombre", "").strip().upper() == "HIDROCARBUROS CON AGUA*":
             webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D") # METALLS DEL CAMP ( SERRA D'ESPADA ) si es de valencia
             # Depende si el residuo es o no peligroso
             time.sleep(1)

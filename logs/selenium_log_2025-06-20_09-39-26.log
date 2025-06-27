@@ -1,0 +1,38 @@
+2025-06-20 09:39:29,013 - INFO - Web 'chrome://settings/security' abierta.
+2025-06-20 09:39:34,550 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-06-20 09:39:34,627 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-06-20 09:39:34,692 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-06-20 09:39:34,756 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-06-20 09:39:34,819 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-06-20 09:39:34,876 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-06-20 09:39:40,901 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales' abierta.
+2025-06-20 09:39:40,971 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-06-20 09:39:41,033 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-06-20 09:39:42,250 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-06-20 09:39:42,397 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-06-20 09:39:42,839 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros' abierta.
+2025-06-20 09:39:42,896 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-06-20 09:39:42,953 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-06-20 09:39:44,164 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-06-20 09:39:44,200 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-06-20 09:39:44,768 - INFO - Web 'https://portal.nubelus.es/?clave=factucit2_gestionClientes_n1' abierta.
+2025-06-20 09:39:44,838 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-06-20 09:39:44,911 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-06-20 09:39:46,332 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Clientes.xlsx
+2025-06-20 09:39:46,406 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Clientes.xlsx
+2025-06-20 09:39:46,971 - INFO - Web 'https://portal.nubelus.es/?clave=nubelus_gestionUsuarios' abierta.
+2025-06-20 09:39:47,038 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-06-20 09:39:47,101 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-06-20 09:39:48,416 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Usuarios.xlsx
+2025-06-20 09:39:48,477 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Usuarios.xlsx
+2025-06-20 09:39:48,990 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion' abierta.
+2025-06-20 09:39:49,053 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-06-20 09:39:49,116 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-06-20 09:39:50,385 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Acuerdos de representación.xlsx
+2025-06-20 09:39:50,439 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Acuerdos de representación.xlsx
+2025-06-20 09:39:51,047 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento' abierta.
+2025-06-20 09:39:51,104 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-06-20 09:39:51,185 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-06-20 09:39:54,322 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Contratos tratamiento.xlsx
+2025-06-20 09:39:54,742 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Contratos tratamiento.xlsx
+2025-06-20 09:39:54,743 - INFO - Todos los contratos de tratamiento ya están creados para esta empresa.
