@@ -310,7 +310,7 @@ def busqueda_NIMA_Castilla(nif):
     datos_json = None
     try:
         webFunctions.abrir_web(driver, URL_NIMA_CASTILLA)
-        webFunctions.clickar_boton_por_id(driver, "enlace_gestores")
+        webFunctions.clickar_boton_por_id(driver, "enlace_productores")
         webFunctions.escribir_en_elemento_por_id(driver, "input_NIF_CIF", nif)
         webFunctions.clickar_boton_por_id(driver, "boton_buscar")
         if webFunctions.clickar_imagen_generar_excel(driver, timeout=8):
