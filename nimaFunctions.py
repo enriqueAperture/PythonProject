@@ -313,18 +313,22 @@ def busqueda_NIMA_Castilla(nif):
         webFunctions.clickar_boton_por_id(driver, "enlace_productores")
         webFunctions.escribir_en_elemento_por_id(driver, "input_NIF_CIF", nif)
         webFunctions.clickar_boton_por_id(driver, "boton_buscar")
-        if webFunctions.clickar_imagen_generar_excel(driver, timeout=8):
+        if webFunctions.clickar_imagen_generar_excel(driver, timeout=60):
             datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
             if not datos_json:
-                logging.info("No se pudieron extraer los datos desde el Excel en Castilla")
+                logging.error("No se pudieron extraer los datos desde el Excel en Castilla")
         else:
-            logging.info("No se ha encontrado la imagen para generar el Excel en Castilla.")
+            logging.error("No se ha encontrado la imagen para generar el Excel en Castilla.")
     except Exception:
-        logging.info("No se ha podido generar o procesar el Excel en Castilla.")
+        logging.error("No se ha podido generar o procesar el Excel en Castilla.")
     finally:
         driver.quit()
     # Estandarizar estructura
-    empresa = _fill_empresa(datos_json["empresa"]) if datos_json and "empresa" in datos_json else _fill_empresa({})
+    empresa_dict = datos_json["empresa"] if datos_json and "empresa" in datos_json else {}
+    empresa = _fill_empresa(empresa_dict)
+    # Eliminar el campo 'nif' del resultado final para Castilla
+    if "nif" in empresa:
+        empresa["nif"] = nif
     centros = []
     if datos_json and "centros" in datos_json:
         for centro in datos_json["centros"]:
