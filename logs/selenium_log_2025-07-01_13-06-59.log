@@ -1,0 +1,200 @@
+2025-07-01 13:07:02,499 - INFO - Web 'chrome://settings/security' abierta.
+2025-07-01 13:07:08,059 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-07-01 13:07:08,151 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-07-01 13:07:08,207 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-07-01 13:07:08,281 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-07-01 13:07:08,340 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-07-01 13:07:08,391 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-07-01 13:07:13,918 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales' abierta.
+2025-07-01 13:07:13,977 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-01 13:07:14,042 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-01 13:07:15,246 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-01 13:07:15,409 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-01 13:07:15,881 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros' abierta.
+2025-07-01 13:07:15,930 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-01 13:07:15,981 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-01 13:07:17,696 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-07-01 13:07:17,734 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-07-01 13:07:18,210 - INFO - Web 'https://portal.nubelus.es/?clave=factucit2_gestionClientes_n1' abierta.
+2025-07-01 13:07:18,262 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-01 13:07:18,319 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-01 13:07:19,666 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Clientes.xlsx
+2025-07-01 13:07:19,749 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Clientes.xlsx
+2025-07-01 13:07:20,250 - INFO - Web 'https://portal.nubelus.es/?clave=nubelus_gestionUsuarios' abierta.
+2025-07-01 13:07:20,303 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-01 13:07:20,350 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-01 13:07:21,637 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Usuarios.xlsx
+2025-07-01 13:07:21,700 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Usuarios.xlsx
+2025-07-01 13:07:22,176 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion' abierta.
+2025-07-01 13:07:22,229 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-01 13:07:22,270 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-01 13:07:23,528 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Acuerdos de representación.xlsx
+2025-07-01 13:07:23,578 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Acuerdos de representación.xlsx
+2025-07-01 13:07:24,159 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento' abierta.
+2025-07-01 13:07:24,220 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-01 13:07:24,262 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-01 13:07:27,468 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Contratos tratamiento.xlsx
+2025-07-01 13:07:27,902 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Contratos tratamiento.xlsx
+2025-07-01 13:07:28,409 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento&pAccion=NUEVO' abierta.
+2025-07-01 13:07:28,497 - INFO - Se escribió texto en el elemento localizado por name='pFecha': '11-06-2025'
+2025-07-01 13:07:30,523 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha'.
+2025-07-01 13:07:31,103 - INFO - Se escribió texto en el elemento localizado por name='pFecha_caducidad': '10-06-2028'
+2025-07-01 13:07:33,126 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha_caducidad'.
+2025-07-01 13:07:33,709 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_origen': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 13:07:35,730 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_origen'.
+2025-07-01 13:07:36,311 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino': 'METALLS DEL CAMP, S.L.'
+2025-07-01 13:07:38,338 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino'.
+2025-07-01 13:07:38,936 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino_centro': 'METALLS DEL CAMP ( SERRA D'
+2025-07-01 13:07:40,989 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino_centro'.
+2025-07-01 13:07:42,068 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_destino': '157/G02/CV'
+2025-07-01 13:07:44,098 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_autorizacion_destino'.
+2025-07-01 13:07:45,168 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_operador_traslados': 'ECO TITAN S.L.'
+2025-07-01 13:07:47,190 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_operador_traslados'.
+2025-07-01 13:07:48,252 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_operador_traslados': '87/A01/CV'
+2025-07-01 13:07:50,298 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_autorizacion_operador_traslados'.
+2025-07-01 13:07:50,376 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_residuo': 'ENVASES METALICOS CONTAMINADOS*'
+2025-07-01 13:07:52,404 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_residuo'.
+2025-07-01 13:07:52,472 - INFO - Se escribió texto en el elemento localizado por name='pKilos_totales': '1000'
+2025-07-01 13:07:54,499 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pKilos_totales'.
+2025-07-01 13:07:54,543 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 13:07:55,638 - INFO - Opción 'Tratamientos' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:07:56,693 - INFO - Elemento clickado con 'css selector' = '.miBoton.editar.editar_1.sinTexto.dcha'.
+2025-07-01 13:07:57,301 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema_1': 'SERVICIOS ECOLOGICOS ACITAIN, S.L.'
+2025-07-01 13:07:59,333 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ema_1'.
+2025-07-01 13:07:59,895 - INFO - Se escribió texto en el elemento localizado por name='pTratamiento_posterior_1_codigo_ler_2': 'R4'
+2025-07-01 13:08:01,927 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pTratamiento_posterior_1_codigo_ler_2'.
+2025-07-01 13:08:01,982 - INFO - Elemento clickado con 'css selector' = '.icon-ok'.
+2025-07-01 13:08:04,046 - INFO - Opción 'Notificación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:10:05,215 - ERROR - No se detectaron todas las descargas esperadas (1). Solo detectados: 0
+2025-07-01 13:10:05,264 - INFO - Opción 'Notificación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:10:06,375 - INFO - Opción 'Si' seleccionada en el elemento con 'name' = 'pNt_notificada_sn'.
+2025-07-01 13:10:06,933 - INFO - Elemento clickado con 'css selector' = '.icon-ok'.
+2025-07-01 13:10:06,934 - ERROR - No se detectó la descarga del archivo de notificación en la carpeta destino.
+2025-07-01 13:10:07,993 - INFO - Opción 'Facturación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:10:10,132 - INFO - Se escribió texto en el elemento localizado por name='pNombre_cliente': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 13:10:12,170 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pNombre_cliente'.
+2025-07-01 13:10:12,240 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_producto': 'ENVASES METALICOS CONTAMINADOS*'
+2025-07-01 13:10:14,264 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_producto'.
+2025-07-01 13:10:16,311 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 13:10:18,812 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento&pAccion=NUEVO' abierta.
+2025-07-01 13:10:18,913 - INFO - Se escribió texto en el elemento localizado por name='pFecha': '11-06-2025'
+2025-07-01 13:10:20,938 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha'.
+2025-07-01 13:10:21,529 - INFO - Se escribió texto en el elemento localizado por name='pFecha_caducidad': '10-06-2028'
+2025-07-01 13:10:23,556 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha_caducidad'.
+2025-07-01 13:10:24,132 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_origen': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 13:10:26,153 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_origen'.
+2025-07-01 13:10:26,729 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino': 'METALLS DEL CAMP, S.L.'
+2025-07-01 13:10:28,777 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino'.
+2025-07-01 13:10:29,346 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino_centro': 'METALLS DEL CAMP ( SERRA D'
+2025-07-01 13:10:31,367 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino_centro'.
+2025-07-01 13:10:32,453 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_destino': '157/G02/CV'
+2025-07-01 13:10:34,477 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_autorizacion_destino'.
+2025-07-01 13:10:35,546 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_operador_traslados': 'ECO TITAN S.L.'
+2025-07-01 13:10:37,574 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_operador_traslados'.
+2025-07-01 13:10:38,636 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_operador_traslados': '87/A01/CV'
+2025-07-01 13:10:40,664 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_autorizacion_operador_traslados'.
+2025-07-01 13:10:40,742 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_residuo': 'ENVASES PLASTICOS CONTAMINADOS*'
+2025-07-01 13:10:42,769 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_residuo'.
+2025-07-01 13:10:42,816 - INFO - Se escribió texto en el elemento localizado por name='pKilos_totales': '1000'
+2025-07-01 13:10:44,843 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pKilos_totales'.
+2025-07-01 13:10:44,883 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 13:10:45,965 - INFO - Opción 'Tratamientos' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:10:47,039 - INFO - Elemento clickado con 'css selector' = '.miBoton.editar.editar_1.sinTexto.dcha'.
+2025-07-01 13:10:47,616 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema_1': 'MANC RECYCLAPLAST, S.L.'
+2025-07-01 13:10:49,643 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ema_1'.
+2025-07-01 13:10:50,206 - INFO - Se escribió texto en el elemento localizado por name='pTratamiento_posterior_1_codigo_ler_2': 'R3'
+2025-07-01 13:10:52,236 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pTratamiento_posterior_1_codigo_ler_2'.
+2025-07-01 13:10:52,299 - INFO - Elemento clickado con 'css selector' = '.icon-ok'.
+2025-07-01 13:10:54,353 - INFO - Opción 'Notificación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:12:55,512 - ERROR - No se detectaron todas las descargas esperadas (1). Solo detectados: 0
+2025-07-01 13:12:55,555 - INFO - Opción 'Notificación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:12:56,704 - INFO - Opción 'Si' seleccionada en el elemento con 'name' = 'pNt_notificada_sn'.
+2025-07-01 13:12:57,263 - INFO - Elemento clickado con 'css selector' = '.icon-ok'.
+2025-07-01 13:12:57,264 - ERROR - No se detectó la descarga del archivo de notificación en la carpeta destino.
+2025-07-01 13:12:58,322 - INFO - Opción 'Facturación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:13:00,454 - INFO - Se escribió texto en el elemento localizado por name='pNombre_cliente': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 13:13:02,474 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pNombre_cliente'.
+2025-07-01 13:13:02,545 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_producto': 'ENVASES PLASTICOS CONTAMINADOS*'
+2025-07-01 13:13:04,572 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_producto'.
+2025-07-01 13:13:04,626 - INFO - Opción 'Valor fijo' seleccionada en el elemento con 'name' = 'pCantidad_modo'.
+2025-07-01 13:13:04,675 - INFO - Opción 'T/Precio 1' seleccionada en el elemento con 'name' = 'pPrecio_modo_venta'.
+2025-07-01 13:13:04,743 - INFO - Se escribió texto en el elemento localizado por name='pCantidad_valor': '1'
+2025-07-01 13:13:06,764 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pCantidad_valor'.
+2025-07-01 13:13:08,820 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 13:13:11,322 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento&pAccion=NUEVO' abierta.
+2025-07-01 13:13:11,398 - INFO - Se escribió texto en el elemento localizado por name='pFecha': '11-06-2025'
+2025-07-01 13:13:13,430 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha'.
+2025-07-01 13:13:14,003 - INFO - Se escribió texto en el elemento localizado por name='pFecha_caducidad': '10-06-2028'
+2025-07-01 13:13:16,030 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha_caducidad'.
+2025-07-01 13:13:16,598 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_origen': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 13:13:18,624 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_origen'.
+2025-07-01 13:13:19,191 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino': 'METALLS DEL CAMP, S.L.'
+2025-07-01 13:13:21,219 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino'.
+2025-07-01 13:13:21,806 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino_centro': 'METALLS DEL CAMP ( SERRA D'
+2025-07-01 13:13:23,831 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino_centro'.
+2025-07-01 13:13:24,889 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_destino': '157/G02/CV'
+2025-07-01 13:13:26,910 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_autorizacion_destino'.
+2025-07-01 13:13:27,981 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_operador_traslados': 'ECO TITAN S.L.'
+2025-07-01 13:13:30,010 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_operador_traslados'.
+2025-07-01 13:13:31,062 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_operador_traslados': '87/A01/CV'
+2025-07-01 13:13:33,087 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_autorizacion_operador_traslados'.
+2025-07-01 13:13:33,155 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_residuo': 'TRAPOS Y ABSORBENTES CONTAMINADOS*'
+2025-07-01 13:13:35,178 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_residuo'.
+2025-07-01 13:13:35,226 - INFO - Se escribió texto en el elemento localizado por name='pKilos_totales': '2000'
+2025-07-01 13:13:37,243 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pKilos_totales'.
+2025-07-01 13:13:37,285 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 13:13:38,860 - INFO - Opción 'Tratamientos' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:13:39,918 - INFO - Elemento clickado con 'css selector' = '.miBoton.editar.editar_1.sinTexto.dcha'.
+2025-07-01 13:13:40,494 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema_1': 'CTR MEDITERRANEO, S.L.'
+2025-07-01 13:13:42,518 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ema_1'.
+2025-07-01 13:13:43,073 - INFO - Se escribió texto en el elemento localizado por name='pTratamiento_posterior_1_codigo_ler_2': 'R3'
+2025-07-01 13:13:45,093 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pTratamiento_posterior_1_codigo_ler_2'.
+2025-07-01 13:13:45,160 - INFO - Elemento clickado con 'css selector' = '.icon-ok'.
+2025-07-01 13:13:47,213 - INFO - Opción 'Notificación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:15:48,377 - ERROR - No se detectaron todas las descargas esperadas (1). Solo detectados: 0
+2025-07-01 13:15:48,425 - INFO - Opción 'Notificación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:15:49,540 - INFO - Opción 'Si' seleccionada en el elemento con 'name' = 'pNt_notificada_sn'.
+2025-07-01 13:15:50,098 - INFO - Elemento clickado con 'css selector' = '.icon-ok'.
+2025-07-01 13:15:50,099 - ERROR - No se detectó la descarga del archivo de notificación en la carpeta destino.
+2025-07-01 13:15:51,159 - INFO - Opción 'Facturación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:15:53,275 - INFO - Se escribió texto en el elemento localizado por name='pNombre_cliente': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 13:15:55,303 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pNombre_cliente'.
+2025-07-01 13:15:55,374 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_producto': 'TRAPOS Y ABSORBENTES CONTAMINADOS*'
+2025-07-01 13:15:57,403 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_producto'.
+2025-07-01 13:15:59,457 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 13:16:01,958 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento&pAccion=NUEVO' abierta.
+2025-07-01 13:16:02,033 - INFO - Se escribió texto en el elemento localizado por name='pFecha': '11-06-2025'
+2025-07-01 13:16:04,059 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha'.
+2025-07-01 13:16:04,634 - INFO - Se escribió texto en el elemento localizado por name='pFecha_caducidad': '10-06-2028'
+2025-07-01 13:16:06,669 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha_caducidad'.
+2025-07-01 13:16:07,241 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_origen': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 13:16:09,260 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_origen'.
+2025-07-01 13:16:09,838 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino': 'METALLS DEL CAMP, S.L.'
+2025-07-01 13:16:11,862 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino'.
+2025-07-01 13:16:12,437 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino_centro': 'METALLS DEL CAMP ( SERRA D'
+2025-07-01 13:16:14,461 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino_centro'.
+2025-07-01 13:16:15,520 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_destino': '157/G02/CV'
+2025-07-01 13:16:17,550 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_autorizacion_destino'.
+2025-07-01 13:16:18,618 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_operador_traslados': 'ECO TITAN S.L.'
+2025-07-01 13:16:20,640 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_operador_traslados'.
+2025-07-01 13:16:21,697 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_operador_traslados': '87/A01/CV'
+2025-07-01 13:16:23,719 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_autorizacion_operador_traslados'.
+2025-07-01 13:16:23,777 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_residuo': 'BATERÍAS DE PLOMO*'
+2025-07-01 13:16:25,804 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_residuo'.
+2025-07-01 13:16:25,850 - INFO - Se escribió texto en el elemento localizado por name='pKilos_totales': '10000'
+2025-07-01 13:16:27,872 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pKilos_totales'.
+2025-07-01 13:16:27,915 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 13:16:28,978 - INFO - Opción 'Tratamientos' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 13:16:30,034 - INFO - Elemento clickado con 'css selector' = '.miBoton.editar.editar_1.sinTexto.dcha'.
+2025-07-01 13:16:30,608 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema_1': 'JOSE JARE'
+2025-07-01 13:16:32,637 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ema_1'.
+2025-07-01 13:16:33,189 - INFO - Se escribió texto en el elemento localizado por name='pTratamiento_posterior_1_codigo_ler_2': 'R13'
+2025-07-01 13:16:35,219 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pTratamiento_posterior_1_codigo_ler_2'.
+2025-07-01 13:16:35,267 - INFO - Elemento clickado con 'css selector' = '.icon-ok'.
+2025-07-01 13:16:36,325 - INFO - Elemento clickado con 'css selector' = '.miBoton.editar.editar_2.sinTexto.dcha'.
+2025-07-01 13:16:36,906 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema_2': 'METALURGICA DE MEDINA, S.A.'
+2025-07-01 13:16:38,931 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ema_2'.
+2025-07-01 13:16:39,491 - INFO - Se escribió texto en el elemento localizado por name='pTratamiento_posterior_2_codigo_ler_2': 'R4'
+2025-07-01 13:16:41,516 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pTratamiento_posterior_2_codigo_ler_2'.
+2025-07-01 13:16:41,567 - INFO - Elemento clickado con 'css selector' = '.icon-ok'.
+2025-07-01 13:16:43,623 - INFO - Opción 'Notificación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.

@@ -52,10 +52,11 @@ import webConfiguration
 ruta_excel_input = "entrada/excel_recogidas.xls"  # Ruta del Excel de entrada
 
 def main():
-    # Prepara la carpeta y mueve el PDF antes de cualquier otra operación
-    ruta_destino = excelFunctions.preparar_carpeta_para_pdf_y_xml()
     # Comprueba que el formato de los datos del Excel son correctos
-    excel_input = excelFunctions.comprobar_datos_excel(ruta_excel_input)  
+    excel_input = excelFunctions.comprobar_datos_excel(ruta_excel_input)
+    excel_fila = excel_input.iloc[0]
+    # Prepara la carpeta y mueve el PDF antes de cualquier otra operación
+    ruta_destino = excelFunctions.preparar_carpeta_para_pdf_y_xml(excel_fila)
     # Configura el navegador de Selenium
     driver = webConfiguration.configure()
     # Activa la protección mejorada para aceptar descargas xml
@@ -65,7 +66,6 @@ def main():
     # Descarga el Excel de entidades medioambientales
     excel_entidades = excelFunctions.descargar_excel_entidades(driver)
     # Comprueba si la empresa ya está en nubelus
-    excel_fila = excel_input.iloc[0]
     coincidencias_entidades = excelFunctions.coincidencias_en_entidades(excel_fila, excel_entidades)
     # # Si la empresa no está en nubelus, la añade y ejecuta todo el proceso de creación: desde empresa a contratos
     if coincidencias_entidades is None:

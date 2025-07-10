@@ -311,12 +311,17 @@ def añadir_empresa(driver: webdriver.Chrome, fila) -> None:
         # 11. Añadir NIMA
         webFunctions.escribir_en_elemento_por_name(driver, "pNima", str(fila.get("nima_codigo", "")))
 
-        # 12. Completar el campo Autorización
-        webFunctions.escribir_en_elemento_por_name(driver, "pAutorizacion_medioambiental", str(fila.get("nima_cod_peligrosos", "")))
+        # 12. Completar el campo Autorización, si es de Madrid la autorización es el NIMA, si no, es el código de peligrosos
+        if str(fila.get("provincia_recogida", "")).strip().upper() in ["MADRID", "TOLEDO", "ALBACETE", "CIUDAD REAL", "CUENCA", "GUADALAJARA"]:
+            webFunctions.escribir_en_elemento_por_name(driver, "pAutorizacion_medioambiental", str(fila.get("nima_codigo", "")))
+            # Si es de Madrid o Castilla, se escribe "P02" en el campo de denominación EMA
+            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", "P02")
+        else:
+            webFunctions.escribir_en_elemento_por_name(driver, "pAutorizacion_medioambiental", str(fila.get("nima_cod_peligrosos", "")))
         
         # 13. Añadir tipo
-        codigo_autorizacion = fila.get("nima_cod_peligrosos", "")
-        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", codigo_residuos_por_autorizacion(codigo_autorizacion))
+            codigo_autorizacion = fila.get("nima_cod_peligrosos", "")
+            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", codigo_residuos_por_autorizacion(codigo_autorizacion))
 
         # 14. Confirmar la adición (clic en botón de aceptar o cancelar o guardar según corresponda)
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
@@ -638,6 +643,7 @@ def extraer_datos_centro_castilla_desde_excel(ruta_excel):
     ruta_xlsx = ruta_excel.replace('.xls', '.xlsx')
     datos_castilla.to_excel(ruta_xlsx, index=False)
 
+    print(datos_castilla)
     # Filtra filas donde 'Unnamed: 0' es un número natural (entero positivo)
     filas_naturales = datos_castilla[datos_castilla['Unnamed: 0'].apply(
         lambda x: isinstance(x, (int, float)) and x > 0 and float(x).is_integer()
@@ -721,6 +727,7 @@ def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
 
         logging.info(f"Archivo descargado: {archivo_final}")
         datos_dict = extraer_datos_centro_castilla_desde_excel(archivo_final)
+        print(datos_dict)
         logging.info("Datos extraídos del Excel.")
         archivo_xlsx = archivo_final.replace('.xls', '.xlsx')
     finally:
@@ -947,7 +954,12 @@ def añadir_autorizaciones(driver, fila):
         codigo_autorizacion = str(fila.get("nima_cod_peligrosos", ""))
         webFunctions.escribir_en_elemento_por_name(popup, "pAutorizacion_medioambiental", codigo_autorizacion)
         webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion", denominacion_por_autorizacion(codigo_autorizacion))
-        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", codigo_residuos_por_autorizacion(codigo_autorizacion))
+        provincia = str(fila.get("provincia_recogida", "")).strip().upper()
+        provincias_castilla_la_mancha = ["TOLEDO", "ALBACETE", "CIUDAD REAL", "CUENCA", "GUADALAJARA"]
+        if provincia == "MADRID" or provincia in provincias_castilla_la_mancha:
+            webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", "P02")
+        else:
+            webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", codigo_residuos_por_autorizacion(codigo_autorizacion))
         time.sleep(1)
         
         webFunctions.clickar_boton_por_clase(driver, "BUSCAR_TIPO_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item")
@@ -1092,7 +1104,8 @@ def añadir_contratos_tratamientos(driver, fila, ruta_destino=None):
                 if "*" in nombre_residuo:
                     añadir_tratamientos(driver, fila, item)
                     time.sleep(1)
-                    crear_notificacion_tratamiento(driver, ruta_destino)
+                    provincia = fila.get("provincia_recogida", "").strip().upper()
+                    crear_notificacion_tratamiento(driver, ruta_destino, provincia)
                     time.sleep(1)
 
                 # Crear facturación para todos los residuos
@@ -1110,28 +1123,43 @@ def añadir_contratos_tratamientos(driver, fila, ruta_destino=None):
                     sys.exit()
             time.sleep(1)
 
-def crear_notificacion_tratamiento(driver, ruta_destino=None):
+def crear_notificacion_tratamiento(driver, ruta_destino=None, provincia: str = ""):
     """
     Crea una notificación en la plataforma Nubelus.
     Descarga el archivo en la carpeta 'ruta_destino' si se indica, si no en 'input'.
     """
-    import downloadFunctions
-    import os
-
     webFunctions.seleccionar_elemento_por_id(driver, "fContenido_seleccionado", "Notificación")
     time.sleep(1)
     try:
-        if ruta_destino is None:
-            download_path = os.path.join(BASE_DIR, "input")
+        provincia_normalizada = quitar_tildes(str(provincia)).strip().upper()
+        provincias_validas = ["VALENCIA", "CASTELLON", "ALICANTE"]
+        provincias_validas_normalizadas = [quitar_tildes(p).strip().upper() for p in provincias_validas]
+
+        # Siempre guardar en la carpeta con el nombre del PDF, pero en output o input según provincia
+        if provincia_normalizada in provincias_validas_normalizadas:
+            base_folder = os.path.join(BASE_DIR, "output")
         else:
-            download_path = ruta_destino
+            base_folder = os.path.join(BASE_DIR, "input")
+
+        # ruta_destino debe ser el nombre de la carpeta preparada con el nombre del PDF
+        if ruta_destino is not None:
+            download_path = os.path.join(base_folder, os.path.basename(ruta_destino))
+        else:
+            # Si no se pasa ruta_destino, usar la carpeta base (output o input)
+            download_path = base_folder
 
         downloadFunctions.ensure_download_path(download_path)
         downloadFunctions.configure_driver_download_path(driver, download_path)
 
         old_state = downloadFunctions.snapshot_folder_state(download_path)
-        webFunctions.clickar_boton_por_clase(driver, "icon-magic")
-        nuevos = downloadFunctions.wait_for_new_download(download_path, old_state, num_descargas=1, timeout=120)
+
+        if provincia_normalizada not in provincias_validas_normalizadas:
+            webFunctions.clickar_boton_por_clase(driver, "icon-magic")
+            nuevos = downloadFunctions.wait_for_new_download(download_path, old_state, num_descargas=1, timeout=120)
+        else:
+            webFunctions.clickar_boton_por_on_click(driver, "adcr_notificar()")
+            nuevos = downloadFunctions.wait_for_new_download(download_path, old_state, num_descargas=1, timeout=120)
+            editar_notificacion_tratamiento(driver)
         if nuevos:
             logging.info(f"Archivo de notificación descargado en: {nuevos[0]}")
         else:
@@ -1777,12 +1805,13 @@ def crear_contratos_faltantes(driver, fila, coincidencias_contratos, ruta_destin
             contrato_residuo = residuo
 
         añadir_contrato_tratamiento(driver, fila, contrato_residuo)
+        provincia = fila.get("provincia_recogida", "").strip().upper()
 
         if "*" in nombre_residuo:
             time.sleep(1)
             añadir_tratamientos(driver, fila, item)
             time.sleep(1)
-            crear_notificacion_tratamiento(driver, ruta_destino)
+            crear_notificacion_tratamiento(driver, ruta_destino, provincia)
             time.sleep(1)
 
         añadir_facturacion(driver, fila, contrato_residuo)
@@ -1834,13 +1863,14 @@ def crear_contratos_desde_usuarios(driver, fila, ruta_destino=None):
     logging.info("Contratos creados correctamente: desde usuario a contratos")
     sys.exit()
 
-def preparar_carpeta_para_pdf_y_xml():
+def preparar_carpeta_para_pdf_y_xml(excel_fila):
     """
-    Busca el PDF en la carpeta 'entrada', crea una carpeta en 'input' con el mismo nombre (sin extensión),
-    mueve el PDF a esa carpeta y devuelve la ruta para guardar los XML ahí.
+    Busca el PDF en la carpeta 'entrada', crea una carpeta en 'output' si la provincia es de la Comunidad Valenciana,
+    o en 'input' si no lo es, mueve el PDF a esa carpeta y devuelve la ruta para guardar los XML ahí.
     """
     carpeta_entrada = "entrada"
     carpeta_input = "input"
+    carpeta_output = "output"
 
     # Busca el primer PDF en la carpeta entrada
     pdfs = [f for f in os.listdir(carpeta_entrada) if f.lower().endswith(".pdf")]
@@ -1848,7 +1878,18 @@ def preparar_carpeta_para_pdf_y_xml():
         raise FileNotFoundError("No se encontró ningún PDF en la carpeta 'entrada'.")
     nombre_pdf = pdfs[0]
     nombre_carpeta = os.path.splitext(nombre_pdf)[0]
-    ruta_destino = os.path.join(carpeta_input, nombre_carpeta)
+
+    # Extrae la provincia del DataFrame excel_fila si existe la columna 'provincia_recogida'
+    provincia = excel_fila.get("provincia_recogida", "").strip()
+    provincia_normalizada = quitar_tildes(provincia).strip().upper()
+    provincias_valencianas = ["VALENCIA", "CASTELLON", "ALICANTE"]
+
+    if provincia_normalizada in [quitar_tildes(p).upper() for p in provincias_valencianas]:
+        carpeta_destino = carpeta_output
+    else:
+        carpeta_destino = carpeta_input
+
+    ruta_destino = os.path.join(carpeta_destino, nombre_carpeta)
 
     # Crea la carpeta destino si no existe
     os.makedirs(ruta_destino, exist_ok=True)

@@ -264,17 +264,18 @@ def busqueda_NIMA_Castilla(nif):
     datos_json = None
     try:
         webFunctions.abrir_web(driver, URL_NIMA_CASTILLA)
-        webFunctions.clickar_boton_por_id(driver, "enlace_gestores")
+
+        webFunctions.clickar_boton_por_id(driver, "enlace_productores")
         webFunctions.escribir_en_elemento_por_id(driver, "input_NIF_CIF", nif)
         webFunctions.clickar_boton_por_id(driver, "boton_buscar")
-        if webFunctions.clickar_imagen_generar_excel(driver, timeout=8):
+        if webFunctions.clickar_imagen_generar_excel(driver, timeout=60):
             datos_json = excelFunctions.esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60)
             if not datos_json:
-                logging.info("No se pudieron extraer los datos desde el Excel en Castilla")
+                logging.error("No se pudieron extraer los datos desde el Excel en Castilla")
         else:
-            logging.info("No se ha encontrado la imagen para generar el Excel en Castilla.")
+            logging.error("No se ha encontrado la imagen para generar el Excel en Castilla.")
     except Exception:
-        logging.info("No se ha podido generar o procesar el Excel en Castilla.")
+        logging.error("No se ha podido generar o procesar el Excel en Castilla.")
     finally:
         driver.quit()
 

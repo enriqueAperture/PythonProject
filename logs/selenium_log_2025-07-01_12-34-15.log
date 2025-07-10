@@ -1,0 +1,158 @@
+2025-07-01 12:34:17,718 - INFO - Web 'chrome://settings/security' abierta.
+2025-07-01 12:34:23,272 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-07-01 12:34:23,367 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-07-01 12:34:23,419 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-07-01 12:34:23,476 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-07-01 12:34:23,535 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-07-01 12:34:23,584 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-07-01 12:34:29,072 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales' abierta.
+2025-07-01 12:34:29,129 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-01 12:34:29,181 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-01 12:34:30,386 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-01 12:34:30,561 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-01 12:34:30,978 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales&pAccion=NUEVO' abierta.
+2025-07-01 12:34:30,978 - INFO - Añadiendo empresa: PRUEBA PRUEBA PRUEBA
+2025-07-01 12:34:31,045 - INFO - Se escribió texto en el elemento localizado por id='pDenominacion': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 12:34:31,100 - INFO - Se escribió texto en el elemento localizado por name='pNif': 'B45318888'
+2025-07-01 12:34:31,180 - INFO - Opción 'Jurídica' seleccionada en el elemento con 'name' = 'pForma_fiscal'.
+2025-07-01 12:34:33,258 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_forma_juridica': 'Sociedades de responsabilidad limitada'
+2025-07-01 12:34:35,292 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_forma_juridica'.
+2025-07-01 12:34:35,872 - INFO - Se escribió texto en el elemento localizado por name='pNombre_fiscal': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 12:34:35,886 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pNombre_fiscal'.
+2025-07-01 12:34:35,939 - INFO - Se escribió texto en el elemento localizado por name='pDomicilio': 'C/ REAL, 66'
+2025-07-01 12:34:35,992 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ine_municipio': 'VALENCIA'
+2025-07-01 12:34:37,038 - INFO - Elemento clickado con 'css selector' = '.BUSCAR_INE_MUNICIPIO.noref.ui-menu-item'.
+2025-07-01 12:34:37,103 - INFO - Se escribió texto en el elemento localizado por name='pPoblacion': 'VALENCIA'
+2025-07-01 12:34:37,150 - INFO - Se escribió texto en el elemento localizado por name='pCodigoPostal': '45210'
+2025-07-01 12:34:37,200 - INFO - Se escribió texto en el elemento localizado por name='pTelefono': '999999999'
+2025-07-01 12:34:37,262 - INFO - Se escribió texto en el elemento localizado por name='pEmail': 'PRUEBA@MORENOYRODRIGUEZ.ES'
+2025-07-01 12:34:37,316 - INFO - Se escribió texto en el elemento localizado por name='pNima': '4528633999'
+2025-07-01 12:34:37,368 - INFO - Se escribió texto en el elemento localizado por name='pAutorizacion_medioambiental': 'CM/5TO164T'
+2025-07-01 12:34:37,436 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema': 'P02'
+2025-07-01 12:34:39,456 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ema'.
+2025-07-01 12:34:39,498 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 12:34:40,603 - INFO - Elemento clickado con 'css selector' = '.miBoton_cuadrado.aceptar'.
+2025-07-01 12:34:40,825 - ERROR - Falló al clickar el elemento con 'xpath' = '//button[contains(., 'Crear cliente')]' (intento 1): Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=137.0.7151.120); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#stale-element-reference-exception
+Stacktrace:
+	GetHandleVerifier [0x0x7ff673c2cda5+78885]
+	GetHandleVerifier [0x0x7ff673c2ce00+78976]
+	(No symbol) [0x0x7ff6739e9bca]
+	(No symbol) [0x0x7ff6739f15bd]
+	(No symbol) [0x0x7ff6739f460c]
+	(No symbol) [0x0x7ff6739f46df]
+	(No symbol) [0x0x7ff673a4865b]
+	(No symbol) [0x0x7ff673a46112]
+	(No symbol) [0x0x7ff673a43151]
+	(No symbol) [0x0x7ff673a42041]
+	(No symbol) [0x0x7ff673a33654]
+	(No symbol) [0x0x7ff673a68b8a]
+	(No symbol) [0x0x7ff673a32f06]
+	(No symbol) [0x0x7ff673a68da0]
+	(No symbol) [0x0x7ff673a9122f]
+	(No symbol) [0x0x7ff673a68963]
+	(No symbol) [0x0x7ff673a316b1]
+	(No symbol) [0x0x7ff673a32443]
+	GetHandleVerifier [0x0x7ff673f04eed+3061101]
+	GetHandleVerifier [0x0x7ff673eff33d+3037629]
+	GetHandleVerifier [0x0x7ff673f1e592+3165202]
+	GetHandleVerifier [0x0x7ff673c4730e+186766]
+	GetHandleVerifier [0x0x7ff673c4eb3f+217535]
+	GetHandleVerifier [0x0x7ff673c359b4+114740]
+	GetHandleVerifier [0x0x7ff673c35b69+115177]
+	GetHandleVerifier [0x0x7ff673c1c368+10728]
+	BaseThreadInitThunk [0x0x7ff97452e8d7+23]
+	RtlUserThreadStart [0x0x7ff97519c34c+44]
+
+2025-07-01 12:34:41,373 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'Crear cliente')]'.
+2025-07-01 12:34:41,423 - INFO - Elemento clickado con 'css selector' = '.miBoton_cuadrado.aceptar'.
+2025-07-01 12:34:41,943 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros' abierta.
+2025-07-01 12:34:41,999 - INFO - Elemento clickado con 'css selector' = '.icon-bolt'.
+2025-07-01 12:34:42,066 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 12:34:43,604 - INFO - Se pulsó Enter en el elemento localizado por name='pDenominacion'.
+2025-07-01 12:34:43,644 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 12:34:44,213 - INFO - Opción 'Datos medioambientales' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 12:34:45,266 - INFO - Elemento clickado con 'css selector' = '.miBoton.editar.solapa_descripcion'.
+2025-07-01 12:34:45,382 - INFO - Se escribió texto en el elemento localizado por name='pNima': '4528633999'
+2025-07-01 12:34:45,441 - INFO - Se escribió texto en el elemento localizado por name='pResponsable_ma_nombre': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 12:34:45,502 - INFO - Se escribió texto en el elemento localizado por name='pResponsable_ma_nif': 'B45318888'
+2025-07-01 12:34:45,563 - INFO - Se escribió texto en el elemento localizado por name='pResponsable_ma_cargo': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 12:34:45,619 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ine_municipio': 'VALENCIA'
+2025-07-01 12:34:47,659 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ine_municipio'.
+2025-07-01 12:34:48,714 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 12:34:49,283 - INFO - Web 'https://portal.nubelus.es/?clave=nubelus_gestionUsuarios&pAccion=NUEVO' abierta.
+2025-07-01 12:34:49,338 - INFO - Se escribió texto en el elemento localizado por name='pUsuario': 'PRUEBAPRUEBAPRUEBA'
+2025-07-01 12:34:49,398 - INFO - Se escribió texto en el elemento localizado por name='pAlias': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 12:34:49,460 - INFO - Se escribió texto en el elemento localizado por name='pEmail': 'PRUEBA@MORENOYRODRIGUEZ.ES'
+2025-07-01 12:34:49,508 - INFO - Se escribió texto en el elemento localizado por name='pTelefono': '999999999'
+2025-07-01 12:34:49,560 - INFO - Opción 'EMA' seleccionada en el elemento con 'name' = 'pRol'.
+2025-07-01 12:34:49,627 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 12:34:50,672 - INFO - Elemento clickado con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item'.
+2025-07-01 12:34:50,734 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_entidad_ma_centro': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 12:34:51,777 - INFO - Elemento clickado con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item'.
+2025-07-01 12:34:51,820 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 12:34:53,218 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion&pAccion=NUEVO' abierta.
+2025-07-01 12:34:54,294 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema_representada': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 12:34:55,825 - INFO - Se pulsó Enter en el elemento localizado por name='pDenominacion_ema_representada'.
+2025-07-01 12:34:55,903 - INFO - Se escribió texto en el elemento localizado por name='pFecha': '11-06-2025'
+2025-07-01 12:34:55,987 - INFO - Se escribió texto en el elemento localizado por name='pFecha_caducidad': '10-06-2030'
+2025-07-01 12:34:56,027 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 12:34:57,490 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento&pAccion=NUEVO' abierta.
+2025-07-01 12:34:57,559 - INFO - Se escribió texto en el elemento localizado por name='pFecha': '11-06-2025'
+2025-07-01 12:34:59,582 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha'.
+2025-07-01 12:35:00,163 - INFO - Se escribió texto en el elemento localizado por name='pFecha_caducidad': '10-06-2028'
+2025-07-01 12:35:02,186 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha_caducidad'.
+2025-07-01 12:35:02,769 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_origen': 'PRUEBA PRUEBA PRUEBA'
+2025-07-01 12:35:04,795 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_origen'.
+2025-07-01 12:35:05,377 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino': 'METALLS DEL CAMP, S.L.'
+2025-07-01 12:35:07,411 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino'.
+2025-07-01 12:35:07,994 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino_centro': 'METALLS DEL CAMP ( SERRA D'
+2025-07-01 12:35:10,023 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino_centro'.
+2025-07-01 12:35:11,094 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_destino': '157/G02/CV'
+2025-07-01 12:35:13,130 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_autorizacion_destino'.
+2025-07-01 12:35:14,211 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_operador_traslados': 'ECO TITAN S.L.'
+2025-07-01 12:35:16,233 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_operador_traslados'.
+2025-07-01 12:35:17,292 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_operador_traslados': '87/A01/CV'
+2025-07-01 12:35:19,327 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_autorizacion_operador_traslados'.
+2025-07-01 12:35:19,392 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_residuo': 'FILTROS DE ACEITE*'
+2025-07-01 12:35:21,423 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_residuo'.
+2025-07-01 12:35:21,477 - INFO - Se escribió texto en el elemento localizado por name='pKilos_totales': '5000'
+2025-07-01 12:35:23,497 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pKilos_totales'.
+2025-07-01 12:35:23,542 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-01 12:35:24,601 - INFO - Opción 'Tratamientos' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 12:35:25,660 - INFO - Elemento clickado con 'css selector' = '.miBoton.editar.editar_1.sinTexto.dcha'.
+2025-07-01 12:35:26,275 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema_1': 'SERVICIOS ECOLOGICOS ACITAIN, S.L.'
+2025-07-01 12:35:28,304 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ema_1'.
+2025-07-01 12:35:28,879 - INFO - Se escribió texto en el elemento localizado por name='pTratamiento_posterior_1_codigo_ler_2': 'R4'
+2025-07-01 12:35:30,915 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pTratamiento_posterior_1_codigo_ler_2'.
+2025-07-01 12:35:30,970 - INFO - Elemento clickado con 'css selector' = '.icon-ok'.
+2025-07-01 12:35:33,027 - INFO - Opción 'Notificación' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-01 12:35:39,156 - ERROR - Timeout al esperar el elemento con 'css selector' = '.miBoton.solicitar_pdf.adcr'
+2025-07-01 12:35:45,163 - ERROR - Timeout al esperar el elemento con 'css selector' = '.miBoton.solicitar_pdf.adcr'
+2025-07-01 12:35:50,810 - ERROR - Timeout al esperar el elemento con 'css selector' = '.miBoton.solicitar_pdf.adcr'
+2025-07-01 12:35:56,460 - ERROR - Timeout al esperar el elemento con 'css selector' = '.miBoton.solicitar_pdf.adcr'
+2025-07-01 12:36:02,067 - ERROR - Timeout al esperar el elemento con 'css selector' = '.miBoton.solicitar_pdf.adcr'
+2025-07-01 12:36:02,067 - ERROR - Error al crear notificación de tratamiento: Message: 
+Stacktrace:
+	GetHandleVerifier [0x0x7ff673c2cda5+78885]
+	GetHandleVerifier [0x0x7ff673c2ce00+78976]
+	(No symbol) [0x0x7ff6739e9bca]
+	(No symbol) [0x0x7ff673a40766]
+	(No symbol) [0x0x7ff673a40a1c]
+	(No symbol) [0x0x7ff673a94467]
+	(No symbol) [0x0x7ff673a68bcf]
+	(No symbol) [0x0x7ff673a9122f]
+	(No symbol) [0x0x7ff673a68963]
+	(No symbol) [0x0x7ff673a316b1]
+	(No symbol) [0x0x7ff673a32443]
+	GetHandleVerifier [0x0x7ff673f04eed+3061101]
+	GetHandleVerifier [0x0x7ff673eff33d+3037629]
+	GetHandleVerifier [0x0x7ff673f1e592+3165202]
+	GetHandleVerifier [0x0x7ff673c4730e+186766]
+	GetHandleVerifier [0x0x7ff673c4eb3f+217535]
+	GetHandleVerifier [0x0x7ff673c359b4+114740]
+	GetHandleVerifier [0x0x7ff673c35b69+115177]
+	GetHandleVerifier [0x0x7ff673c1c368+10728]
+	BaseThreadInitThunk [0x0x7ff97452e8d7+23]
+	RtlUserThreadStart [0x0x7ff97519c34c+44]
+
