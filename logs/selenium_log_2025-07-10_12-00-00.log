@@ -1,0 +1,84 @@
+2025-07-10 12:00:03,009 - INFO - Web 'chrome://settings/security' abierta.
+2025-07-10 12:00:09,349 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-07-10 12:00:09,414 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-07-10 12:00:09,465 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-07-10 12:00:09,518 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-07-10 12:00:09,600 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-07-10 12:00:09,652 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-07-10 12:00:15,511 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales' abierta.
+2025-07-10 12:00:15,569 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-10 12:00:15,622 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-10 12:00:16,891 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-10 12:00:17,053 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-10 12:00:17,617 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros' abierta.
+2025-07-10 12:00:17,673 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-10 12:00:17,724 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-10 12:00:18,975 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-07-10 12:00:19,014 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-07-10 12:00:19,945 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros&pAccion=NUEVO' abierta.
+2025-07-10 12:00:19,945 - INFO - Añadiendo centro: TEST
+2025-07-10 12:00:19,997 - INFO - Se escribió texto en el elemento localizado por id='pDenominacion': 'TEST'
+2025-07-10 12:00:20,070 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema': 'TEST'
+2025-07-10 12:00:22,107 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ema'.
+2025-07-10 12:00:22,179 - INFO - Se escribió texto en el elemento localizado por name='pDomicilio': 'C/ REAL, 66'
+2025-07-10 12:00:22,232 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ine_municipio': '451685'
+2025-07-10 12:00:24,254 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ine_municipio'.
+2025-07-10 12:00:24,309 - INFO - Se escribió texto en el elemento localizado por name='pPoblacion': 'TOLEDO'
+2025-07-10 12:00:24,369 - INFO - Se escribió texto en el elemento localizado por name='pCodigoPostal': '451685'
+2025-07-10 12:00:24,421 - INFO - Se escribió texto en el elemento localizado por name='pTelefono': '999999999'
+2025-07-10 12:00:24,498 - INFO - Se escribió texto en el elemento localizado por name='pEmail': 'PRUEBA@MORENOYRODRIGUEZ.ES'
+2025-07-10 12:00:24,550 - INFO - Se escribió texto en el elemento localizado por name='pNima': '4528633990'
+2025-07-10 12:00:24,612 - INFO - Se escribió texto en el elemento localizado por name='pAutorizacion_medioambiental': 'CM/5TO164T'
+2025-07-10 12:00:24,689 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema': 'PEQUEÑO PRODUCTOR DE RESIDUOS PELIGROSOS'
+2025-07-10 12:00:26,713 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ema'.
+2025-07-10 12:00:26,756 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-10 12:00:29,289 - ERROR - Falló al seleccionar la opción 'Autorizaciones' en el elemento con 'id' = 'fContenido_seleccionado': Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=138.0.7204.97)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49dea]
+	(No symbol) [0x0x7ff6b3f35f15]
+	(No symbol) [0x0x7ff6b3f5abf4]
+	(No symbol) [0x0x7ff6b3fcfa85]
+	(No symbol) [0x0x7ff6b3feff72]
+	(No symbol) [0x0x7ff6b3fc8243]
+	(No symbol) [0x0x7ff6b3f91431]
+	(No symbol) [0x0x7ff6b3f921c3]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	GetHandleVerifier [0x0x7ff6b419faf4+112628]
+	GetHandleVerifier [0x0x7ff6b419fca9+113065]
+	GetHandleVerifier [0x0x7ff6b4186c78+10616]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:00:29,290 - ERROR - Error al añadir autorización para la empresa TEST: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=138.0.7204.97)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49dea]
+	(No symbol) [0x0x7ff6b3f35f15]
+	(No symbol) [0x0x7ff6b3f5abf4]
+	(No symbol) [0x0x7ff6b3fcfa85]
+	(No symbol) [0x0x7ff6b3feff72]
+	(No symbol) [0x0x7ff6b3fc8243]
+	(No symbol) [0x0x7ff6b3f91431]
+	(No symbol) [0x0x7ff6b3f921c3]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	GetHandleVerifier [0x0x7ff6b419faf4+112628]
+	GetHandleVerifier [0x0x7ff6b419fca9+113065]
+	GetHandleVerifier [0x0x7ff6b4186c78+10616]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+

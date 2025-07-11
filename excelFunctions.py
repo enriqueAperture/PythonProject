@@ -292,10 +292,10 @@ def añadir_empresa(driver: webdriver.Chrome, fila) -> None:
 
         # 5. Completar el campo Domicilio
         webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
-        
+        print("antes de municipio")
         # 6. Completar el campo Municipio
-        webFunctions.completar_campo_y_confirmar_seleccion_por_name(driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"]).rstrip(), "BUSCAR_INE_MUNICIPIO.noref.ui-menu-item")
-
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"]))
+        print("después de municipio")
         # 7. Completar el campo Provincia
         webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", fila["provincia_recogida"])
         
@@ -311,17 +311,11 @@ def añadir_empresa(driver: webdriver.Chrome, fila) -> None:
         # 11. Añadir NIMA
         webFunctions.escribir_en_elemento_por_name(driver, "pNima", str(fila.get("nima_codigo", "")))
 
-        # 12. Completar el campo Autorización, si es de Madrid la autorización es el NIMA, si no, es el código de peligrosos
-        if str(fila.get("provincia_recogida", "")).strip().upper() in ["MADRID", "TOLEDO", "ALBACETE", "CIUDAD REAL", "CUENCA", "GUADALAJARA"]:
-            webFunctions.escribir_en_elemento_por_name(driver, "pAutorizacion_medioambiental", str(fila.get("nima_codigo", "")))
-            # Si es de Madrid o Castilla, se escribe "P02" en el campo de denominación EMA
-            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", "P02")
-        else:
-            webFunctions.escribir_en_elemento_por_name(driver, "pAutorizacion_medioambiental", str(fila.get("nima_cod_peligrosos", "")))
-        
+        # 12. Completar el campo Autorización
+        webFunctions.escribir_en_elemento_por_name(driver, "pAutorizacion_medioambiental", str(fila.get("nima_cod_peligrosos", "")))
+
         # 13. Añadir tipo
-            codigo_autorizacion = fila.get("nima_cod_peligrosos", "")
-            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", codigo_residuos_por_autorizacion(codigo_autorizacion))
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", "P02")
 
         # 14. Confirmar la adición (clic en botón de aceptar o cancelar o guardar según corresponda)
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
@@ -586,19 +580,20 @@ def añadir_centro(driver: webdriver.Chrome, fila) -> None:
         # 1. Completar el campo Denominación
         webFunctions.esperar_elemento(driver, By.ID, "pDenominacion", timeout=10)
         webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"])
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_ema", fila["nombre_recogida"])
+
+        # 2. Completar el campo Entidad MA
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", fila["nombre_recogida"])
 
         # 3. Completar el campo Domicilio
         webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
 
         # 4. Completar el campo Municipio
-        webFunctions.completar_campo_y_enter_por_name(driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"])
-        )
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ine_municipio", str(fila["poblacion_recogida"]))
 
         # 5. Completar el campo Provincia
         webFunctions.escribir_en_elemento_por_name(driver, "pPoblacion", fila["provincia_recogida"])
 
-        # 6. Completar el campo CP
+        # 6. Completar el campo Código Postal
         webFunctions.escribir_en_elemento_por_name(driver, "pCodigoPostal", str(fila["cp_recogida"]))
 
         # 7. Completar el campo Teléfono
@@ -606,6 +601,15 @@ def añadir_centro(driver: webdriver.Chrome, fila) -> None:
 
         # 8. Completar el campo Email
         webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
+
+        # 9. Completar el campo NIMA
+        webFunctions.escribir_en_elemento_por_name(driver, "pNima", str(fila.get("nima_codigo", "")))
+
+        # 10. Completar el campo Autorización
+        webFunctions.escribir_en_elemento_por_name(driver, "pAutorizacion_medioambiental", str(fila.get("nima_cod_peligrosos", "")))
+
+        # 11. Completar el campo Tipo
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_tipo_ema", "P02")
 
         # 9. Confirmar la adición (clic en botón de aceptar o guardar)
         webFunctions.clickar_boton_por_clase(driver, "miBoton.aceptar")
@@ -951,15 +955,14 @@ def añadir_autorizaciones(driver, fila):
         oldDriver = driver
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_nuevo_AUTORIZACIONES")
 
-        codigo_autorizacion = str(fila.get("nima_cod_peligrosos", ""))
-        webFunctions.escribir_en_elemento_por_name(popup, "pAutorizacion_medioambiental", codigo_autorizacion)
-        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion", denominacion_por_autorizacion(codigo_autorizacion))
-        provincia = str(fila.get("provincia_recogida", "")).strip().upper()
-        provincias_castilla_la_mancha = ["TOLEDO", "ALBACETE", "CIUDAD REAL", "CUENCA", "GUADALAJARA"]
-        if provincia == "MADRID" or provincia in provincias_castilla_la_mancha:
-            webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", "P02")
-        else:
-            webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", codigo_residuos_por_autorizacion(codigo_autorizacion))
+        # Completar campos del formulario de autorización
+        webFunctions.escribir_en_elemento_por_name(popup, "pAutorizacion_medioambiental", str(fila.get('nima_cod_peligrosos', '')))
+
+        #Completar el campo Denominación
+        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion", str(fila.get('nima_nom_peligrosos', '')))
+
+        # Completar el campo Tipo
+        webFunctions.escribir_en_elemento_por_name(popup, "pDenominacion_ema", "P02")
         time.sleep(1)
         
         webFunctions.clickar_boton_por_clase(driver, "BUSCAR_TIPO_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item")
@@ -1036,8 +1039,15 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         time.sleep(0.5)
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. siempre
         time.sleep(0.5)
-        print(fila.get("provincia_recogida", ""))
-        if fila.get("provincia_recogida") == "VALENCIA" or residuo.get("nombre", "").strip().upper() == "HIDROCARBUROS CON AGUA*":
+        provincia = str(fila.get("provincia_recogida", "")).strip().upper()
+        provincia_normalizada = quitar_tildes(provincia)
+        provincias_valencia = [
+            "VALENCIA", "ALICANTE", "CASTELLON",
+            "VALÈNCIA", "ALACANT", "CASTELLÓ",
+            "CASTELLÓN"
+        ]
+        provincias_valencia_normalizadas = [quitar_tildes(p).upper() for p in provincias_valencia]
+        if provincia_normalizada in provincias_valencia_normalizadas or residuo.get("nombre", "").strip().upper() == "HIDROCARBUROS CON AGUA*":
             webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_destino_centro", "METALLS DEL CAMP ( SERRA D") # METALLS DEL CAMP ( SERRA D'ESPADA ) si es de valencia
             # Depende si el residuo es o no peligroso
             time.sleep(1)
@@ -1132,7 +1142,11 @@ def crear_notificacion_tratamiento(driver, ruta_destino=None, provincia: str = "
     time.sleep(1)
     try:
         provincia_normalizada = quitar_tildes(str(provincia)).strip().upper()
-        provincias_validas = ["VALENCIA", "CASTELLON", "ALICANTE"]
+        provincias_validas = [
+            "VALENCIA", "ALICANTE", "CASTELLON",
+            "VALÈNCIA", "ALACANT", "CASTELLÓ",
+            "CASTELLÓN"
+        ]
         provincias_validas_normalizadas = [quitar_tildes(p).strip().upper() for p in provincias_validas]
 
         # Siempre guardar en la carpeta con el nombre del PDF, pero en output o input según provincia
@@ -1723,8 +1737,7 @@ def completar_datos_centro(driver, fila):
         webFunctions.clickar_boton_por_clase(driver, "icon-bolt")
 
         popup = webFunctions.encontrar_pop_up_por_id(driver, "div_buscar_1")
-        webFunctions.completar_campo_y_enter_por_name(popup, 
-            "pDenominacion", fila.get("nombre_recogida", ""))
+        webFunctions.completar_campo_y_enter_por_name(popup, "pDenominacion", fila.get("nombre_recogida", ""))
         webFunctions.clickar_boton_por_clase(popup, "miBoton.aceptar")
         # añadir_autorizaciones(driver, fila)
         rellenar_datos_medioambientales(driver, fila)
@@ -1882,7 +1895,11 @@ def preparar_carpeta_para_pdf_y_xml(excel_fila):
     # Extrae la provincia del DataFrame excel_fila si existe la columna 'provincia_recogida'
     provincia = excel_fila.get("provincia_recogida", "").strip()
     provincia_normalizada = quitar_tildes(provincia).strip().upper()
-    provincias_valencianas = ["VALENCIA", "CASTELLON", "ALICANTE"]
+    provincias_valencianas = [
+            "VALENCIA", "ALICANTE", "CASTELLON",
+            "VALÈNCIA", "ALACANT", "CASTELLÓ",
+            "CASTELLÓN"
+        ]
 
     if provincia_normalizada in [quitar_tildes(p).upper() for p in provincias_valencianas]:
         carpeta_destino = carpeta_output

@@ -1,0 +1,23 @@
+2025-07-10 11:51:27,038 - INFO - Web 'chrome://settings/security' abierta.
+2025-07-10 11:51:33,559 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-07-10 11:51:33,632 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-07-10 11:51:33,682 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-07-10 11:51:33,735 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-07-10 11:51:33,812 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-07-10 11:51:33,862 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-07-10 11:51:39,591 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales' abierta.
+2025-07-10 11:51:39,652 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-10 11:51:39,705 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-10 11:51:40,976 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-10 11:51:41,144 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-10 11:51:41,786 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales&pAccion=NUEVO' abierta.
+2025-07-10 11:51:41,787 - INFO - Añadiendo empresa: TEST
+2025-07-10 11:51:41,843 - INFO - Se escribió texto en el elemento localizado por id='pDenominacion': 'TEST'
+2025-07-10 11:51:41,897 - INFO - Se escribió texto en el elemento localizado por name='pNif': 'B45318889'
+2025-07-10 11:51:41,959 - INFO - Opción 'Jurídica' seleccionada en el elemento con 'name' = 'pForma_fiscal'.
+2025-07-10 11:51:44,061 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_forma_juridica': 'Sociedades de responsabilidad limitada'
+2025-07-10 11:51:46,087 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_forma_juridica'.
+2025-07-10 11:51:46,652 - INFO - Se escribió texto en el elemento localizado por name='pNombre_fiscal': 'TEST'
+2025-07-10 11:51:46,667 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pNombre_fiscal'.
+2025-07-10 11:51:46,720 - INFO - Se escribió texto en el elemento localizado por name='pDomicilio': 'C/ REAL, 66'
+2025-07-10 11:51:46,720 - ERROR - Error al añadir la empresa TEST: 'method' object is not subscriptable

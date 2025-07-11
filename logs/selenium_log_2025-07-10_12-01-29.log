@@ -1,0 +1,281 @@
+2025-07-10 12:01:31,970 - INFO - Web 'chrome://settings/security' abierta.
+2025-07-10 12:01:38,408 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-07-10 12:01:38,473 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-07-10 12:01:38,522 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-07-10 12:01:38,591 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-07-10 12:01:38,646 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-07-10 12:01:38,697 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-07-10 12:01:44,495 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales' abierta.
+2025-07-10 12:01:44,554 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-10 12:01:44,607 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-10 12:01:45,880 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-10 12:01:46,043 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-10 12:01:46,650 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros' abierta.
+2025-07-10 12:01:46,720 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-10 12:01:46,762 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-10 12:01:48,547 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-07-10 12:01:48,591 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-07-10 12:01:49,644 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros&pAccion=NUEVO' abierta.
+2025-07-10 12:01:49,645 - INFO - Añadiendo centro: TEST
+2025-07-10 12:01:49,697 - INFO - Se escribió texto en el elemento localizado por id='pDenominacion': 'TEST'
+2025-07-10 12:01:49,752 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema': 'TEST'
+2025-07-10 12:01:51,774 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ema'.
+2025-07-10 12:01:51,833 - INFO - Se escribió texto en el elemento localizado por name='pDomicilio': 'C/ REAL, 66'
+2025-07-10 12:01:51,884 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ine_municipio': '451685'
+2025-07-10 12:01:53,905 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ine_municipio'.
+2025-07-10 12:01:53,957 - INFO - Se escribió texto en el elemento localizado por name='pPoblacion': 'TOLEDO'
+2025-07-10 12:01:54,005 - INFO - Se escribió texto en el elemento localizado por name='pCodigoPostal': '451685'
+2025-07-10 12:01:54,072 - INFO - Se escribió texto en el elemento localizado por name='pTelefono': '999999999'
+2025-07-10 12:01:54,137 - INFO - Se escribió texto en el elemento localizado por name='pEmail': 'PRUEBA@MORENOYRODRIGUEZ.ES'
+2025-07-10 12:01:54,188 - INFO - Se escribió texto en el elemento localizado por name='pNima': '4528633990'
+2025-07-10 12:01:54,265 - INFO - Se escribió texto en el elemento localizado por name='pAutorizacion_medioambiental': 'CM/5TO164T'
+2025-07-10 12:01:54,338 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_tipo_ema': 'PEQUEÑO PRODUCTOR DE RESIDUOS PELIGROSOS'
+2025-07-10 12:01:56,363 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_tipo_ema'.
+2025-07-10 12:01:56,409 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-10 12:01:57,478 - INFO - Opción 'Autorizaciones' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-10 12:01:58,533 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'Añadir autorización')]'.
+2025-07-10 12:01:58,599 - INFO - Se escribió texto en el elemento localizado por name='pAutorizacion_medioambiental': 'CM/5TO164T'
+2025-07-10 12:01:58,655 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion': 'CM/5TO164T'
+2025-07-10 12:01:58,703 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema': 'P02'
+2025-07-10 12:01:59,749 - INFO - Elemento clickado con 'css selector' = '.BUSCAR_TIPO_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item'.
+2025-07-10 12:01:59,800 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-10 12:01:59,846 - INFO - Opción 'Datos medioambientales' seleccionada en el elemento con 'id' = 'fContenido_seleccionado'.
+2025-07-10 12:02:00,897 - INFO - Elemento clickado con 'css selector' = '.miBoton.editar.solapa_descripcion'.
+2025-07-10 12:02:00,983 - INFO - Se escribió texto en el elemento localizado por name='pNima': '4528633990'
+2025-07-10 12:02:01,033 - INFO - Se escribió texto en el elemento localizado por name='pResponsable_ma_nombre': 'TEST'
+2025-07-10 12:02:01,084 - INFO - Se escribió texto en el elemento localizado por name='pResponsable_ma_nif': 'B45318889'
+2025-07-10 12:02:01,132 - INFO - Se escribió texto en el elemento localizado por name='pResponsable_ma_cargo': 'TEST'
+2025-07-10 12:02:01,210 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ine_municipio': '451685'
+2025-07-10 12:02:03,234 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_ine_municipio'.
+2025-07-10 12:02:04,280 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-10 12:02:05,545 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales' abierta.
+2025-07-10 12:02:05,599 - INFO - Elemento clickado con 'css selector' = '.icon-bolt'.
+2025-07-10 12:02:05,655 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion': 'TEST'
+2025-07-10 12:02:07,188 - INFO - Se pulsó Enter en el elemento localizado por name='pDenominacion'.
+2025-07-10 12:02:07,230 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-10 12:02:11,815 - ERROR - Error al crear proveedor (intento 1): Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=138.0.7204.97)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49dea]
+	(No symbol) [0x0x7ff6b3f35f15]
+	(No symbol) [0x0x7ff6b3f5abf4]
+	(No symbol) [0x0x7ff6b3fcfa85]
+	(No symbol) [0x0x7ff6b3feff72]
+	(No symbol) [0x0x7ff6b3fc8243]
+	(No symbol) [0x0x7ff6b3f91431]
+	(No symbol) [0x0x7ff6b3f921c3]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	GetHandleVerifier [0x0x7ff6b419faf4+112628]
+	GetHandleVerifier [0x0x7ff6b419fca9+113065]
+	GetHandleVerifier [0x0x7ff6b4186c78+10616]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:12,317 - ERROR - Error al crear proveedor (intento 2): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:12,819 - ERROR - Error al crear proveedor (intento 3): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:13,323 - ERROR - Error al crear proveedor (intento 4): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:13,826 - ERROR - Error al crear proveedor (intento 5): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:14,328 - ERROR - Error al crear proveedor (intento 6): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:14,831 - ERROR - Error al crear proveedor (intento 7): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:15,334 - ERROR - Error al crear proveedor (intento 8): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:15,837 - ERROR - Error al crear proveedor (intento 9): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:16,339 - ERROR - Error al crear proveedor (intento 10): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:16,339 - ERROR - Error al añadir cliente para la empresa TEST: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 12:02:19,079 - INFO - Saliendo del proceso de adición de clientes.

@@ -1,0 +1,216 @@
+2025-07-10 11:36:25,952 - INFO - Web 'chrome://settings/security' abierta.
+2025-07-10 11:36:32,443 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-07-10 11:36:32,545 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-07-10 11:36:32,592 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-07-10 11:36:32,680 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-07-10 11:36:32,737 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-07-10 11:36:32,786 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-07-10 11:36:38,523 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales' abierta.
+2025-07-10 11:36:38,581 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-10 11:36:38,637 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-10 11:36:38,907 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-10 11:36:39,202 - ERROR - No se pudo eliminar el archivo: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx. Error: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Usuario\\Downloads\\Entidades medioambientales.xlsx'
+2025-07-10 11:36:39,868 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros' abierta.
+2025-07-10 11:36:39,932 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-10 11:36:39,984 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-10 11:36:41,235 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-07-10 11:36:41,279 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-07-10 11:36:41,966 - INFO - Web 'https://portal.nubelus.es/?clave=factucit2_gestionClientes_n1' abierta.
+2025-07-10 11:36:42,019 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-10 11:36:42,077 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-10 11:36:43,490 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Clientes.xlsx
+2025-07-10 11:36:43,576 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Clientes.xlsx
+2025-07-10 11:36:44,238 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales' abierta.
+2025-07-10 11:36:44,302 - INFO - Elemento clickado con 'css selector' = '.icon-bolt'.
+2025-07-10 11:36:44,406 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion': 'PRUEBA PRUEBA PRUEBA'
+2025-07-10 11:36:45,935 - INFO - Se pulsó Enter en el elemento localizado por name='pDenominacion'.
+2025-07-10 11:36:45,980 - INFO - Elemento clickado con 'css selector' = '.miBoton.aceptar'.
+2025-07-10 11:36:47,110 - INFO - Elemento clickado con 'css selector' = '.miBoton_cuadrado.aceptar'.
+2025-07-10 11:36:47,579 - ERROR - Falló al clickar el elemento con 'xpath' = '//button[contains(., 'Crear cliente')]' (intento 1): Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=138.0.7204.97); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#stale-element-reference-exception
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49dea]
+	(No symbol) [0x0x7ff6b3f51789]
+	(No symbol) [0x0x7ff6b3f5482c]
+	(No symbol) [0x0x7ff6b3f548ff]
+	(No symbol) [0x0x7ff6b3fa814b]
+	(No symbol) [0x0x7ff6b3fa5c02]
+	(No symbol) [0x0x7ff6b3fa2c41]
+	(No symbol) [0x0x7ff6b3fa1b31]
+	(No symbol) [0x0x7ff6b3f93368]
+	(No symbol) [0x0x7ff6b3fc846a]
+	(No symbol) [0x0x7ff6b3f92c16]
+	(No symbol) [0x0x7ff6b3fc8680]
+	(No symbol) [0x0x7ff6b3ff065c]
+	(No symbol) [0x0x7ff6b3fc8243]
+	(No symbol) [0x0x7ff6b3f91431]
+	(No symbol) [0x0x7ff6b3f921c3]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	GetHandleVerifier [0x0x7ff6b419faf4+112628]
+	GetHandleVerifier [0x0x7ff6b419fca9+113065]
+	GetHandleVerifier [0x0x7ff6b4186c78+10616]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 11:36:48,126 - INFO - Elemento clickado con 'xpath' = '//button[contains(., 'Crear cliente')]'.
+2025-07-10 11:36:48,685 - INFO - Elemento clickado con 'css selector' = '.miBoton_cuadrado.aceptar'.
+2025-07-10 11:36:49,596 - INFO - Web 'https://portal.nubelus.es/?clave=nubelus_gestionUsuarios&pAccion=NUEVO' abierta.
+2025-07-10 11:36:49,660 - INFO - Se escribió texto en el elemento localizado por name='pUsuario': 'PRUEBAPRUEBAPRUEBA'
+2025-07-10 11:36:49,731 - INFO - Se escribió texto en el elemento localizado por name='pAlias': 'PRUEBA PRUEBA PRUEBA'
+2025-07-10 11:36:49,809 - INFO - Se escribió texto en el elemento localizado por name='pEmail': 'PRUEBA@MORENOYRODRIGUEZ.ES'
+2025-07-10 11:36:49,864 - INFO - Se escribió texto en el elemento localizado por name='pTelefono': '999999999'
+2025-07-10 11:36:49,926 - INFO - Opción 'EMA' seleccionada en el elemento con 'name' = 'pRol'.
+2025-07-10 11:36:50,011 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_ema': 'PRUEBA PRUEBA PRUEBA'
+2025-07-10 11:36:51,056 - INFO - Elemento clickado con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL.noref.ui-menu-item'.
+2025-07-10 11:36:51,127 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_entidad_ma_centro': 'PRUEBA PRUEBA PRUEBA'
+2025-07-10 11:36:52,159 - ERROR - Falló al clickar el elemento con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item' (intento 1): Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=138.0.7204.97)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49dea]
+	(No symbol) [0x0x7ff6b3f35f15]
+	(No symbol) [0x0x7ff6b3f5abf4]
+	(No symbol) [0x0x7ff6b3fcfa85]
+	(No symbol) [0x0x7ff6b3feff72]
+	(No symbol) [0x0x7ff6b3fc8243]
+	(No symbol) [0x0x7ff6b3f91431]
+	(No symbol) [0x0x7ff6b3f921c3]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	GetHandleVerifier [0x0x7ff6b419faf4+112628]
+	GetHandleVerifier [0x0x7ff6b419fca9+113065]
+	GetHandleVerifier [0x0x7ff6b4186c78+10616]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 11:36:52,661 - ERROR - Falló al clickar el elemento con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item' (intento 2): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 11:36:53,164 - ERROR - Falló al clickar el elemento con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item' (intento 3): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 11:36:53,669 - ERROR - Falló al clickar el elemento con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item' (intento 4): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 11:36:54,174 - ERROR - Falló al clickar el elemento con 'css selector' = '.BUSCAR_ENTIDAD_MEDIOAMBIENTAL_CENTRO.noref.ui-menu-item' (intento 5): Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 11:36:54,175 - ERROR - Error al completar campos de denominación EMA o centro: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+
+2025-07-10 11:36:54,177 - ERROR - Error al añadir usuario para la empresa PRUEBA PRUEBA PRUEBA: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff6b4196f75+76917]
+	GetHandleVerifier [0x0x7ff6b4196fd0+77008]
+	(No symbol) [0x0x7ff6b3f49c1c]
+	(No symbol) [0x0x7ff6b3f9055f]
+	(No symbol) [0x0x7ff6b3fc8332]
+	(No symbol) [0x0x7ff6b3fc2e53]
+	(No symbol) [0x0x7ff6b3fc1f19]
+	(No symbol) [0x0x7ff6b3f14b05]
+	GetHandleVerifier [0x0x7ff6b446d2ad+3051437]
+	GetHandleVerifier [0x0x7ff6b4467903+3028483]
+	GetHandleVerifier [0x0x7ff6b448589d+3151261]
+	GetHandleVerifier [0x0x7ff6b41b183e+185662]
+	GetHandleVerifier [0x0x7ff6b41b96ff+218111]
+	(No symbol) [0x0x7ff6b3f13b00]
+	GetHandleVerifier [0x0x7ff6b4585f18+4201496]
+	BaseThreadInitThunk [0x0x7ff8dc70e8d7+23]
+	RtlUserThreadStart [0x0x7ff8dd13c34c+44]
+

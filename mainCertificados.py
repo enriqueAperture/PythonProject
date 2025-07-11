@@ -290,14 +290,16 @@ def notificar_contratos_tratamiento():
     excelFunctions.editar_notificaciones_peligrosos(driver)
     logging.info("Notificaciones de peligrosos editadas correctamente.")
     driver.quit()
+    
 def main():
     """
     Función principal que inicia el procesamiento de los archivos XML en todas las subcarpetas de input.
     """
-    procesar_archivos_xml_en_subcarpetas()
-    logging.info("Todos los procesos han finalizado correctamente.")
     notificar_contratos_tratamiento()
     logging.info("Notificaciones de contratos de tratamiento editadas correctamente.")
+
+    procesar_archivos_xml_en_subcarpetas()
+    logging.info("Todos los procesos han finalizado correctamente.")
 
 if __name__ == "__main__":
     main()
