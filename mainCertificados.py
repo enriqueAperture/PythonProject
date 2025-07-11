@@ -267,11 +267,14 @@ def procesar_archivos_xml_en_subcarpetas():
                 logging.error(f"No se ha podido procesar ninguno de los archivos XML restantes en {subdir}.")
                 break
 
-    # Cuando no quedan XML, mover el PDF a la carpeta del último productor
-    if ultimo_nombre_productor and os.path.exists(PDF_FILE):
-        logging.info(f"Moviendo PDF '{os.path.basename(PDF_FILE)}' a la carpeta '{ultimo_nombre_productor}' en trash.")
-        mover_a_trash(PDF_FILE, ultimo_nombre_productor)
-    logging.info("Proceso completado. Todos los archivos procesados y movidos.")
+        # Cuando no quedan XML, mover el PDF a la carpeta del último productor
+        pdf_file = get_pdf_file_sub()
+        if ultimo_nombre_productor and pdf_file and os.path.exists(pdf_file):
+            logging.info(f"Moviendo PDF '{os.path.basename(pdf_file)}' a la carpeta '{ultimo_nombre_productor}' en trash.")
+            mover_a_trash(pdf_file, ultimo_nombre_productor)
+        logging.info(f"Procesamiento completado para subcarpeta: {os.path.basename(subdir)}")
+
+    logging.info("Proceso completado. Todas las subcarpetas procesadas.")
 
 def notificar_contratos_tratamiento():
     excel_input = pd.read_excel(EXCEL_INPUT_DIR)
@@ -293,7 +296,7 @@ def notificar_contratos_tratamiento():
     
 def main():
     """
-    Función principal que inicia el procesamiento de los archivos XML en todas las subcarpetas de input.
+    Función principal que marca como notificado el contrato en nubelus e inicia el procesamiento de los archivos XML en todas las subcarpetas de input.
     """
     notificar_contratos_tratamiento()
     logging.info("Notificaciones de contratos de tratamiento editadas correctamente.")
