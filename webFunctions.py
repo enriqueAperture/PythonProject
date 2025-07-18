@@ -17,6 +17,7 @@ Cada función incluye documentación sobre sus parámetros, lo que retorna o si 
 import glob
 import logging
 import os
+import unicodedata
 import time
 from typing import Union, Optional, List, Dict
 from selenium import webdriver
@@ -77,21 +78,27 @@ def esperar_elemento(driver: webdriver.Chrome, by: By, value: str, timeout: int 
         logging.error(f"Timeout al esperar el elemento con '{by}' = '{value}'")
         raise
 
+
 def encontrar_elemento(driver, by, value, timeout=DEFAULT_TIMEOUT):
     """
     Espera y devuelve un elemento localizado en toda la página.
-    Recibe la estrategia de localización como objeto By (no como string).
+    Reintenta hasta 5 veces con esperas de 0.5s entre intentos.
     """
-    try:
-        esperar_elemento(driver, by, value, timeout)
-        elemento = driver.find_element(by, value)
-        logging.info(f"Elemento encontrado con '{by}' = '{value}'.")
-        return elemento
-    except TimeoutException:
-        raise
-    except Exception as e:
-        logging.error(f"Falló al encontrar el elemento con '{by}' = '{value}': {e}")
-        raise
+    intentos = 5
+    for intento in range(intentos):
+        try:
+            esperar_elemento(driver, by, value, timeout)
+            elemento = driver.find_element(by, value)
+            logging.info(f"Elemento encontrado con '{by}' = '{value}'.")
+            return elemento
+        except TimeoutException:
+            if intento == intentos - 1:
+                raise
+        except Exception as e:
+            logging.error(f"Falló al encontrar el elemento con '{by}' = '{value}' (intento {intento+1}): {e}")
+            if intento == intentos - 1:
+                raise
+        time.sleep(0.5)
 
 def encontrar_elemento_relativo(elemento, by, value):
     """
@@ -125,6 +132,7 @@ def encontrar_elementos(driver, by, value, timeout=DEFAULT_TIMEOUT):
 def clickar_elemento(driver: webdriver.Chrome, by: By, value: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
     Espera a que un elemento sea visible y realiza un clic en él.
+    Reintenta hasta 5 veces con esperas de 0.5s entre intentos.
 
     Args:
         driver (webdriver.Chrome): Instancia del navegador.
@@ -135,20 +143,23 @@ def clickar_elemento(driver: webdriver.Chrome, by: By, value: str, timeout: int 
     Raises:
         TimeoutException: Si el elemento no se encuentra en el tiempo especificado.
         Exception: Si ocurre un error al hacer clic.
-
-    Ejemplo:
-        clickar_elemento(driver, By.ID, "btnEnviar")
     """
-    try:
-        esperar_elemento(driver, by, value, timeout)
-        elemento = driver.find_element(by, value)
-        elemento.click()
-        logging.info(f"Elemento clickado con '{by}' = '{value}'.")
-    except TimeoutException:
-        raise
-    except Exception as e:
-        logging.error(f"Falló al clickar el elemento con '{by}' = '{value}': {e}")
-        raise
+    intentos = 5
+    for intento in range(intentos):
+        try:
+            esperar_elemento(driver, by, value, timeout)
+            elemento = driver.find_element(by, value)
+            elemento.click()
+            logging.info(f"Elemento clickado con '{by}' = '{value}'.")
+            return
+        except TimeoutException:
+            if intento == intentos - 1:
+                raise
+        except Exception as e:
+            logging.error(f"Falló al clickar el elemento con '{by}' = '{value}' (intento {intento+1}): {e}")
+            if intento == intentos - 1:
+                raise
+        time.sleep(0.5)
 
 def esperar_elemento_por_id(driver: webdriver.Chrome, element_id: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
@@ -160,6 +171,18 @@ def esperar_elemento_por_id(driver: webdriver.Chrome, element_id: str, timeout: 
         timeout (int, optional): Tiempo máximo de espera en segundos.
     """
     esperar_elemento(driver, By.ID, element_id, timeout)
+
+def esperar_elemento_por_clase(driver: webdriver.Chrome, clase: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Espera hasta que un elemento con la clase CSS especificada sea visible en la página.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        clase (str): Nombre de la clase CSS.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+    """
+    selector = f".{clase}"
+    esperar_elemento(driver, By.CSS_SELECTOR, selector, timeout)
 
 def clickar_boton_por_id(driver: webdriver.Chrome, id: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
@@ -450,37 +473,25 @@ def obtener_logs_navegador(driver: webdriver.Chrome) -> List[Dict]:
 def escribir_en_elemento(driver: webdriver.Chrome, by: By, value: str, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
     Ubica un elemento en la página y escribe el texto especificado en él.
-
-    Args:
-        driver (webdriver.Chrome): Instancia del navegador.
-        by (By): Estrategia de localización (By.ID, By.NAME, By.XPATH, etc.).
-        value (str): Valor del selector.
-        texto (str): Texto a escribir en el elemento.
-        timeout (int, optional): Tiempo máximo de espera en segundos.
-    
-    Raises:
-        Exception: Si el elemento no se encuentra o no es interactuable.
-
-    Ejemplo:
-        escribir_en_elemento(driver, By.NAME, "usuario", "admin")
+    Reintenta hasta 5 veces con esperas de 0.5s entre intentos.
     """
-    try:
-        esperar_elemento(driver, by, value, timeout)
-        elemento = driver.find_element(by, value)
-        elemento.clear()
-        elemento.send_keys(texto)
-        logging.info(f"Se escribió texto en el elemento localizado por {by}='{value}': '{texto}'")
-    except TimeoutException:
-        raise
-    except NoSuchElementException:
-        logging.error(f"No se encontró el elemento con {by}='{value}' para escribir.")
-        raise
-    except ElementNotInteractableException:
-        logging.error(f"El elemento con {by}='{value}' no es interactuable.")
-        raise
-    except Exception as e:
-        logging.error(f"Error inesperado al escribir en el elemento: {e}")
-        raise
+    intentos = 5
+    for intento in range(intentos):
+        try:
+            esperar_elemento(driver, by, value, timeout)
+            elemento = driver.find_element(by, value)
+            elemento.clear()
+            elemento.send_keys(texto)
+            logging.info(f"Se escribió texto en el elemento localizado por {by}='{value}': '{texto}'")
+            return
+        except TimeoutException:
+            if intento == intentos - 1:
+                raise
+        except Exception as e:
+            logging.error(f"Error al escribir en el elemento con {by}='{value}' (intento {intento+1}): {e}")
+            if intento == intentos - 1:
+                raise
+        time.sleep(0.5)
 
 def escribir_en_elemento_por_id(driver: webdriver.Chrome, element_id: str, texto: str) -> None:
     """
@@ -554,6 +565,28 @@ def escribir_en_elemento_por_name_y_enter(driver: webdriver.Chrome, name: str, t
     try:
         escribir_en_elemento(driver, By.NAME, name, texto)
         input_element = driver.find_element(By.NAME, name)
+        input_element.send_keys(Keys.ENTER)
+        logging.info(f"Se escribió texto y se pulsó Enter en el elemento con name '{name}'.")
+    except Exception as e:
+        logging.error(f"No se pudo escribir y pulsar Enter en el elemento con name '{name}': {e}")
+        raise
+
+def escribir_en_elemento_por_name_y_enter_pausa(driver: webdriver.Chrome, name: str, texto: str) -> None:
+    """
+    Escribe en un elemento identificado por el atributo name y pulsa Enter después de escribir.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        name (str): Valor del atributo name del elemento.
+        texto (str): Texto a escribir.
+
+    Ejemplo:
+        escribir_en_elemento_por_name_y_enter(driver, "usuario", "admin")
+    """
+    try:
+        escribir_en_elemento(driver, By.NAME, name, texto)
+        input_element = driver.find_element(By.NAME, name)
+        time.sleep(2)
         input_element.send_keys(Keys.ENTER)
         logging.info(f"Se escribió texto y se pulsó Enter en el elemento con name '{name}'.")
     except Exception as e:
@@ -893,6 +926,23 @@ def leer_texto_por_campo(driver, campo, timeout=5):
         logging.error(f"Error al leer el campo '{campo}': {e}")
         return None
 
+def leer_texto_por_campo_indice(driver, campo, indice=0, timeout=5):
+    """
+    Igual que leer_texto_por_campo, pero permite elegir el índice del elemento encontrado.
+    """
+    try:
+        xpath = f"(//td[b[normalize-space(text())='{campo}']])[{indice+1}]"
+        td = encontrar_elemento(driver, By.XPATH, xpath, timeout)
+        texto_completo = td.text
+        if texto_completo.startswith(campo):
+            valor = texto_completo[len(campo):].strip()
+        else:
+            valor = texto_completo.split(f"{campo}", 1)[-1].strip()
+        return valor if valor else None
+    except Exception as e:
+        logging.error(f"Error al leer el campo '{campo}' (índice {indice}): {e}")
+        return None
+
 def completar_campo_y_confirmar_seleccion(driver: webdriver.Chrome, buscar_por: By, locator: str, texto: str, boton_confirmacion_locator: str, timeout: int = DEFAULT_TIMEOUT) -> None:
     """
     Ingresa un valor en un campo (usando el método especificado y locator),
@@ -951,3 +1001,162 @@ def completar_campo_y_confirmar_seleccion_por_class(driver: webdriver.Chrome, cl
         delay (int, optional): Tiempo en segundos a esperar antes de hacer click.
     """
     completar_campo_y_confirmar_seleccion(driver, By.CLASS_NAME, class_name, texto, boton_confirmacion_locator, timeout)
+
+def completar_campo_y_enter_por_name(driver, campo_name, valor):
+    """
+    Completa un campo de formulario identificado por su atributo 'name' y simula la pulsación de la tecla Enter.
+
+    Args:
+        driver (selenium.webdriver): Instancia del controlador del navegador.
+        campo_name (str): Valor del atributo 'name' del campo de formulario a completar.
+        valor (str): Texto que se desea ingresar en el campo.
+    """
+    escribir_en_elemento_por_name(driver, campo_name, valor)
+    time.sleep(1.5)
+    pulsar_enter_en_elemento_por_name(driver, campo_name)
+
+def pulsar_enter_en_elemento(driver: webdriver.Chrome, by: By, value: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Espera a que un elemento sea visible y pulsa la tecla Enter sobre él.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        by (By): Estrategia de localización del elemento (By.ID, By.NAME, etc.).
+        value (str): Valor del selector.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+    """
+    try:
+        esperar_elemento(driver, by, value, timeout)
+        elemento = driver.find_element(by, value)
+        elemento.send_keys(Keys.ENTER)
+        logging.info(f"Se pulsó Enter en el elemento localizado por {by}='{value}'.")
+    except Exception as e:
+        logging.error(f"No se pudo pulsar Enter en el elemento con {by}='{value}': {e}")
+        raise
+
+def pulsar_enter_en_elemento_por_id(driver: webdriver.Chrome, element_id: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Pulsa Enter en un elemento identificado por su ID.
+    """
+    pulsar_enter_en_elemento(driver, By.ID, element_id, timeout)
+
+def pulsar_enter_en_elemento_por_name(driver: webdriver.Chrome, name: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Pulsa Enter en un elemento identificado por su atributo name.
+    """
+    pulsar_enter_en_elemento(driver, By.NAME, name, timeout)
+
+def pulsar_enter_en_elemento_por_class(driver: webdriver.Chrome, class_name: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Pulsa Enter en un elemento identificado por su clase CSS.
+    """
+    pulsar_enter_en_elemento(driver, By.CLASS_NAME, class_name, timeout)
+
+def encontrar_pop_up_por_on_click(driver: webdriver.Chrome, onclick_value: str, timeout: int = DEFAULT_TIMEOUT) -> webdriver.remote.webelement.WebElement:
+    """
+    Busca y retorna un elemento pop-up localizado por el atributo 'onclick' con el valor especificado,
+    sin hacer click en el elemento.
+
+    Args:
+        driver (webdriver.Chrome): Instancia activa del navegador.
+        onclick_value (str): Valor exacto del atributo onclick a buscar.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        WebElement: Elemento WebElement correspondiente al pop-up encontrado.
+
+    Ejemplo:
+        popup = encontrar_pop_up_por_on_click(driver, "editar_empresa_autorizada_origen()")
+    """
+    xpath = f"//*[@onclick=\"{onclick_value}\"]"
+    popup = driver.find_element(By.XPATH, xpath)
+    popup.click()
+    return popup
+
+def clickar_boton_por_on_click(driver: webdriver.Chrome, onclick_value: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Hace clic en un botón o elemento que tenga el atributo onclick con el valor especificado.
+
+    Args:
+        driver (webdriver.Chrome): Instancia activa del navegador.
+        onclick_value (str): Valor exacto del atributo onclick a buscar (por ejemplo, 'nuevo_FACTURACION()').
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Ejemplo:
+        clickar_boton_por_on_click(driver, "nuevo_FACTURACION()")
+    """
+    xpath = f"//*[@onclick=\"{onclick_value}\"]"
+    esperar_elemento(driver, By.XPATH, xpath, timeout)
+    elemento = driver.find_element(By.XPATH, xpath)
+    elemento.click()
+
+def obtener_texto_elemento_por_xpath(driver: webdriver.Chrome, xpath: str, timeout: int = DEFAULT_TIMEOUT) -> str:
+    """
+    Obtiene el texto de un elemento localizado por su XPath.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        xpath (str): Expresión XPath del elemento.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Returns:
+        str: El texto del elemento, o "" si no se encuentra.
+    """
+    try:
+        esperar_elemento(driver, By.XPATH, xpath, timeout)
+        elemento = driver.find_element(By.XPATH, xpath)
+        texto = elemento.text
+        logging.info(f"Texto obtenido del elemento con XPath '{xpath}': {texto}")
+        return texto
+    except Exception as e:
+        logging.error(f"Error al obtener texto del elemento con XPath '{xpath}': {e}")
+        return ""
+
+def clickar_div_residuo_por_nombre(driver, nombre_residuo, timeout=10):
+    """
+    Hace clic en el <div> con clase 'denominacion col-3-5 tab-3-5 tel-9' que contiene un <label> con 'Denominación'
+    y cuyo texto contiene el nombre del residuo (comparación flexible: sin tildes, mayúsculas ni espacios extra).
+    """
+    xpath = (
+        "//div[contains(@class, 'denominacion') and contains(@class, 'col-3-5') "
+        "and contains(@class, 'tab-3-5') and contains(@class, 'tel-9') "
+        "and .//label[contains(text(),'Denominación')] "
+        "and contains(normalize-space(.), '{}')]"
+    ).format(nombre_residuo.strip())
+
+    intentos = 5
+    for intento in range(intentos):
+        try:
+            elemento = WebDriverWait(driver, timeout).until(
+                EC.element_to_be_clickable((By.XPATH, xpath))
+            )
+            elemento.click()
+            return
+        except Exception as e:
+            if intento == intentos - 1:
+                raise
+            time.sleep(0.5)
+
+def escribir_en_elemento_por_name_y_enter_escape(driver: webdriver.Chrome, name: str, texto: str) -> None:
+    """
+    Escribe en un elemento identificado por el atributo name y pulsa Enter después de escribir.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        name (str): Valor del atributo name del elemento.
+        texto (str): Texto a escribir.
+
+    Ejemplo:
+        escribir_en_elemento_por_name_y_enter(driver, "usuario", "admin")
+    """
+    try:
+        escribir_en_elemento(driver, By.NAME, name, texto)
+        input_element = driver.find_element(By.NAME, name)
+        time.sleep(2)
+        input_element.send_keys(Keys.ESCAPE)
+        logging.info(f"Se escribió texto y se pulsó Enter en el elemento con name '{name}'.")
+    except Exception as e:
+        logging.error(f"No se pudo escribir y pulsar Enter en el elemento con name '{name}': {e}")
+        raise
+
+## Probar con el campo de codigo de tratamiento en nubelus
