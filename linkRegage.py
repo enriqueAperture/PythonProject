@@ -73,11 +73,19 @@ def descargar_documentos(driver, linkMiteco, download_path, numDownloads=3):
     old_state = downloadFunctions.snapshot_folder_state(download_path)
 
     # Lanzar descargas
-    try:
-        webFunctions.clickar_boton_por_link(driver, "acuerdo")
-    except Exception as e:
+    acuerdo_clicked = False
+    for intento in range(5):
+        try:
+            webFunctions.clickar_boton_por_link(driver, "acuerdo")
+            acuerdo_clicked = True
+            break
+        except Exception as e:
+            logging.info(f"Intento {intento+1}/5: Error al hacer clic en el enlace 'acuerdo': {e}")
+            time.sleep(1)
+    if not acuerdo_clicked:
         numDownloads = 2
-        logging.info(f"Error al hacer clic en el enlace 'acuerdo': {e}")
+        logging.info("No se pudo hacer clic en el enlace 'acuerdo' tras 5 intentos.")
+
     webFunctions.clickar_boton_por_link(driver, "datosFormulario")
     webFunctions.clickar_boton_por_link(driver, "formato.pdf")
 
