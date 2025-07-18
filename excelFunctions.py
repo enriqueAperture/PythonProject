@@ -598,7 +598,7 @@ def añadir_centro(driver: webdriver.Chrome, fila) -> None:
 
         # 7. Completar el campo Teléfono
         webFunctions.escribir_en_elemento_por_name(driver, "pTelefono", str(fila["telf_recogida"]))
-
+        
         # 8. Completar el campo Email
         webFunctions.escribir_en_elemento_por_name(driver, "pEmail", fila["email_recogida"])
 
@@ -643,55 +643,75 @@ def extraer_datos_centro_castilla_desde_excel(ruta_excel):
     """
     Lee un archivo Excel (.xls) y devuelve un JSON estructurado con la información de la sede y los centros.
     """
+    logging.info(f"Procesando archivo Excel: {ruta_excel}")
     datos_castilla = pd.read_excel(ruta_excel, header=1)
+    logging.info(f"{datos_castilla}")
     ruta_xlsx = ruta_excel.replace('.xls', '.xlsx')
-    datos_castilla.to_excel(ruta_xlsx, index=False)
+    logging.info(f"Guardando datos en: {ruta_xlsx}")
+    try:
+        datos_castilla.to_excel(ruta_xlsx, index=False)
+    except Exception as e:
+        logging.error(f"Error al guardar el archivo Excel: {e}")
+        raise
 
-    print(datos_castilla)
-    # Filtra filas donde 'Unnamed: 0' es un número natural (entero positivo)
-    filas_naturales = datos_castilla[datos_castilla['Unnamed: 0'].apply(
+    # Filtra filas válidas (donde 'Unnamed: 0' es un número)
+    filas_validas = datos_castilla[datos_castilla['Unnamed: 0'].apply(
         lambda x: isinstance(x, (int, float)) and x > 0 and float(x).is_integer()
     )]
 
-    # --- Sede (toma la primera fila válida como ejemplo, ajusta según tu lógica real) ---
-    if not filas_naturales.empty:
-        fila_empresa = filas_naturales.iloc[0]
+    # --- Empresa: toma la primera fila válida ---
+    if not filas_validas.empty:
+        fila_empresa = filas_validas.iloc[0]
+        telefono_empresa = fila_empresa.get('TELÉFONO', 0)
+        if pd.isnull(telefono_empresa):
+            telefono_empresa = 0
+        else:
+            try:
+                telefono_empresa = int(telefono_empresa)
+            except Exception:
+                telefono_empresa = 0
         empresa = {
             "nombre": fila_empresa.get('NOMBRE', ''),
-            "direccion": fila_empresa.get('DOMICILIO', ''),
-            "municipio": fila_empresa.get('LOCALIDAD', ''),
-            "telefono": int(fila_empresa.get('TELÉFONO', 0)),
-            #"fax": int(fila_empresa.get('FAX', 0)),
             "provincia": fila_empresa.get('PROVINCIA', ''),
+            "municipio": fila_empresa.get('LOCALIDAD', ''),
+            "direccion": fila_empresa.get('DOMICILIO', ''),
+            "telefono": telefono_empresa,
+            "email": fila_empresa.get('E-MAIL', ''),
+            "coordenadas": fila_empresa.get('COORDENADAS', ''),
         }
+        # Eliminar nif si por alguna razón está presente
+        empresa.pop('nif', None)
     else:
         empresa = {}
 
-    # --- Centros ---
+    # --- Centros: todas las filas válidas ---
     centros = []
-    # Saltamos la primera fila natural (que es la sede) y usamos las siguientes como centros
-    for _, fila in filas_naturales.iloc[0:].iterrows():
-        try:
-            nima_val = int(fila.get('NIMA ', 0))
-        except (ValueError, TypeError):
-            nima_val = 0
-        # Extraer códigos de residuos sin los que están entre paréntesis
-        codigos_raw = str(fila.get('TIPO EXPEDIENTEs', ''))
-        # Separa por espacios y filtra los que NO están entre paréntesis
-        codigos_residuos = [
-            cod for cod in codigos_raw.split()
-            if not (cod.startswith('(') and cod.endswith(')'))
-        ]
+    for _, fila in filas_validas.iterrows():
+        telefono_centro = fila.get('TELÉFONO', 0)
+        if pd.isnull(telefono_centro):
+            telefono_centro = 0
+        else:
+            try:
+                telefono_centro = int(telefono_centro)
+            except Exception:
+                telefono_centro = 0
         centro = {
-            "nombre_centro": fila.get('NOMBRE', ''),
-            "nima": nima_val,
-            "direccion_centro": fila.get('DOMICILIO', ''),
-            "municipio_centro": fila.get('LOCALIDAD', ''),
-            "telefono_centro": int(fila.get('TELÉFONO', 0)),
-            #"fax": int(fila.get('FAX', 0)),
-            "provincia_centro": fila.get('PROVINCIA', ''),
-            "codigos_residuos": codigos_residuos
+            "nima": fila.get('NIMA', ''),
+            "num_autorizacion": fila.get('Nº AUTORIZACIÓN', ''),
+            "tipo_expediente": fila.get('TIPO EXPEDIENTEs', ''),
+            "nombre": fila.get('NOMBRE', ''),
+            "provincia": fila.get('PROVINCIA', ''),
+            "municipio": fila.get('LOCALIDAD', ''),
+            "direccion": fila.get('DOMICILIO', ''),
+            "telefono": telefono_centro,
+            "email": fila.get('E-MAIL', ''),
+            "coordenadas": fila.get('COORDENADAS', ''),
+            "codigo_ler": fila.get('CODIGO LER', ''),
+            "codigo_raee": fila.get('CODIGO RAEE', ''),
+            "descripcion_codigo": fila.get('DESCRICPCION CODIGO', ''),
         }
+        # Eliminar nif si por alguna razón está presente
+        centro.pop('nif', None)
         centros.append(centro)
 
     resultado = {
@@ -731,7 +751,6 @@ def esperar_y_guardar_datos_centro_json_Castilla(extension=".xls", timeout=60):
 
         logging.info(f"Archivo descargado: {archivo_final}")
         datos_dict = extraer_datos_centro_castilla_desde_excel(archivo_final)
-        print(datos_dict)
         logging.info("Datos extraídos del Excel.")
         archivo_xlsx = archivo_final.replace('.xls', '.xlsx')
     finally:

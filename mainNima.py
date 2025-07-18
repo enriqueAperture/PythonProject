@@ -121,7 +121,7 @@ def busqueda_NIMA(nif):
             return next(iter(otros_resultados.values()))
 
     logging.error("NIF no encontrado en ninguna comunidad")
-    return None
+    return {"error": "NIF no encontrado en ninguna comunidad"}
 
 datos = nimaFunctions.busqueda_NIMA_Castilla("70345107K")
 print(datos)

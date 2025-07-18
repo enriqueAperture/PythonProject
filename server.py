@@ -8,10 +8,20 @@ Ejemplo de uso del endpoint "busqueda-nima" mediante curl.exe:
 """
 
 from fastapi import FastAPI, HTTPException, Body
+from fastapi.middleware.cors import CORSMiddleware
 import logging
 import mainNima
 
 app = FastAPI()
+
+# Permitir CORS desde localhost:5173 (o usar "*" para permitir todos los orígenes)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permitir solo este origen
+    allow_credentials=True,
+    allow_methods=["*"],  # Permitir todos los métodos (POST, GET, etc.)
+    allow_headers=["*"],  # Permitir todos los encabezados
+)
 
 @app.post("/busqueda-nima")
 async def busqueda_nima_endpoint(
@@ -28,6 +38,7 @@ async def busqueda_nima_endpoint(
     """
     try:
         resultado = mainNima.busqueda_NIMA(nif)
+        logging.info(f"Resultado: {resultado}")
         return resultado
     except Exception as e:
         logging.error(f"Error en busqueda_nima_endpoint: {e}")
