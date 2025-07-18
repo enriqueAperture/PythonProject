@@ -1110,10 +1110,12 @@ def añadir_contratos_tratamientos(driver, fila, ruta_destino=None):
                 # Crear contrato de tratamiento para todos los residuos
                 añadir_contrato_tratamiento(driver, fila, contrato_residuo)
                 time.sleep(1)
-                # Solo para peligrosos (con asterisco) añadir tratamientos y notificación
+                # Añadir tratamientos para el residuo
+                print(item)
+                añadir_tratamientos(driver, fila, item)
+                time.sleep(1)
+                # Solo para peligrosos, crear notificación
                 if "*" in nombre_residuo:
-                    añadir_tratamientos(driver, fila, item)
-                    time.sleep(1)
                     provincia = fila.get("provincia_recogida", "").strip().upper()
                     crear_notificacion_tratamiento(driver, ruta_destino, provincia)
                     time.sleep(1)
@@ -1212,6 +1214,19 @@ def editar_notificaciones_peligrosos(driver):
             editar_notificacion_tratamiento(driver)
             webFunctions.abrir_web(driver, WEB_NUBELUS_CONTRATOS)
 
+def editar_notificacion_nubelus(driver, fila):
+    """
+    Función temporalmente desactivada - no hace nada.
+    """
+    pass
+    
+    # webFunctions.abrir_web(driver, WEB_NUBELUS_CONTRATOS)
+    # webFunctions.clickar_boton_por_on_click(driver, "filtrar()")
+    # webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "waster2_gestionContratosTratamiento__fDenominacion_origen", fila.get("nombre_recogida"))
+    # webFunctions.clickar_boton_por_clase(driver, "miBoton.buscar")
+    # editar_notificaciones_peligrosos(driver)
+    # logging.info("Notificaciones de peligrosos editadas correctamente.")
+
 def añadir_tratamientos(driver, fila, residuo):
     """
     Añade los tratamientos indicados usando los datos de la fila y el residuo (json).
@@ -1271,67 +1286,27 @@ def añadir_tratamiento(driver, fila, residuo, indice=1):
 
 def residuos_y_tratamientos_json():
     """
-    Devuelve una lista de diccionarios, cada uno con un residuo y una lista de centros asociados.
-    Si en centro_tratamientos.txt hay un guión '-', se asocian varios centros al mismo residuo.
-    Si hay más residuos que bloques de centros, los residuos sobrantes se añaden con centros vacíos.
+    Devuelve una lista de diccionarios con residuos y centros asociados, 
+    leyendo directamente del archivo JSON en data/datos_json.txt
     """
-    ruta_residuos = os.path.join("data", "residuos.txt")
-    ruta_centros = os.path.join("data", "centro_tratamientos.txt")
-
-    # Leer residuos.txt
-    residuos = []
-    with open(ruta_residuos, encoding="utf-8") as f:
-        lineas = [line.strip() for line in f if line.strip()]
-    i = 0
-    while i < len(lineas):
-        tipo_raw = lineas[i].lower()
-        if tipo_raw == "p":
-            tipo = "peligroso"
-        elif tipo_raw == "n":
-            tipo = "no peligroso"
-        else:
-            tipo = tipo_raw  # Por si acaso
-        nombre = lineas[i+1]
-        cantidad = lineas[i+2]
-        residuos.append({
-            "tipo": tipo,
-            "nombre": nombre,
-            "cantidad": cantidad
-        })
-        i += 3
-
-    # Leer centro_tratamientos.txt y asociar a residuos
-    centros_bloques = []
-    with open(ruta_centros, encoding="utf-8") as f:
-        lineas = [line.strip() for line in f if line.strip()]
-    i = 0
-    while i < len(lineas):
-        if i+2 < len(lineas) and lineas[i+2] == "-":
-            # Dos centros/tratamientos para el mismo residuo
-            centros_bloques.append([
-                {"centro": lineas[i], "tratamiento": lineas[i+1]},
-                {"centro": lineas[i+3], "tratamiento": lineas[i+4]}
-            ])
-            i += 5  # Saltar centro1, trat1, guion, centro2, trat2
-        else:
-            centros_bloques.append([
-                {"centro": lineas[i], "tratamiento": lineas[i+1]}
-            ])
-            i += 2
-
-    # Asociar residuos y centros (agrupando centros en una lista bajo cada residuo)
-    resultado = []
-    for idx, residuo in enumerate(residuos):
-        if idx < len(centros_bloques):
-            bloque = centros_bloques[idx]
-        else:
-            bloque = []  # Sin centros asociados
-        resultado.append({
-            "residuo": residuo,
-            "centros": bloque
-        })
-
-    return resultado
+    ruta_json = os.path.join("data", "datos_json.txt")
+    
+    try:
+        with open(ruta_json, 'r', encoding='utf-8') as f:
+            datos = json.load(f)
+        
+        # El JSON ya tiene la estructura correcta que esperamos
+        return datos
+        
+    except FileNotFoundError:
+        logging.error(f"No se encontró el archivo {ruta_json}")
+        return []
+    except json.JSONDecodeError as e:
+        logging.error(f"Error al parsear JSON en {ruta_json}: {e}")
+        return []
+    except Exception as e:
+        logging.error(f"Error inesperado al leer {ruta_json}: {e}")
+        return []
 
 def añadir_facturacion(driver, fila, residuo):
     """
@@ -1367,19 +1342,6 @@ def añadir_facturacion(driver, fila, residuo):
             logging.info("Saliendo del proceso de adición de facturación.")
             driver.quit()
             sys.exit()
-
-def activar_proteccion_mejorada(driver):
-    """
-    Activa la protección mejorada en la plataforma Nubelus.
-    Esta función navega a la sección de configuración y activa la protección mejorada.
-    Reintenta hasta 3 veces en caso de error.
-    """
-    try:
-        webFunctions.abrir_web(driver, URL_SEGURIDAD)
-        time.sleep(5)
-        # Aquí puedes añadir más pasos si necesitas interactuar con la página de seguridad
-    except Exception as error:
-        logging.error(f"Error al activar la protección mejorada.")
 
 def leer_excel(ruta_excel):
     """
@@ -1819,15 +1781,17 @@ def crear_contratos_faltantes(driver, fila, coincidencias_contratos, ruta_destin
 
         añadir_contrato_tratamiento(driver, fila, contrato_residuo)
         provincia = fila.get("provincia_recogida", "").strip().upper()
-
+        time.sleep(1)
+        añadir_tratamientos(driver, fila, item)
         if "*" in nombre_residuo:
-            time.sleep(1)
-            añadir_tratamientos(driver, fila, item)
             time.sleep(1)
             crear_notificacion_tratamiento(driver, ruta_destino, provincia)
             time.sleep(1)
 
         añadir_facturacion(driver, fila, contrato_residuo)
+    editar_notificacion_nubelus(driver, fila)    
+    driver.quit()
+    logging.info("Contratos faltantes creados correctamente.")    
 
 def crear_contratos_desde_empresa(driver, fila, ruta_destino=None):
         añadir_empresa(driver, fila)
@@ -1838,6 +1802,7 @@ def crear_contratos_desde_empresa(driver, fila, ruta_destino=None):
         añadir_acuerdo_representacion(driver, fila)
         añadir_contratos_tratamientos(driver, fila, ruta_destino)
         logging.info("Contratos creados correctamente: desde empresa a contratos")
+        driver.quit()
         sys.exit()
 
 def crear_contratos_desde_centros(driver, fila, ruta_destino=None):
@@ -1851,6 +1816,7 @@ def crear_contratos_desde_centros(driver, fila, ruta_destino=None):
     añadir_acuerdo_representacion(driver, fila)
     añadir_contratos_tratamientos(driver, fila, ruta_destino)
     logging.info("Contratos creados correctamente: desde centro a contratos")
+    driver.quit()
     sys.exit()
 
 def crear_contratos_desde_clientes(driver, fila, ruta_destino=None):
@@ -1863,6 +1829,7 @@ def crear_contratos_desde_clientes(driver, fila, ruta_destino=None):
     añadir_acuerdo_representacion(driver, fila)
     añadir_contratos_tratamientos(driver, fila, ruta_destino)
     logging.info("Contratos creados correctamente: desde cliente a contratos")
+    driver.quit()
     sys.exit()
 
 def crear_contratos_desde_usuarios(driver, fila, ruta_destino=None):
@@ -1874,6 +1841,7 @@ def crear_contratos_desde_usuarios(driver, fila, ruta_destino=None):
     añadir_acuerdo_representacion(driver, fila)
     añadir_contratos_tratamientos(driver, fila, ruta_destino)
     logging.info("Contratos creados correctamente: desde usuario a contratos")
+    driver.quit()
     sys.exit()
 
 def preparar_carpeta_para_pdf_y_xml(excel_fila):
@@ -1918,3 +1886,15 @@ def preparar_carpeta_para_pdf_y_xml(excel_fila):
 
     # Devuelve la ruta donde guardar los XML
     return ruta_destino
+
+def crear_contratos_desde_acuerdos_representacion(driver, fila, ruta_destino=None):
+    """
+    Crea contratos de tratamiento desde la pestaña 'Acuerdos de representación' de la empresa.
+    Primero añade el acuerdo, luego crea los contratos de tratamiento para cada residuo.
+    """
+    añadir_acuerdo_representacion(driver, fila)
+    añadir_usuario(driver, fila)
+    añadir_contratos_tratamientos(driver, fila, ruta_destino)
+    logging.info("Contratos creados correctamente: desde acuerdo a contratos")
+    driver.quit()
+    sys.exit()

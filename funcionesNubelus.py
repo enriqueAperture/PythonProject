@@ -21,6 +21,7 @@ import tkinter as tk
 import pandas as pd
 from tkinter import ttk
 import sys
+import uiautomationHandler
 
 
 # URL de la web de Nubelus
@@ -31,6 +32,7 @@ WEB_NUBELUS_ACUERDOS_NUEVO = "https://portal.nubelus.es/?clave=waster2_gestionAc
 WEB_NUBELUS_USUARIO_NUEVO = "https://portal.nubelus.es/?clave=nubelus_gestionUsuarios&pAccion=NUEVO"
 WEB_NUBELUS_CENTROS = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros"
 WEB_NUBELUS_CENTROS_NUEVO = "https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros&pAccion=NUEVO"
+URL_SEGURIDAD_CHROME = "chrome://settings/security"
 
 def iniciar_sesion(driver):
     """
@@ -46,7 +48,15 @@ def iniciar_sesion(driver):
             webFunctions.escribir_en_elemento_por_placeholder(driver, "Usuario", "dani")
             webFunctions.escribir_en_elemento_por_placeholder(driver, "Contraseña", "123456")
             webFunctions.clickar_boton_por_id(driver, "btAceptar")
-            time.sleep(5)  # Tiempo para aceptar el pop-up de Google
+            
+            # Aceptar automáticamente el popup de Google, lo intenta 10 veces
+            for _ in range(10):
+                try:
+                    aceptar_popup_google(driver)
+                    break
+                except Exception:
+                    time.sleep(0.5)
+            logging.info("Inicio de sesión completado exitosamente")
             return
         except Exception as error:
             logging.error(f"Error al iniciar sesión en Nubelus (intento {intento+1}): {error}")
@@ -58,7 +68,6 @@ def iniciar_sesion(driver):
                     logging.info("Saliendo del proceso de inicio de sesión.")
                     driver.quit()
                     sys.exit()
-            time.sleep(1)
 
 def crear_proveedor(driver):
     """
@@ -171,3 +180,63 @@ def preguntar_por_pantalla():
     win.grab_set()
     win.mainloop()
     return continuar
+
+def activar_proteccion_mejorada_chrome(driver):
+    """
+    Activa la protección mejorada en Chrome usando uiautomation.
+    
+    Args:
+        driver: Instancia del webdriver de Chrome ya abierto
+    """
+    try:
+        # Navegar a la configuración de seguridad
+        driver.get(URL_SEGURIDAD_CHROME)
+        logging.info("Navegando a la configuración de seguridad de Chrome")
+        
+        # Buscar la ventana de Chrome
+        ventana_chrome = uiautomationHandler.obtener_ventana("Chrome", timeout=10)
+        
+        if ventana_chrome:
+            logging.info("Ventana de Chrome encontrada")
+            
+            # Buscar el botón de radio de "Protección mejorada"
+            boton_proteccion = ventana_chrome.RadioButtonControl(Name="Protección mejorada")
+            if boton_proteccion.Exists(maxSearchSeconds=5):
+                boton_proteccion.Click()
+                logging.info("Protección mejorada activada correctamente")
+            else:
+                logging.error("No se encontró el botón de 'Protección mejorada'")
+        else:
+            logging.error("No se pudo encontrar la ventana de Chrome")
+        
+    except Exception as e:
+        logging.error(f"Error al activar protección mejorada: {e}")
+
+def aceptar_popup_google(driver):
+    """
+    Acepta el popup de Google que aparece después del inicio de sesión usando uiautomation.
+    
+    Args:
+        driver: Instancia del webdriver de Chrome ya abierto
+    """
+    try:
+        logging.info("Buscando popup de Google...")
+        
+        # Buscar la ventana de Chrome
+        ventana_chrome = uiautomationHandler.obtener_ventana("Chrome", timeout=5)
+        
+        if ventana_chrome:
+            logging.info("Ventana de Chrome encontrada")
+            
+            # Buscar el botón "Aceptar" del popup
+            boton_aceptar = ventana_chrome.ButtonControl(Name="Aceptar")
+            if boton_aceptar.Exists(maxSearchSeconds=3):
+                boton_aceptar.Click()
+                logging.info("Popup de Google aceptado correctamente")
+            else:
+                logging.error("No se encontró el botón de 'Aceptar' del popup de Google")
+        else:
+            logging.error("No se pudo encontrar la ventana de Chrome")
+        
+    except Exception as e:
+        logging.error(f"Error al aceptar popup de Google: {e}")
