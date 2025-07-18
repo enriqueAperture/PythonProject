@@ -77,48 +77,36 @@ def busqueda_NIMA(nif):
 
     comunidades = [
         ("Valencia", nimaFunctions.busqueda_NIMA_Valencia),
-        ("Madrid", nimaFunctions.busqueda_NIMA_Madrid),
-        ("Castilla", nimaFunctions.busqueda_NIMA_Castilla),
-        ("Cataluña", nimaFunctions.busqueda_NIMA_Cataluña)
+        #("Madrid", nimaFunctions.busqueda_NIMA_Madrid),
+        #("Castilla", nimaFunctions.busqueda_NIMA_Castilla),
+        #("Cataluña", nimaFunctions.busqueda_NIMA_Cataluña)
     ]
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         future_to_comunidad = {executor.submit(func, nif): nombre for nombre, func in comunidades}
-        future_valencia = None
-        for future, nombre in future_to_comunidad.items():
-            if nombre == "Valencia":
-                future_valencia = future
-                break
+        resultados = {}
+        valencia_resultado = None
 
-        # Guardar resultados de otras comunidades mientras Valencia termina
-        otros_resultados = {}
-        valencia_terminada = False
+        for future in concurrent.futures.as_completed(future_to_comunidad):
+            nombre = future_to_comunidad[future]
+            try:
+                resultado = future.result()
+                if resultado and isinstance(resultado, dict) and resultado.get("centros") and len(resultado["centros"]) > 0:
+                    resultados[nombre] = resultado
+                    if nombre == "Valencia":
+                        valencia_resultado = resultado
+                        break  # Si Valencia tiene datos, paramos aquí
+            except Exception as e:
+                logging.info(f"No encontrado en {nombre}: {e}")
 
-        while not valencia_terminada:
-            done, not_done = concurrent.futures.wait(
-                future_to_comunidad.keys(), timeout=0.2, return_when=concurrent.futures.FIRST_COMPLETED
-            )
-            for future in done:
-                nombre = future_to_comunidad[future]
-                if nombre == "Valencia":
-                    valencia_terminada = True
-                    try:
-                        resultado = future.result()
-                        if resultado and isinstance(resultado, dict) and resultado.get("centros") and len(resultado["centros"]) > 0:
-                            return resultado
-                    except Exception as e:
-                        logging.info(f"No encontrado en Valencia: {e}")
-                else:
-                    try:
-                        resultado = future.result(timeout=0)
-                        if resultado and isinstance(resultado, dict) and resultado.get("centros") and len(resultado["centros"]) > 0:
-                            otros_resultados[nombre] = resultado
-                    except Exception:
-                        pass
+    # Si Valencia ha devuelto datos válidos, devuélvelos
+    if valencia_resultado:
+        return valencia_resultado
 
-        # Si Valencia no ha devuelto nada, pero alguna otra comunidad sí, devolvemos el primer resultado válido
-        if otros_resultados:
-            return next(iter(otros_resultados.values()))
+    # Si no, devuelve el primer resultado válido de otra comunidad
+    for nombre in ["Madrid",  "Cataluña"]:
+        if nombre in resultados:
+            return resultados[nombre]
 
     logging.error("NIF no encontrado en ninguna comunidad")
     return {"error": "NIF no encontrado en ninguna comunidad"}
