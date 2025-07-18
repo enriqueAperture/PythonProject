@@ -145,16 +145,21 @@ def busqueda_NIMA_Valencia(nif):
         urls_centros = [enlace.get_attribute("href") for enlace in enlaces]
 
         for url in urls_centros:
-            driver.get(url)
-            datos_centro = extraer_datos_valencia(driver)
-            if datos_centro:
-                # Solo guardar los datos de empresa del primer centro
-                if empresa is None and "empresa" in datos_centro:
-                    empresa = datos_centro["empresa"]
-                # Guardar solo los datos del centro
-                if "centros" in datos_centro:
-                    centros.extend(datos_centro["centros"])
-            # No es necesario hacer driver.back() porque vamos directo a la siguiente URL
+            try:
+                driver.get(url)
+                logging.info(f"Procesando URL: {url}")
+                datos_centro = extraer_datos_valencia(driver)
+                if datos_centro:
+                    # Solo guardar los datos de empresa del primer centro
+                    if empresa is None and "empresa" in datos_centro:
+                        empresa = datos_centro["empresa"]
+                    # Guardar solo los datos del centro
+                    if "centros" in datos_centro:
+                        centros.extend(datos_centro["centros"])
+            except Exception as e:
+                logging.error(f"ERROR procesando la URL {url}: {e}")
+                continue
+        # No es necesario hacer driver.back() porque vamos directo a la siguiente URL
     except Exception as e:
         logging.error(f"ERROR: No se han podido procesar los centros asociados: {e}")
     driver.quit()

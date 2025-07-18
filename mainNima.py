@@ -75,9 +75,9 @@ def busqueda_NIMA(nif):
 
     comunidades = [
         ("Valencia", nimaFunctions.busqueda_NIMA_Valencia),
-        ("Madrid", nimaFunctions.busqueda_NIMA_Madrid),
-        ("Castilla", nimaFunctions.busqueda_NIMA_Castilla),
-        ("Cataluña", nimaFunctions.busqueda_NIMA_Cataluña)
+        #("Madrid", nimaFunctions.busqueda_NIMA_Madrid),
+        #("Castilla", nimaFunctions.busqueda_NIMA_Castilla),
+        #("Cataluña", nimaFunctions.busqueda_NIMA_Cataluña)
     ]
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
@@ -102,7 +102,7 @@ def busqueda_NIMA(nif):
         return valencia_resultado
 
     # Si no, devuelve el primer resultado válido de otra comunidad
-    for nombre in ["Madrid", "Castilla", "Cataluña"]:
+    for nombre in ["Madrid",  "Cataluña"]:
         if nombre in resultados:
             return resultados[nombre]
 
