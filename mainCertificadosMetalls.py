@@ -75,7 +75,7 @@ URL_CONTRATOS_TRATAMIENTOS = "https://portal.nubelus.es/?clave=waster2_gestionCo
 INPUT_DIR = os.path.join(BASE_DIR, "input")
 EXCEL_INPUT_DIR = os.path.join(BASE_DIR, "entrada", "excel_input.xls")  # Ruta del Excel de entrada
 TRASH_DIR = os.path.join(BASE_DIR, "trash")
-INFO_CERTS = os.path.join(BASE_DIR, "data", "informacionCertsMetals.txt")
+INFO_CERTS = os.path.join(BASE_DIR, "data", "informacionCertsMetalls.txt")
 info = cargar_variables(INFO_CERTS)
 
 def get_pdf_file_from_folder(folder_path):

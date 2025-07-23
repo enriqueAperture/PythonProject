@@ -7,6 +7,8 @@ utilizando Selenium y las funciones auxiliares de webFunctions y downloadFunctio
 
 Flujo general:
   1. Lee todas las carpetas dentro de output.
+import shutil
+import shutil
   2. Para cada archivo .json dentro de cada carpeta, construye el enlace personalizado de MITECO.
   3. Abre el enlace en el navegador con Selenium, realiza la autenticación y descarga los archivos asociados en una carpeta única por iteración.
   4. Repite el proceso para todos los registros.
@@ -18,6 +20,7 @@ Ejemplo de uso:
 # Imports básicos de Python
 import os
 import json
+import shutil
 import time
 import logging
 from typing import List
@@ -29,6 +32,8 @@ import webConfiguration
 import webFunctions
 import loggerConfig
 import extraerXMLE3L
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 from config import BASE_DIR, cargar_variables
 
 # Variables de configuración
@@ -73,21 +78,8 @@ def descargar_documentos(driver, linkMiteco, download_path, numDownloads=3):
     old_state = downloadFunctions.snapshot_folder_state(download_path)
 
     # Lanzar descargas
-    acuerdo_clicked = False
-    for intento in range(5):
-        try:
-            webFunctions.clickar_boton_por_link(driver, "acuerdo")
-            acuerdo_clicked = True
-            break
-        except Exception as e:
-            logging.info(f"Intento {intento+1}/5: Error al hacer clic en el enlace 'acuerdo': {e}")
-            time.sleep(1)
-    if not acuerdo_clicked:
-        numDownloads = 2
-        logging.info("No se pudo hacer clic en el enlace 'acuerdo' tras 5 intentos.")
-
-    webFunctions.clickar_boton_por_link(driver, "datosFormulario")
-    webFunctions.clickar_boton_por_link(driver, "formato.pdf")
+    # Buscar y hacer clic en todos los enlaces que contienen ".pdf"
+    webFunctions.clickar_todos_los_links(driver, ".pdf")
 
     # Esperar la descarga
     archivos_descargados = downloadFunctions.wait_for_new_download(download_path, old_state, numDownloads)

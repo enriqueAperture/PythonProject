@@ -288,6 +288,36 @@ def clickar_boton_por_link(driver: webdriver.Chrome, link: str, timeout: int = D
     xpath = f"//a[contains(text(), '{link}')]"
     clickar_elemento(driver, By.XPATH, xpath, timeout)
 
+def clickar_todos_los_links(driver: webdriver.Chrome, texto: str, timeout: int = DEFAULT_TIMEOUT) -> None:
+    """
+    Hace clic en todos los enlaces <a> cuyo texto visible contenga el string especificado,
+    utilizando la función clickar_elemento para cada uno.
+
+    Args:
+        driver (webdriver.Chrome): Instancia del navegador.
+        texto (str): Texto que debe estar contenido en el texto visible del enlace.
+        timeout (int, optional): Tiempo máximo de espera en segundos.
+
+    Ejemplo:
+        clickar_todos_los_links(driver, "Descargar")
+    """
+    try:
+        time.sleep(2)  # Espera inicial para que la página cargue
+        enlaces = driver.find_elements(By.XPATH, f"//a[contains(text(), '{texto}')]")
+        if not enlaces:
+            logging.error(f"No se encontraron enlaces con texto '{texto}'.")
+            return
+        logging.info(f"Encontrados {len(enlaces)} enlaces con texto '{texto}'.")
+        for enlace in enlaces:
+            if enlace:
+                try:
+                    clickar_elemento(driver, By.XPATH, f"//a[contains(text(), '{texto}')]", timeout)
+                    time.sleep(2)
+                except Exception as e:
+                    logging.warning(f"No se pudo hacer clic en el enlace con texto '{enlace.text}': {e}")
+    except Exception as e:
+        logging.error(f"Error al buscar enlaces con texto '{texto}': {e}")
+
 def clickar_enlace_por_onclick(driver: webdriver.Chrome, onclick_value: str, timeout: int = DEFAULT_TIMEOUT) -> bool:
     """
     Hace clic en un enlace (<a>) que tenga el atributo onclick con el valor especificado.
