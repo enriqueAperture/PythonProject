@@ -1767,22 +1767,23 @@ def crear_contratos_faltantes(driver, fila, coincidencias_contratos, ruta_destin
     Si todos los residuos ya están creados, muestra un mensaje y no hace nada.
     """
     residuos_centros = residuos_y_tratamientos_json()
-    # Normaliza los nombres de los residuos del Excel de contratos
-    residuos_excel = [
-        quitar_tildes(str(r_excel)).strip().upper()
-        for r_excel in coincidencias_contratos['Denominacion']
-    ]
-
-    residuos_faltantes = []
-    for item in residuos_centros:
-        residuo = item["residuo"]
-        nombre_residuo = quitar_tildes(str(residuo.get("nombre", ""))).strip().upper()
-        # Coincidencia literal (exacta, pero sin tildes)
-        if nombre_residuo not in residuos_excel:
-            residuos_faltantes.append(item)
+    
+    # Si no hay ningún contrato hecho, crear todos
+    if coincidencias_contratos is None:
+        residuos_faltantes = residuos_centros
+    else:
+        residuos_excel = [
+            quitar_tildes(str(r_excel)).strip().upper()
+            for r_excel in coincidencias_contratos['Denominacion']
+        ]
+        residuos_faltantes = []
+        for item in residuos_centros:
+            residuo = item["residuo"]
+            nombre_residuo = quitar_tildes(str(residuo.get("nombre", ""))).strip().upper()
+            if nombre_residuo not in residuos_excel:
+                residuos_faltantes.append(item)
 
     if not residuos_faltantes:
-        print("Todos los contratos de tratamiento ya están creados para esta empresa.")
         logging.info("Todos los contratos de tratamiento ya están creados para esta empresa.")
         sys.exit()
 
@@ -1810,7 +1811,7 @@ def crear_contratos_faltantes(driver, fila, coincidencias_contratos, ruta_destin
         añadir_facturacion(driver, fila, contrato_residuo)
     editar_notificacion_nubelus(driver, fila)    
     driver.quit()
-    logging.info("Contratos faltantes creados correctamente.")    
+    logging.info("Contratos faltantes creados correctamente.")      
 
 def crear_contratos_desde_empresa(driver, fila, ruta_destino=None):
         añadir_empresa(driver, fila)
