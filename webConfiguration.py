@@ -16,7 +16,7 @@ def configure():
     options.add_argument("--disable-features=ChromeWhatsNewUI")
 
     # Opcional: para que veas errores o popups
-    options.add_argument("--headless")  # puedes quitarlo temporalmente
+    # options.add_argument("--headless")  # puedes quitarlo temporalmente
 
     options.add_argument("--start-maximized")
     options.add_argument("--disable-notifications")

@@ -308,13 +308,15 @@ def clickar_todos_los_links(driver: webdriver.Chrome, texto: str, timeout: int =
             logging.error(f"No se encontraron enlaces con texto '{texto}'.")
             return
         logging.info(f"Encontrados {len(enlaces)} enlaces con texto '{texto}'.")
-        for enlace in enlaces:
+        for enlace in enlaces[:2]:
+            enlace_texto = enlace.text
             if enlace:
                 try:
-                    clickar_elemento(driver, By.XPATH, f"//a[contains(text(), '{texto}')]", timeout)
+                    clickar_elemento(driver, By.XPATH, f"//a[contains(text(), '{enlace_texto}')]", timeout)
                     time.sleep(2)
                 except Exception as e:
-                    logging.warning(f"No se pudo hacer clic en el enlace con texto '{enlace.text}': {e}")
+                    logging.warning(f"No se pudo hacer clic en el enlace con texto '{enlace_texto}': {e}")
+                    continue
     except Exception as e:
         logging.error(f"Error al buscar enlaces con texto '{texto}': {e}")
 

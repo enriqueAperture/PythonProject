@@ -188,6 +188,8 @@ def procesar_xml(xml_path, nif):
         webFunctions.esperar_elemento_por_id(driver, "wrapper", timeout=15)
         webFunctions.clickar_boton_por_id(driver, "id_presenta_solicitud_3")
         webFunctions.escribir_en_elemento_por_id(driver, "id_nif_remitente", nif)
+        webFunctions.clickar_boton_por_id(driver, "id_btnOtroSol")
+        time.sleep(1)
         rellenar_formulario(driver)
 
         webFunctions.clickar_boton_por_id(driver, "btnForm")
