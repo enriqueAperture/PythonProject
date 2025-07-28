@@ -1,0 +1,114 @@
+2025-07-28 15:57:43,844 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\Usuario\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+2025-07-28 15:57:43,844 - INFO - Using writeable comtypes cache directory: 'C:\Users\Usuario\AppData\Local\Programs\Python\Python313\Lib\site-packages\comtypes\gen'
+2025-07-28 15:57:46,124 - INFO - Navegando a la configuración de seguridad de Chrome
+2025-07-28 15:57:46,125 - INFO - Buscando ventana: 'Chrome'
+2025-07-28 15:57:46,774 - INFO - Ventana encontrada: Configuración: Seguridad - Google Chrome
+2025-07-28 15:57:47,277 - INFO - Ventana de Chrome encontrada
+2025-07-28 15:57:48,817 - INFO - Protección mejorada activada correctamente
+2025-07-28 15:57:49,482 - INFO - Web 'https://portal.nubelus.es' abierta.
+2025-07-28 15:57:49,553 - INFO - Se escribió texto en el elemento localizado por id='pNick_gestor': 'ecotitan'
+2025-07-28 15:57:49,607 - INFO - Elemento clickado con 'id' = 'btContinuar'.
+2025-07-28 15:57:49,666 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Usuario']': 'dani'
+2025-07-28 15:57:49,728 - INFO - Se escribió texto en el elemento localizado por xpath='//*[@placeholder='Contraseña']': '123456'
+2025-07-28 15:57:49,786 - INFO - Elemento clickado con 'id' = 'btAceptar'.
+2025-07-28 15:57:49,786 - INFO - Buscando popup de Google...
+2025-07-28 15:57:49,786 - INFO - Buscando ventana: 'Chrome'
+2025-07-28 15:57:50,336 - INFO - Ventana encontrada: NUBELUS - Google Chrome
+2025-07-28 15:57:50,837 - INFO - Ventana de Chrome encontrada
+2025-07-28 15:57:51,834 - INFO - Popup de Google aceptado correctamente
+2025-07-28 15:57:51,835 - INFO - Inicio de sesión completado exitosamente
+2025-07-28 15:57:52,370 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientales' abierta.
+2025-07-28 15:57:52,439 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-28 15:57:52,497 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-28 15:57:52,715 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx
+2025-07-28 15:57:52,951 - ERROR - No se pudo eliminar el archivo: C:\Users\Usuario\Downloads\Entidades medioambientales.xlsx. Error: [WinError 32] El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso: 'C:\\Users\\Usuario\\Downloads\\Entidades medioambientales.xlsx'
+2025-07-28 15:57:53,479 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionEntidadesMedioambientalesCentros' abierta.
+2025-07-28 15:57:53,541 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-28 15:57:53,597 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-28 15:57:54,852 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-07-28 15:57:54,890 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Centros de entidades medioambientales.xlsx
+2025-07-28 15:57:55,406 - INFO - Web 'https://portal.nubelus.es/?clave=factucit2_gestionClientes_n1' abierta.
+2025-07-28 15:57:55,490 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-28 15:57:55,563 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-28 15:57:56,993 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Clientes.xlsx
+2025-07-28 15:57:57,078 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Clientes.xlsx
+2025-07-28 15:57:57,639 - INFO - Web 'https://portal.nubelus.es/?clave=nubelus_gestionUsuarios' abierta.
+2025-07-28 15:57:57,701 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-28 15:57:57,761 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-28 15:57:59,083 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Usuarios.xlsx
+2025-07-28 15:57:59,149 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Usuarios.xlsx
+2025-07-28 15:57:59,661 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionAcuerdosRepresentacion' abierta.
+2025-07-28 15:57:59,727 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-28 15:57:59,774 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-28 15:58:01,081 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Acuerdos de representación.xlsx
+2025-07-28 15:58:01,130 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Acuerdos de representación.xlsx
+2025-07-28 15:58:01,710 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento' abierta.
+2025-07-28 15:58:01,771 - INFO - Elemento clickado con 'css selector' = '.miBoton.mas_opciones'.
+2025-07-28 15:58:01,829 - INFO - Elemento clickado con 'id' = 'moa_bGenerar_excel'.
+2025-07-28 15:58:05,290 - INFO - Archivo descargado: C:\Users\Usuario\Downloads\Contratos tratamiento.xlsx
+2025-07-28 15:58:05,801 - INFO - Archivo eliminado: C:\Users\Usuario\Downloads\Contratos tratamiento.xlsx
+2025-07-28 15:58:06,308 - INFO - Web 'https://portal.nubelus.es/?clave=waster2_gestionContratosTratamiento&pAccion=NUEVO' abierta.
+2025-07-28 15:58:06,440 - INFO - Se escribió texto en el elemento localizado por name='pFecha': '28-07-2025'
+2025-07-28 15:58:08,461 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha'.
+2025-07-28 15:58:09,051 - INFO - Se escribió texto en el elemento localizado por name='pFecha_caducidad': '27-07-2028'
+2025-07-28 15:58:11,071 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pFecha_caducidad'.
+2025-07-28 15:58:11,666 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_origen': 'LOS CAMIONEROS DE NOBLEJAS, S.L.'
+2025-07-28 15:58:13,694 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_origen'.
+2025-07-28 15:58:14,285 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_origen_centro': 'LOS CAMIONEROS DE NOBLEJAS, S.L.'
+2025-07-28 15:58:16,310 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_origen_centro'.
+2025-07-28 15:58:16,886 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino': 'METALLS DEL CAMP, S.L.'
+2025-07-28 15:58:18,910 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino'.
+2025-07-28 15:58:19,505 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_destino_centro': 'METALLS DEL CAMP, S.L.U. (EL ROMERAL)'
+2025-07-28 15:58:21,534 - INFO - Se escribió texto y se pulsó Enter en el elemento con name 'pDenominacion_destino_centro'.
+2025-07-28 15:58:22,617 - INFO - Se escribió texto en el elemento localizado por name='pDenominacion_autorizacion_destino': '4570002919'
+2025-07-28 15:58:24,625 - ERROR - No se pudo escribir y pulsar Enter en el elemento con name 'pDenominacion_autorizacion_destino': Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=138.0.7204.169)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff61de9e935+77845]
+	GetHandleVerifier [0x0x7ff61de9e990+77936]
+	(No symbol) [0x0x7ff61dc59cda]
+	(No symbol) [0x0x7ff61dc45f35]
+	(No symbol) [0x0x7ff61dc6aabe]
+	(No symbol) [0x0x7ff61dcdfeb5]
+	(No symbol) [0x0x7ff61dd00432]
+	(No symbol) [0x0x7ff61dcd86a3]
+	(No symbol) [0x0x7ff61dca1791]
+	(No symbol) [0x0x7ff61dca2523]
+	GetHandleVerifier [0x0x7ff61e17684d+3059501]
+	GetHandleVerifier [0x0x7ff61e170c0d+3035885]
+	GetHandleVerifier [0x0x7ff61e190400+3164896]
+	GetHandleVerifier [0x0x7ff61deb8c3e+185118]
+	GetHandleVerifier [0x0x7ff61dec054f+216111]
+	GetHandleVerifier [0x0x7ff61dea72e4+113092]
+	GetHandleVerifier [0x0x7ff61dea7499+113529]
+	GetHandleVerifier [0x0x7ff61de8e298+10616]
+	BaseThreadInitThunk [0x0x7ffa278ce8d7+23]
+	RtlUserThreadStart [0x0x7ffa28a3c34c+44]
+
+2025-07-28 15:58:24,626 - ERROR - Error al añadir contrato de tratamiento para la empresa LOS CAMIONEROS DE NOBLEJAS, S.L.: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=138.0.7204.169)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff61de9e935+77845]
+	GetHandleVerifier [0x0x7ff61de9e990+77936]
+	(No symbol) [0x0x7ff61dc59cda]
+	(No symbol) [0x0x7ff61dc45f35]
+	(No symbol) [0x0x7ff61dc6aabe]
+	(No symbol) [0x0x7ff61dcdfeb5]
+	(No symbol) [0x0x7ff61dd00432]
+	(No symbol) [0x0x7ff61dcd86a3]
+	(No symbol) [0x0x7ff61dca1791]
+	(No symbol) [0x0x7ff61dca2523]
+	GetHandleVerifier [0x0x7ff61e17684d+3059501]
+	GetHandleVerifier [0x0x7ff61e170c0d+3035885]
+	GetHandleVerifier [0x0x7ff61e190400+3164896]
+	GetHandleVerifier [0x0x7ff61deb8c3e+185118]
+	GetHandleVerifier [0x0x7ff61dec054f+216111]
+	GetHandleVerifier [0x0x7ff61dea72e4+113092]
+	GetHandleVerifier [0x0x7ff61dea7499+113529]
+	GetHandleVerifier [0x0x7ff61de8e298+10616]
+	BaseThreadInitThunk [0x0x7ffa278ce8d7+23]
+	RtlUserThreadStart [0x0x7ffa28a3c34c+44]
+
+2025-07-28 15:58:27,741 - INFO - Saliendo del proceso de adición de contratos de tratamiento.
