@@ -490,7 +490,7 @@ def coincidencias_en_entidades(excel_input, excel_entidades):
         nif = excel_input['cif_recogida']
         coincidencias = excel_entidades[excel_entidades['NIF'] == nif]
         if not coincidencias.empty:
-            return coincidencias.iloc[0]['Denominación']
+            return coincidencias.iloc[0]['Denominación'] # Devuelve la denominación asociada al NIF
         else:
             return None
     except Exception as error:
