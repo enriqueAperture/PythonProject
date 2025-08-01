@@ -482,12 +482,15 @@ def sacar_empresas_no_encontradas_en_nubelus(centros_nubelus: pd.DataFrame, dato
 
 def coincidencias_en_entidades(excel_input, excel_entidades):
     """
-    Devuelve True si el 'cif_recogida' de excel_input está en 'NIF' de excel_entidades.
+    Si el 'cif_recogida' de excel_input está en 'NIF' de excel_entidades,
+    devuelve el valor del campo 'Denominación' asociado a ese NIF.
     Si no hay coincidencia, devuelve None.
     """
     try:
-        if excel_input['cif_recogida'] in excel_entidades['NIF'].values:
-            return True
+        nif = excel_input['cif_recogida']
+        coincidencias = excel_entidades[excel_entidades['NIF'] == nif]
+        if not coincidencias.empty:
+            return coincidencias.iloc[0]['Denominación'] # Devuelve la denominación asociada al NIF
         else:
             return None
     except Exception as error:
@@ -565,7 +568,7 @@ def coincidencias_en_clientes(excel_input, excel_clientes):
         logging.error(f"Error en coincidencias_en_clientes: {error}")
         return None
 
-def añadir_centro(driver: webdriver.Chrome, fila) -> None:
+def añadir_centro(nombre_empresa, driver: webdriver.Chrome, fila) -> None:
     """
     Añade un centro individualmente en la aplicación web mediante Selenium.
 
@@ -582,7 +585,7 @@ def añadir_centro(driver: webdriver.Chrome, fila) -> None:
         webFunctions.escribir_en_elemento_por_id(driver, "pDenominacion", fila["nombre_recogida"])
 
         # 2. Completar el campo Entidad MA
-        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", fila["nombre_recogida"])
+        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_ema", fila["nombre_empresa"])
 
         # 3. Completar el campo Domicilio
         webFunctions.escribir_en_elemento_por_name(driver, "pDomicilio", fila["direccion_recogida"])
@@ -1054,8 +1057,15 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
         time.sleep(0.5)
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pFecha_caducidad", fecha_caducidad_3(fecha_inicio))
         time.sleep(0.5)
-        webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_origen", fila["nombre_recogida"])
+        # Si es un segundo centro, se selecciona como centro de recogida, si no toma el nombre de la empresa
+        if fila['nombre_empresa'] is not None and fila['nombre_empresa'].strip() != "":
+            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_origen", fila.get("nombre_empresa", ""))
+            time.sleep(0.5)
+            webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_origen_centro", fila.get("nombre_recogida", ""))
+        else:
+           webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_origen", fila.get("nombre_recogida", "")) 
         time.sleep(0.5)
+
         webFunctions.escribir_en_elemento_por_name_y_enter_pausa(driver, "pDenominacion_destino", "METALLS DEL CAMP, S.L.") # METALLS DEL CAMP, S.L. siempre
         time.sleep(0.5)
         provincia = str(fila.get("provincia_recogida", "")).strip().upper()
@@ -1103,7 +1113,7 @@ def añadir_contrato_tratamiento(driver, fila, residuo):
             driver.quit()
             sys.exit()
 
-def añadir_contratos_tratamientos(driver, fila, ruta_destino=None):
+def añadir_contratos_tratamientos(driver, fila, nombre_empresa=None, ruta_destino=None):
     """
     Añade los contratos de tratamiento para la empresa usando los datos de la fila 'empresa'
     y todos los residuos y cantidades del archivo residuos.txt, junto con su(s) centro(s) y tratamiento(s) asociado(s).
@@ -1130,7 +1140,6 @@ def añadir_contratos_tratamientos(driver, fila, ruta_destino=None):
                 añadir_contrato_tratamiento(driver, fila, contrato_residuo)
                 time.sleep(1)
                 # Añadir tratamientos para el residuo
-                print(item)
                 añadir_tratamientos(driver, fila, item)
                 time.sleep(1)
                 # Solo para peligrosos, crear notificación
