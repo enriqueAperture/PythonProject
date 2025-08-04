@@ -308,11 +308,11 @@ def clickar_todos_los_links(driver: webdriver.Chrome, texto: str, timeout: int =
             logging.error(f"No se encontraron enlaces con texto '{texto}'.")
             return
         logging.info(f"Encontrados {len(enlaces)} enlaces con texto '{texto}'.")
-        for enlace in enlaces[:2]:
-            enlace_texto = enlace.text
+        for enlace in enlaces:
+            enlace_texto = enlace.text.strip().split()[0]
             if enlace:
                 try:
-                    clickar_elemento(driver, By.XPATH, f"//a[contains(text(), '{enlace_texto}')]", timeout)
+                    clickar_elemento(driver, By.XPATH, f"//a[contains(text(), '{enlace_texto}') and contains(text(), '.pdf')]", timeout)
                     time.sleep(2)
                 except Exception as e:
                     logging.warning(f"No se pudo hacer clic en el enlace con texto '{enlace_texto}': {e}")
@@ -909,6 +909,7 @@ def obtener_texto_elemento_por_id(driver: webdriver.Chrome, elemento_id: str, ti
 def obtener_texto_por_parte(driver: webdriver.Chrome, parte_texto: str, timeout: int = DEFAULT_TIMEOUT) -> Optional[str]:
     """
     Busca un elemento que contenga una parte del texto especificado y devuelve la cadena de texto completa de ese elemento.
+    Reintenta hasta 3 veces con esperas de 0.5s entre intentos.
 
     Args:
         driver (webdriver.Chrome): Instancia del navegador.
@@ -921,16 +922,20 @@ def obtener_texto_por_parte(driver: webdriver.Chrome, parte_texto: str, timeout:
     Ejemplo:
         texto = buscar_texto_por_parte(driver, "Ejemplo de texto")
     """
-    try:
-        xpath = f"//*[contains(text(), '{parte_texto}')]"
-        esperar_elemento(driver, By.XPATH, xpath, timeout)
-        elemento = driver.find_element(By.XPATH, xpath)
-        texto_completo = elemento.text
-        logging.info(f"Texto encontrado que contiene '{parte_texto}': {texto_completo}")
-        return texto_completo
-    except Exception as e:
-        logging.error(f"No se encontró ningún elemento que contenga '{parte_texto}': {e}")
-        return None
+    intentos = 3
+    for intento in range(intentos):
+        try:
+            xpath = f"//*[contains(text(), '{parte_texto}')]"
+            esperar_elemento(driver, By.XPATH, xpath, timeout)
+            elemento = driver.find_element(By.XPATH, xpath)
+            texto_completo = elemento.text
+            logging.info(f"Texto encontrado que contiene '{parte_texto}': {texto_completo}")
+            return texto_completo
+        except Exception as e:
+            logging.error(f"No se encontró ningún elemento que contenga '{parte_texto}' (intento {intento+1}): {e}")
+            if intento == intentos - 1:
+                return None
+        time.sleep(1)
 
 def leer_texto_por_campo(driver, campo, timeout=5):
     """

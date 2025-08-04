@@ -245,7 +245,8 @@ def procesar_archivos_xml_en_subcarpetas():
             procesados_esta_vuelta = []
             for xml_file in xml_files:
                 try:
-                    resultado = procesar_xml(xml_file, os.path.basename(subdir))
+                    primera_palabra = os.path.basename(subdir).split()[0]
+                    resultado = procesar_xml(xml_file, primera_palabra)
                     if resultado is None:
                         continue
                     nombre_productor = resultado.get("nombre_productor", "desconocido").replace(" ", "_")

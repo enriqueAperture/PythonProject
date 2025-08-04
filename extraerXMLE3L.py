@@ -121,7 +121,7 @@ def extraer_info_xml(path_xml, regage):
     guardar_historial(data)
     
     # Guardar el JSON en output/{nombre_productor}/{codigo_regage}_{nombre_residuo}.json
-    output_dir = os.path.join("output", normalizar_nombre(nombre_productor))
+    output_dir = os.path.join("output", normalizar_nombre(nombre_representante))
     os.makedirs(output_dir, exist_ok=True)
     guardar_regage_json(data, output_dir, nombre_residuo, regage)
 

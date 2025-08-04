@@ -43,10 +43,6 @@ def enviar_enter_a_ventana(ventana_control):
         uiautomation.SendKeys('{Tab}')
         time.sleep(1)  # Espera breve para asegurar que la ventana está activa
         uiautomation.SendKeys('{Enter}')
-        time.sleep(1)  # Espera breve para asegurar que la ventana está activa
-        uiautomation.SendKeys('{Tab}')
-        time.sleep(1)  # Espera breve para asegurar que la ventana está activa
-        uiautomation.SendKeys('{Enter}')
         logging.info("Se envió Enter a la ventana activa.")
     else:
         logging.error("No se encontró la ventana o no está activa para enviar Enter.")

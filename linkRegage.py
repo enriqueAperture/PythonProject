@@ -82,6 +82,7 @@ def descargar_documentos(driver, linkMiteco, download_path, numDownloads=3):
     webFunctions.clickar_todos_los_links(driver, ".pdf")
 
     # Esperar la descarga
+    logging.info(f"Esperando {numDownloads} descargas en {download_path}...")
     archivos_descargados = downloadFunctions.wait_for_new_download(download_path, old_state, numDownloads)
     logging.info(f"Archivos descargados: {archivos_descargados}")
     return archivos_descargados
