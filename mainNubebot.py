@@ -69,9 +69,11 @@ def main():
     excel_entidades = excelFunctions.descargar_excel_entidades(driver)
     # Comprueba si la empresa ya está en nubelus
     coincidencias_entidades = excelFunctions.coincidencias_en_entidades(excel_fila, excel_entidades)
-    # Si la empresa no está en nubelus, la añade y ejecuta todo el proceso de creación: desde empresa a contratos
+    # Si la empresa está lo añade a excel_fils, si no está en nubelus, la añade y ejecuta todo el proceso de creación: desde empresa a contratos
     if coincidencias_entidades is None:
         excelFunctions.crear_contratos_desde_empresa(driver, excel_fila, ruta_destino)
+    else:
+        excel_fila['nombre_empresa'] = coincidencias_entidades
     # Descarga el Excel de centros medioambientales
     excel_centros = excelFunctions.descargar_excel_centros(driver)
     coincidencias_centros = excelFunctions.coincidencias_en_centros(excel_fila, excel_centros)
